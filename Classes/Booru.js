@@ -1,0 +1,101 @@
+const KonaPost = [
+  {
+    "id": 296436,
+    "tags": "animal bird black_hair blue_eyes boa_hancock boat breasts cape clouds long_hair navel one_piece snake wang_chen water",
+    "created_at": 1576733892,
+    "creator_id": 41748,
+    "author": "FormX",
+    "change": 1759892,
+    "source": "https://www.pixiv.net/en/artworks/78355671",
+    "score": 3,
+    "md5": "6c464a3dab11c8a6d60189dd7b69601e",
+    "file_size": 2134408,
+    "file_url": "https://konachan.net/image/6c464a3dab11c8a6d60189dd7b69601e/Konachan.com%20-%20296436%20animal%20bird%20black_hair%20blue_eyes%20boa_hancock%20boat%20breasts%20cape%20clouds%20long_hair%20navel%20one_piece%20snake%20wang_chen%20water.jpg",
+    "is_shown_in_index": true,
+    "preview_url": "https://konachan.net/data/preview/6c/46/6c464a3dab11c8a6d60189dd7b69601e.jpg",
+    "preview_width": 150,
+    "preview_height": 98,
+    "actual_preview_width": 300,
+    "actual_preview_height": 196,
+    "sample_url": "https://konachan.net/sample/6c464a3dab11c8a6d60189dd7b69601e/Konachan.com%20-%20296436%20sample.jpg",
+    "sample_width": 1500,
+    "sample_height": 983,
+    "sample_file_size": 1031502,
+    "jpeg_url": "https://konachan.net/image/6c464a3dab11c8a6d60189dd7b69601e/Konachan.com%20-%20296436%20animal%20bird%20black_hair%20blue_eyes%20boa_hancock%20boat%20breasts%20cape%20clouds%20long_hair%20navel%20one_piece%20snake%20wang_chen%20water.jpg",
+    "jpeg_width": 2126,
+    "jpeg_height": 1392,
+    "jpeg_file_size": 0,
+    "rating": "s",
+    "has_children": false,
+    "parent_id": null,
+    "status": "active",
+    "width": 2126,
+    "height": 1392,
+    "is_held": false,
+    "frames_pending_string": "",
+    "frames_pending": [],
+    "frames_string": "",
+    "frames": []
+  }
+]
+
+const YanderePost = [
+  {
+  "id": 595845,
+  "tags": "gurande pantyhose tagme",
+  "created_at": 1576798851,
+  "updated_at": 1576798854,
+  "creator_id": 335993,
+  "approver_id": null,
+  "author": "Dreista",
+  "change": 3122695,
+  "source": "https://www.pixiv.net/artworks/78380367",
+  "score": 1,
+  "md5": "9c56c1fff0f25b42a639e346729236c2",
+  "file_size": 3277184,
+  "file_ext": "png",
+  "file_url": "https://files.yande.re/image/9c56c1fff0f25b42a639e346729236c2/yande.re%20595845%20gurande%20pantyhose%20tagme.png",
+  "is_shown_in_index": true,
+  "preview_url": "https://assets.yande.re/data/preview/9c/56/9c56c1fff0f25b42a639e346729236c2.jpg",
+  "preview_width": 114,
+  "preview_height": 150,
+  "actual_preview_width": 228,
+  "actual_preview_height": 300,
+  "sample_url": "https://files.yande.re/sample/9c56c1fff0f25b42a639e346729236c2/yande.re%20595845%20sample%20gurande%20pantyhose%20tagme.jpg",
+  "sample_width": 1141,
+  "sample_height": 1500,
+  "sample_file_size": 385378,
+  "jpeg_url": "https://files.yande.re/jpeg/9c56c1fff0f25b42a639e346729236c2/yande.re%20595845%20gurande%20pantyhose%20tagme.jpg",
+  "jpeg_width": 1300,
+  "jpeg_height": 1709,
+  "jpeg_file_size": 644111,
+  "rating": "q",
+  "is_rating_locked": false,
+  "has_children": false,
+  "parent_id": null,
+  "status": "active",
+  "is_pending": false,
+  "width": 1300,
+  "height": 1709,
+  "is_held": true,
+  "frames_pending_string": "",
+  "frames_pending": [],
+  "frames_string": "",
+  "frames": [],
+  "is_note_locked": false,
+  "last_noted_at": 0,
+  "last_commented_at": 0
+  }
+]
+
+const YandereTags = [
+  {
+  "id": 95372,
+  "name": "shimakaze_(kancolle)",
+  "count": 1245,
+  "type": 4,
+  "ambiguous": false
+  }
+]
+
+module.exports = {KonaPost, YanderePost, YandereTags}

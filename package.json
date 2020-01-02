@@ -1,0 +1,32 @@
+{
+  "name": "muki",
+  "version": "3.1.0",
+  "description": "multifunctional bot for Discord",
+  "main": "Muki.js",
+  "dependencies": {
+    "@keyv/sqlite": "^2.0.2",
+    "cheerio": "^1.0.0-rc.3",
+    "discord.js": "github:discordjs/discord.js",
+    "ffmpeg-static": "^2.5.0",
+    "fs": "0.0.2",
+    "googleapis": "^42.0.0",
+    "keyv": "^3.1.0",
+    "lodash": "^4.17.15",
+    "minecraft-query": "^1.0.9",
+    "node-fetch": "^2.6.0",
+    "opusscript": "0.0.7",
+    "ytdl-core-discord": "^1.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot",
+    "discord",
+    "javascript",
+    "node"
+  ],
+  "author": "ShompiFlen",
+  "license": "MIT"
+}
