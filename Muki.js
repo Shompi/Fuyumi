@@ -7,7 +7,8 @@ const Keyv = require('keyv');
 const auth = require('./Keys/auth');
 let dbConfigs = new Keyv('sqlite://./Databases/configs.sqlite');
 let MukiConfigs;
-const Shompi = require('./Modules/Modules.js');
+const Shompi = require('./Modules/Modules');
+const WebHooks = require('./Keys/hookTokens');
 /*------------------------------Inicio del BOT------------------------------*/
 const MukiOwnerID = '166263335220805634';
 const NekosNSFWEndpoints = require('./Modules/NekosLife/endpoints');
@@ -463,15 +464,13 @@ Muki.on('ready', async () => {
   try {
     await Muki.user.setPresence({ activity: { name: MukiConfigs.activityName, type: MukiConfigs.activityType }, status: MukiConfigs.status })
     console.log("Fetching Hook de Austral Gaming...");
-    australGamingMemeHook = await Muki.fetchWebhook("");
+    australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
     console.log("Fetching Hook de Tablon de Fotos...");
-    tablonHook = await Muki.fetchWebhook("");
-    console.log("Fetching Hook de Memes de Exiliados...");
-    exiliadosMemeHook = await Muki.fetchWebhook("");
+    tablonHook = await Muki.fetchWebhook(WebHooks.ElCuliao.id);
     console.log("Fetching Hook de NASA...");
-    NASAWebHook = await Muki.fetchWebhook("");
-    console.log("Fetching Hook de Mankos For The Win...");
-    mankosMemeHook = await Muki.fetchWebhook("");
+    NASAWebHook = await Muki.fetchWebhook(WebHooks.NASAHook.id);
+    //console.log("Fetching Hook de Mankos For The Win...");
+    //mankosMemeHook = await Muki.fetchWebhook("");
     console.log(`${Date()}`);
   } catch (error) {
     console.log(error);
