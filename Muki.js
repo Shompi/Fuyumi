@@ -463,15 +463,15 @@ Muki.on('ready', async () => {
   try {
     await Muki.user.setPresence({ activity: { name: MukiConfigs.activityName, type: MukiConfigs.activityType }, status: MukiConfigs.status })
     console.log("Fetching Hook de Austral Gaming...");
-    australGamingMemeHook = await Muki.fetchWebhook("617849238868459520", "sKCFEIP3e4_eo8cjMdnhBagAnz31enmx1dxaRcPCNUzqPDnsz19bZ7FwJ0giHa2mZ911");
+    australGamingMemeHook = await Muki.fetchWebhook("");
     console.log("Fetching Hook de Tablon de Fotos...");
-    tablonHook = await Muki.fetchWebhook("605540090030325785");
+    tablonHook = await Muki.fetchWebhook("");
     console.log("Fetching Hook de Memes de Exiliados...");
-    exiliadosMemeHook = await Muki.fetchWebhook("622890463677906946", "gKdV5a6TPhZLQC9qUTSwa5sUxkB6Kgk-kwmiEsuf_8g5Im8uGGMsOEa91nTaJCkw5oyg");
+    exiliadosMemeHook = await Muki.fetchWebhook("");
     console.log("Fetching Hook de NASA...");
-    NASAWebHook = await Muki.fetchWebhook("643700164602626058");
+    NASAWebHook = await Muki.fetchWebhook("");
     console.log("Fetching Hook de Mankos For The Win...");
-    mankosMemeHook = await Muki.fetchWebhook("646202761083617294", "PJvJfcH8H-4Dg8DsaQ5NnzBjEYg6oLJjAk8LrLAHODaloiK0-eT4GJIXRGVnbIIignFf");
+    mankosMemeHook = await Muki.fetchWebhook("");
     console.log(`${Date()}`);
   } catch (error) {
     console.log(error);
