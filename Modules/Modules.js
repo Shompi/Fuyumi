@@ -38,9 +38,9 @@ module.exports = {
       MemberAdd: require('./EventHandler/Guild/memberAdd/main')
     }
   },
-  BattleMetrics: {
+  /*BattleMetrics: {
     Rust: require('./BattleMetrics/Servers/Rust')
-  },
+  },*/
 
   AnimeFLV: {
     Search: require('./AnimeFLV/Search')

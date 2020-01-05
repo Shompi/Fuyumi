@@ -245,11 +245,11 @@ Muki.on('message', async message => {
       if (message.content.startsWith('!plugins')) return await Shompi.Minecraft.plugins(message);
     }
 
-    if (message.channel.id === '635207654234652715') { //Canal Rust-server
+    /* if (message.channel.id === '635207654234652715') { //Canal Rust-server
       if (message.content.startsWith("-server")) await Shompi.BattleMetrics.Rust.serverInfo(message.channel);
       if (message.content.startsWith("-players")) return await Shompi.BattleMetrics.Rust.Players(message.channel);
       if (message.content.startsWith("-info")) return await Shompi.BattleMetrics.Rust.Details(message.channel);
-    }
+    } */
 
 
     if (message.content.startsWith('smug')) {
