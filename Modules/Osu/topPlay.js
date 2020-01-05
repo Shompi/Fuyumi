@@ -1,7 +1,9 @@
-const { osuToken, apiBase } = require('../../Keys/osuToken');
-const Osu = require('../../Classes/Osu');
 const { TextChannel, MessageEmbed } = require('discord.js');
 const Mods = require("./Mods");
+const osuToken = process.env.OSUTOKEN;
+const apiBase = "https://osu.ppy.sh/api/";
+const Osu = require('../../Classes/Osu');
+
 const endpoint = `${apiBase}get_user_best?k=${osuToken}&limit=1&type=string&u=`;
 const fetch = require('node-fetch');
 const beatmapEndpoint = `${apiBase}get_beatmaps?k=${osuToken}&b=`
