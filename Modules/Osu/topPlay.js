@@ -1,6 +1,6 @@
 const { TextChannel, MessageEmbed } = require('discord.js');
 const Mods = require("./Mods");
-const osuToken = process.env.OSUTOKEN;
+const osuToken = require('../../Keys/osuToken');
 const apiBase = "https://osu.ppy.sh/api/";
 const Osu = require('../../Classes/Osu');
 

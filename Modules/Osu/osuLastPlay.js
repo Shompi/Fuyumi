@@ -1,6 +1,6 @@
 const Mods = require('./Mods');
 const { TextChannel, MessageEmbed } = require('discord.js');
-const osuAuth = process.env.OSUTOKEN;
+const osuAuth = require('../../Keys/osuToken');
 const fetch = require('node-fetch');
 const api = 'https://osu.ppy.sh/api/';
 let { bmInfo, lastMap } = require('../../Classes/Osu');

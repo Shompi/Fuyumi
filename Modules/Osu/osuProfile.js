@@ -1,7 +1,7 @@
 const { MessageEmbed, TextChannel } = require('discord.js');
 const fetch = require('node-fetch');
 const keyv = require('keyv');
-const osuApiKey = process.env.OSUTOKEN;
+const osuApiKey = require('../../Keys/osuToken');
 const endpoint = `https://osu.ppy.sh/api/get_user?k=${osuApiKey}&u=`;
 const Calculations = require('./calculations.js');
 const {Profile} = require('../../Classes/Osu');
