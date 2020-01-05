@@ -104,7 +104,7 @@ Muki.on('message', async message => {
 
 
       /*------------------MUSIC PLAYER------------------*/
-      if (command == 'skip') {
+      /* if (command == 'skip') {
         if (message.guild.me.voice.channel) {
           const Connection = await message.member.voice.channel.join();
           Connection.dispatcher.destroy();
@@ -148,7 +148,7 @@ Muki.on('message', async message => {
         if (!message.member.voice.channel.joinable) return await message.reply("no puedo entrar al canal en el que estás.");
         return await message.member.voice.channel.join();
       }
-
+ */
       //--------------------------------OSU API--------------------------------//
       if (command === 'ostats') return await Shompi.Osu.osuProfile(content, message.channel);
       if (command === 'olast') return await Shompi.Osu.osuLastPlay(content, message.channel);
