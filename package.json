@@ -5,6 +5,7 @@
   "main": "Muki.js",
   "dependencies": {
     "@keyv/sqlite": "^2.0.2",
+    "async-limiter": "^2.0.0",
     "cheerio": "^1.0.0-rc.3",
     "discord.js": "github:discordjs/discord.js",
     "ffmpeg-static": "^2.5.0",
