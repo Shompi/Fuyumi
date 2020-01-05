@@ -4,11 +4,11 @@ const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 const { google } = require('googleapis');
 const Keyv = require('keyv');
 /*-------------------------Archivos extra------------------------------*/
-const auth = require('./Keys/auth');
+const auth = process.env.TOKEN;
 let dbConfigs = new Keyv('sqlite://./Databases/configs.sqlite');
 let MukiConfigs;
 const Shompi = require('./Modules/Modules');
-const WebHooks = require('./Keys/hookTokens');
+const WebHooks = JSON.parse(process.env.HOOKS)
 /*------------------------------Inicio del BOT------------------------------*/
 const MukiOwnerID = '166263335220805634';
 const NekosNSFWEndpoints = require('./Modules/NekosLife/endpoints');
@@ -21,7 +21,7 @@ let owoCooldown = false;
 let Bitrate = 48000;
 let Volume = 0.30;
 console.log("Iniciando bot...");
-Muki.login(auth.stable);
+Muki.login(auth);
 
 /* const ytApi = google.youtube({
   version: 'v3',

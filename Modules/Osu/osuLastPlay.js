@@ -1,7 +1,6 @@
 const Mods = require('./Mods');
 const { TextChannel, MessageEmbed } = require('discord.js');
-const osuAuth = require('../../Keys/osuToken');
-const key = osuAuth.osuToken;
+const osuAuth = process.env.OSUTOKEN;
 const fetch = require('node-fetch');
 const api = 'https://osu.ppy.sh/api/';
 let { bmInfo, lastMap } = require('../../Classes/Osu');
@@ -9,12 +8,12 @@ let { bmInfo, lastMap } = require('../../Classes/Osu');
 module.exports = async (query, channel = new TextChannel()) => {
   //Responses son arrays.
   try {
-    const userRecent = `${api}get_user_recent?k=${key}&u=${query}&limit=1`;
+    const userRecent = `${api}get_user_recent?k=${osuAuth}&u=${query}&limit=1`;
     lastMap = await fetch(userRecent).then(res => res.json()).then(info => info[0]).catch(error => console.log(error));
     if (!lastMap) return await channel.send(`${query} no registra partidas en las ultimas 24 horas.`).catch(error => console.log(error));
     //console.log(lastMap);
 
-    const beatMapEndpoint = `${api}get_beatmaps?k=${key}&b=${lastMap.beatmap_id}`;
+    const beatMapEndpoint = `${api}get_beatmaps?k=${osuAuth}&b=${lastMap.beatmap_id}`;
     bmInfo = await fetch(beatMapEndpoint).then(res => res.json()).then(info => info[0]).catch(error => console.log(error));
     //console.log(bmInfo);
 
