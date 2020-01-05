@@ -15,6 +15,7 @@
     "minecraft-query": "^1.0.9",
     "node-fetch": "^2.6.0",
     "opusscript": "0.0.7",
+    "ws": "^7.2.1",
     "ytdl-core-discord": "^1.0.3"
   },
   "devDependencies": {},
