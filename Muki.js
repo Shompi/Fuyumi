@@ -4,11 +4,11 @@ const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 const { google } = require('googleapis');
 const Keyv = require('keyv');
 /*-------------------------Archivos extra------------------------------*/
-const auth = process.env.TOKEN;
+const auth = require('./Keys/auth').stable;
 let dbConfigs = new Keyv('sqlite://./Databases/configs.sqlite');
 let MukiConfigs;
 const Shompi = require('./Modules/Modules');
-const WebHooks = JSON.parse(process.env.HOOKS)
+const WebHooks = require('./Keys/hookTokens')
 /*------------------------------Inicio del BOT------------------------------*/
 const MukiOwnerID = '166263335220805634';
 const NekosNSFWEndpoints = require('./Modules/NekosLife/endpoints');
@@ -80,9 +80,9 @@ Muki.on('message', async message => {
       const content = message.content.split(" ").slice(1).join(" ");
 
       /*-----------------Test-----------------*/
-    /*   if (command == 'test') {
-       
-      } */
+      /*   if (command == 'test') {
+         
+        } */
 
       /*-----------------Guild info-----------------*/
       if (command == 'guildinfo' && message.channel.type !== 'dm') return await Shompi.Info.GuildInfo(message);
@@ -104,7 +104,7 @@ Muki.on('message', async message => {
 
 
       /*------------------MUSIC PLAYER------------------*/
-      /* if (command == 'skip') {
+      if (command == 'skip') {
         if (message.guild.me.voice.channel) {
           const Connection = await message.member.voice.channel.join();
           Connection.dispatcher.destroy();
@@ -148,7 +148,7 @@ Muki.on('message', async message => {
         if (!message.member.voice.channel.joinable) return await message.reply("no puedo entrar al canal en el que estás.");
         return await message.member.voice.channel.join();
       }
- */
+
       //--------------------------------OSU API--------------------------------//
       if (command === 'ostats') return await Shompi.Osu.osuProfile(content, message.channel);
       if (command === 'olast') return await Shompi.Osu.osuLastPlay(content, message.channel);
