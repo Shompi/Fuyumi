@@ -19,7 +19,7 @@ I uploaded the code so its easier for me to code it when im not in home.
 
 ### How do I get set up? ###
 
-* npm install discord.js
+* `npm install discordjs/discord.js` (master)
 
 ### Contribution guidelines ###
 
