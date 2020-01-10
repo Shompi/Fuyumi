@@ -18,7 +18,7 @@ module.exports = async (message = new Message(), search = null) => {
   if (response.search.length == 1) return await message.channel.send(await EmbedMaker(message, response.search[0]));
   else {
     let pageindex = 0;
-    const embed = await EmbedMaker(message, response.search[i]);
+    const embed = await EmbedMaker(message, response.search[pageindex]);
 
     const sendedMessage = await message.channel.send(embed);
     await sendedMessage.react('⬅');

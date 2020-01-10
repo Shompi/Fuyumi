@@ -85,8 +85,9 @@ Muki.on('message', async message => {
         } */
 
       /*-----------------Guild info-----------------*/
-      if (command == 'guildinfo' && message.channel.type !== 'dm') return await Shompi.Info.GuildInfo(message);
-      if (command == 'uinfo' && message.channel.type !== 'dm') return await Shompi.Info.UserInfo(message);
+      if (command == 'guildinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.Info.GuildInfo(message);
+      if (command == 'uinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.Info.UserInfo(message);
+      if (command == 'rinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.RoleInfo(message);
       /*-----------------ANIME FLV-----------------*/
       if (command == 'anime') {
         const endpoint = message.content.split(" ")[1];
