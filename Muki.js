@@ -4,7 +4,7 @@ const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 const { google } = require('googleapis');
 const Keyv = require('keyv');
 /*-------------------------Archivos extra------------------------------*/
-const auth = require('./Keys/auth').stable;
+const auth = require('./Keys/auth').mukiDev;
 let dbConfigs = new Keyv('sqlite://./Databases/configs.sqlite');
 let MukiConfigs;
 const Shompi = require('./Modules/Modules');
@@ -85,8 +85,10 @@ Muki.on('message', async message => {
         } */
 
       /*-----------------Guild info-----------------*/
-      if (command == 'guildinfo' && message.channel.type !== 'dm') return await Shompi.Info.GuildInfo(message);
-      if (command == 'uinfo' && message.channel.type !== 'dm') return await Shompi.Info.UserInfo(message);
+      if (command == 'guildinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.Info.GuildInfo(message);
+      if (command == 'uinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.Info.UserInfo(message);
+      if (command == 'rinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.RoleInfo(message);
+
       /*-----------------ANIME FLV-----------------*/
       if (command == 'anime') {
         const endpoint = message.content.split(" ")[1];
@@ -463,12 +465,12 @@ Muki.on('ready', async () => {
 
   try {
     await Muki.user.setPresence({ activity: { name: MukiConfigs.activityName, type: MukiConfigs.activityType }, status: MukiConfigs.status })
-    console.log("Fetching Hook de Austral Gaming...");
+    /* console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
     console.log("Fetching Hook de Tablon de Fotos...");
     tablonHook = await Muki.fetchWebhook(WebHooks.ElCuliao.id);
     console.log("Fetching Hook de NASA...");
-    NASAWebHook = await Muki.fetchWebhook(WebHooks.NASAHook.id);
+    NASAWebHook = await Muki.fetchWebhook(WebHooks.NASAHook.id); */
     //console.log("Fetching Hook de Mankos For The Win...");
     //mankosMemeHook = await Muki.fetchWebhook("");
     console.log(`${Date()}`);
@@ -477,12 +479,12 @@ Muki.on('ready', async () => {
     Muki.emit("error", error);
   }
 
-  setImmediate(async () => {
+ /*  setImmediate(async () => {
     await Shompi.NASA.POTD(NASAWebHook).catch(console.error);
     setInterval(async () => {
       await Shompi.NASA.POTD(NASAWebHook).catch(console.error);
     }, 1000 * 60 * 60);
-  });
+  }); */
 });
 
 Muki.ws.on('RESUMED', (data, shard) => {
