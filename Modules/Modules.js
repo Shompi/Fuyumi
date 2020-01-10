@@ -4,7 +4,6 @@ module.exports = {
   },
   Vote: require('./Vote/Vote'),
   Minecraft: require('./Minecraft/Query'),
-  Info: require('./Guild/info'),
   Osu: {
     osuLastPlay: require('./Osu/osuLastPlay'),
     osuProfile: require('./Osu/osuProfile'),
@@ -35,8 +34,13 @@ module.exports = {
     },
     Guild: {
       MemberRemove: require('./EventHandler/Guild/memberRemove/main'),
-      MemberAdd: require('./EventHandler/Guild/memberAdd/main')
+      MemberAdd: require('./EventHandler/Guild/memberAdd/main'),
     }
+  },
+
+  GuildInfo: {
+    Info: require('./Guild/info'),
+    RoleInfo: require('./Guild/RoleInfo')
   },
   /*BattleMetrics: {
     Rust: require('./BattleMetrics/Servers/Rust')
