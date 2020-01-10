@@ -4,7 +4,7 @@ const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 const { google } = require('googleapis');
 const Keyv = require('keyv');
 /*-------------------------Archivos extra------------------------------*/
-const auth = require('./Keys/auth').mukiDev;
+const auth = require('./Keys/auth').stable;
 let dbConfigs = new Keyv('sqlite://./Databases/configs.sqlite');
 let MukiConfigs;
 const Shompi = require('./Modules/Modules');
