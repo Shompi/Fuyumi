@@ -9,6 +9,7 @@ let dbConfigs = new Keyv('sqlite://./Databases/configs.sqlite');
 let MukiConfigs;
 const Shompi = require('./Modules/Modules');
 const WebHooks = require('./Keys/hookTokens')
+import { promEmbed } from "promotions.js";
 /*------------------------------Inicio del BOT------------------------------*/
 const MukiOwnerID = '166263335220805634';
 const NekosNSFWEndpoints = require('./Modules/NekosLife/endpoints');
@@ -295,7 +296,7 @@ Muki.on('message', async message => {
         if (command == 'updateprom') {
           const channel = Muki.channels.get('650093912580423684');
           const message = await channel.messages.fetch('654198620605775892');
-          const embed = message.embeds[0].setDescription('IP: exiliados.ddns.net\nHosteado en: Chile (Servidor Local)\nModo: Survival\n**Reglas:**\n-No grifiar otras casas\n-No robar sin necesidad\n-No matar las mascotas de otros\n-PvP solo con concentimiento de ambas partes.')
+          const embed = message.embeds[0].setTitle('Servidor de Minecraft Exiliados Oficial (OFFLINE)')
           return await message.edit(null, { embed: embed })
         }
 
@@ -306,19 +307,12 @@ Muki.on('message', async message => {
         }
 
         if (command == 'sendprom') {
+          const channelid = content;
           /**
            * @author ShompiFlen
            * @description This is just for hardcoding Embeds and then send them to a channel.
            */
-          const channel = await Muki.channels.fetch("650093912580423684", true);
-          const embed = new Discord.MessageEmbed()
-            .setTitle(`Servidor de Minecraft Exiliados Oficial\nVanilla`)
-            .setDescription("**IP:** 190.215.80.215:25565\n**Hosteado en:** Chile (Servidor Local)\n**Modo:** Survival\n**Reglas:**\nNo grifiar otras casas\nNo robar sin necesidad\nNo matar las mascotas de otros\nPvP solo con concentimiento de ambas partes.\n\n")
-            .addField("Administrador:", "<@196140725274935299>")
-            .addField("Slots:", "20")
-            .setColor("BLUE")
-            .setThumbnail("https://gamehag.com//img/rewards/logo/minecraft.png");
-
+          const channel = await Muki.channels.fetch(channelid, true);
           return await channel.send(embed);
         }
       }

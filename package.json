@@ -31,5 +31,6 @@
     "node"
   ],
   "author": "ShompiFlen",
-  "license": "MIT"
+  "license": "MIT",
+  "type":"module"
 }
