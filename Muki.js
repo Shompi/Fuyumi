@@ -285,13 +285,12 @@ Muki.on('message', async message => {
         const embed = message.embeds[0].setTitle('Servidor de Minecraft Exiliados Oficial (OFFLINE)')
         return await message.edit(null, { embed: embed })
       }
-      if (command == 'sendprom') {
-        const channelid = content;
+      if (command == 'promotion') {
+        const channel = message.mentions.channels.first();
         /**
          * @author ShompiFlen
          * @description This is just for hardcoding Embeds and then send them to a channel.
          */
-        const channel = await Muki.channels.fetch(channelid, true);
         return await channel.send(promEmbed);
       }
     }
@@ -308,7 +307,6 @@ Muki.on('message', async message => {
         return await message.channel.send(`${emoji}`);
       }
     }
-
 
     /*------------------------------------ Guild Owner Commands-------------------------------------*/
 
