@@ -76,6 +76,9 @@ const getImage = (game) => {
     case "Actividad Desconocida":
       image = "https://puu.sh/F2N8p/bf31fa1e6e.png"
       break;
+    case "Google Chrome":
+      image = "https://www.techsling.com/wp-content/uploads/2019/12/google-chrome-extensions.jpg"
+      break;
   }
   return image;
 }
