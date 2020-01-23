@@ -15,7 +15,7 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
     const image = activity ? getImage(activity.name) : getImage('Actividad Desconocida');
     const streamEmbed = new MessageEmbed()
       .setColor(now.member.displayColor)
-      .setTitle(`${now.member.nickname ? now.member.nickname : now.member.user.tag} ha comenzado a transmitir ${activity ? activity.name : 'Actividad Desconocida.'} en ${voiceChannel.name}!`)
+      .setTitle(`${now.member.nickname ? now.member.nickname : now.member.user.tag} ha comenzado a transmitir ${activity ? activity.name : 'Actividad Desconocida'} en el canal ${voiceChannel.name}!`)
       .setThumbnail(now.member.user.displayAvatarURL({ size: 256 }))
       .setImage(image);
     await channel.send(streamEmbed);
