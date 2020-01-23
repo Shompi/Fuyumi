@@ -79,6 +79,8 @@ const getImage = (game) => {
     case "Google Chrome":
       image = "https://www.techsling.com/wp-content/uploads/2019/12/google-chrome-extensions.jpg"
       break;
+    default:
+      image = null;
   }
   return image;
 }
