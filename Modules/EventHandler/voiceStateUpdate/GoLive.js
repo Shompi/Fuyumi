@@ -102,7 +102,7 @@ const getImage = (game) => {
       image = "https://img.poki.com/cdn-cgi/image/width=314,height=314,fit=cover,g=0x0,f=auto/12a0ed7c6bc09b73d6558c6f69ed7f5f.png"
       break;
     case "Actividad Desconocida":
-      image = "https://puu.sh/F2N8p/bf31fa1e6e.png"
+      image = "https://puu.sh/F2ZUN/ea3856ca91.png"
       break;
     case "Google Chrome":
       image = "https://www.techsling.com/wp-content/uploads/2019/12/google-chrome-extensions.jpg"
