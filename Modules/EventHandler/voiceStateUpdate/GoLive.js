@@ -11,7 +11,7 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
     const channel = now.guild.channels.find(ch => ch.type == 'text' && ch.name == 'directos');
     if (!channel) return;
     const activity = now.member.presence.activity;
-    const image = activity ? getImage(activity.name) : null;
+    const image = activity ? getImage(activity.name) : getImage('Actividad Desconocida');
     const streamEmbed = new MessageEmbed()
       .setColor(now.member.displayColor)
       .setTitle(`${now.member.nickname ? now.member.nickname : now.member.user.tag} ha comenzado a transmitir ${activity ? activity.name : 'Actividad Desconocida.'} en ${now.guild.name}!`)
@@ -25,29 +25,41 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
 const getImage = (game) => {
   let image;
   switch (game) {
+    case "TruckersMP":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/227300/header.jpg";
+      break;
+    case "Cities: Skylines":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/255710/header.jpg";
+      break;
+    case "Counter-Strike: Global Offensive":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/730/header.jpg";
+      break;
     case 'Rocket League':
-      image = "https://static.13.cl/7/sites/default/files/esports/articulos/field-image/ae475dd426714e9e7857b28f92009011d16ac98e_1.jpg";
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/252950/header.jpg";
       break;
     case 'Rust':
-      image = "https://xpic8.igvimg.com/group_c/1909/3019/122/ec7e532b-128a-48bf-8f5b-f571488e275d.jpg";
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/252490/header.jpg";
       break;
     case 'DRAGON BALL Z: KAKAROT':
-      image = "https://redgol.cl/__export/1579295186682/sites/redgol/img/2020/01/17/dragon-ball-z-kakarot-2-1620x800_crop1579295040131.jpg_2024461655.jpg";
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/851850/header.jpg";
       break;
     case 'Arma 3':
-      image = "https://http2.mlstatic.com/arma-3-pc-original-steam-D_NQ_NP_816914-MLA29380135702_022019-F.jpg";
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/107410/header.jpg";
       break;
     case 'Keep Talking and Nobody Explodes':
-      image = "http://www.bombmanual.com/es/img/header.png";
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/341800/header.jpg";
       break;
     case 'VRChat':
-      image = "https://www.psu.com/wp/wp-content/uploads/2019/11/VRChat-1024x576.jpg";
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/438100/header.jpg";
       break;
     case 'Euro Truck Simulator 2':
-      image = "https://cdn-cf.gamivo.com/image_cover.jpg?f=46408&n=9220184845401234.jpg&h=276afdbd7f7da67694ef0b9aff7fcccf";
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/227300/header.jpg";
       break;
     case 'Dead by Daylight':
-      image = "https://www.gameprotv.com/archivos/201704/dead-by-daylight-principal.jpg";
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/381210/header.jpg";
+      break;
+    case "PLAYERUNKNOWN'S BATTLEGROUNDS":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/578080/header.jpg";
       break;
     case "osu!":
       image = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Osulogo.png/490px-Osulogo.png"
@@ -55,8 +67,15 @@ const getImage = (game) => {
     case "Fortnite":
       image = "https://wwwhatsnew.com/wp-content/uploads/2019/10/10-diferencias-entre-el-nuevo-Fortnite-y-el-anterior.jpg";
       break;
-    default:
-      image = "https://www.dafont.com/forum/attach/orig/4/7/474158.png";
+    case "PUBG LITE":
+      image = "https://sm.ign.com/ign_es/screenshot/default/pubglite2_x4gc.jpg";
+      break;
+    case "Minecraft":
+      image = "https://img.poki.com/cdn-cgi/image/width=314,height=314,fit=cover,g=0x0,f=auto/12a0ed7c6bc09b73d6558c6f69ed7f5f.png"
+      break;
+    case "Actividad Desconocida":
+      image = "https://puu.sh/F2N8p/bf31fa1e6e.png"
+      break;
   }
   return image;
 }
