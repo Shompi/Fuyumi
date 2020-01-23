@@ -11,10 +11,11 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
     const channel = now.guild.channels.find(ch => ch.type == 'text' && ch.name == 'directos');
     if (!channel) return;
     const activity = now.member.presence.activity;
+    const voiceChannel = now.member.voice.channel;
     const image = activity ? getImage(activity.name) : getImage('Actividad Desconocida');
     const streamEmbed = new MessageEmbed()
       .setColor(now.member.displayColor)
-      .setTitle(`${now.member.nickname ? now.member.nickname : now.member.user.tag} ha comenzado a transmitir ${activity ? activity.name : 'Actividad Desconocida.'} en ${now.guild.name}!`)
+      .setTitle(`${now.member.nickname ? now.member.nickname : now.member.user.tag} ha comenzado a transmitir ${activity ? activity.name : 'Actividad Desconocida.'} en ${voiceChannel.name}!`)
       .setThumbnail(now.member.user.displayAvatarURL({ size: 256 }))
       .setImage(image);
     await channel.send(streamEmbed);
@@ -25,6 +26,33 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
 const getImage = (game) => {
   let image;
   switch (game) {
+    case "PAYDAY 2":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/218620/header.jpg";
+      break;
+    case "Grand Theft Auto V":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/271590/header.jpg";
+      break;
+    case "Garry's Mod":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/4000/header.jpg";
+      break;
+    case "Tricky Towers":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/437920/header.jpg";
+      break;
+    case "Crypt of the NecroDancer":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/247080/header.jpg";
+      break;
+    case "Skullgirls":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/245170/header.jpg";
+      break;
+    case "Killing Floor 2":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/232090/header.jpg";
+      break;
+    case "League of Legends":
+      image = "http://www.masgamers.com/wp-content/uploads/2015/04/LoL-Banner.png";
+      break;
+    case "Overcooked! 2":
+      image = "https://steamcdn-a.akamaihd.net/steam/apps/728880/header.jpg";
+      break;
     case "TruckersMP":
       image = "https://steamcdn-a.akamaihd.net/steam/apps/227300/header.jpg";
       break;
