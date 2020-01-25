@@ -1,12 +1,10 @@
-const { MessageEmbed, Client, Presence } = require('discord.js');
-const keyv = require('keyv');
-const streamings = new keyv('sqlite://./Databases/Streamings/streamings.sqlite');
-streamings.on('error', (err) => console.log(err));
+const { MessageEmbed, Presence } = require('discord.js');
 module.exports = async (old = new Presence(), now = new Presence()) => {
   if (now.user.bot) return;
-  if (!now.activity) return;
-  if (now.activity.type !== 'STREAMING') return;
-  const isStreaming = await streamings.get(now.user.id);
+  if (!now.activities.length == 0) return;
+  const activity = now.activities[0];
+  if (activity.type !== 'STREAMING') return;
+
   if (isStreaming) return;
 
   const streamingChannel = now.member.guild.channels.find(channel => channel.name == "directos" && channel.type == 'text');
@@ -15,10 +13,9 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
   const embed = new MessageEmbed()
     .setColor(now.member.displayColor)
     .setThumbnail(`${now.member.user.displayAvatarURL({size:256})}`)
-    .setTitle(`¡${old.member.displayName} está en vivo en ${now.activity.name}!`)
-    .setDescription(`**${now.activity.details}**\nÚnete a la transmisión en ${now.activity.url || "NO URL"}`)
+    .setTitle(`¡${old.member.displayName} está en vivo en ${activity.name}!`)
+    .setDescription(`**${activity.details}**\nÚnete a la transmisión en ${activity.url || "NO URL"}`)
     .setTimestamp()
 
-  await streamingChannel.send(embed);
-  return await streamings.set(now.user.id, 'streaming', 1000 * 60 * 60 * 2);
+  return await streamingChannel.send(embed);
 }
