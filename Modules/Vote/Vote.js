@@ -1,23 +1,19 @@
 const { MessageEmbed, Message } = require('discord.js');
-const keyv = require('keyv');
-const db = new keyv('sqlite://./Databases/voting.sqlite');
-const votedb = new keyv('sqlite://Databases/voting.sqlite', { namespace: 'voteid' });
+
 const minute = 1000 * 60;
 const approvedimage = 'https://puu.sh/EPc3r/6dfaa029d1.png';
 const rejectedimage = 'https://puu.sh/EPc4k/ed4ca4cfc3.png';
 const neutralimage = 'https://puu.sh/EPcbj/d8fd38a401.png';
 const inProgress = 'https://puu.sh/EPcok/0c349a8d0f.png';
 const noVoteImage = 'https://puu.sh/EPe4V/e12a2b7355.png';
-db.on('error', error => { console.log("Error en voting.js database"); console.log(error) });
 
 module.exports = async (message = new Message(), content = new String()) => {
 
-  const cooldown = await db.get(message.author.id);
+  let cooldown;
   if (cooldown) return await message.reply('debes esperar un minimo de 60 segundos antes de iniciar otra votación.');
   let votenumber = await votedb.get('lastvote');
   if (!votenumber) {
     votenumber = { count: 1 }
-    await votedb.set('lastvote', votenumber);
   }
 
   let args = content.split(' ');
@@ -47,8 +43,8 @@ module.exports = async (message = new Message(), content = new String()) => {
 
       message.delete({ timeout: 2000 }).catch(error => console.log(error));
       votenumber.count++;
-      await db.set(message.author.id, 'cooldown', 1000 * 60); // 1 minute cooldown
-      await votedb.set('lastvote', votenumber);
+      //await db.set(message.author.id, 'cooldown', 1000 * 60); // 1 minute cooldown
+      //await votedb.set('lastvote', votenumber);
 
       await vote.react('✅').catch(error => console.log(error));
       await vote.react('❌').catch(error => console.log(error));
@@ -57,9 +53,9 @@ module.exports = async (message = new Message(), content = new String()) => {
       const cancelfilter = (reaction, user) => reaction.emoji.name === '🚫' && user.id == message.author.id;
       vote.createReactionCollector(cancelfilter, {max:1, time: time})
         .on('collect', async (reaction, user) => {
-          let votenumber = await votedb.get('lastvote');
+          let votenumber = "#DefaultValue"; //await votedb.get('lastvote');
           votenumber.count--;
-          await votedb.set('lastvote', votenumber);
+          //await votedb.set('lastvote', votenumber);
           await message.channel.send('La votación ha sido cancelada.');
           return vote.delete({timeout:2000, reason:'La votación fue cancelada por el usuario ' + message.author.tag}).catch(err => console.log(err));
         })

@@ -12,14 +12,11 @@
 const { MessageEmbed, Webhook } = require('discord.js');
 const NASA = require('../../Classes/NASA');
 const endpoint = `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASAKEY}`
-const keyv = require('keyv');
 const fetch = require('node-fetch');
 
 
 module.exports = async (Hook = new Webhook()) => {
   let error = false;
-  const db = new keyv("sqlite://./Databases/NASALASTPIC.sqlite")
-    .on('error', (error) => console.log("Error en NASA POTD " + error));
   
   const fetchInfo = await fetch(endpoint).then(res => res.json()).catch(error => {
     console.log(error.message);
@@ -29,21 +26,12 @@ module.exports = async (Hook = new Webhook()) => {
   });
   if (error) return console.log("Hubo un error en NASA POTD.");
   const response = new NASA.POTD(fetchInfo);
-  const lastPic = await db.get("lastPic").catch(error => console.log(error));
+  
   const embed = new MessageEmbed()
     .setTitle(response.title)
     .setImage(response.url)
     .setColor("BLUE")
     .setDescription(`${response.explanation}\n${response.hdurl}`)
     .setFooter(`${response.date ? response.date : Date()} - NASA API Astronomy Picture of the Day`);
-
-  if (!lastPic) {
-    await db.set("lastPic", response).catch(error => console.log(error));
-    return await Hook.send(embed).catch(error => console.log(error));
-  } else {
-    if (lastPic.date == response.date) return undefined;
-    await db.set("lastPic", response);
-    return await Hook.send(embed).catch(error => console.log(error));
-  }
 
 }
