@@ -4,16 +4,15 @@
   "description": "multifunctional bot for Discord",
   "main": "Muki.js",
   "dependencies": {
-    "@keyv/sqlite": "^2.0.2",
     "async-limiter": "^2.0.0",
     "cheerio": "^1.0.0-rc.3",
     "discord.js": "github:discordjs/discord.js",
     "ffmpeg-static": "^2.5.0",
     "fs": "0.0.2",
     "googleapis": "^42.0.0",
-    "keyv": "^3.1.0",
     "lodash": "^4.17.15",
     "minecraft-query": "^1.0.9",
+    "mongoose": "^5.8.9",
     "node-fetch": "^2.6.0",
     "opusscript": "0.0.7",
     "ws": "^7.2.1",
@@ -32,5 +31,5 @@
   ],
   "author": "ShompiFlen",
   "license": "MIT",
-  "type":"module"
+  "type": "module"
 }
