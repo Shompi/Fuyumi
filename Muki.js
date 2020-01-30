@@ -1,6 +1,6 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const Discord = require('discord.js');
-const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'], disabledEvents:["VOICE_STATE_UPDATE", "PRESENCE_UPDATE", "GUILD_MEMBER_ADD", "GUILD_MEMBER_REMOVE"]});
+const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'], disabledEvents:["VOICE_STATE_UPDATE", "GUILD_MEMBER_ADD", "GUILD_MEMBER_REMOVE"]});
 const { google } = require('googleapis');
 /*-----------------------Archivos extra----------------------------*/
 const auth = require('./Keys/auth').mukiDev;
@@ -178,8 +178,9 @@ Muki.on('message', async message => {
         return await Shompi.Boorus.TagSearch(message, content);
       }
 
+      //if (command === 'tags') return await Shompi.Tags(message, content);
+      
       //----------------------Nekos.life API----------------------//
-
       if (NekosNSFWEndpoints.includes(command)) {
         if (message.channel.type == 'dm') return await Shompi.Nekos(message, command);
         if (message.channel.nsfw) return await Shompi.Nekos(message, command);
@@ -230,7 +231,9 @@ Muki.on('message', async message => {
     if (message.content.startsWith("-Discord")) return await Shompi.Discord.Status(message.channel);
 
     //-----------------------------Bot Owner commands------------------------------//
-    if (message.author.id === MukiOwnerID) {
+    if (message.author.id === MukiOwnerID && message.content[0] === '*') {
+      const command = message.content.split(" ").slice(1)[0];
+      const content = message.content.split(" ").slice(2).join(" ");
       if (command == 'status') {
         await Muki.user.setStatus(content);
         MukiConfigs.status = content;
@@ -238,7 +241,7 @@ Muki.on('message', async message => {
       }
 
       if (command == 'updateprom') {
-        //args: Message
+        //args: []
         const args = content.split(" ").splice(1);
         const channel = message.mentions.channels.first();
         const prom = await channel.messages.fetch(args[0]);
@@ -249,6 +252,19 @@ Muki.on('message', async message => {
       if (command == 'promotion') {
         const channel = message.mentions.channels.first();
         return await channel.send(promEmbed);
+      }
+
+      if (command == 'totalGuilds'){
+        const guilds = new Discord.MessageEmbed()
+          .setDescription(`\`\`\`\n${Muki.guilds.map(g => g.name).join(", ")}\`\`\``)
+          .setColor('BLUE');
+        return await message.channel.send(`Estoy en ${Muki.guilds.size} Guilds!.`, {embed:guilds});
+      }
+
+      if (command == 'presence') {
+        const user = message.mentions.users.first();
+        console.log(user.presence.activities);
+        console.log(user.presence.activities.forEach(activity => console.log(activity.name + ' ' + activity.type)));
       }
     }
 
@@ -316,7 +332,6 @@ Muki.on('presenceUpdate', async (old, now) => { //Tipo Presence
   try {
     if (!old) return;
     await Shompi.eventHandlers.Presence.Twitch(old, now);
-
 
   } catch (e) {
     console.log(e);

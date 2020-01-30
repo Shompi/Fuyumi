@@ -2,6 +2,7 @@ module.exports = {
   Help: {
 
   },
+  Tags: require('./Tags/tags'),
   Vote: require('./Vote/Vote'),
   Minecraft: require('./Minecraft/Query'),
   Osu: {
