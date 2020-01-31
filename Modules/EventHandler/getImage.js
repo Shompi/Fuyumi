@@ -46,7 +46,7 @@ module.exports = (game = new String()) => {
     "Move or Die": "https://steamcdn-a.akamaihd.net/steam/apps/323850/header.jpg",
     "Visual Studio Code": "https://barnamenevisan.org/ImagesArticle/93e8576731dc44cabf0f8a51dfab9604.jpg",
     "NEKOPARA": "https://gaminguardian.com/wp-content/uploads/2018/01/Nekopara.jpg",
-    "NieR:Automata™": "https://steamcdn-a.akamaihd.net/steam/apps/524220/header.jpg",
+    "NieR:Automata": "https://steamcdn-a.akamaihd.net/steam/apps/524220/header.jpg",
     "DayZ": "https://steamcdn-a.akamaihd.net/steam/apps/221100/header.jpg",
     "Dota 2": "https://steamcdn-a.akamaihd.net/steam/apps/570/header.jpg",
   };
