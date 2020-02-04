@@ -6,5 +6,6 @@ module.exports = {
   nasaLastPicture: new enmap({name:'nasa'}),
   tags: new enmap({name:'tags'}),
   webhooks: new enmap({name:'webhooks'}),
-  votes: new enmap({name:'votes'})
+  votes: new enmap({name:'votes'}),
+  osu: new enmap({name:"osu"})
 }

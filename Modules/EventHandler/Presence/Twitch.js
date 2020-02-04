@@ -1,5 +1,5 @@
 const { MessageEmbed, Presence } = require('discord.js');
-const streamings = require('../../LoadDatabase').streamings;
+const database = require('../LoadDatabase');
 const getImage = require('../getImage');
 module.exports = async (old = new Presence(), now = new Presence()) => {
   /**

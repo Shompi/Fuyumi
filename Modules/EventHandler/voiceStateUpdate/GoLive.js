@@ -1,5 +1,7 @@
 const { MessageEmbed, VoiceState, Client } = require('discord.js');
 const getImage = require('../getImage');
+const database = require('../LoadDatabase');
+
 module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = new Client()) => {
   const isStreaming = await db.get(now.id);
   if (isStreaming) return;

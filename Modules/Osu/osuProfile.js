@@ -4,6 +4,7 @@ const osuApiKey = require('../../Keys/osuToken');
 const endpoint = `https://osu.ppy.sh/api/get_user?k=${osuApiKey}&u=`;
 const Calculations = require('./calculations.js');
 const {Profile} = require('../../Classes/Osu');
+const database = require('../LoadDatabase');
 
 module.exports = async (username, channel = new TextChannel()) => {
   let newValues = {};

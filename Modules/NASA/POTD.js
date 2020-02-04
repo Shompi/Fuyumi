@@ -13,6 +13,7 @@ const { MessageEmbed, Webhook } = require('discord.js');
 const NASA = require('../../Classes/NASA');
 const endpoint = `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASAKEY}`
 const fetch = require('node-fetch');
+const database = require('../LoadDatabase');
 
 
 module.exports = async (Hook = new Webhook()) => {
