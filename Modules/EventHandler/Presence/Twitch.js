@@ -1,7 +1,14 @@
 const { MessageEmbed, Presence } = require('discord.js');
 const streamings = require('../../LoadDatabase').streamings;
-
+const getImage = require('../getImage');
 module.exports = async (old = new Presence(), now = new Presence()) => {
+  /**
+   * 1.- Verificar que el usuario está stremeando
+   * 2.- Verificar si el usuario estaba stremeando antes
+   * 3.- Comparar la actividad anterior con la nueva:
+   * >Si son iguales = retornar
+   * >Si son distintas = Actualizar el mensaje relacionado con el primer livestream.
+   */
   if (now.user.bot) return;
   const activity = now.activities[0];
   if (!activity) return console.log(`El usuario ${now.user.tag} no tiene actividades`);

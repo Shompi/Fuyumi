@@ -1,5 +1,5 @@
 const { MessageEmbed, Message } = require('discord.js');
-
+const votes = require('../LoadDatabase').votes;
 const minute = 1000 * 60;
 const approvedimage = 'https://puu.sh/EPc3r/6dfaa029d1.png';
 const rejectedimage = 'https://puu.sh/EPc4k/ed4ca4cfc3.png';
