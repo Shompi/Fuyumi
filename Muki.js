@@ -1,10 +1,10 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const Discord = require('discord.js');
-const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'], disabledEvents:["VOICE_STATE_UPDATE", "GUILD_MEMBER_ADD", "GUILD_MEMBER_REMOVE"]});
+const Muki = new Discord.Client({ partials: ['GUILD_MEMBER']});
 const { google } = require('googleapis');
 /*-----------------------Archivos extra----------------------------*/
 const auth = require('./Keys/auth').mukiDev;
-let MukiConfigs = {status:"ONLINE", activityType:"LISTENING", activityTo:"muki!", prefix:"dev!"};
+let MukiConfigs = {status:"ONLINE", activityType:"LISTENING", activityTo:"muki!", prefix:"muki!"};
 const Shompi = require('./Modules/Modules');
 const WebHooks = require('./Keys/hookTokens')
 const promEmbed = require('./promotions')
@@ -29,7 +29,7 @@ Muki.on('message', async message => {
 
     //Pokecord messages. Mensajes especificos de bots.
 
-    /* if (message.author.id === '365975655608745985') {
+    if (message.author.id === '365975655608745985') {
       await message.delete({ timeout: 10000, reason: "pokecord" });
     }
     //Tablon de imagenes-------------------------
@@ -39,13 +39,13 @@ Muki.on('message', async message => {
         await message.delete({ timeout: 1000, reason: "Adjuntar imagen" });
         return;
       }
-    } */
+    }
 
     if (message.author.bot) return;
 
     // WEBHOOKS Canal de memes de Exiliados, AutralGaming y Mankos for The win
 
-    /* if ((message.channel.id == '622889689472303120' || message.channel.id == '613558711428055050')) {
+    if ((message.channel.id == '622889689472303120' || message.channel.id == '613558711428055050')) {
       if (message.attachments.size <= 0 || message.author.bot) return;
       const embed = new Discord.MessageEmbed()
         .setColor("BLUE")
@@ -69,7 +69,7 @@ Muki.on('message', async message => {
             username: message.guild.name
           })
       }
-    } */
+    }
     //Comandos de usuario con prefijo:
     if (message.content.startsWith(MukiConfigs.prefix)) {
 
@@ -178,7 +178,7 @@ Muki.on('message', async message => {
         return await Shompi.Boorus.TagSearch(message, content);
       }
 
-      //if (command === 'tags') return await Shompi.Tags(message, content);
+      if (command === 'tags') return await Shompi.Tags(message, content);
       
       //----------------------Nekos.life API----------------------//
       if (NekosNSFWEndpoints.includes(command)) {
@@ -403,30 +403,28 @@ Muki.on('ready', async () => {
 
   try {
     await Muki.user.setPresence({ activity: { name: MukiConfigs.activityTo, type: MukiConfigs.activityType }, status: MukiConfigs.status })
-    /* console.log("Fetching Hook de Austral Gaming...");
+    console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
     console.log("Fetching Hook de Tablon de Fotos...");
     tablonHook = await Muki.fetchWebhook(WebHooks.ElCuliao.id);
     console.log("Fetching Hook de NASA...");
-    NASAWebHook = await Muki.fetchWebhook(WebHooks.NASAHook.id); */
-    //console.log("Fetching Hook de Mankos For The Win...");
-    //mankosMemeHook = await Muki.fetchWebhook("");
+    NASAWebHook = await Muki.fetchWebhook(WebHooks.NASAHook.id);
     console.log(`Bot listo: ${Date()}`);
   } catch (error) {
     console.log(error);
     Muki.emit("error", error);
   }
 
-  /*  setImmediate(async () => {
+   setImmediate(async () => {
      await Shompi.NASA.POTD(NASAWebHook).catch(console.error);
      setInterval(async () => {
        await Shompi.NASA.POTD(NASAWebHook).catch(console.error);
      }, 1000 * 60 * 60);
-   }); */
+   });
 });
 
 Muki.ws.on('RESUMED', (data, shard) => {
   console.log("Websocket Resumed");
   console.log(data);
   console.log(shard);
-})
+});
