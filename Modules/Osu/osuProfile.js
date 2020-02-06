@@ -1,18 +1,12 @@
 const { MessageEmbed, TextChannel } = require('discord.js');
 const fetch = require('node-fetch');
-const keyv = require('keyv');
 const osuApiKey = require('../../Keys/osuToken');
 const endpoint = `https://osu.ppy.sh/api/get_user?k=${osuApiKey}&u=`;
 const Calculations = require('./calculations.js');
 const {Profile} = require('../../Classes/Osu');
+const database = require('../LoadDatabase');
 
 module.exports = async (username, channel = new TextChannel()) => {
-  const osudb = new keyv('sqlite://./Databases/osudb.sqlite');
-  osudb.on('error', (error) => {
-    console.log("error en osudb");
-    console.log(error)
-    return;
-  });
   let newValues = {};
   try {
     const request = await fetch(`${endpoint + username}`);
@@ -25,12 +19,13 @@ module.exports = async (username, channel = new TextChannel()) => {
     //console.log("info:" + info);
 
 
-    let dbInfo = await osudb.get(info.username);
+    //let dbInfo = await osudb.get(info.username);
     if (!dbInfo) {
       info.timestamp = Date.now();
       await osudb.set(info.username, info);
       dbInfo = await osudb.get(info.username);
     }
+
     newValues = await Calculations(info, dbInfo);
     let accuracy = new Number(info.accuracy);
     const osuCard = new MessageEmbed()
@@ -48,7 +43,6 @@ module.exports = async (username, channel = new TextChannel()) => {
       .setFooter("Powered by osu! API by peppy", "https://upload.wikimedia.org/wikipedia/commons/e/e3/Osulogo.png");
 
     info.timestamp = Date.now();
-    await osudb.set(info.username, info);
     return await channel.send(osuCard);
   } catch (error) {
     console.log(error);
