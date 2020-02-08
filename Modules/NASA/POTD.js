@@ -31,6 +31,7 @@ module.exports = async (Hook = new Webhook()) => {
         .setFooter(`${response.date ? response.date : Date()} - NASA API Astronomy Picture of the Day`);
 
 
+      database.nasaLastPicture.set('LASTPIC', response.date);
       return await Hook.send(embed);
     }
     return console.log('La foto de la NASA no ha cambiado.');
