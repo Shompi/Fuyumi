@@ -329,13 +329,13 @@ Muki.on('voiceStateUpdate', async (old, now) => {
 //------------------------User Presence Change------------------------//
 
 Muki.on('presenceUpdate', async (old, now) => { //Tipo Presence
-  /* try {
+  try {
     if (!old) return;
     await Shompi.eventHandlers.Presence.Twitch(old, now);
 
   } catch (e) {
     console.log(e);
-  } */
+  }
 });
 //------------------------Guild Update------------------------//
 Muki.on('guildUpdate', (oldGuild, newGuild) => {
