@@ -19,10 +19,9 @@ const database = require('../LoadDatabase');
 
 module.exports = async (Hook = new Webhook()) => {
   try {
-    const fetchInfo = await fetch(endpoint).then(res => res.json());
-    const response = new NASA.POTD(fetchInfo);
+    const response = await fetch(endpoint).then(res => res.json());
     let lastPicDate = database.nasaLastPicture.get('LASTPIC');
-    console.log(lastPicDate + "   " + fetchInfo);
+    console.log(lastPicDate + "   " + response.date);
     if (lastPicDate != response.date) {
       const embed = new MessageEmbed()
         .setTitle(response.title)
