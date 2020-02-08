@@ -49,6 +49,7 @@ module.exports = (game = new String()) => {
     "NieR:Automata": "https://steamcdn-a.akamaihd.net/steam/apps/524220/header.jpg",
     "DayZ": "https://steamcdn-a.akamaihd.net/steam/apps/221100/header.jpg",
     "Dota 2": "https://steamcdn-a.akamaihd.net/steam/apps/570/header.jpg",
+    "Business Tour - Online Multiplayer Board Game": "https://steamcdn-a.akamaihd.net/steam/apps/397900/logo.png"
   };
 
   const imageUrl = images[game];
