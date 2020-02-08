@@ -1,6 +1,7 @@
 const { MessageEmbed, Presence } = require('discord.js');
 const database = require('../../LoadDatabase');
 const TWOHOURS = 1000 * 60 * 60 * 2;
+const getImage = require('../getImage');
 module.exports = async (old = new Presence(), now = new Presence()) => {
   /**
    * 1.- Verificar que el usuario está stremeando
