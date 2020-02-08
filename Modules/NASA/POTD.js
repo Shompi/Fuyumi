@@ -11,7 +11,8 @@
  */
 const { MessageEmbed, Webhook } = require('discord.js');
 const NASA = require('../../Classes/NASA');
-const endpoint = `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASAKEY}`
+const { NASAkey } = require('../../Keys/auth');
+const endpoint = `https://api.nasa.gov/planetary/apod?api_key=${NASAkey}`
 const fetch = require('node-fetch');
 const database = require('../LoadDatabase');
 
@@ -21,7 +22,7 @@ module.exports = async (Hook = new Webhook()) => {
     const fetchInfo = await fetch(endpoint).then(res => res.json());
     const response = new NASA.POTD(fetchInfo);
     let lastPicDate = database.nasaLastPicture.get('LASTPIC');
-
+    console.log(lastPicDate + "   " + fetchInfo);
     if (lastPicDate != response.date) {
       const embed = new MessageEmbed()
         .setTitle(response.title)
@@ -33,8 +34,7 @@ module.exports = async (Hook = new Webhook()) => {
 
       database.nasaLastPicture.set('LASTPIC', response.date);
       return await Hook.send(embed);
-    }
-    return console.log('La foto de la NASA no ha cambiado.');
+    } else return console.log('La foto de la NASA no ha cambiado.');
   } catch (error) {
     console.log(error);
   }
