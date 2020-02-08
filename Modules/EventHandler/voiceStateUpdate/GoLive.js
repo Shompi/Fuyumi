@@ -41,7 +41,7 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
         const streamer = {
           streamStarted: timeNow,
           tag: member.user.tag,
-          activityName: now.member.presence.activities[0].name,
+          activityName: activityName,
           sendedMessage: {
             channel: message.channel.id,
             messageID: message.id
