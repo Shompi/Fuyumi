@@ -18,14 +18,8 @@ I uploaded the code so its easier for me to code it when im not in home.
 * Version 3.0.0
 
 ### How do I get set up? ###
-
-* `npm install discordjs/discord.js` (master)
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
+* You need node.js 12+, then run:
+* `npm install discordjs/discord.js` --save
 
 ### Who do I talk to? ###
 
