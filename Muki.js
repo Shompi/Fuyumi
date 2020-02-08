@@ -314,11 +314,6 @@ Muki.on('guildMemberAdd', async GuildMember => {
 Muki.on('guildMemberUpdate', async (oldMember, newMember) => {
 });
 
-Muki.on('debug', info => {
-  console.log(info);
-})
-
-
 Muki.on('voiceStateUpdate', async (old, now) => {
   try {
     await Shompi.eventHandlers.Presence.GoLive(old, now, Muki);
