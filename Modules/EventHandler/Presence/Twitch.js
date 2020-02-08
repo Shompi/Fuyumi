@@ -31,9 +31,9 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
       const begun = database.streamings.get(member.id, 'streamStarted');
 
       if ((timeNow - begun) >= TWOHOURS) {
-        const { channel, id } = await sendStreaming(now);
+        await sendStreaming(now);
         const timeNow = Date.now();
-        database.streamings.set(member.id, { streamStarted: timeNow });
+        database.streamings.set(member.id, timenow, "streamStarted");
         return console.log(database.streamings.get(member.id));
       } else {
         //If the elapsed time is not greater than two hours then we need to return.
@@ -42,7 +42,7 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
     } else {
       //If the member was not in the database we need to add him in.
       await sendStreaming(now, activity);
-      database.streamings.set(member.id, { streamStarted: timeNow });
+      database.streamings.set(member.id, timenow, "streamStarted");
       return;
     }
   } catch (error) {
