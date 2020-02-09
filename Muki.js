@@ -62,231 +62,230 @@ Muki.on('message', async message => {
 
       return;
     }
-  }
     //Comandos de usuario con prefijo:
     if (message.content.startsWith(MukiConfigs.prefix)) {
 
 
-    /*-----------------Test-----------------*/
-    /*   if (command == 'test') {
-       
-      } */
+      /*-----------------Test-----------------*/
+      /*   if (command == 'test') {
+         
+        } */
 
-    /*-----------------Guild info-----------------*/
-    if (command == 'guildinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.Info.GuildInfo(message);
-    if (command == 'uinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.Info.UserInfo(message);
-    if (command == 'rinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.RoleInfo(message);
+      /*-----------------Guild info-----------------*/
+      if (command == 'guildinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.Info.GuildInfo(message);
+      if (command == 'uinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.Info.UserInfo(message);
+      if (command == 'rinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.RoleInfo(message);
 
-    /*-----------------ANIME FLV-----------------*/
-    if (command == 'anime') return await Shompi.AnimeFLV.Search(message, content);
+      /*-----------------ANIME FLV-----------------*/
+      if (command == 'anime') return await Shompi.AnimeFLV.Search(message, content);
 
-    /*------------------Vote Command------------------*/
-    if (command == 'vote') return await Shompi.Vote(message, content);
+      /*------------------Vote Command------------------*/
+      if (command == 'vote') return await Shompi.Vote(message, content);
 
-    /*------------------MUSIC PLAYER------------------*/
-    if (command == 'skip') {
-      if (message.guild.me.voice.channel) {
-        const Connection = await message.member.voice.channel.join();
-        Connection.dispatcher.destroy();
-      } else {
-        return await message.reply("No estoy en ningun canal de voz.");
+      /*------------------MUSIC PLAYER------------------*/
+      if (command == 'skip') {
+        if (message.guild.me.voice.channel) {
+          const Connection = await message.member.voice.channel.join();
+          Connection.dispatcher.destroy();
+        } else {
+          return await message.reply("No estoy en ningun canal de voz.");
+        }
+      }
+      if (command == 'webPlay') {
+        const connection = await message.member.voice.channel.join();
+        const dispatcher = connection.play(content, { volume: Volume, bitrate: Bitrate });
+        dispatcher.on('finish', () => {
+          console.log("Ended transmission");
+        });
+      }
+      if (command == 'osuPlay') {
+        const basePath = 'C:/Users/shomp/AppData/Local/osu!/Songs/';
+        const connection = await message.member.voice.channel.join();
+        const dispatcher = connection.play(basePath + content, { volume: Volume, bitrate: Bitrate });
+        dispatcher.on('finish', () => {
+          console.log("Ended transmission");
+        });
+      }
+      if (command == 'pcPlay') {
+        const connection = await message.member.voice.channel.join();
+        const dispatcher = connection.play(content, { volume: Volume, bitrate: Bitrate });
+        dispatcher.on('finish', () => {
+          console.log("Ended transmission");
+        });
+      }
+      if (command == 'volume') {
+        if (message.guild.voice && message.guild) {
+          const hamtaroNo = message.guild.emojis.find(em => em.name == 'Hamtaro_NO');
+          if (content >= 80) return await message.reply(`${hamtaroNo}`);
+          const volume = Number(content) / 100;
+
+          message.guild.voice.connection.dispatcher.setVolume(volume);
+        }
+      }
+      if (command === 'join') {
+        if (!message.member.voice) return await message.reply("debes estas en un canal de voz para usar este comando.");
+        if (!message.member.voice.channel.joinable) return await message.reply("no puedo entrar al canal en el que estás.");
+        return await message.member.voice.channel.join();
+      }
+
+      //--------------------------------OSU API--------------------------------//
+      if (command === 'ostats') return await Shompi.Osu.osuProfile(content, message.channel);
+      if (command === 'olast') return await Shompi.Osu.osuLastPlay(content, message.channel);
+      if (command === 'otop') return await Shompi.Osu.osuTops(content, message.channel);
+
+      //-------------------------------CURRENCIES-------------------------------//
+      if (command === 'moneda') return await Shompi.Currencies(message, content);
+
+
+
+      //----------------------Enlace de invitacion del bot----------------------//
+      if (command === "invite") return await Muki.generateInvite(607177824).then(invite => message.channel.send(invite));
+
+      //----------------------Obtener imagenes desde Boorus----------------------//
+      if (command === "dere") { //Yandere
+        if (message.channel.type === 'dm') return await Shompi.Boorus.Yandere(message);
+        if (!message.channel.nsfw) return await message.reply("No puedes utilizar este comando fuera de canales NSFW.");
+        return await Shompi.Boorus.Yandere(message);
+      }
+      if (command === "kona") { //konachan
+        if (message.channel.type === 'dm') return await Shompi.Boorus.Konachan(message);
+        if (!message.channel.nsfw) return await message.reply("No puedes utilizar este comando fuera de canales NSFW.");
+        return await Shompi.Boorus.Konachan(message);
+      }
+      if (command === "safe") { //konachan
+        if (message.channel.type === 'dm') return await Shompi.Boorus.KonaSafe(message);
+        return await Shompi.Boorus.KonaSafe(message);
+      }
+
+      if (command === 'tag') {
+        if (!content) {
+          const usage = new Discord.MessageEmbed()
+            .setColor('BLUE')
+            .setDescription('Debes especificar un tag para buscar.')
+            .addField('Modo de uso:', '\`muki!tag <tagAqui>\`')
+            .addField('Ejemplo:', '\`muki!tag kancolle\`')
+
+          return await message.channel.send(usage);
+        }
+        return await Shompi.Boorus.TagSearch(message, content);
+      }
+
+      if (command === 'tags') return await Shompi.Tags(message, content);
+
+      //----------------------Nekos.life API----------------------//
+      if (NekosNSFWEndpoints.includes(command)) {
+        if (message.channel.type == 'dm') return await Shompi.Nekos(message, command);
+        if (message.channel.nsfw) return await Shompi.Nekos(message, command);
+        return await message.reply("hey hey, cuidado!. No puedes utilizar este comando fuera de canales **NSFW**.");
+      }
+
+      if (command == "region") {
+        if (!message.guild) return;
+        if (message.member.roles.has('539707811450322944') || message.member.roles.has('561794823812808715') || message.guild.ownerID === message.author.id) {
+          if (!message.guild.me.hasPermission('MANAGE_GUILD')) return await message.channel.send("Necesito el permiso 'Administrar Servidor' para poder mover de región la Guild.");
+          return await Shompi.ChangeRegion(message);
+        } else return await message.reply("lo siento, no tienes permiso para utilizar este comando.");
+      }
+
+      if (command == "myAvatar") {
+        const embed = new Discord.MessageEmbed().setImage(message.author.displayAvatarURL({ size: 1024 })).setColor('BLUE');
+        return await message.channel.send(embed);
+      }
+
+      if (command == "avatarID") {
+        if (!content) return message.reply("debes escribirme la id de algún usuario.");
+        let userId = content;
+        //console.log("User id: " + userId);
+        const User = await Muki.users.fetch(userId, true);
+        const embed = new Discord.MessageEmbed().setImage(User.displayAvatarURL({ size: 1024 })).setColor('BLUE').setFooter(`Avatar de ${User.tag}`);
+        return await message.reply(embed);
       }
     }
-    if (command == 'webPlay') {
-      const connection = await message.member.voice.channel.join();
-      const dispatcher = connection.play(content, { volume: Volume, bitrate: Bitrate });
-      dispatcher.on('finish', () => {
-        console.log("Ended transmission");
-      });
-    }
-    if (command == 'osuPlay') {
-      const basePath = 'C:/Users/shomp/AppData/Local/osu!/Songs/';
-      const connection = await message.member.voice.channel.join();
-      const dispatcher = connection.play(basePath + content, { volume: Volume, bitrate: Bitrate });
-      dispatcher.on('finish', () => {
-        console.log("Ended transmission");
-      });
-    }
-    if (command == 'pcPlay') {
-      const connection = await message.member.voice.channel.join();
-      const dispatcher = connection.play(content, { volume: Volume, bitrate: Bitrate });
-      dispatcher.on('finish', () => {
-        console.log("Ended transmission");
-      });
-    }
-    if (command == 'volume') {
-      if (message.guild.voice && message.guild) {
-        const hamtaroNo = message.guild.emojis.find(em => em.name == 'Hamtaro_NO');
-        if (content >= 80) return await message.reply(`${hamtaroNo}`);
-        const volume = Number(content) / 100;
 
-        message.guild.voice.connection.dispatcher.setVolume(volume);
+    /*--------------------------COMANDOS SIN PREFIJO----------------------------*/
+    if (message.channel.id === '543047520130170910') { //Canal de osu
+      const args = message.content.split(" ").slice(1).join(" ");
+      if (message.content.startsWith("last")) return await Shompi.Osu.osuLastPlay(args, message.channel);
+      if (message.content.startsWith("stats")) return await Shompi.Osu.osuProfile(args, message.channel);
+      if (message.content.startsWith("top")) return await Shompi.Osu.osuTops(args, message.channel);
+    }
+
+    if (message.content.startsWith('smug')) return await Shompi.Nekos(message, 'smug');
+    if (message.content.startsWith('cuddle')) return await Shompi.Nekos(message, 'cuddle');
+
+    if (message.content.toLowerCase().includes("owo") && !owoCooldown) {
+      await message.channel.send("òwó");
+      owoCooldown = true;
+      setTimeout(() => {
+        owoCooldown = false;
+      }, 1000 * 60 * 2, owoCooldown);
+    }
+    if (message.content.startsWith("-Discord")) return await Shompi.Discord.Status(message.channel);
+
+    //-----------------------------Bot Owner commands------------------------------//
+    if (message.author.id === MukiOwnerID && message.content[0] === '*') {
+      const command = message.content.split(" ").slice(1)[0];
+      const content = message.content.split(" ").slice(2).join(" ");
+      if (command == 'status') {
+        await Muki.user.setStatus(content);
+        MukiConfigs.status = content;
+        await dbConfigs.set('configs', MukiConfigs);
+      }
+
+      if (command == 'updateprom') {
+        //args: []
+        const args = content.split(" ").splice(1);
+        const channel = message.mentions.channels.first();
+        const prom = await channel.messages.fetch(args[0]);
+        const embed = prom.embeds[0].setTitle('test');
+        return await message.edit(null, { embed: embed }).catch(err => message.channel.send('No puedo editar un mensaje que no es mio!'));
+      }
+
+      if (command == 'promotion') {
+        const channel = message.mentions.channels.first();
+        return await channel.send(promEmbed);
+      }
+
+      if (command == 'totalGuilds') {
+        const guilds = new Discord.MessageEmbed()
+          .setDescription(`\`\`\`\n${Muki.guilds.map(g => g.name).join(", ")}\`\`\``)
+          .setColor('BLUE');
+        return await message.channel.send(`Estoy en ${Muki.guilds.size} Guilds!.`, { embed: guilds });
+      }
+
+      if (command == 'presence') {
+        const user = message.mentions.users.first();
+        console.log(user.presence.activities);
+        console.log(user.presence.activities.forEach(activity => console.log(activity.name + ' ' + activity.type)));
       }
     }
-    if (command === 'join') {
-      if (!message.member.voice) return await message.reply("debes estas en un canal de voz para usar este comando.");
-      if (!message.member.voice.channel.joinable) return await message.reply("no puedo entrar al canal en el que estás.");
-      return await message.member.voice.channel.join();
-    }
-
-    //--------------------------------OSU API--------------------------------//
-    if (command === 'ostats') return await Shompi.Osu.osuProfile(content, message.channel);
-    if (command === 'olast') return await Shompi.Osu.osuLastPlay(content, message.channel);
-    if (command === 'otop') return await Shompi.Osu.osuTops(content, message.channel);
-
-    //-------------------------------CURRENCIES-------------------------------//
-    if (command === 'moneda') return await Shompi.Currencies(message, content);
 
 
+    if (message.content.startsWith('?')) {
+      const content = message.content.substring(1).replace(/\s+/g, " ").split(" ");
+      const command = content.shift();
 
-    //----------------------Enlace de invitacion del bot----------------------//
-    if (command === "invite") return await Muki.generateInvite(607177824).then(invite => message.channel.send(invite));
-
-    //----------------------Obtener imagenes desde Boorus----------------------//
-    if (command === "dere") { //Yandere
-      if (message.channel.type === 'dm') return await Shompi.Boorus.Yandere(message);
-      if (!message.channel.nsfw) return await message.reply("No puedes utilizar este comando fuera de canales NSFW.");
-      return await Shompi.Boorus.Yandere(message);
-    }
-    if (command === "kona") { //konachan
-      if (message.channel.type === 'dm') return await Shompi.Boorus.Konachan(message);
-      if (!message.channel.nsfw) return await message.reply("No puedes utilizar este comando fuera de canales NSFW.");
-      return await Shompi.Boorus.Konachan(message);
-    }
-    if (command === "safe") { //konachan
-      if (message.channel.type === 'dm') return await Shompi.Boorus.KonaSafe(message);
-      return await Shompi.Boorus.KonaSafe(message);
-    }
-
-    if (command === 'tag') {
-      if (!content) {
-        const usage = new Discord.MessageEmbed()
-          .setColor('BLUE')
-          .setDescription('Debes especificar un tag para buscar.')
-          .addField('Modo de uso:', '\`muki!tag <tagAqui>\`')
-          .addField('Ejemplo:', '\`muki!tag kancolle\`')
-
-        return await message.channel.send(usage);
+      if (command == 'emoji') {
+        const emoji = Muki.emojis.find(emoji => emoji.name == content);
+        if (!emoji) return await message.channel.send('No encontré un emoji con ese nombre.');
+        await message.delete({ timeout: 1000, reason: 'emoji command' })
+        return await message.channel.send(`${emoji}`);
       }
-      return await Shompi.Boorus.TagSearch(message, content);
     }
 
-    if (command === 'tags') return await Shompi.Tags(message, content);
+    //---------------------------------Discord.js----------------------------------//
+    if (message.content.startsWith(".docs")) return await Shompi.DiscordJS(message);
+  } catch (error) {
+    console.log(error);
+    const e = new Discord.MessageEmbed()
+      .setColor("RED")
+      .setTitle("¡Ha ocurrido un error!")
+      .setAuthor("Stacktrace")
+      .setTimestamp()
+      .setDescription(`\`\`\`js\n${error.toString()} \`\`\` `)
 
-    //----------------------Nekos.life API----------------------//
-    if (NekosNSFWEndpoints.includes(command)) {
-      if (message.channel.type == 'dm') return await Shompi.Nekos(message, command);
-      if (message.channel.nsfw) return await Shompi.Nekos(message, command);
-      return await message.reply("hey hey, cuidado!. No puedes utilizar este comando fuera de canales **NSFW**.");
-    }
-
-    if (command == "region") {
-      if (!message.guild) return;
-      if (message.member.roles.has('539707811450322944') || message.member.roles.has('561794823812808715') || message.guild.ownerID === message.author.id) {
-        if (!message.guild.me.hasPermission('MANAGE_GUILD')) return await message.channel.send("Necesito el permiso 'Administrar Servidor' para poder mover de región la Guild.");
-        return await Shompi.ChangeRegion(message);
-      } else return await message.reply("lo siento, no tienes permiso para utilizar este comando.");
-    }
-
-    if (command == "myAvatar") {
-      const embed = new Discord.MessageEmbed().setImage(message.author.displayAvatarURL({ size: 1024 })).setColor('BLUE');
-      return await message.channel.send(embed);
-    }
-
-    if (command == "avatarID") {
-      if (!content) return message.reply("debes escribirme la id de algún usuario.");
-      let userId = content;
-      //console.log("User id: " + userId);
-      const User = await Muki.users.fetch(userId, true);
-      const embed = new Discord.MessageEmbed().setImage(User.displayAvatarURL({ size: 1024 })).setColor('BLUE').setFooter(`Avatar de ${User.tag}`);
-      return await message.reply(embed);
-    }
+    return await Muki.channels.get("585990511790391309").send(e);
   }
-
-  /*--------------------------COMANDOS SIN PREFIJO----------------------------*/
-  if (message.channel.id === '543047520130170910') { //Canal de osu
-    const args = message.content.split(" ").slice(1).join(" ");
-    if (message.content.startsWith("last")) return await Shompi.Osu.osuLastPlay(args, message.channel);
-    if (message.content.startsWith("stats")) return await Shompi.Osu.osuProfile(args, message.channel);
-    if (message.content.startsWith("top")) return await Shompi.Osu.osuTops(args, message.channel);
-  }
-
-  if (message.content.startsWith('smug')) return await Shompi.Nekos(message, 'smug');
-  if (message.content.startsWith('cuddle')) return await Shompi.Nekos(message, 'cuddle');
-
-  if (message.content.toLowerCase().includes("owo") && !owoCooldown) {
-    await message.channel.send("òwó");
-    owoCooldown = true;
-    setTimeout(() => {
-      owoCooldown = false;
-    }, 1000 * 60 * 2, owoCooldown);
-  }
-  if (message.content.startsWith("-Discord")) return await Shompi.Discord.Status(message.channel);
-
-  //-----------------------------Bot Owner commands------------------------------//
-  if (message.author.id === MukiOwnerID && message.content[0] === '*') {
-    const command = message.content.split(" ").slice(1)[0];
-    const content = message.content.split(" ").slice(2).join(" ");
-    if (command == 'status') {
-      await Muki.user.setStatus(content);
-      MukiConfigs.status = content;
-      await dbConfigs.set('configs', MukiConfigs);
-    }
-
-    if (command == 'updateprom') {
-      //args: []
-      const args = content.split(" ").splice(1);
-      const channel = message.mentions.channels.first();
-      const prom = await channel.messages.fetch(args[0]);
-      const embed = prom.embeds[0].setTitle('test');
-      return await message.edit(null, { embed: embed }).catch(err => message.channel.send('No puedo editar un mensaje que no es mio!'));
-    }
-
-    if (command == 'promotion') {
-      const channel = message.mentions.channels.first();
-      return await channel.send(promEmbed);
-    }
-
-    if (command == 'totalGuilds') {
-      const guilds = new Discord.MessageEmbed()
-        .setDescription(`\`\`\`\n${Muki.guilds.map(g => g.name).join(", ")}\`\`\``)
-        .setColor('BLUE');
-      return await message.channel.send(`Estoy en ${Muki.guilds.size} Guilds!.`, { embed: guilds });
-    }
-
-    if (command == 'presence') {
-      const user = message.mentions.users.first();
-      console.log(user.presence.activities);
-      console.log(user.presence.activities.forEach(activity => console.log(activity.name + ' ' + activity.type)));
-    }
-  }
-
-
-  if (message.content.startsWith('?')) {
-    const content = message.content.substring(1).replace(/\s+/g, " ").split(" ");
-    const command = content.shift();
-
-    if (command == 'emoji') {
-      const emoji = Muki.emojis.find(emoji => emoji.name == content);
-      if (!emoji) return await message.channel.send('No encontré un emoji con ese nombre.');
-      await message.delete({ timeout: 1000, reason: 'emoji command' })
-      return await message.channel.send(`${emoji}`);
-    }
-  }
-
-  //---------------------------------Discord.js----------------------------------//
-  if (message.content.startsWith(".docs")) return await Shompi.DiscordJS(message);
-} catch (error) {
-  console.log(error);
-  const e = new Discord.MessageEmbed()
-    .setColor("RED")
-    .setTitle("¡Ha ocurrido un error!")
-    .setAuthor("Stacktrace")
-    .setTimestamp()
-    .setDescription(`\`\`\`js\n${error.toString()} \`\`\` `)
-
-  return await Muki.channels.get("585990511790391309").send(e);
-}
 
 });
 
