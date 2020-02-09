@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 /*-----------------------Archivos extra----------------------------*/
-const auth = require('./Keys/auth').mukiDev;
+const auth = require('./Keys/auth').stable;
 let MukiConfigs = { status: "ONLINE", activityType: "LISTENING", activityTo: "dev!", prefix: "dev!" };
 const Shompi = require('./Modules/Modules');
 const WebHooks = require('./Keys/hookTokens')
