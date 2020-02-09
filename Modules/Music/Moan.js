@@ -1,0 +1,4 @@
+/**
+ * Moans Handler
+ * Fun command.
+ */
