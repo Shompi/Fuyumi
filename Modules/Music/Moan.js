@@ -6,10 +6,9 @@ const DEFAULTVOLUME = 0.13;
 const Moaning = {};
 const { Message } = require('discord.js');
 module.exports = async (message = new Message()) => {
-
+  const { guild, member } = message;
   if (Moaning[guild.id]) return;
 
-  const { guild, member } = message;
   if (!member.voice.channel) await message.reply("tienes que estar en un canal de voz!");
   if (!member.voice.channel.joinable) await message.reply("no puedo entrar al canal de voz!\nPor favor revisa mis permisos.");
   const connection = await member.voice.channel.join();
