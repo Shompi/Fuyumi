@@ -79,7 +79,7 @@ Muki.on('message', async message => {
       /*------------------MUSIC PLAYER------------------*/
       if (command == 'volume') return await Shompi.Music.Volume(message, content);
       //if (command == 'play') return await Shompi.Music.Play(message, content); breaks the bot
-      if (command == 'moan') return await Shompi.Music.Moan(message, content);
+      if (command == 'moan') return await Shompi.Music.Moan(message);
 
       //--------------------------------OSU API--------------------------------//
       if (command === 'ostats') return await Shompi.Osu.osuProfile(content, message.channel);
