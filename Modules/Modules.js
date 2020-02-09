@@ -2,13 +2,13 @@ module.exports = {
   Help: {
 
   },
-  Tags: require('./Tags/tags'),
+  Tags: require('./Tags/Tags'),
   Vote: require('./Vote/Vote'),
   Minecraft: require('./Minecraft/Query'),
   Osu: {
-    osuLastPlay: require('./Osu/osuLastPlay'),
-    osuProfile: require('./Osu/osuProfile'),
-    osuTops: require('./Osu/topPlay')
+    osuLastPlay: require('./Osu/OsuLastPlay'),
+    osuProfile: require('./Osu/OsuProfile'),
+    osuTops: require('./Osu/TopPlay')
   },
   Boorus: {
     Yandere: require('./Boorus/Yandere'),
@@ -18,7 +18,7 @@ module.exports = {
   },
   Nekos: require('./NekosLife/Nekos'),
   Tablon: require('./tablonFotos'),
-  ChangeRegion: require('./ServerManagement/voiceRegion'),
+  ChangeRegion: require('./ServerManagement/VoiceRegion'),
   SaveConfigs: require('./saveConfig'),
   Currencies: require('./Currency/Currencies'),
   Discord: {
@@ -40,8 +40,14 @@ module.exports = {
   },
 
   GuildInfo: {
-    Info: require('./Guild/info'),
+    Info: require('./Guild/Info'),
     RoleInfo: require('./Guild/RoleInfo')
+  },
+
+  Music: {
+    Volume: require('./Music/Volume'),
+    Play: require('./Music/Play'),
+    Moan: require('./Music/Moan')
   },
   /*BattleMetrics: {
     Rust: require('./BattleMetrics/Servers/Rust')
