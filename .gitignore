@@ -1,4 +1,5 @@
 node_modules
+data
 firebase.json
 twitconfig.js
 sbifauth.json
@@ -8,4 +9,3 @@ Modules/saveLinks.js
 ytdl
 Musica
 Keys
-data
