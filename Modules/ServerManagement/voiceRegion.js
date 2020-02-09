@@ -3,9 +3,8 @@ const voiceRegions = ['eu-central', 'india', 'london', 'japan', 'amsterdam', 'br
 let cooldown = false;
 
 module.exports = async (message = new Message()) => {
-  if (cooldown) return await message.reply("debes esperar 5 segundos antes de volver a usar este comando!");
+  if (cooldown) return await message.reply("debes esperar al menos **5** segundos antes de volver a usar este comando!");
   let content = message.content.split(" ");
-  const command = content.shift();
   let region = content.shift();
   if (region) region = region.toLowerCase();
   let reason = content.join(" ");
@@ -30,8 +29,9 @@ module.exports = async (message = new Message()) => {
       .setTimestamp();
 
     if (image) embed.setImage(image);
-    
-    return await message.guild.channels.find(ch => ch.name === 'guild-changes').send(embed).then(msg => message.delete({ timeout: 2000 })).catch(console.error);
+    const channel = message.guild.channels.find(ch => ch.name === 'guild-changes' && ch.type == 'text');
+    if (!channel) return await message.channel.send(embed);
+    else return await channel.send(embed);
   } else {
     if (!voiceRegions.includes(region.toLowerCase())) return await message.reply("la región que has ingresado no existe o la has escrito mal!").catch(console.error);
     if (message.guild.region === region) return await message.reply("la Guild ya se encuentra en esa región.");
@@ -49,6 +49,9 @@ module.exports = async (message = new Message()) => {
     setTimeout(() => {
       cooldown = false;
     }, 5000, cooldown);
-    return await message.guild.channels.find(ch => ch.name === 'guild-changes').send(embed).then(msg => message.delete({ timeout: 2000 })).catch(console.error);
+
+    const channel = message.guild.channels.find(ch => ch.name === 'guild-changes' && ch.type == 'text');
+    if (!channel) return await message.channel.send(embed);
+    else return await channel.send(embed);
   }
 }
