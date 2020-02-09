@@ -1,10 +1,9 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
-const { google } = require('googleapis');
 /*-----------------------Archivos extra----------------------------*/
-const auth = require('./Keys/auth').stable;
-let MukiConfigs = { status: "ONLINE", activityType: "LISTENING", activityTo: "muki!", prefix: "muki!" };
+const auth = require('./Keys/auth').mukiDev;
+let MukiConfigs = { status: "ONLINE", activityType: "LISTENING", activityTo: "dev!", prefix: "dev!" };
 const Shompi = require('./Modules/Modules');
 const WebHooks = require('./Keys/hookTokens')
 const promEmbed = require('./promotions')
@@ -13,17 +12,18 @@ const MukiOwnerID = '166263335220805634';
 const NekosNSFWEndpoints = require('./Modules/NekosLife/endpoints');
 let australGamingMemeHook = new Discord.Webhook();
 let tablonHook = new Discord.Webhook();
-let exiliadosMemeHook = new Discord.Webhook();
 let NASAWebHook = new Discord.Webhook();
-let mankosMemeHook = new Discord.Webhook();
 let owoCooldown = false;
-let Bitrate = 48000;
-let Volume = 0.30;
-console.log("Iniciando bot...");
+
+
 Muki.login(auth);
+console.log("Iniciando bot...");
+
 
 Muki.on('message', async message => {
   try {
+    if (!message.guild) return console.log(`${message.author.tag} ha enviado un mensaje através de un DM.`);
+
     const command = message.content.split(" ")[0].replace(MukiConfigs.prefix, "");
     const content = message.content.split(" ").slice(1).join(" ");
 
@@ -65,12 +65,6 @@ Muki.on('message', async message => {
     //Comandos de usuario con prefijo:
     if (message.content.startsWith(MukiConfigs.prefix)) {
 
-
-      /*-----------------Test-----------------*/
-      /*   if (command == 'test') {
-         
-        } */
-
       /*-----------------Guild info-----------------*/
       if (command == 'guildinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.Info.GuildInfo(message);
       if (command == 'uinfo' && message.channel.type !== 'dm') return await Shompi.GuildInfo.Info.UserInfo(message);
@@ -83,50 +77,9 @@ Muki.on('message', async message => {
       if (command == 'vote') return await Shompi.Vote(message, content);
 
       /*------------------MUSIC PLAYER------------------*/
-      if (command == 'skip') {
-        if (message.guild.me.voice.channel) {
-          const Connection = await message.member.voice.channel.join();
-          Connection.dispatcher.destroy();
-        } else {
-          return await message.reply("No estoy en ningun canal de voz.");
-        }
-      }
-      if (command == 'webPlay') {
-        const connection = await message.member.voice.channel.join();
-        const dispatcher = connection.play(content, { volume: Volume, bitrate: Bitrate });
-        dispatcher.on('finish', () => {
-          console.log("Ended transmission");
-        });
-      }
-      if (command == 'osuPlay') {
-        const basePath = 'C:/Users/shomp/AppData/Local/osu!/Songs/';
-        const connection = await message.member.voice.channel.join();
-        const dispatcher = connection.play(basePath + content, { volume: Volume, bitrate: Bitrate });
-        dispatcher.on('finish', () => {
-          console.log("Ended transmission");
-        });
-      }
-      if (command == 'pcPlay') {
-        const connection = await message.member.voice.channel.join();
-        const dispatcher = connection.play(content, { volume: Volume, bitrate: Bitrate });
-        dispatcher.on('finish', () => {
-          console.log("Ended transmission");
-        });
-      }
-      if (command == 'volume') {
-        if (message.guild.voice && message.guild) {
-          const hamtaroNo = message.guild.emojis.find(em => em.name == 'Hamtaro_NO');
-          if (content >= 80) return await message.reply(`${hamtaroNo}`);
-          const volume = Number(content) / 100;
-
-          message.guild.voice.connection.dispatcher.setVolume(volume);
-        }
-      }
-      if (command === 'join') {
-        if (!message.member.voice) return await message.reply("debes estas en un canal de voz para usar este comando.");
-        if (!message.member.voice.channel.joinable) return await message.reply("no puedo entrar al canal en el que estás.");
-        return await message.member.voice.channel.join();
-      }
+      if (command == 'volume') return await Shompi.Music.Volume(message, content);
+      if (command == 'play') return await Shompi.Music.Play(message, content);
+      if (command == 'moan') return await Shompi.Music.Moan(message, content);
 
       //--------------------------------OSU API--------------------------------//
       if (command === 'ostats') return await Shompi.Osu.osuProfile(content, message.channel);
@@ -143,17 +96,14 @@ Muki.on('message', async message => {
 
       //----------------------Obtener imagenes desde Boorus----------------------//
       if (command === "dere") { //Yandere
-        if (message.channel.type === 'dm') return await Shompi.Boorus.Yandere(message);
         if (!message.channel.nsfw) return await message.reply("No puedes utilizar este comando fuera de canales NSFW.");
         return await Shompi.Boorus.Yandere(message);
       }
       if (command === "kona") { //konachan
-        if (message.channel.type === 'dm') return await Shompi.Boorus.Konachan(message);
         if (!message.channel.nsfw) return await message.reply("No puedes utilizar este comando fuera de canales NSFW.");
         return await Shompi.Boorus.Konachan(message);
       }
       if (command === "safe") { //konachan
-        if (message.channel.type === 'dm') return await Shompi.Boorus.KonaSafe(message);
         return await Shompi.Boorus.KonaSafe(message);
       }
 
@@ -170,7 +120,7 @@ Muki.on('message', async message => {
         return await Shompi.Boorus.TagSearch(message, content);
       }
 
-      if (command === 'tags') return await Shompi.Tags(message, content);
+      //if (command === 'tags') return await Shompi.Tags(message, content);
 
       //----------------------Nekos.life API----------------------//
       if (NekosNSFWEndpoints.includes(command)) {
