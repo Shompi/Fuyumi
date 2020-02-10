@@ -45,8 +45,6 @@ Muki.on('message', async message => {
 
     // WEBHOOKS Canal de memes de Exiliados, AutralGaming y Mankos for The win
 
-
-
     if (message.channel.id == '622889689472303120') {
       if (message.attachments.size <= 0 || message.author.bot) return;
       const embed = new Discord.MessageEmbed()
@@ -57,8 +55,8 @@ Muki.on('message', async message => {
         .setImage(message.attachments.first().url);
 
 
-      await australGamingMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL() }).catch(console.error);
-      await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL() }).catch(console.error);
+      await australGamingMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL(), username:message.guild.name }).catch(console.error);
+      await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL(), username:message.guild.name }).catch(console.error);
 
       return;
     }
