@@ -1,37 +1,40 @@
 const { VoiceState, Client } = require('discord.js');
 const database = require('../../LoadDatabase');
 const TWOHOURS = 1000 * 60 * 60 * 2; // 2 Horas.
-const {sendStreaming, constructEmbed} = require('../Streamings');
+const { sendStreaming, constructEmbed } = require('../Streamings');
 module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = new Client()) => {
   try {
     if (now.streaming) {
       console.log(`User ${now.member.user.tag} is streaming`);
-      const member = now.member;
-      const timeNow = Date.now();
-      if (database.streamings.has(member.id)) {
-        //If the member is already in the database means that we already have a sended message... probably.
-        const activityName = member.presence.activities[0].name;
-        const dbmember = database.streamings.get(member.id);
-        console.log(`now: ${activityName} db: ${dbmember.activityName}`);
-        if (activityName == dbmember.activityName) return console.log(`El usuario ${member.user.tag} ya estaba transmitiendo esta actividad`);
+      const activity = member.presence.activities[0];
+      if (!activity) return console.log(`[GO LIVE] El user ${member.user.tag} comenzó a stremear con Go Live pero no se encontró una actividad.`);
+      const activityName = activity.name;
 
-        const begun = database.streamings.get(member.id, 'streamStarted');
+      const { member } = now;
+      const timeNow = Date.now();
+      if (database.GoLive.has(member.id)) {
+        //If the member is already in the database means that we already have a sended message... probably.
+        const dbmember = database.GoLive.get(member.id);
+        console.log(`now: ${activityName} db: ${dbmember.activityName}`);
+        const begun = database.GoLive.get(member.id, 'streamStarted');
         if ((timeNow - begun) >= TWOHOURS) {
           const { channel, id } = await sendStreaming(now);
           const timeNow = Date.now();
-          database.streamings.set(member.id, { sendedMessage: { channel: channel.id, messageID: id }, activityName: activityName, streamStarted: timeNow });
-          return console.log(database.streamings.get(member.id));
+          database.GoLive.set(member.id, { sendedMessage: { channel: channel.id, messageID: id }, activityName: activityName, streamStarted: timeNow });
+          return console.log(database.GoLive.get(member.id));
         } else {
-          //If the elapsed time is not greater than two hours then we need to edit the message.
-          //console.log(database.streamings.get(member.id));
-          const dbmember = database.streamings.get(member.id);
+          //If the elapsed time is not greater than two hours then we need to edit the message or return if the activity is the same as the previous.
+          //console.log(database.GoLive.get(member.id));
+          if (activityName == dbmember.activityName) return console.log(`[GO LIVE] El usuario ${member.user.tag} ya estaba transmitiendo esta actividad`);
+
+          const dbmember = database.GoLive.get(member.id);
           const channel = Muki.channels.get(dbmember.sendedMessage.channel);
           const message = await channel.messages.fetch(dbmember.sendedMessage.messageID);
           const embed = await constructEmbed(now);
           if (!embed) return;
 
-          database.streamings.set(member.id, activityName, "activityName");
-          console.log(database.streamings.get(member.id));
+          database.GoLive.set(member.id, activityName, "activityName");
+          console.log(database.GoLive.get(member.id));
           return await message.edit(embed);
         }
       } else {
@@ -48,8 +51,8 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
           }
         };
 
-        database.streamings.set(member.id, streamer);
-        return console.log(database.streamings.get(member.id));
+        database.GoLive.set(member.id, streamer);
+        return console.log(database.GoLive.get(member.id));
       }
     }
   } catch (error) {

@@ -11,39 +11,33 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
    * >Si son distintas = Actualizar el mensaje relacionado con el primer livestream.
    */
   if (now.user.bot) return;
+  if (!old) return;
   const activity = now.activities.find(act => act.type === 'STREAMING');
-  if (!activity) return console.log(`El usuario ${now.user.tag} no está stremeando Twitch / Youtube`);
   const oldActivity = old.activities.find(act => act.type === 'STREAMING');
-  if (activity && oldActivity) return console.log(`${now.member.user.tag} ya estaba stremeando de antes.`);
+  if (!activity) return;
+  if (activity && oldActivity) return console.log(`[STREAMING] ${now.member.user.tag} ya estaba stremeando de antes.`);
   const streamingChannel = now.member.guild.channels.find(channel => channel.name == "directos" && channel.type == 'text');
   if (!streamingChannel) return console.log("No se encontró canal de streamings.");
-  
-  try {
-    console.log(`User ${now.member.user.tag} is streaming on ${activity.name}`);
-    const member = now.member;
-    const timeNow = Date.now();
-    if (database.streamings.has(member.id)) {
-      //If the member is already in the database means that we already have a sended message... probably.
-      const activityName = activity.state;
-      const dbmember = database.streamings.get(member.id);
-      console.log(`now: ${activityName} db: ${dbmember.activityName}`);
-      if (activityName == dbmember.activityName) return console.log(`El usuario ${member.user.tag} ya estaba transmitiendo esta actividad`);
 
-      const begun = database.streamings.get(member.id, 'streamStarted');
+  try {
+    console.log(`[STREAMING] User ${now.member.user.tag} está stremeando en ${activity.name}`);
+    const { member } = now;
+    const timeNow = Date.now();
+    if (database.TwitchStream.has(member.id)) {
+      //console.log(`now: ${activityName} db: ${dbmember.activityName}`);
+      const begun = database.TwitchStream.get(member.id, 'streamStarted');
 
       if ((timeNow - begun) >= TWOHOURS) {
-        await sendStreaming(now);
+        await sendStreaming(now, activity);
         const timeNow = Date.now();
-        database.streamings.set(member.id, timenow, "streamStarted");
-        return console.log(database.streamings.get(member.id));
-      } else {
-        //If the elapsed time is not greater than two hours then we need to return.
-        return;
-      }
+        database.TwitchStream.set(member.id, timeNow, "streamStarted");
+        return console.log(database.TwitchStream.get(member.id));
+      } else return; //If the elapsed time is not greater than two hours then we need to return.
+
     } else {
       //If the member was not in the database we need to add him in.
       await sendStreaming(now, activity);
-      database.streamings.set(member.id, timenow, "streamStarted");
+      database.TwitchStream.set(member.id, timenow, "streamStarted");
       return;
     }
   } catch (error) {
@@ -57,7 +51,7 @@ const sendStreaming = async (now = new Presence(), activity) => {
   const embed = new MessageEmbed()
     .setColor(now.member.displayColor)
     .setThumbnail(`${now.member.user.displayAvatarURL({ size: 256 })}`)
-    .setTitle(`¡${old.member.displayName} está en vivo en ${activity.name}!`)
+    .setTitle(`¡${now.member.displayName} está en vivo en ${activity.name}!`)
     .setDescription(`**${activity.details}**\nÚnete a la transmisión en ${activity.url || "NO URL"}`)
     .setTimestamp()
     .setImage(image);

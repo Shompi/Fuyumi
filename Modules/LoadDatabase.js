@@ -2,7 +2,9 @@ const enmap = require('enmap');
 
 module.exports = {
   settings: new enmap({name:'settings'}),
-  streamings: new enmap({name:'streamings'}),
+  GoLive: new enmap({name:'streamings'}),
+  TwitchStream: new enmap({name:'twitch'}),
+  YoutubeStream: new enmap({name:'youtube'}),
   nasaLastPicture: new enmap({name:'nasa'}),
   tags: new enmap({name:'tags'}),
   webhooks: new enmap({name:'webhooks'}),
