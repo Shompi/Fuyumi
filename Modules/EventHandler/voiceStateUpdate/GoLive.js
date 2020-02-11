@@ -11,11 +11,14 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
       if (!activity) return console.log(`[GO LIVE] El user ${member.user.tag} comenzó a stremear con Go Live pero no se encontró una actividad.`);
       const activityName = activity.name;
       const timeNow = Date.now();
+
+
       if (database.GoLive.has(member.id)) {
         //If the member is already in the database means that we already have a sended message... probably.
         const dbmember = database.GoLive.get(member.id);
         console.log(`now: ${activityName} db: ${dbmember.activityName}`);
-        const begun = database.GoLive.get(member.id, 'streamStarted');
+        const begun = dbmember.streamStarted;
+
         if ((timeNow - begun) >= TWOHOURS) {
           const { channel, id } = await sendStreaming(now);
           const timeNow = Date.now();
