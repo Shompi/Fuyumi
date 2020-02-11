@@ -10,7 +10,6 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
       const activity = member.presence.activities[0];
       if (!activity) return console.log(`[GO LIVE] El user ${member.user.tag} comenzó a stremear con Go Live pero no se encontró una actividad.`);
       const activityName = activity.name;
-
       const timeNow = Date.now();
       if (database.GoLive.has(member.id)) {
         //If the member is already in the database means that we already have a sended message... probably.
@@ -25,9 +24,8 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
         } else {
           //If the elapsed time is not greater than two hours then we need to edit the message or return if the activity is the same as the previous.
           //console.log(database.GoLive.get(member.id));
-          if (activityName == dbmember.activityName) return console.log(`[GO LIVE] El usuario ${member.user.tag} ya estaba transmitiendo esta actividad`);
-
           const dbmember = database.GoLive.get(member.id);
+          if (activityName == dbmember.activityName) return console.log(`[GO LIVE] El usuario ${member.user.tag} ya estaba transmitiendo esta actividad`);
           const channel = Muki.channels.get(dbmember.sendedMessage.channel);
           const message = await channel.messages.fetch(dbmember.sendedMessage.messageID);
           const embed = await constructEmbed(now);
