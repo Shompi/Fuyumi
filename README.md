@@ -18,8 +18,9 @@ I uploaded the code so its easier for me to code it when im not in home.
 * Version 3.0.0
 
 ### How do I get set up? ###
-* You need node.js 12+, then run:
-* `npm install discordjs/discord.js` --save
+* You need node.js 12+ and git bash, then run:
+* open bash and clone this repository, then:
+* `npm install --save` in the repository folder.
 
 ### Who do I talk to? ###
 
