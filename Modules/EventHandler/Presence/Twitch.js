@@ -28,7 +28,7 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
       const begun = database.TwitchStream.get(member.id, 'streamStarted');
 
       if ((timeNow - begun) >= TWOHOURS) {
-        await sendStreaming(now, activity);
+        await sendStreaming(now, activity, streamingChannel);
         const timeNow = Date.now();
         database.TwitchStream.set(member.id, timeNow, "streamStarted");
         return console.log(database.TwitchStream.get(member.id));
@@ -36,7 +36,7 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
 
     } else {
       //If the member was not in the database we need to add him in.
-      await sendStreaming(now, activity);
+      await sendStreaming(now, activity, streamingChannel);
       database.TwitchStream.set(member.id, timenow, "streamStarted");
       return;
     }
@@ -45,7 +45,7 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
   }
 }
 
-const sendStreaming = async (now = new Presence(), activity) => {
+const sendStreaming = async (now = new Presence(), activity, streamingChannel) => {
   //In this case, activity.state is the name of the game being played.
   const image = getImage(activity.state) || getImage('Actividad Desconocida');
   const embed = new MessageEmbed()

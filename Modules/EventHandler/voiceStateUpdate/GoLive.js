@@ -5,12 +5,12 @@ const { sendStreaming, constructEmbed } = require('../Streamings');
 module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = new Client()) => {
   try {
     if (now.streaming) {
+      const { member } = now;
       console.log(`User ${now.member.user.tag} is streaming`);
       const activity = member.presence.activities[0];
       if (!activity) return console.log(`[GO LIVE] El user ${member.user.tag} comenzó a stremear con Go Live pero no se encontró una actividad.`);
       const activityName = activity.name;
 
-      const { member } = now;
       const timeNow = Date.now();
       if (database.GoLive.has(member.id)) {
         //If the member is already in the database means that we already have a sended message... probably.
