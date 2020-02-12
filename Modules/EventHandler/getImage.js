@@ -11,6 +11,7 @@ module.exports = (game = new String()) => {
     "Tricky Towers": "https://steamcdn-a.akamaihd.net/steam/apps/437920/header.jpg",
     "Crypt of the NecroDancer": "https://steamcdn-a.akamaihd.net/steam/apps/247080/header.jpg",
     "Skullgirls": "https://steamcdn-a.akamaihd.net/steam/apps/245170/header.jpg",
+    "Killing Floor": "https://steamcdn-a.akamaihd.net/steam/apps/1250/header.jpg?t=1581466418",
     "Killing Floor 2": "https://steamcdn-a.akamaihd.net/steam/apps/232090/header.jpg",
     "League of Legends": "http://www.masgamers.com/wp-content/uploads/2015/04/LoL-Banner.png",
     "Overcooked! 2": "https://steamcdn-a.akamaihd.net/steam/apps/728880/header.jpg",
@@ -49,7 +50,16 @@ module.exports = (game = new String()) => {
     "NieR:Automata": "https://steamcdn-a.akamaihd.net/steam/apps/524220/header.jpg",
     "DayZ": "https://steamcdn-a.akamaihd.net/steam/apps/221100/header.jpg",
     "Dota 2": "https://steamcdn-a.akamaihd.net/steam/apps/570/header.jpg",
-    "Business Tour - Online Multiplayer Board Game": "https://steamcdn-a.akamaihd.net/steam/apps/397900/logo.png"
+    "Business Tour - Online Multiplayer Board Game": "https://steamcdn-a.akamaihd.net/steam/apps/397900/logo.png",
+    "Escape from Tarkov": "https://steam.cryotank.net/wp-content/gallery/escapefromtarkov/Escape-From-Tarkov-09.png",
+    "Apex Legends": "https://puu.sh/F9GVj/ccc699d37b.jpeg",
+    "Warframe": "https://steamcdn-a.akamaihd.net/steam/apps/230410/header.jpg",
+    "War Thunder": "https://steamcdn-a.akamaihd.net/steam/apps/236390/header.jpg",
+    "Destiny 2": "https://steamcdn-a.akamaihd.net/steam/apps/1085660/header.jpg",
+    "MONSTER HUNTER: WORLD": "https://steamcdn-a.akamaihd.net/steam/apps/582010/header.jpg",
+    "ARK: Survival Evolved": "https://steamcdn-a.akamaihd.net/steam/apps/346110/header.jpg",
+    "Football Manager 2020": "https://steamcdn-a.akamaihd.net/steam/apps/1100600/header.jpg",
+    "Paladins":"https://steamcdn-a.akamaihd.net/steam/apps/444090/header.jpg",
   };
 
   const imageUrl = images[game];
