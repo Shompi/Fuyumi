@@ -340,8 +340,8 @@ Muki.on('ready', async () => {
     await Muki.user.setPresence({ activity: { name: MukiConfigs.activityTo, type: MukiConfigs.activityType }, status: MukiConfigs.status })
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
-    console.log("Fetching Hook de Tablon de Fotos...");
-    tablonHook = await Muki.fetchWebhook(WebHooks.ElCuliao.id);
+    //console.log("Fetching Hook de Tablon de Fotos...");
+    //tablonHook = await Muki.fetchWebhook(WebHooks.ElCuliao.id, WebHooks.ElCuliao.token);
     console.log("Fetching Hook de NASA...");
     NASAWebHook = await Muki.fetchWebhook(WebHooks.NASAHook.id);
     console.log("Fetching Hook de Cotorras Gaming...");
