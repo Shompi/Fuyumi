@@ -18,18 +18,16 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
   if (activity && oldActivity) return console.log(`[STREAMING] ${now.member.user.tag} ya estaba stremeando de antes.`);
   const streamingChannel = now.member.guild.channels.find(channel => channel.name == "directos" && channel.type == 'text');
   if (!streamingChannel) return console.log("No se encontró canal de streamings.");
-
+  const timeNow = Date.now();
   try {
     console.log(`[STREAMING] User ${now.member.user.tag} está stremeando en ${activity.name}`);
     const { member } = now;
-    const timeNow = Date.now();
     if (database.TwitchStream.has(member.id)) {
       //console.log(`now: ${activityName} db: ${dbmember.activityName}`);
       const begun = database.TwitchStream.get(member.id, 'streamStarted');
 
       if ((timeNow - begun) >= TWOHOURS) {
         await sendStreaming(now, activity, streamingChannel);
-        const timeNow = Date.now();
         database.TwitchStream.set(member.id, timeNow, "streamStarted");
         return console.log(database.TwitchStream.get(member.id));
       } else return; //If the elapsed time is not greater than two hours then we need to return.
@@ -37,7 +35,7 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
     } else {
       //If the member was not in the database we need to add him in.
       await sendStreaming(now, activity, streamingChannel);
-      database.TwitchStream.set(member.id, timenow, "streamStarted");
+      database.TwitchStream.set(member.id, timeNow, "streamStarted");
       return;
     }
   } catch (error) {
