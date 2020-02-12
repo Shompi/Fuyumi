@@ -47,16 +47,18 @@ Muki.on('message', async message => {
 
     if (message.channel.id == '622889689472303120') {
       if (message.attachments.size <= 0 || message.author.bot) return;
+      const { name, url } = message.attachments.first();
       const embed = new Discord.MessageEmbed()
         .setColor("BLUE")
         .setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 64 }))
         .setTitle(message.content)
         .setFooter(`Enviado desde: ${message.guild.name}`, `${message.guild.iconURL({ size: 64 })}`)
-        .setImage(message.attachments.first().url);
 
+      if (name.endsWith(".mp4") || name.endsWith(".webm")) embed.attachFiles([url])
+      else embed.setImage(url);
 
-      await australGamingMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL(), username:message.guild.name }).catch(console.error);
-      await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL(), username:message.guild.name }).catch(console.error);
+      await australGamingMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL(), username: message.guild.name }).catch(console.error);
+      await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL(), username: message.guild.name }).catch(console.error);
 
       return;
     }
