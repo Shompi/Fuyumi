@@ -11,7 +11,7 @@ module.exports = async (member = new GuildMember(), Muki = new Client()) => {
   /* Muki.guilds.get('537484725896478733').fetchAuditLogs({limit:1}).then(logs => {
     log = logs.entries.first();
   } */
-  const emoji = Muki.emojis.find(emoji => emoji.name == 'crabb');
+  const emoji = Muki.emojis.cache.find(emoji => emoji.name == 'crabb');
   const frase = Leave[Math.floor(Math.random() * Leave.length)];
   const embed = new MessageEmbed()
     .setTitle(`${member.user.tag} ha dejado el servidor ${emoji}`)
@@ -20,5 +20,5 @@ module.exports = async (member = new GuildMember(), Muki = new Client()) => {
     .setThumbnail(member.user.displayAvatarURL({ size: 256 }))
     .setTimestamp();
 
-  await Muki.channels.get('645834668947537940').send(embed).catch(console.error); //#entrada-salida
+  await Muki.channels.cache.get('645834668947537940').send(embed).catch(console.error); //#entrada-salida
 }

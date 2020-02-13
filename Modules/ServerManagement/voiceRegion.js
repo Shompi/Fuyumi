@@ -29,7 +29,7 @@ module.exports = async (message = new Message()) => {
       .setTimestamp();
 
     if (image) embed.setImage(image);
-    const channel = message.guild.channels.find(ch => ch.name === 'guild-changes' && ch.type == 'text');
+    const channel = message.guild.channels.cache.find(ch => ch.name === 'guild-changes' && ch.type == 'text');
     if (!channel) return await message.channel.send(embed);
     else return await channel.send(embed);
   } else {
@@ -50,7 +50,7 @@ module.exports = async (message = new Message()) => {
       cooldown = false;
     }, 5000, cooldown);
 
-    const channel = message.guild.channels.find(ch => ch.name === 'guild-changes' && ch.type == 'text');
+    const channel = message.guild.channels.cache.find(ch => ch.name === 'guild-changes' && ch.type == 'text');
     if (!channel) return await message.channel.send(embed);
     else return await channel.send(embed);
   }

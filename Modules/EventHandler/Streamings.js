@@ -4,7 +4,7 @@ const { MessageEmbed, VoiceState } = require('discord.js');
 const sendStreaming = async (now = new VoiceState()) => {
   const embed = await constructEmbed(now);
   if (!embed) return null;
-  const channel = now.guild.channels.find(ch => ch.type == 'text' && ch.name == 'directos');
+  const channel = now.guild.channels.cache.find(ch => ch.type == 'text' && ch.name == 'directos');
   if (!channel) return;
   return channel.send(embed);
 }

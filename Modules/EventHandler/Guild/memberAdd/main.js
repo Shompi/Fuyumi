@@ -11,7 +11,7 @@ module.exports = async (member = new GuildMember(), Muki = new Client()) => {
         .setColor('GREEN')
         .setThumbnail(member.user.displayAvatarURL({ size: 512 }))
         .setTimestamp();
-      await Muki.channels.get('645834668947537940').send(exiliadosEmbed).catch(console.error); //#bienvenida
+      await Muki.channels.cache.get('645834668947537940').send(exiliadosEmbed).catch(console.error); //#bienvenida
       if (member.user.bot) await member.roles.add("545773830170214440", "BOT").catch(console.error);
 
       break;
@@ -25,7 +25,7 @@ module.exports = async (member = new GuildMember(), Muki = new Client()) => {
         .setColor('BLUE')
         .setTimestamp();
       await member.roles.add('548325706183082009', 'Usuario nuevo.').catch(console.error);
-      await Muki.channels.get('514256051902611459').send(australEmbed).catch(console.error);
+      await Muki.channels.cache.get('514256051902611459').send(australEmbed).catch(console.error);
       break;
   }
 }

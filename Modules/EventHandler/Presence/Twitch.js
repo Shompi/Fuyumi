@@ -2,6 +2,12 @@ const { MessageEmbed, Presence } = require('discord.js');
 const database = require('../../LoadDatabase');
 const TWOHOURS = 1000 * 60 * 60 * 2;
 const getImage = require('../getImage');
+const CONECTORES = [
+  "ha comenzado a transmitir en",
+  "está en vivo en",
+  "está transmitiendo en vivo en"
+]
+
 module.exports = async (old = new Presence(), now = new Presence()) => {
   /**
    * 1.- Verificar que el usuario está stremeando
@@ -16,7 +22,7 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
   const oldActivity = old.activities.find(act => act.type === 'STREAMING');
   if (!activity) return;
   if (activity && oldActivity) return console.log(`[STREAMING] ${now.member.user.tag} ya estaba stremeando de antes.`);
-  const streamingChannel = now.member.guild.channels.find(channel => channel.name == "directos" && channel.type == 'text');
+  const streamingChannel = now.member.guild.channels.cache.find(channel => channel.name == "directos" && channel.type == 'text');
   if (!streamingChannel) return console.log("No se encontró canal de streamings.");
   const timeNow = Date.now();
   try {
@@ -49,8 +55,8 @@ const sendStreaming = async (now = new Presence(), activity, streamingChannel) =
   const embed = new MessageEmbed()
     .setColor(now.member.displayColor)
     .setThumbnail(`${now.member.user.displayAvatarURL({ size: 256 })}`)
-    .setTitle(`¡${now.member.displayName} está en vivo en ${activity.name}!`)
-    .setDescription(`**${activity.details}**\nÚnete a la transmisión en ${activity.url || "NO URL"}`)
+    .setTitle(`¡${now.member.displayName} ${CONECTORES[Math.floor(Math.random() * CONECTORES.length)]} ${activity.name}!`)
+    .setDescription(`**${activity.details}**\n[Ver transmisión](${activity.url})`)
     .setTimestamp()
     .setImage(image);
 

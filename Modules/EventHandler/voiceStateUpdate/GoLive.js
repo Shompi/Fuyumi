@@ -29,8 +29,8 @@ module.exports = async (old = new VoiceState(), now = new VoiceState(), Muki = n
           //console.log(database.GoLive.get(member.id));
           const dbmember = database.GoLive.get(member.id);
           if (activityName == dbmember.activityName) return console.log(`[GO LIVE] El usuario ${member.user.tag} ya estaba transmitiendo esta actividad`);
-          const channel = Muki.channels.get(dbmember.sendedMessage.channel);
-          const message = await channel.messages.fetch(dbmember.sendedMessage.messageID);
+          const channel = Muki.channels.cache.get(dbmember.sendedMessage.channel);
+          const message = await channel.messages.cache.fetch(dbmember.sendedMessage.messageID);
           const embed = await constructEmbed(now);
           if (!embed) return;
 

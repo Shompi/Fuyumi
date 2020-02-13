@@ -2,8 +2,8 @@
 const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 /*-----------------------Archivos extra----------------------------*/
-const auth = require('./Keys/auth').stable;
-let MukiConfigs = { status: "ONLINE", activityType: "LISTENING", activityTo: "muki!", prefix: "muki!" };
+const auth = require('./Keys/auth').mukiDev;
+let MukiConfigs = { status: "ONLINE", activityType: "PLAYING", activityTo: "debugging!", prefix: "dev!" };
 const Shompi = require('./Modules/Modules');
 const WebHooks = require('./Keys/hookTokens')
 const promEmbed = require('./promotions')
@@ -42,6 +42,7 @@ Muki.on('message', async message => {
     }
 
     if (message.author.bot) return;
+    
 
     // WEBHOOKS Canal de memes de Exiliados, AutralGaming y Mankos for The win
 
@@ -216,7 +217,7 @@ Muki.on('message', async message => {
       const command = content.shift();
 
       if (command == 'emoji') {
-        const emoji = Muki.emojis.find(emoji => emoji.name == content);
+        const emoji = Muki.emojis.cache.find(emoji => emoji.name == content);
         if (!emoji) return await message.channel.send('No encontré un emoji con ese nombre.');
         await message.delete({ timeout: 1000, reason: 'emoji command' })
         return await message.channel.send(`${emoji}`);
@@ -234,7 +235,7 @@ Muki.on('message', async message => {
       .setTimestamp()
       .setDescription(`\`\`\`js\n${error.toString()} \`\`\` `)
 
-    return await Muki.channels.get("585990511790391309").send(e);
+    return await Muki.channels.cache.get("585990511790391309").send(e);
   }
 
 });
@@ -280,7 +281,7 @@ Muki.on('guildUpdate', (oldGuild, newGuild) => {
 });
 
 Muki.on('guildBanAdd', async (Guild, User) => {
-  const channel = Muki.channels.get('645834668947537940');
+  const channel = Muki.channels.cache.get('645834668947537940');
   if (!channel) return;
   const embed = new Discord.MessageEmbed()
     .setTitle("UUUUFF")
@@ -295,7 +296,7 @@ Muki.on('guildBanAdd', async (Guild, User) => {
 Muki.on('error', async (error) => {
   console.log(error)
   const e = new Discord.MessageEmbed().setColor("RED").setDescription(`${error}\n${error.stack}`);
-  return await Muki.channels.get("585990511790391309").send(e).catch(console.error);
+  return await Muki.channels.cache.get("585990511790391309").send(e).catch(console.error);
 });
 
 
@@ -313,7 +314,7 @@ Muki.on('warn', (warn) => {
 });
 
 Muki.on('guildCreate', async (Guild) => {
-  const General = Guild.channels.find((ch => ch.name == 'general' || ch.name.includes('bot')) && ch.type == 'text');
+  const General = Guild.channels.cache.find((ch => ch.name == 'general' || ch.name.includes('bot')) && ch.type == 'text');
   const embed = new Discord.MessageEmbed()
     .setTitle("¡Hola!, mi prefijo es muki!")
     .setDescription(
