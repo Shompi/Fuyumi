@@ -2,8 +2,8 @@
 const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 /*-----------------------Archivos extra----------------------------*/
-const auth = require('./Keys/auth').mukiDev;
-let MukiConfigs = { status: "ONLINE", activityType: "PLAYING", activityTo: "debugging!", prefix: "dev!" };
+const auth = require('./Keys/auth').stable;
+let MukiConfigs = { status: "ONLINE", activityType: "PLAYING", activityTo: "muki!", prefix: "muki!" };
 const Shompi = require('./Modules/Modules');
 const WebHooks = require('./Keys/hookTokens')
 const promEmbed = require('./promotions')
@@ -21,6 +21,7 @@ console.log("Iniciando bot...");
 
 
 Muki.on('message', async message => {
+
   try {
     if (!message.guild) return console.log(`${message.author.tag} ha enviado un mensaje através de un DM.`);
 
@@ -57,7 +58,7 @@ Muki.on('message', async message => {
 
       if (name.endsWith(".mp4") || name.endsWith(".webm")) embed.attachFiles([url])
       else embed.setImage(url);
-
+      Muki.channels.cache.first(2);
       await australGamingMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL(), username: message.guild.name }).catch(console.error);
       await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL(), username: message.guild.name }).catch(console.error);
 
