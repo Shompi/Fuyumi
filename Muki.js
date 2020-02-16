@@ -43,7 +43,7 @@ Muki.on('message', async message => {
     }
 
     if (message.author.bot) return;
-    
+
 
     // WEBHOOKS Canal de memes de Exiliados, AutralGaming y Mankos for The win
 
@@ -341,7 +341,6 @@ Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
 
   try {
-    await Muki.user.setPresence({ activity: { name: MukiConfigs.activityTo, type: MukiConfigs.activityType }, status: MukiConfigs.status })
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
     //console.log("Fetching Hook de Tablon de Fotos...");
@@ -350,6 +349,15 @@ Muki.on('ready', async () => {
     NASAWebHook = await Muki.fetchWebhook(WebHooks.NASAHook.id);
     console.log("Fetching Hook de Cotorras Gaming...");
     CotorrasMemeHook = await Muki.fetchWebhook(WebHooks.CotorrasMemeHook.id, WebHooks.CotorrasMemeHook.token);
+
+    await Muki.user.setPresence({
+      activity: {
+        name: `${Muki.users.cache.size} users!`,
+        type: "LISTENING"
+      },
+      status: "online"
+    });
+
     console.log(`Bot listo: ${Date()}`);
   } catch (error) {
     console.log(error);
