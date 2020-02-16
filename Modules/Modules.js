@@ -44,6 +44,10 @@ module.exports = {
     RoleInfo: require('./Guild/RoleInfo')
   },
 
+  GuildConfigs: {
+    prefix: require('./Guild/Prefix')
+  },
+
   Music: {
     Volume: require('./Music/Volume'),
     Play: require('./Music/Play'),
