@@ -18,7 +18,6 @@ module.exports = {
   },
   Nekos: require('./NekosLife/Nekos'),
   Tablon: require('./tablonFotos'),
-  ChangeRegion: require('./ServerManagement/VoiceRegion'),
   SaveConfigs: require('./saveConfig'),
   Currencies: require('./Currency/Currencies'),
   Discord: {
@@ -36,6 +35,7 @@ module.exports = {
     Guild: {
       MemberRemove: require('./EventHandler/Guild/memberRemove/main'),
       MemberAdd: require('./EventHandler/Guild/memberAdd/main'),
+      ChangeRegion: require('./Guild/VoiceRegion')
     }
   },
 
