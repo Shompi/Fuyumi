@@ -7,6 +7,7 @@ module.exports = async (message = new Message()) => {
   let content = message.content.split(" ");
   let region = content.shift();
   if (region) region = region.toLowerCase();
+
   let reason = content.join(" ");
   let guild;
   let image = null;
@@ -27,12 +28,15 @@ module.exports = async (message = new Message()) => {
       .setDescription(`Ha cambiado la región de **${guild.name}** a **${guild.region.toUpperCase()}**`)
       .setColor("BLUE")
       .setTimestamp();
-
     if (image) embed.setImage(image);
-    const channel = message.guild.channels.cache.find(ch => ch.name === 'guild-changes' && ch.type == 'text');
+
+
+    const channel = message.guild.systemChannel;
     if (!channel) return await message.channel.send(embed);
     else return await channel.send(embed);
-  } else {
+
+  }
+  else {
     if (!voiceRegions.includes(region.toLowerCase())) return await message.reply("la región que has ingresado no existe o la has escrito mal!").catch(console.error);
     if (message.guild.region === region) return await message.reply("la Guild ya se encuentra en esa región.");
     guild = await message.guild.setRegion(region);
@@ -50,8 +54,10 @@ module.exports = async (message = new Message()) => {
       cooldown = false;
     }, 5000, cooldown);
 
-    const channel = message.guild.channels.cache.find(ch => ch.name === 'guild-changes' && ch.type == 'text');
+    const channel = message.guild.systemChannel;
+
     if (!channel) return await message.channel.send(embed);
+    
     else return await channel.send(embed);
   }
 }
