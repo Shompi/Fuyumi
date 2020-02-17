@@ -16,7 +16,7 @@ const noChannel = (prefix) => {
 
 const succeed = (channel = new TextChannel(), prefix) => {
   return new MessageEmbed()
-    .setTitle(`¡El canal ${channel.name} ha sido asignado para las bienvenidas!`)
+    .setTitle(`¡El canal #${channel.name} ha sido asignado para las bienvenidas!`)
     .setDescription(`**Nota:** Este comando activa los mensajes de bienvenida por defecto.\nPara desactivar este comportamiento escribe \`${prefix}wtoggle\``)
     .setColor("GREEN")
 };

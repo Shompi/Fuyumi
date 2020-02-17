@@ -16,7 +16,7 @@ const toggled = (config, client = new Client()) => {
 
   return new MessageEmbed()
     .setTitle(`Los mensajes de bienvenida ahora están ${enabled ? "**Activados**" : "**Desactivados**"}`)
-    .setDescription(`Canal: ${channel ? channel.name : "System Channel."}`)
+    .setDescription(`Canal: #${channel ? channel.name : "System Channel."}`)
     .setColor(`${enabled ? "GREEN" : "RED"}`)
 }
 
