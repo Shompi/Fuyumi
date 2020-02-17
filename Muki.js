@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 /*-----------------------Archivos extra----------------------------*/
-const auth = require('./Keys/auth').stable;
+const auth = require('./Keys/auth').mukiDev;
 let MukiConfigs = { status: "ONLINE", activityType: "PLAYING", activityTo: "muki!", prefix: "muki!" };
 const Shompi = require('./Modules/Modules');
 const WebHooks = require('./Keys/hookTokens');
@@ -16,47 +16,62 @@ let owoCooldown = false;
 
 Muki.on('message', async message => {
   try {
-    if (!message.guild) return console.log(`${message.author.tag} ha enviado un mensaje através de un DM.`);
+    const { author, member, guild, channel, mentions } = message;
+
+    if (!guild) return console.log(`${author.tag} ha enviado un mensaje através de un DM.`);
 
     //Pokecord messages. Mensajes especificos de bots.
-    if (message.author.id === '365975655608745985' && message.guild.id === "537484725896478733") {
+    if (author.id === '365975655608745985' && guild.id === "537484725896478733") {
       message.delete({ timeout: 10000, reason: "pokecord" });
     }
 
-    if (message.author.bot) return;
+    if (author.bot) return;
 
-    // WEBHOOKS Canal de memes de Exiliados, AutralGaming y Mankos for The win
-    if (message.channel.id == '622889689472303120') {
-      if (message.attachments.size <= 0 || message.author.bot) return;
+    //Webhooks
+    if (channel.id == '622889689472303120') {
+      if (message.attachments.size <= 0 || author.bot) return;
       const { name, url } = message.attachments.first();
       const embed = new Discord.MessageEmbed()
         .setColor("BLUE")
-        .setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 64 }))
+        .setAuthor(`${author.tag}`, author.displayAvatarURL({ size: 64 }))
         .setTitle(message.content)
-        .setFooter(`Enviado desde: ${message.guild.name}`, `${message.guild.iconURL({ size: 64 })}`);
+        .setFooter(`Enviado desde: ${guild.name}`, `${guild.iconURL({ size: 64 })}`);
 
       if (name.endsWith(".mp4") || name.endsWith(".webm")) embed.attachFiles([url])
       else embed.setImage(url);
-      await australGamingMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL(), username: message.guild.name }).catch(console.error);
-      await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: message.guild.iconURL(), username: message.guild.name }).catch(console.error);
+
+      await australGamingMemeHook.send(null, { embeds: [embed], avatarURL: guild.iconURL(), username: guild.name }).catch(console.error);
+      await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: guild.iconURL(), username: guild.name }).catch(console.error);
       return;
     }
 
 
-    const { author, member, guild, channel } = message;
     const prefix = database.guildConfigs.get(guild.id).prefix;
+
+    if (mentions.has(Muki.user)) {
+      const embed = new Discord.MessageEmbed()
+        .setColor("BLUE")
+        .setDescription(`Mi prefijo en **${guild.name}** es: **${prefix}**`);
+      return await channel.send(embed);
+    }
+
     const command = message.content.split(" ")[0].replace(prefix, "");
     const content = message.content.split(" ").slice(1).join(" ");
 
     //Comandos de usuario con prefijo:
     if (message.content.startsWith(prefix)) {
 
-      if (command == 'prefix' && author.id === guild.ownerID) return await Shompi.GuildConfigs.prefix(message, content);
+      //Check admin / owner rights in every command.
+      if (command == 'prefix') return await Shompi.GuildConfigs.Prefix(message, content);
+      if (command == 'waddfrase') return await Shompi.GuildConfigs.AddWelcomePhrase(message, content);
+      if (command == 'wremfrase') return await Shompi.GuildConfigs.RemWelcomePhrase(message, content);
+      if (command == 'wchannel') return await Shompi.GuildConfigs.WelcomeChannel(message, content);
+      if (command == 'wtoggle') return await Shompi.GuildConfigs.ToggleWelcomeChannel(message, content);
 
       /*-----------------Guild info-----------------*/
-      if (command == 'guildinfo' && channel.type !== 'dm') return await Shompi.GuildInfo.Info.GuildInfo(message);
-      if (command == 'uinfo' && channel.type !== 'dm') return await Shompi.GuildInfo.Info.UserInfo(message);
-      if (command == 'rinfo' && channel.type !== 'dm') return await Shompi.GuildInfo.RoleInfo(message);
+      if (command == 'guildinfo') return await Shompi.GuildInfo.Info.GuildInfo(message);
+      if (command == 'uinfo') return await Shompi.GuildInfo.Info.UserInfo(message);
+      if (command == 'rinfo') return await Shompi.GuildInfo.RoleInfo(message);
 
       /*-----------------ANIME FLV-----------------*/
       if (command == 'anime') return await Shompi.AnimeFLV.Search(message, content);
@@ -103,15 +118,6 @@ Muki.on('message', async message => {
       //----------------------NSFW / Imagenes----------------------//
       if (command === "safe") return await Shompi.Boorus.KonaSafe(message);
 
-      if (channel.nsfw) {
-        //Nekos.life
-        if (NekosNSFWEndpoints.includes(command)) return await Shompi.Nekos(message, command);
-
-        //Boorus
-        if (command === "dere") return await Shompi.Boorus.Yandere(message);
-        if (command === "kona") return await Shompi.Boorus.Konachan(message);
-      }
-
       //Boorus tag search
       if (command === 'btag') {
         if (!content) {
@@ -126,20 +132,20 @@ Muki.on('message', async message => {
         }
         return await Shompi.Boorus.TagSearch(message, content);
       }
+
+      if (channel.nsfw) {
+
+        //Nekos.life
+        if (NekosNSFWEndpoints.includes(command)) return await Shompi.Nekos(message, command);
+
+        //Boorus
+        if (command === "dere") return await Shompi.Boorus.Yandere(message);
+        if (command === "kona") return await Shompi.Boorus.Konachan(message);
+      }
     }
 
     /*--------------------------COMANDOS SIN PREFIJO----------------------------*/
-    if (message.content.startsWith('smug')) return await Shompi.Nekos(message, 'smug');
-    if (message.content.startsWith('cuddle')) return await Shompi.Nekos(message, 'cuddle');
     if (message.content.startsWith("-Discord")) return await Shompi.Discord.Status(channel);
-
-    //Canal de osu (Guild Specific)
-    if (message.channel.id === '543047520130170910') {
-      const args = message.content.split(" ").slice(1).join(" ");
-      if (message.content.startsWith("last")) return await Shompi.Osu.osuLastPlay(args, channel);
-      if (message.content.startsWith("stats")) return await Shompi.Osu.osuProfile(args, channel);
-      if (message.content.startsWith("top")) return await Shompi.Osu.osuTops(args, channel);
-    }
 
     //---------------------------------Discord.js----------------------------------//
     if (message.content.startsWith(".docs")) return await Shompi.DiscordJS(message);
@@ -289,8 +295,8 @@ Muki.on('guildDelete', (guild) => {
 });
 
 Muki.on('ready', async () => {
-
   console.log(`Online en Discord como: ${Muki.user.tag}`);
+
   try {
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
@@ -298,6 +304,8 @@ Muki.on('ready', async () => {
     NASAWebHook = await Muki.fetchWebhook(WebHooks.NASAHook.id);
     console.log("Fetching Hook de Cotorras Gaming...");
     CotorrasMemeHook = await Muki.fetchWebhook(WebHooks.CotorrasMemeHook.id, WebHooks.CotorrasMemeHook.token);
+    if (!database.MukiSettings.has('settings'))
+      database.MukiSettings.set('settings', MukiConfigs);
 
     await Muki.user.setPresence({
       activity: {
@@ -311,6 +319,8 @@ Muki.on('ready', async () => {
       if (database.guildConfigs.has(guild.id)) return console.log(`La guild ${guild.name} ya tenia una entrada de configuración.\n${database.guildConfigs.get(guild.id)}`);
 
       const guildConfig = {
+        id: guild.id,
+        name: guild.name,
         prefix: "muki!",
         welcome: {
           enabled: false,
@@ -318,8 +328,9 @@ Muki.on('ready', async () => {
           joinPhrases: [],
           leavePhrases: []
         }
-      }
+      };
       database.guildConfigs.set(guild.id, guildConfig);
+      console.log(`Entrada para ${guild.name} creada!`);
     });
 
     console.log(`Bot listo: ${Date()}`);
