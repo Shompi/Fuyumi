@@ -2,42 +2,43 @@ const { MessageEmbed, Message } = require('discord.js');
 const database = require('../LoadDatabase').guildConfigs;
 
 const noPrefix = (prefix) => {
-
-  const embed = new MessageEmbed()
+  return new MessageEmbed()
     .setTitle("❌ No has especificado un prefijo.")
-    .setDescription(`${prefix}prefix [nuevoPrefijo]`)
+    .setDescription(`\`${prefix}prefix [nuevoPrefijo]\``)
     .setColor("RED")
-
-  return embed;
 }
 
 const limitExceeded = new MessageEmbed()
   .setTitle("❌ El prefijo es demasiado largo.")
   .setColor("RED");
 
-const succeed = new MessageEmbed()
-  .setTitle("✔ El prefijo se ha cambiado exitosamente!")
-  .setColor("GREEN");
+const missingPermissions = (author) => {
+  return new MessageEmbed()
+    .setTitle(`❌ ¡Lo siento ${author.username}! No tienes permiso para utilizar este comando.`)
+    .setColor("RED")
+};
 
-/* 
-const guildConfig = {
-  prefix: "muki!",
-  welcome: {
-    enabled: false,
-    channelID: null,
-    joinPhrases: [],
-    leavePhrases: []
-  }
+const succeed = (prefix) => {
+  return new MessageEmbed()
+    .setTitle("¡El prefijo se ha cambiado exitosamente!")
+    .setDescription(`Nuevo prefijo: \`${prefix}\``)
+    .setColor("GREEN");
 }
- */
 
 module.exports = async (message = new Message(), prefix) => {
-  const { guild, channel } = message;
+  const { guild, channel, member, author } = message;
+  if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return await channel.send(missingPermissions(author));
+
+
   const configs = database.get(guild.id);
 
   if (!configs) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración.`);
+
   if (!prefix) return await channel.send(noPrefix(configs.prefix));
-  if (prefix.length >= 5) return await channel.send(limitExceeded);
+
+  if (prefix.length > 5) return await channel.send(limitExceeded);
 
   database.set(guild.id, prefix, "prefix");
+  
+  return await channel.send(succeed(prefix));
 }
