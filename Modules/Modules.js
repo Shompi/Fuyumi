@@ -35,7 +35,7 @@ module.exports = {
     Guild: {
       MemberRemove: require('./EventHandler/Guild/memberRemove/main'),
       MemberAdd: require('./EventHandler/Guild/memberAdd/main'),
-      ChangeRegion: require('./Guild/VoiceRegion')
+      ChangeRegion: require('./Guild/voiceRegion')
     }
   },
 
