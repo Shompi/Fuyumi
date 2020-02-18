@@ -4,7 +4,7 @@ const database = require('../LoadDatabase').guildConfigs;
 
 const phrases = (join = new Array(), leave = new Array(), guild) => {
   return new MessageEmbed()
-    .setTitle(`Frases de Bienvenida / Salida la Guild ${guild.name}:`)
+    .setTitle(`Frases de Bienvenida / Salida de la Guild ${guild.name}:`)
     .addField("Entrada:", "-" + join.join("\n-"))
     .addField("Salida:", "-" + leave.join("\n-"))
     .setThumbnail(guild.iconURL({size:256}))
