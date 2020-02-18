@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 /*-----------------------Archivos extra----------------------------*/
-const auth = require('./Keys/auth').mukiDev;
+const auth = require('./Keys/auth').stable;
 let MukiConfigs = { status: "ONLINE", activityType: "PLAYING", activityTo: "muki!", prefix: "muki!" };
 const Shompi = require('./Modules/Modules');
 const WebHooks = require('./Keys/hookTokens');
@@ -294,7 +294,7 @@ Muki.on('guildDelete', (guild) => {
 
 Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
-  return;
+
   try {
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
