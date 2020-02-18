@@ -5,6 +5,7 @@
   "main": "Muki.js",
   "dependencies": {
     "@discordjs/opus": "^0.1.0",
+    "@types/node-fetch": "^2.5.4",
     "async-limiter": "^2.0.0",
     "better-sqlite-pool": "^0.2.3",
     "cheerio": "^1.0.0-rc.3",
