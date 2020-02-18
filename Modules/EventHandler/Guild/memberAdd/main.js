@@ -1,31 +1,37 @@
-const { MessageEmbed, GuildMember, Client } = require('discord.js');
-const Join = require('../../../../Frases/join');
-module.exports = async (member = new GuildMember(), Muki = new Client()) => {
-  switch (member.guild.id) {
-    case '537484725896478733':
-      //Exiliados
-      const frase = Join[Math.floor(Math.random() * Join.length)];
-      const exiliadosEmbed = new MessageEmbed()
-        .setTitle(`${member.user.tag} ha entrado al servidor!`)
-        .setDescription(frase)
-        .setColor('GREEN')
-        .setThumbnail(member.user.displayAvatarURL({ size: 512 }))
-        .setTimestamp();
-      await Muki.channels.cache.get('645834668947537940').send(exiliadosEmbed).catch(console.error); //#bienvenida
-      if (member.user.bot) await member.roles.add("545773830170214440", "BOT").catch(console.error);
+const { MessageEmbed, GuildMember, Client, User } = require('discord.js');
+const database = require('../../../LoadDatabase').guildConfigs;
 
-      break;
-    case '514256051902611457':
-      //Austral Community
-      if (member.user.bot) return await member.roles.add("548329579945787402", "BOT");
-      const australEmbed = new MessageEmbed()
-        .setTitle(`Bienvenido a ${member.guild.name} ${member.user.tag}!`)
-        .setThumbnail(member.user.displayAvatarURL({size:512}))
-        .setFooter(`Eres el miembro #${member.guild.memberCount} en ${member.guild.name}!`)
-        .setColor('BLUE')
-        .setTimestamp();
-      await member.roles.add('548325706183082009', 'Usuario nuevo.').catch(console.error);
-      await Muki.channels.cache.get('514256051902611459').send(australEmbed).catch(console.error);
-      break;
+//guildMemberAdd (GuildMember)
+module.exports = async (member = new GuildMember(), Muki = new Client()) => {
+
+  const { guild, user } = member;
+  if (user.bot) return undefined;
+  const configs = database.get(guild.id);
+  if (!configs) return console.log(`Por alguna razón la guild ${guild.name} no tenia entrada de configuración. (EHandler/Guild/memberAdd)`);
+
+  if (config.welcome.enabled) {
+    
+    //channelID should be either a valid id string or null.
+    const channel = Muki.channels.cache.get(configs.welcome.channelID);
+
+    //If channel comes undefined
+    if (!channel) return await guild.systemChannel.send(bienvenida(user, configs)).catch(err => console.log(`La guild ${guild.name} no tiene canal de bienvenida, ni canal de sistema.`));
+    
+    else return await channel.send(bienvenida(user, configs));
+
   }
+  else return undefined;
+}
+
+const bienvenida = (user = new User(), configs) => {
+  const frases = configs.welcome.joinPhrases;
+  let frase = "";
+  if (frases.length > 0) frase = frases[Math.floor(Math.random() * frases.length)];
+
+  return new MessageEmbed()
+    .setTitle(`¡${user.tag} se ha unido al servidor!`)
+    .setDescription(frase)
+    .setColor("GREEN")
+    .setTimestamp()
+    .setThumbnail(user.displayAvatarURL({ size: 512 }))
 }
