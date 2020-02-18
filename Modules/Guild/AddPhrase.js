@@ -43,7 +43,7 @@ module.exports = async (message = new Message(), phrase) => {
 
       database.push(guild.id, phrase, "welcome.joinPhrases") //Push the phrase to the guildConfig database.
       console.log(`Nueva frase añadida:\nGuild: ${guild.name}\nFrase: ${phrase}\nNuevo array: ${database.get(guild.id, "welcome.joinPhrases")}`);
-      return await channel.send(succeed(phrase));
+      return await channel.send(succeed);
 
     } else return await channel.send(noPhrase(author));
   } else return await channel.send(missingPermissions(author));
