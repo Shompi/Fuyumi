@@ -64,9 +64,10 @@ Muki.on('message', async message => {
       //Check admin / owner rights in every command.
       if (command == 'prefix') return await Shompi.GuildConfigs.Prefix(message, content);
       if (command == 'waddfrase') return await Shompi.GuildConfigs.AddWelcomePhrase(message, content);
-      if (command == 'wremfrase') return await Shompi.GuildConfigs.RemWelcomePhrase(message, content);
+      if (command == 'wremfrase') return await Shompi.GuildConfigs.RemoveWelcomePhrase(message, content);
       if (command == 'wchannel') return await Shompi.GuildConfigs.WelcomeChannel(message, content);
       if (command == 'wtoggle') return await Shompi.GuildConfigs.ToggleWelcomeChannel(message, content);
+      if (command == 'wfrases') return await Shompi.GuildConfigs.AllPhrases(message, content);
 
       /*-----------------Guild info-----------------*/
       if (command == 'guildinfo') return await Shompi.GuildInfo.Info.GuildInfo(message);
@@ -133,15 +134,12 @@ Muki.on('message', async message => {
         return await Shompi.Boorus.TagSearch(message, content);
       }
 
-      if (channel.nsfw) {
+      //Nekos.life +18
+      if (NekosNSFWEndpoints.includes(command)) return await Shompi.Nekos(message, command);
 
-        //Nekos.life
-        if (NekosNSFWEndpoints.includes(command)) return await Shompi.Nekos(message, command);
-
-        //Boorus
-        if (command === "dere") return await Shompi.Boorus.Yandere(message);
-        if (command === "kona") return await Shompi.Boorus.Konachan(message);
-      }
+      //Boorus +18
+      if (command === "dere") return await Shompi.Boorus.Yandere(message);
+      if (command === "kona") return await Shompi.Boorus.Konachan(message);
     }
 
     /*--------------------------COMANDOS SIN PREFIJO----------------------------*/
@@ -296,7 +294,7 @@ Muki.on('guildDelete', (guild) => {
 
 Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
-
+  return;
   try {
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
