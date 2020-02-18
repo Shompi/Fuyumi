@@ -47,9 +47,10 @@ module.exports = {
   GuildConfigs: {
     Prefix: require('./Guild/Prefix'),
     AddWelcomePhrase: require('./Guild/AddPhrase'),
-    RemoveWelcomePhrase: require('./Guild/RemovePhrase'),
+    RemoveWelcomePhrase: require('./Guild/RWelcomePhrase'),
     WelcomeChannel: require('./Guild/WelcomeChannel'),
-    ToggleWelcomeChannel: require('./Guild/WelcomeToggle')
+    ToggleWelcomeChannel: require('./Guild/WelcomeToggle'),
+    AllPhrases: require('./Guild/AllPhrases')
   },
 
   Music: {
