@@ -20,8 +20,8 @@ module.exports = {
   Tablon: require('./tablonFotos'),
   SaveConfigs: require('./saveConfig'),
   Currencies: require('./Currency/Currencies'),
-  Discord: {
-    Status: require('./Discord/Status')
+  StatusPage: {
+    Discord: require('./StatusPage/Discord')
   },
   NASA: {
     POTD: require('./NASA/POTD')

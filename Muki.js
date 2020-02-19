@@ -143,7 +143,7 @@ Muki.on('message', async message => {
     }
 
     /*--------------------------COMANDOS SIN PREFIJO----------------------------*/
-    if (message.content.startsWith("-Discord")) return await Shompi.Discord.Status(channel);
+    if (message.content.startsWith("-Discord")) return await Shompi.StatusPage.Discord(channel);
 
     //---------------------------------Discord.js----------------------------------//
     if (message.content.startsWith(".docs")) return await Shompi.DiscordJS(message);
