@@ -24,33 +24,6 @@ const GuildInfo = async (message = new Message()) => {
       month: meses[memberFrom.getMonth()],
       year: memberFrom.getFullYear()
     }
-    /*     const description =
-          `
-    **Creación:** ${gCreatedAt.day} ${gCreatedAt.date} de ${gCreatedAt.month} del ${gCreatedAt.year}
-    **Dueño:** <@${message.guild.ownerID}>
-    **Miembros:** ${users.size} Usuarios (${onlineUsers.size} En Linea) \| ${bots.size} Bots \| ${message.guild.memberCount} total
-    **Cantidad de Roles:** ${message.guild.roles.size}
-    **Rol más alto:** <@&${message.guild.roles.highest.id}>
-    
-    **Tu info como miembro de ${message.guild.name}:**
-    
-    **Nombre:** ${message.author.username}
-    **ID:** ${message.author.id}
-    **Discriminador:** ${message.author.discriminator}
-    **Rol más alto:** <@&${message.member.roles.highest.id}>
-    **Miembro de ${message.guild.name} desde:** ${mJoinedAt.day} ${mJoinedAt.date} de ${mJoinedAt.month} del ${mJoinedAt.year}
-    `; */
-
-    /**
-     * Server ID
-     * OWNER
-     * Users
-     * Channels
-     * Roles
-     * Region
-     * BanCount
-     * Created
-     */
 
     const infoEmbed = new MessageEmbed()
       .setTitle(`${guild.name}`)

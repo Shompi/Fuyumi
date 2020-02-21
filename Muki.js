@@ -1,10 +1,19 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
+const fs = require('fs'); 
+const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
+Muki.commands = new Discord.Collection();
+
+for (const file of commandFiles) {
+  const command = require(`./Commands/Commands/${file}`);
+  Muki.commands.set(command.name, command);
+}
+
 /*-----------------------Archivos extra----------------------------*/
 const auth = require('./Keys/auth').stable;
 let MukiConfigs = { status: "ONLINE", activityType: "PLAYING", activityTo: "muki!", prefix: "muki!" };
-const Shompi = require('./Modules/Modules');
+//const Shompi = require('./Modules/Modules');
 const WebHooks = require('./Keys/hookTokens');
 const database = require('./Modules/LoadDatabase');
 /*-------------------------Inicio del BOT-------------------------*/
