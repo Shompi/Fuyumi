@@ -38,7 +38,8 @@ module.exports = {
   usage: "dere [tags]",
   nsfw: true,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
   async execute(message = new Message(), args = new Array()) {
     const { channel, author } = message;
     try {

@@ -28,7 +28,8 @@ module.exports = {
   usage: "uinfo (@Mención de usuario)",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
     const { guild, mentions, channel } = message;

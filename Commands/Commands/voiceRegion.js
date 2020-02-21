@@ -19,7 +19,8 @@ module.exports = {
   usage: "region (Región) (Razón)",
   nsfw: false,
   enabled: true,
-  permissions: "MANAGE_GUILD",
+  aliases: [],
+  permissions: ["MANAGE_GUILD"],
   async execute(message = new Message(), args = new Array()) {
     const { guild, attachments, author } = message;
     if (!guild.me.hasPermission('MANAGE_GUILD', { checkAdmin: true })) return await message.channel.send(missingPermissions(this.permissions));

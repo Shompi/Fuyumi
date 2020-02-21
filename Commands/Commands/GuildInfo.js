@@ -8,7 +8,8 @@ module.exports = {
   usage: "ginfo <Sin Parámetros>",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
   async execute(message = new Message(), args = new Array()) {
     const { guild, channel } = message;
     try {

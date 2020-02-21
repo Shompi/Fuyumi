@@ -31,7 +31,8 @@ module.exports = {
   usage: "prefix [Nuevo Prefijo]",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
     const { guild, channel, member, author } = message;

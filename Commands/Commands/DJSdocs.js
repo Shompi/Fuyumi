@@ -7,7 +7,8 @@ module.exports = {
   usage: "docs [Query string] [stable/master/commando]",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
   async execute(message = new Message(), args = new Array()) {
     const { channel } = message;
     const content = message.content.replace(/\s+/g, " ").split(" ");

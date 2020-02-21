@@ -23,7 +23,8 @@ module.exports = {
   usage: "roleinfo [@Mención de Rol]",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
     const { channel, mentions, guild } = message;

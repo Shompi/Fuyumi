@@ -14,7 +14,8 @@ module.exports = {
   usage: "dstatus <Sin Parámetros>",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
   async execute(message = new Message(), args = new Array()) {
 
     const { channel } = message;

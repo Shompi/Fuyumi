@@ -9,7 +9,8 @@ module.exports = {
   usage: "newchannel [Nombre] | [Tipo: texto/voz] | (Canal / Categoria Padre)",
   nsfw: false,
   enabled: false,
-  permissions: "MANAGE_CHANNELS",
+  aliases: [],
+  permissions: ["MANAGE_CHANNELS"],
   async execute(message = new Message(), args = new Array()) {
     const { client, channel, guild, author } = message;
     const Muki = client;

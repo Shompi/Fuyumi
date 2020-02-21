@@ -6,7 +6,8 @@ module.exports = {
   usage: "volume [Número 1-25]",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
   async execute(message = new Message(), args = new Array()) {
     const { guild, channel, client } = message;
     try {

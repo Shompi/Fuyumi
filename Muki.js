@@ -2,26 +2,25 @@
 const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 Muki.commands = new Discord.Collection();
+Muki.EventHandlers = require('./Commands/EventHandlers');
 const fs = require('fs');
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
+const auth = require('./Keys/auth').mukiDev;
 
 for (const file of commandFiles) {
   const command = require(`./Commands/Commands/${file}`);
+  console.log(command);
   Muki.commands.set(command.name, command);
 }
 
 /*-----------------------Archivos extra----------------------------*/
-const auth = require('./Keys/auth').stable;
 let MukiConfigs = { status: "ONLINE", activityType: "PLAYING", activityTo: "muki!", prefix: "muki!" };
-//const Shompi = require('./Modules/Modules');
+//const Muki = require('./Modules/Modules');
 const WebHooks = require('./Keys/hookTokens');
-const database = require('./Modules/LoadDatabase');
+const database = require('./Commands/LoadDatabase');
 /*-------------------------Inicio del BOT-------------------------*/
-const MukiOwnerID = '166263335220805634';
-const NekosNSFWEndpoints = require('./Modules/NekosLife/endpoints');
 let australGamingMemeHook = new Discord.Webhook();
 let NASAWebHook = new Discord.Webhook();
-let owoCooldown = false;
 
 const notNSFW = new Discord.MessageEmbed()
   .setTitle(`🛑 ¡Alto ahí!`)
@@ -34,18 +33,25 @@ const cmdNotEnabled = (author) =>
     .setDescription("Este comando esta deshabilitado globalmente.")
     .setColor('RED');
 
+const noCommandFound = (author) =>
+  new Discord.MessageEmbed()
+    .setTitle(`🔎 ERROR: 404`)
+    .setDescription(`${author}, ¡no tengo un comando con ese nombre!`)
+    .setColor("YELLOW");
+
+
+const pokecordFilter = (author, guild) => {
+  if (author.id === '365975655608745985' && guild.id === "537484725896478733") {
+    message.delete({ timeout: 10000, reason: "Pokecord" });
+  }
+}
 
 Muki.on('message', async (message) => {
   try {
     const { author, guild, channel, mentions } = message;
 
     if (!guild) return console.log(`${author.tag} ha enviado un mensaje através de un DM.`);
-
-    //Pokecord messages. Mensajes especificos de bots.
-    if (author.id === '365975655608745985' && guild.id === "537484725896478733") {
-      message.delete({ timeout: 10000, reason: "Pokecord" });
-    }
-
+    pokecordFilter(author, guild);
     if (author.bot) return;
 
     //Webhooks
@@ -65,6 +71,7 @@ Muki.on('message', async (message) => {
       return await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: guild.iconURL(), username: guild.name });
     }
 
+    //Actual bot behaviour
     const prefix = database.guildConfigs.get(guild.id).prefix;
 
     if (mentions.has(Muki.user))
@@ -76,42 +83,17 @@ Muki.on('message', async (message) => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
-    //Comandos de usuario con prefijo:
     if (message.content.startsWith(prefix)) {
 
-      const command = Muki.commands.get(commandName);
+      let command = Muki.commands.get(commandName);
+      if (!command) command = Muki.commands.find(c => c.aliases.includes(commandName));
+      console.log(command);
       if (!command.enabled) return await channel.send(cmdNotEnabled(author));
       if (command.nsfw && !channel.nsfw) return await channel.send(notNSFW);
-      
+
+      return command.execute(message, args);
     } else {
-
-      if (command === "invite") return await Muki.generateInvite(607177824).then(invite => channel.send(invite));
-
-      if (command == 'emoji') {
-        const emoji = Muki.emojis.cache.find(emoji => emoji.name == content);
-        if (!emoji) return await channel.send('No encontré un emoji con ese nombre.');
-        await message.delete({ timeout: 1000, reason: 'emoji command' })
-        return await channel.send(`${emoji}`);
-      }
-      if (NekosNSFWEndpoints.includes(command)) return await Shompi.Nekos(message, command);
-    }
-
-    if (message.content.toLowerCase().includes("owo") && !owoCooldown) {
-      await channel.send("òwó");
-      owoCooldown = true;
-      setTimeout(() => {
-        owoCooldown = false;
-      }, 1000 * 60 * 2, owoCooldown);
-    }
-
-    //-----------------------------Bot Owner commands------------------------------//
-    if (author.id === MukiOwnerID && message.content[0] === '*') {
-      const command = message.content.split(" ").slice(1)[0];
-      const content = message.content.split(" ").slice(2).join(" ");
-      if (command == 'status') {
-        await Muki.user.setStatus(content);
-        database.MukiSettings.set("settings", content, "status");
-      }
+      //Other stuff im trying to plan.
     }
 
   } catch (error) {
@@ -128,15 +110,17 @@ Muki.on('message', async (message) => {
 
 });
 
+
+
 //------------------------Muki listener on GuildMemberRemove ------------------------//
 Muki.on('guildMemberRemove', async (member) => {
-  await Shompi.eventHandlers.Guild.MemberRemove(member, Muki);
+  await Muki.EventHandlers.Guild.MemberRemove(member, Muki);
 });
 
 //------------------------Muki listener on GuildMemberAdd ------------------------//
 Muki.on('guildMemberAdd', async member => {
   if (member.partial) member = await member.fetch();
-  await Shompi.eventHandlers.Guild.MemberAdd(member, Muki);
+  await Muki.EventHandlers.Guild.MemberAdd(member, Muki);
 });
 
 //------------------------Muki listener on guildMemberUpdate ------------------------//
@@ -145,7 +129,7 @@ Muki.on('guildMemberUpdate', async (oldMember, newMember) => {
 
 Muki.on('voiceStateUpdate', async (old, now) => {
   try {
-    await Shompi.eventHandlers.Presence.GoLive(old, now, Muki);
+    await Muki.EventHandlers.Presence.GoLive(old, now, Muki);
   } catch (error) {
     console.log(error);
   }
@@ -154,7 +138,7 @@ Muki.on('voiceStateUpdate', async (old, now) => {
 Muki.on('presenceUpdate', async (old, now) => { //Tipo Presence
   try {
     if (!old) return;
-    await Shompi.eventHandlers.Presence.Twitch(old, now);
+    await Muki.EventHandlers.Presence.Twitch(old, now);
 
   } catch (e) {
     console.log(e);
@@ -227,7 +211,7 @@ Muki.on('guildCreate', async (guild) => {
       '¡Recuerda que **todos** mis comandos comienzan con mi prefijo!'
     )
     .setColor("BLUE")
-    .setFooter("Dudas, sugerencias o peticiones hablar con ShompiFlen#3338")
+    .setFooter("Dudas, sugerencias o peticiones hablar con MukiFlen#3338")
   if (!General) return await guild.owner.send(embed);
   else await channel.send(embed);
 
@@ -242,7 +226,7 @@ Muki.on('guildDelete', (guild) => {
 
 Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
-
+  return;
   try {
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
@@ -287,9 +271,9 @@ Muki.on('ready', async () => {
   }
 
   setImmediate(async () => {
-    await Shompi.NASA.POTD(NASAWebHook).catch(console.error);
+    await Muki.NASA.POTD(NASAWebHook).catch(console.error);
     setInterval(async () => {
-      await Shompi.NASA.POTD(NASAWebHook).catch(console.error);
+      await Muki.NASA.POTD(NASAWebHook).catch(console.error);
     }, 1000 * 60 * 60);
   });
 });
@@ -301,4 +285,5 @@ Muki.ws.on('RESUMED', (data, shard) => {
 });
 
 console.log("Logging Muki...");
+
 Muki.login(auth);

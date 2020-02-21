@@ -19,7 +19,8 @@ module.exports = {
   usage: "mmute [@Mención de miembro]",
   nsfw: false,
   enabled: false,
-  permissions: "MUTE_MEMBERS",
+  aliases: [],
+  permissions: ["MUTE_MEMBERS"],
 
   async execute(message = new Message(), args = new Array()) {
     const { channel, guild, mentions, author } = message;

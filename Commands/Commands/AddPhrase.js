@@ -37,7 +37,8 @@ module.exports = {
   usage: "waddfrase [frase]",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
   async execute(message = new Message(), args = new Array()) {
     const { member, guild, channel, author } = message;
     const configs = database.get(guild.id);

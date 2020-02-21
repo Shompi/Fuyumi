@@ -14,7 +14,8 @@ module.exports = {
   usage: "vote [Tiempo en minutos] [Pregunta / Propuesta]",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
     const { guild, channel, author, member } = message;

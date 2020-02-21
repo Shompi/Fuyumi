@@ -28,7 +28,8 @@ module.exports = {
   usage: "wremfrase [frase] (Debe ser exactamente igual).",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
     const { member, channel, guild, author } = message;

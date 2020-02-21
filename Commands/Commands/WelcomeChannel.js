@@ -27,7 +27,8 @@ module.exports = {
   usage: "wchannel [#Mencion del Canal]",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
   async execute(message = new Message(), args = new Array()) {
 
     const { author, member, guild, mentions, channel } = message;

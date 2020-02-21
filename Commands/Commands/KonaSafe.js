@@ -47,7 +47,8 @@ module.exports = {
   usage: "konasafe [tags]",
   nsfw: false,
   enabled: true,
-  permissions: "",
+  aliases: [],
+  permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
     const { channel } = message;
