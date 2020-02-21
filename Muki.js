@@ -64,12 +64,12 @@ Muki.on('message', async message => {
       return await channel.send(embed);
     }
 
-    const command = message.content.split(" ")[0].replace(prefix, "");
+    const commandName = message.content.split(" ")[0].replace(prefix, "");
     const content = message.content.split(" ").slice(1).join(" ");
 
     //Comandos de usuario con prefijo:
     if (message.content.startsWith(prefix)) {
-
+      if(!Muki.commands)
       //Check admin / owner rights in every command.
       if (command == 'prefix') return await Shompi.GuildConfigs.Prefix(message, content);
       if (command == 'waddfrase') return await Shompi.GuildConfigs.AddWelcomePhrase(message, content);

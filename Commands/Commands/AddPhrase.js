@@ -31,20 +31,26 @@ const succeed = new MessageEmbed()
   .setTitle(`¡La frase ha sido añadida con éxito!`)
   .setColor("GREEN");
 
-module.exports = async (message = new Message(), phrase) => {
-  const { member, guild, channel, author } = message;
-  const configs = database.get(guild.id);
-  if (!configs) return console.log(`Por alguna razón la guild ${guild.name} no tenia entrada de configuración. AddPhrase.js`);
+module.exports = {
+  name: "waddfrase",
+  description: "Añade una frase de bienvenida. Si hay más de una frase configurada, se escogerá una al **azar**.",
+  nsfw: false,
+  usage: "PREFIXwaddfrase [frase]",
+  execute: async (message = new Message(), phrase) => {
+    const { member, guild, channel, author } = message;
+    const configs = database.get(guild.id);
+    if (!configs) return console.log(`Por alguna razón la guild ${guild.name} no tenia entrada de configuración. AddPhrase.js`);
 
-  if (member.hasPermission("ADMINISTRATOR", { checkOwner: true })) {
-    if (phrase) {
-      if (phrase.length > 256) return await channel.send(limitExceeded(author, phrase));
-      if (configs.welcome.joinPhrases.includes(phrase)) return await channel.send(duplicated(author, phrase, configs.prefix));
+    if (member.hasPermission("ADMINISTRATOR", { checkOwner: true })) {
+      if (phrase) {
+        if (phrase.length > 256) return await channel.send(limitExceeded(author, phrase));
+        if (configs.welcome.joinPhrases.includes(phrase)) return await channel.send(duplicated(author, phrase, configs.prefix));
 
-      database.push(guild.id, phrase, "welcome.joinPhrases") //Push the phrase to the guildConfig database.
-      console.log(`Nueva frase añadida:\nGuild: ${guild.name}\nFrase: ${phrase}\nNuevo array: ${database.get(guild.id, "welcome.joinPhrases")}`);
-      return await channel.send(succeed);
+        database.push(guild.id, phrase, "welcome.joinPhrases") //Push the phrase to the guildConfig database.
+        console.log(`Nueva frase añadida:\nGuild: ${guild.name}\nFrase: ${phrase}\nNuevo array: ${database.get(guild.id, "welcome.joinPhrases")}`);
+        return await channel.send(succeed);
 
-    } else return await channel.send(noPhrase(author));
-  } else return await channel.send(missingPermissions(author));
+      } else return await channel.send(noPhrase(author));
+    } else return await channel.send(missingPermissions(author));
+  }
 }

@@ -2,24 +2,26 @@
 const { MessageEmbed, Message } = require('discord.js');
 const database = require('../LoadDatabase').guildConfigs;
 
-const phrases = (join = new Array(), leave = new Array(), guild) => {
-  return new MessageEmbed()
+const phrases = (join = new Array(), leave = new Array(), guild) =>
+  new MessageEmbed()
     .setTitle(`Frases de Bienvenida / Salida de la Guild ${guild.name}:`)
     .addField("Entrada:", "-" + join.join("\n-"))
     .addField("Salida:", "-" + leave.join("\n-"))
-    .setThumbnail(guild.iconURL({size:256}))
+    .setThumbnail(guild.iconURL({ size: 256 }))
     .setColor("BLUE");
-}
 
-module.exports = async (message = new Message(), content) => {
-  const { member, channel, guild } = message;
 
-  if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return undefined;
+module.exports = {
+  execute: async (message = new Message(), content) => {
+    const { member, channel, guild } = message;
 
-  const config = database.get(guild.id);
-  if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración.`);
+    if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return undefined;
 
-  const { joinPhrases, leavePhrases } = config.welcome;
+    const config = database.get(guild.id);
+    if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración.`);
 
-  return await channel.send(phrases(joinPhrases, leavePhrases, guild));
+    const { joinPhrases, leavePhrases } = config.welcome;
+
+    return await channel.send(phrases(joinPhrases, leavePhrases, guild));
+  }
 }
