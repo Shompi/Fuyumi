@@ -4,12 +4,14 @@ const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', '
 
 module.exports = {
   name: "ginfo",
-  description: "Información general del servidor actual",
+  description: "Información general del servidor actual.",
+  usage: "ginfo <Sin Parámetros>",
   nsfw: false,
-  usage: "PREFIXginfo <Sin Parámetros>",
-  execute: async (message = new Message()) => {
+  enabled: true,
+  permissions: "",
+  async execute(message = new Message(), args = new Array()) {
+    const { guild, channel } = message;
     try {
-      const { guild } = message;
 
       const members = await guild.members.fetch();
       const users = members.filter(member => !member.user.bot);
@@ -37,15 +39,15 @@ module.exports = {
         .addField('ID:', guild.id, true)
         .addField('Dueño:', `<@${guild.ownerID}>`, true)
         .addField('Cantidad de Miembros:', `${guild.memberCount} (${users.size} usuarios \| ${bots.size} bots)\n${onlineUsers.size} En Linea 🟢`)
-        .addField('Canales:', `${guild.channels.size} [${guild.channels.filter(ch => ch.type == 'text').size} Texto \| ${guild.channels.filter(ch => ch.type == 'voice').size} Voz \| ${guild.channels.filter(ch => ch.type == 'category').size} Categorias]`)
-        .addField('Roles:', `${guild.roles.size}, Rol más alto: <@&${guild.roles.highest.id}>`)
+        .addField('Canales:', `${guild.channels.cache.size} [${guild.channels.cache.filter(ch => ch.type == 'text').size} Texto \| ${guild.channels.cache.filter(ch => ch.type == 'voice').size} Voz \| ${guild.channels.cache.filter(ch => ch.type == 'category').size} Categorias]`)
+        .addField('Roles:', `${guild.roles.cache.size}, Rol más alto: <@&${guild.roles.highest.id}>`)
         .addField('Región:', guild.region)
         .addField('Creación:', `${gCreatedAt.day} ${gCreatedAt.date} de ${gCreatedAt.month} del ${gCreatedAt.year}`)
         .setThumbnail(guild.iconURL({ size: 512 }))
         .setColor('BLUE')
         .setTimestamp();
 
-      return await message.channel.send(infoEmbed);
+      return await channel.send(infoEmbed);
     }
     catch (error) {
       console.log(error);

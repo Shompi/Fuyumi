@@ -12,7 +12,13 @@ const phrases = (join = new Array(), leave = new Array(), guild) =>
 
 
 module.exports = {
-  execute: async (message = new Message(), content) => {
+  name: "wfrases",
+  description: "Muestra todas las frases de bienvenida configuradas en este servidor.",
+  usage: "wfrases <Sin Parámetros>",
+  nsfw: false,
+  enabled: true,
+  permissions: "",
+  async execute(message = new Message(), args = new Array()) {
     const { member, channel, guild } = message;
 
     if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return undefined;

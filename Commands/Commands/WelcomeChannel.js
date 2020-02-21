@@ -21,29 +21,35 @@ const succeed = (channel = new TextChannel(), prefix) => {
     .setColor("GREEN")
 };
 
-module.exports = async (message = new Message(), content) => {
-  //This command will set a WelcomeChannel to the guildConfigs database.
-  //<Prefix>wchannel [ChannelMention]
+module.exports = {
+  name: "wchannel",
+  description: "Asigna una canal para enviar los **Mensajes de Bienvenida**.",
+  usage: "wchannel [#Mencion del Canal]",
+  nsfw: false,
+  enabled: true,
+  permissions: "",
+  async execute(message = new Message(), args = new Array()) {
 
-  const { author, member, guild, mentions, channel } = message;
-  const config = database.get(guild.id);
+    const { author, member, guild, mentions, channel } = message;
+    const config = database.get(guild.id);
 
-  if (!database.has(guild.id)) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración. WelcomeChannel.js`);
+    if (!database.has(guild.id)) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración. WelcomeChannel.js`);
 
-  //Check Permissions.
-  if (member.hasPermission("ADMINISTRATOR", { checkOwner: true })) {
+    //Check Permissions.
+    if (member.hasPermission("ADMINISTRATOR", { checkOwner: true })) {
 
-    //Check if a channel was mentioned.
-    const mentionedChannel = mentions.channels.first();
-    if (!mentionedChannel) return await channel.send(noChannel(config.prefix));
+      //Check if a channel was mentioned.
+      const mentionedChannel = mentions.channels.first();
+      if (!mentionedChannel) return await channel.send(noChannel(config.prefix));
 
-    //If it was
-    config.welcome.channelID = mentionedChannel.id;
-    config.welcome.enabled = true;
+      //If it was
+      config.welcome.channelID = mentionedChannel.id;
+      config.welcome.enabled = true;
 
-    database.set(guild.id, config);
+      database.set(guild.id, config);
 
-    return await channel.send(succeed(mentionedChannel, config.prefix));
+      return await channel.send(succeed(mentionedChannel, config.prefix));
+    }
+    else return await channel.send(missingPermissions(author));
   }
-  else return await channel.send(missingPermissions(author));
 }

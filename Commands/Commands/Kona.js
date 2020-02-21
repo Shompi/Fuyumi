@@ -9,11 +9,6 @@ const noResults = new MessageEmbed()
   .setDescription('Nota: No puedes hacer una búsqueda con más de 3 tags debido a limitaciones del servidor.')
   .setColor('RED')
 
-const notNSFW = new MessageEmbed()
-  .setTitle(`🛑 ¡Alto ahí!`)
-  .setDescription(`¡Solo puedes utilizar este comando en canales **NSFW**!`)
-  .setColor("RED");
-
 const getRating = (r) => {
   if (r === 'e') return ("Explicito");
   if (r === 'q') return ("Cuestionable");
@@ -21,7 +16,8 @@ const getRating = (r) => {
   return 'Desconocido';
 }
 
-const showpage = async (post = Booru.KonaPost[0], message = new Message(), index, total) => {
+const showpage = (post = Booru.KonaPost[0], message = new Message(), index, total) => {
+  const { author, member, channel } = message;
   const newRating = getRating(post.rating);
   const tags = post.tags.split(" ").slice(0, 10).join(", ").replace(/_/g, " ");
 
@@ -29,27 +25,33 @@ const showpage = async (post = Booru.KonaPost[0], message = new Message(), index
     .setAuthor(`->Full Resolución<-`, null, post.jpeg_url)
     .setDescription(`**Resolución:** ${post.sample_width}x${post.sample_height} **Rating:** ${newRating}\n**Tags:** ${tags}`)
     .setImage(post.sample_url)
-    .setFooter(`${message.author.tag} Konachan.com, [${index + 1} de ${total}]`, message.author.displayAvatarURL({ size: 64 }))
+    .setFooter(`${author.tag} Konachan.com, [${index + 1} de ${total}]`, author.displayAvatarURL({ size: 64 }))
     .setTimestamp();
 
-  if (message.channel.type == 'dm') {
+  if (channel.type == 'dm') {
     embed.setColor('BLUE');
   } else {
-    embed.setColor(message.member.displayColor)
+    embed.setColor(member.displayColor)
   }
 
   return embed;
 }
 
+const errorEmbed = new MessageEmbed()
+  .setTitle("❌ Hubo un error al ejecutar este comando :(")
+  .setColor("RED");
 
 module.exports = {
-  name:"kona",
+  name: "kona",
   description: "Busca imágenes en konachan.com con tags que sean válidos en la página.",
+  usage: "kona [tags]",
   nsfw: true,
-  execute: async (message = new Message()) => {
-    try {
-      const { member, channel, author } = message;
+  enabled: true,
+  permissions: "",
+  async execute(message = new Message(), args = new Array()) {
+    const { channel, author } = message;
 
+    try {
       let pageindex = 0;
       let content = message.content.split(" ").slice(1).join(" ");
       let query = content.replace(/\s*\+\s*/g, "+").replace(/\s+/g, "_");
@@ -88,9 +90,9 @@ module.exports = {
         })
         .on('end', async () => await msg.reactions.removeAll());
     }
-    catch (error) {
-      console.log(error);
+    catch (e) {
+      console.log(e);
+      await message.reply(errorEmbed);
     }
-
   }
 }

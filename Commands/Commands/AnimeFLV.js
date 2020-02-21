@@ -4,49 +4,10 @@ const episodesURL = 'https://animeflv.net/ver/';
 const animeURL = 'https://animeflv.net/anime/';
 const { SearchResponse } = require('../../Classes/AnimeFLV');
 const { Message, MessageEmbed } = require('discord.js');
-module.exports = async (message = new Message(), search = null) => {
-  if (!search) return await message.channel.send("No has ingresado ninguna palabra para realizar la búsqueda.");
-  let query = search.replace(/\s+/g, '%20');
 
-  let response = new SearchResponse();
+const EmbedMaker = (message = new Message(), page) => {
 
-  response = await fetch(baseURL + query).then(res => res.json()).catch(console.error);
-  if (response.search.length == 0) {
-    return await message.channel.send("No he encontrado ningún Anime con ese nombre.");
-  }
-
-  if (response.search.length == 1) return await message.channel.send(await EmbedMaker(message, response.search[0]));
-  else {
-    let pageindex = 0;
-    const embed = await EmbedMaker(message, response.search[pageindex]);
-
-    const sendedMessage = await message.channel.send(embed);
-    await sendedMessage.react('⬅');
-    await sendedMessage.react('➡');
-    const filter = (reaction, user) => reaction.emoji.name === '⬅' || reaction.emoji.name === '➡' && user.id === message.author.id;
-
-    const collector = sendedMessage.createReactionCollector(filter, { time: 60000 });
-
-    collector.on('collect', async (reaction, user) => {
-      if (reaction.emoji.name === '➡') {
-        pageindex++;
-        if (pageindex == response.search.length) pageindex = 0;
-        const nextPage = await EmbedMaker(message, response.search[pageindex])
-        await sendedMessage.edit(null, { embed: nextPage });
-      }
-      if (reaction.emoji.name === '⬅') {
-        pageindex--;
-        if (pageindex < 0) pageindex = response.search.length - 1;
-        const nextPage = await EmbedMaker(message, response.search[pageindex])
-        await sendedMessage.edit(null, { embed: nextPage });
-      }
-    })
-  }
-}
-
-const EmbedMaker = async (message = new Message(), page) => {
-
-  const embed = new MessageEmbed()
+  return new MessageEmbed()
     .setTitle(`${page.title}\nRating: ${page.rating} ⭐`)
     .setColor(message.member.displayColor)
     .setDescription(
@@ -61,5 +22,55 @@ const EmbedMaker = async (message = new Message(), page) => {
     .setFooter("<- API de Chris Michael Perez Santiago en Github", "https://avatars1.githubusercontent.com/u/21962584?s=460&v=4")
     .setThumbnail(page.poster);
 
-  return embed;
+}
+
+
+module.exports = {
+  name: "flv",
+  description: "Busca un animé en el catálogo de AnimeFLV.net",
+  usage: "flv [Título del animé]",
+  nsfw: false,
+  enabled: true,
+  permissions: "",
+  async execute(message = new Message(), args = new Array()) {
+
+    const { channel, author } = message;
+    let search = args.join(" ");
+
+    if (!search) return await channel.send("No has ingresado ninguna palabra para realizar la búsqueda.");
+    let query = search.replace(/\s+/g, '%20');
+
+    let response = new SearchResponse();
+
+    response = await fetch(baseURL + query).then(res => res.json()).catch(console.error);
+    if (response.search.length == 0) return await channel.send("No he encontrado ningún Anime con ese nombre.");
+
+    if (response.search.length == 1) return await channel.send(EmbedMaker(message, response.search[0]));
+    else {
+      let pageindex = 0;
+
+      const sendedMessage = await channel.send(EmbedMaker(message, response.search[pageindex]));
+      await sendedMessage.react('⬅');
+      await sendedMessage.react('➡');
+
+      const filter = (reaction, user) => reaction.emoji.name === '⬅' || reaction.emoji.name === '➡' && user.id === author.id;
+
+      const collector = sendedMessage.createReactionCollector(filter, { time: 60000 });
+
+      collector.on('collect', async (reaction, user) => {
+        if (reaction.emoji.name === '➡') {
+          pageindex++;
+          if (pageindex == response.search.length) pageindex = 0;
+          const nextPage = await EmbedMaker(message, response.search[pageindex])
+          await sendedMessage.edit(null, { embed: nextPage });
+        }
+        if (reaction.emoji.name === '⬅') {
+          pageindex--;
+          if (pageindex < 0) pageindex = response.search.length - 1;
+          const nextPage = await EmbedMaker(message, response.search[pageindex])
+          await sendedMessage.edit(null, { embed: nextPage });
+        }
+      });
+    }
+  }
 }

@@ -34,12 +34,15 @@ const succeed = new MessageEmbed()
 module.exports = {
   name: "waddfrase",
   description: "Añade una frase de bienvenida. Si hay más de una frase configurada, se escogerá una al **azar**.",
+  usage: "waddfrase [frase]",
   nsfw: false,
-  usage: "PREFIXwaddfrase [frase]",
-  execute: async (message = new Message(), phrase) => {
+  enabled: true,
+  permissions: "",
+  async execute(message = new Message(), args = new Array()) {
     const { member, guild, channel, author } = message;
     const configs = database.get(guild.id);
     if (!configs) return console.log(`Por alguna razón la guild ${guild.name} no tenia entrada de configuración. AddPhrase.js`);
+    const phrase = args.join(" ");
 
     if (member.hasPermission("ADMINISTRATOR", { checkOwner: true })) {
       if (phrase) {

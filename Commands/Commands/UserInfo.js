@@ -21,12 +21,17 @@ const userinfo = (user, mSince) =>
 **Discriminador:** ${user.discriminator}
 **Creación de la Cuenta:** ${mSince.day} ${mSince.date} de ${mSince.month} del ${mSince.year}`;
 
+
 module.exports = {
   name: "uinfo",
-  description: "Muestra la información de un usuario en específico.",
-  usage: "PREFIXuinfo [@mención de usuario]",
-  execute: async (message = new Message()) => {
-    const { guild, mentions } = message;
+  description: "Muestra la información general de un usuario en específico. Si no se menciona a ningún usuario, se mostrará la información del autor del mensaje.",
+  usage: "uinfo (@Mención de usuario)",
+  nsfw: false,
+  enabled: true,
+  permissions: "",
+
+  async execute(message = new Message(), args = new Array()) {
+    const { guild, mentions, channel } = message;
     try {
       const user = mentions.users.first() || message.author;
       const member = guild.member(user) || message.member;
@@ -49,7 +54,7 @@ module.exports = {
       const memberInfo = memberinfo(member, gSince);
       const userInfo = userinfo(user, mSince);
 
-      return await message.channel.send(infoEmbed(user, member, guild, memberInfo, userInfo));
+      return await channel.send(infoEmbed(user, member, guild, memberInfo, userInfo));
     } catch (error) {
       console.log(error);
     }

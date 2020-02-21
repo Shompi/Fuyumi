@@ -22,23 +22,34 @@ const succeed = new MessageEmbed()
   .setDescription("¡La frase ha sido quitada exitosamente!")
   .setColor("GREEN");
 
-module.exports = async (message = new Message(), phrase) => {
-  const { member, channel, guild, author } = message;
+module.exports = {
+  name: "wremfrase",
+  description: "Quita una frase de bienvenida.",
+  usage: "wremfrase [frase] (Debe ser exactamente igual).",
+  nsfw: false,
+  enabled: true,
+  permissions: "",
 
-  if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return undefined;
+  async execute(message = new Message(), args = new Array()) {
+    const { member, channel, guild, author } = message;
 
-  const config = database.get(guild.id);
-  if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tiene entrada de configuración.`);
+    if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return undefined;
 
-  if (!phrase) return await channel.send(noPhrase(author, config.prefix));
+    const config = database.get(guild.id);
+    if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tiene entrada de configuración.`);
 
-  const { joinPhrases } = config.welcome;
+    const phrase = args.join(" ");
+    if (!phrase) return await channel.send(noPhrase(author, config.prefix));
 
-  if (!joinPhrases.includes(phrase)) return await channel.send(notFound(author));
-  else {
-    const updatedPhrases = joinPhrases.filter(ph => ph !== phrase);
+    const { joinPhrases } = config.welcome;
 
-    database.set(guild.id, updatedPhrases, "welcome.joinPhrases");
-    return await channel.send(succeed);
+    if (!joinPhrases.includes(phrase)) return await channel.send(notFound(author));
+    else {
+
+      const updatedPhrases = joinPhrases.filter(ph => ph !== phrase);
+
+      database.set(guild.id, updatedPhrases, "welcome.joinPhrases");
+      return await channel.send(succeed);
+    }
   }
-} 
+}

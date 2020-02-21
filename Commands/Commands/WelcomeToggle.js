@@ -20,24 +20,29 @@ const toggled = (config, client = new Client()) => {
     .setColor(`${enabled ? "GREEN" : "RED"}`)
 }
 
-module.exports = async (message = new Message(), content) => {
-  //In this command, content is irrelevant.
-  const { author, guild, member, channel, client } = message;
+module.exports = {
+  name: "wtoggle",
+  description: "Activa / Desactiva los **Mensajes de Bienvenida**.",
+  usage: "wtoggle <Sin Parámetros>",
+  nsfw: false,
+  enabled: true,
+  permissions: "",
+  async execute(message = new Message(), args = new Array()) {
+    //In this command, content is irrelevant.
+    const { author, guild, member, channel, client } = message;
 
-  //Check Permissions.
-  if (!member.hasPermission("ADMINISTRATOR", { checkOwner: true })) return await channel.send(missingPermissions(author));
+    //Check Permissions.
+    if (!member.hasPermission("ADMINISTRATOR", { checkOwner: true })) return await channel.send(missingPermissions(author));
 
+    const config = database.get(guild.id);
+    if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración. WelcomeToggle.js`);
 
-  const config = database.get(guild.id);
-  if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración. WelcomeToggle.js`);
+    //This basically means, if it was true, then its changed to false.
+    //If it was false, then change it to true.
+    config.welcome.enabled = config.welcome.enabled ? false : true;
 
-  
-  //This basically means, if it was true, then its changed to false.
-  //If it was false, then change it to true.
-  config.welcome.enabled = config.welcome.enabled ? false : true;
-
-  database.set(guild.id, config)
-  console.log(`Mensajes de bienvenida ${config.welcome.enabled ? "Activados" : "Desactivados"} en la guild ${guild.name}`);
-  return await channel.send(toggled(config, client));
-
+    database.set(guild.id, config)
+    console.log(`Mensajes de bienvenida ${config.welcome.enabled ? "Activados" : "Desactivados"} en la guild ${guild.name}`);
+    return await channel.send(toggled(config, client));
+  }
 }

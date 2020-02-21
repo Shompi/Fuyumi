@@ -9,6 +9,7 @@ module.exports = {
   tags: new enmap({name:'tags'}),
   webhooks: new enmap({name:'webhooks'}),
   votes: new enmap({name:'votes'}),
+  votesCooldown: new enmap({name: 'cooldown'}),
   osu: new enmap({name:"osu"}),
   guildConfigs: new enmap({name:"guildconfigs"})
 }

@@ -1,9 +1,9 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
-const fs = require('fs'); 
-const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
 Muki.commands = new Discord.Collection();
+const fs = require('fs');
+const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
 
 for (const file of commandFiles) {
   const command = require(`./Commands/Commands/${file}`);
@@ -23,15 +23,27 @@ let australGamingMemeHook = new Discord.Webhook();
 let NASAWebHook = new Discord.Webhook();
 let owoCooldown = false;
 
-Muki.on('message', async message => {
+const notNSFW = new Discord.MessageEmbed()
+  .setTitle(`🛑 ¡Alto ahí!`)
+  .setDescription(`¡Solo puedes utilizar este comando en canales **NSFW**!`)
+  .setColor("RED");
+
+const cmdNotEnabled = (author) =>
+  new Discord.MessageEmbed()
+    .setTitle(`🔌 ${author.username}`)
+    .setDescription("Este comando esta deshabilitado globalmente.")
+    .setColor('RED');
+
+
+Muki.on('message', async (message) => {
   try {
-    const { author, member, guild, channel, mentions } = message;
+    const { author, guild, channel, mentions } = message;
 
     if (!guild) return console.log(`${author.tag} ha enviado un mensaje através de un DM.`);
 
     //Pokecord messages. Mensajes especificos de bots.
     if (author.id === '365975655608745985' && guild.id === "537484725896478733") {
-      message.delete({ timeout: 10000, reason: "pokecord" });
+      message.delete({ timeout: 10000, reason: "Pokecord" });
     }
 
     if (author.bot) return;
@@ -49,74 +61,31 @@ Muki.on('message', async message => {
       if (name.endsWith(".mp4") || name.endsWith(".webm")) embed.attachFiles([url])
       else embed.setImage(url);
 
-      await australGamingMemeHook.send(null, { embeds: [embed], avatarURL: guild.iconURL(), username: guild.name }).catch(console.error);
-      await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: guild.iconURL(), username: guild.name }).catch(console.error);
-      return;
+      await australGamingMemeHook.send(null, { embeds: [embed], avatarURL: guild.iconURL(), username: guild.name });
+      return await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: guild.iconURL(), username: guild.name });
     }
-
 
     const prefix = database.guildConfigs.get(guild.id).prefix;
 
-    if (mentions.has(Muki.user)) {
-      const embed = new Discord.MessageEmbed()
+    if (mentions.has(Muki.user))
+      return await channel.send(new Discord.MessageEmbed()
         .setColor("BLUE")
-        .setDescription(`Mi prefijo en **${guild.name}** es: **${prefix}**`);
-      return await channel.send(embed);
-    }
+        .setDescription(`Mi prefijo en **${guild.name}** es: **${prefix}**`));
 
-    const commandName = message.content.split(" ")[0].replace(prefix, "");
-    const content = message.content.split(" ").slice(1).join(" ");
+
+    const args = message.content.slice(prefix.length).split(/ +/);
+    const commandName = args.shift().toLowerCase();
 
     //Comandos de usuario con prefijo:
     if (message.content.startsWith(prefix)) {
-      if(!Muki.commands)
-      //Check admin / owner rights in every command.
-      if (command == 'prefix') return await Shompi.GuildConfigs.Prefix(message, content);
-      if (command == 'waddfrase') return await Shompi.GuildConfigs.AddWelcomePhrase(message, content);
-      if (command == 'wremfrase') return await Shompi.GuildConfigs.RemoveWelcomePhrase(message, content);
-      if (command == 'wchannel') return await Shompi.GuildConfigs.WelcomeChannel(message, content);
-      if (command == 'wtoggle') return await Shompi.GuildConfigs.ToggleWelcomeChannel(message, content);
-      if (command == 'wfrases') return await Shompi.GuildConfigs.AllPhrases(message, content);
 
-      /*-----------------Guild info-----------------*/
-      if (command == 'guildinfo') return await Shompi.GuildInfo.Info.GuildInfo(message);
-      if (command == 'uinfo') return await Shompi.GuildInfo.Info.UserInfo(message);
-      if (command == 'rinfo') return await Shompi.GuildInfo.RoleInfo(message);
+      const command = Muki.commands.get(commandName);
+      if (!command.enabled) return await channel.send(cmdNotEnabled(author));
+      if (command.nsfw && !channel.nsfw) return await channel.send(notNSFW);
+      
+    } else {
 
-      /*-----------------ANIME FLV-----------------*/
-      if (command == 'anime') return await Shompi.AnimeFLV.Search(message, content);
-
-      /*------------------Vote Command------------------*/
-      if (command == 'vote') return await Shompi.Vote(message, content);
-
-      /*------------------MUSIC PLAYER------------------*/
-      if (command == 'volume') return await Shompi.Music.Volume(message, content);
-      //if (command == 'play') return await Shompi.Music.Play(message, content); breaks the bot
-      if (command == 'moan') return await Shompi.Music.Moan(message);
-
-      //--------------------------------OSU API--------------------------------//
-      if (command === 'ostats') return await Shompi.Osu.osuProfile(content, channel);
-      if (command === 'olast') return await Shompi.Osu.osuLastPlay(content, channel);
-      if (command === 'otop') return await Shompi.Osu.osuTops(content, channel);
-
-      //-------------------------------CURRENCIES-------------------------------//
-      if (command === 'moneda') return await Shompi.Currencies(message, content);
-
-      //----------------------Enlace de invitacion del bot----------------------//
       if (command === "invite") return await Muki.generateInvite(607177824).then(invite => channel.send(invite));
-
-      //Guild Management
-      if (command == "region") {
-        if (member.roles.cache.has('539707811450322944') || member.roles.cache.has('561794823812808715') || guild.ownerID === author.id) {
-          if (!guild.me.hasPermission('MANAGE_GUILD')) return await channel.send("Necesito el permiso 'Administrar Servidor' para poder mover de región la Guild.");
-          return await Shompi.ChangeRegion(message);
-        } else return await channel.send(`❌ Lo siento ${author}, no tienes permiso para utilizar este comando.`);
-      }
-
-      if (command == "myAvatar") {
-        const embed = new Discord.MessageEmbed().setImage(author.displayAvatarURL({ size: 1024 })).setColor('BLUE');
-        return await channel.send(embed);
-      }
 
       if (command == 'emoji') {
         const emoji = Muki.emojis.cache.find(emoji => emoji.name == content);
@@ -124,38 +93,8 @@ Muki.on('message', async message => {
         await message.delete({ timeout: 1000, reason: 'emoji command' })
         return await channel.send(`${emoji}`);
       }
-
-      //----------------------NSFW / Imagenes----------------------//
-      if (command === "safe") return await Shompi.Boorus.KonaSafe(message);
-
-      //Boorus tag search
-      if (command === 'btag') {
-        if (!content) {
-          const usage = new Discord.MessageEmbed()
-            .setTitle("Comando 'btag' (Booru Tags)")
-            .setColor('BLUE')
-            .setDescription('Debes especificar un tag para buscar.')
-            .addField('Modo de uso:', '\`muki!tag <tagAqui>\`')
-            .addField('Ejemplo:', '\`muki!tag kancolle\`')
-
-          return await channel.send(usage);
-        }
-        return await Shompi.Boorus.TagSearch(message, content);
-      }
-
-      //Nekos.life +18
       if (NekosNSFWEndpoints.includes(command)) return await Shompi.Nekos(message, command);
-
-      //Boorus +18
-      if (command === "dere") return await Shompi.Boorus.Yandere(message);
-      if (command === "kona") return await Shompi.Boorus.Konachan(message);
     }
-
-    /*--------------------------COMANDOS SIN PREFIJO----------------------------*/
-    if (message.content.startsWith("-Discord")) return await Shompi.StatusPage.Discord(channel);
-
-    //---------------------------------Discord.js----------------------------------//
-    if (message.content.startsWith(".docs")) return await Shompi.DiscordJS(message);
 
     if (message.content.toLowerCase().includes("owo") && !owoCooldown) {
       await channel.send("òwó");
