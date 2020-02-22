@@ -6,7 +6,7 @@ Muki.EventHandlers = require('./Commands/EventHandlers');
 Muki.NASA = require('./Commands/NASA/POTD');
 const fs = require('fs');
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
-const auth = require('./Keys/auth').mukiDev;
+const auth = require('./Keys/auth').stable;
 
 for (const file of commandFiles) {
   const command = require(`./Commands/Commands/${file}`);
