@@ -43,6 +43,7 @@ const showpage = (post = Booru.KonaPost[0], message = new Message(), index, tota
 
 module.exports = {
   name: "konasafe",
+  filename: __filename,
   description: "Busca imágenes en konachan.net (Safe for Work) con tags que sean válidos en la página.",
   usage: "konasafe [tags]",
   nsfw: false,

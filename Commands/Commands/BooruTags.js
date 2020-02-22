@@ -31,6 +31,7 @@ const getTagType = (type) => {
 
 module.exports = {
   name: "btags",
+  filename: __filename,
   description: "Booru Tag. Busca un tag en la base de datos de **Yandere.com**",
   usage: "btags [tag]",
   nsfw: false,

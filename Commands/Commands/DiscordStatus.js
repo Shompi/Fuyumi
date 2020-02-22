@@ -10,6 +10,7 @@ const connectionError = new MessageEmbed()
 
 module.exports = {
   name: "dstatus",
+  filename: __filename,
   description: "Muestra el estado de la API de Discord (desde statuspage.io).",
   usage: "dstatus <Sin Parámetros>",
   nsfw: false,

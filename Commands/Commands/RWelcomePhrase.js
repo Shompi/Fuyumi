@@ -24,6 +24,7 @@ const succeed = new MessageEmbed()
 
 module.exports = {
   name: "wremfrase",
+  filename: __filename,
   description: "Quita una frase de bienvenida.",
   usage: "wremfrase [frase] (Debe ser exactamente igual).",
   nsfw: false,

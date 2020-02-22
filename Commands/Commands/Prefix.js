@@ -27,6 +27,7 @@ const succeed = (prefix) => {
 
 module.exports = {
   name: "prefix",
+  filename: __filename,
   description: "Cambia mi prefijo en este servidor.",
   usage: "prefix [Nuevo Prefijo]",
   nsfw: false,

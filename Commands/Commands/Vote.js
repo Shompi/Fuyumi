@@ -10,6 +10,7 @@ const noVoteImage = 'https://puu.sh/EPe4V/e12a2b7355.png';
 
 module.exports = {
   name: "vote",
+  filename: __filename,
   description: "Inicia una votación en el servidor. Solo se permite una votación en curso.",
   usage: "vote [Tiempo en minutos] [Pregunta / Propuesta]",
   nsfw: false,

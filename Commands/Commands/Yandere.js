@@ -34,18 +34,20 @@ const showpage = async (post = Booru.YanderePost[0], message = new Message(), in
 
 module.exports = {
   name: "dere",
-  description: "Busca imágenes en **Yandere.com**.",
+  filename: __filename,
+  description: "Busca imágenes en **Yande.re**.",
   usage: "dere [tags]",
   nsfw: true,
   enabled: true,
   aliases: [],
   permissions: [],
+
   async execute(message = new Message(), args = new Array()) {
     const { channel, author } = message;
     try {
       let content = message.content.split(" ").slice(1).join(" ");
 
-      if (content.split(/\s*\+\s*/g).length >= 3) return await message.reply('lo siento, solo puedes juntar máximo 3 tags para la búsqueda.');
+      if (content.split(/\s*\+\s*/g).length >= 3) return await message.reply('lo siento, solo puedes usar un máximo de 3 tags para la búsqueda.');
 
       let query = content.replace(/\s*\+\s*/g, "+").replace(/\s+/g, "_");
       let blacklist = '+-loli'; //Tags blacklist

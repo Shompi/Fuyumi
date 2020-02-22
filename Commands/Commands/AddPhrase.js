@@ -33,6 +33,7 @@ const succeed = new MessageEmbed()
 
 module.exports = {
   name: "waddfrase",
+  filename: __filename,
   description: "Añade una frase de bienvenida. Si hay más de una frase configurada, se escogerá una al **azar**.",
   usage: "waddfrase [frase]",
   nsfw: false,

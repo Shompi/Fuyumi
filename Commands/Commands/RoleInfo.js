@@ -19,6 +19,7 @@ const roleInfo = (role, guild) =>
 
 module.exports = {
   name: "roleinfo",
+  filename: __filename,
   description: "Muestra información general de un <Rol> de este servidor.",
   usage: "roleinfo [@Mención de Rol]",
   nsfw: false,

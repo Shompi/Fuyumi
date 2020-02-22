@@ -27,6 +27,7 @@ const EmbedMaker = (message = new Message(), page) => {
 
 module.exports = {
   name: "flv",
+  filename: __filename,
   description: "Busca un animé en el catálogo de AnimeFLV.net",
   usage: "flv [Título del animé]",
   nsfw: false,

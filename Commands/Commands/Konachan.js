@@ -43,6 +43,7 @@ const errorEmbed = new MessageEmbed()
 
 module.exports = {
   name: "kona",
+  filename: __filename,
   description: "Busca imágenes en konachan.com con tags que sean válidos en la página.",
   usage: "kona [tags]",
   nsfw: true,

@@ -5,6 +5,7 @@ const ChannelTypes = ['text', 'voice'];
 
 module.exports = {
   name: "newchannel",
+  filename: __filename,
   description: "Crea un nuevo canal en este servidor. Los separadores **|** son **OBLIGATORIOS**.",
   usage: "newchannel [Nombre] | [Tipo: texto/voz] | (Canal / Categoria Padre)",
   nsfw: false,

@@ -1,6 +1,7 @@
 //Nekos.life API
 const { Message, MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
+const database = require("../LoadDatabase").guildConfigs;
 
 const ENDPOINTS =
   ['femdom', 'tickle',
@@ -43,15 +44,16 @@ const ErrorEmbed = (response) => {
     .setDescription(`Codigo de error: ${response.status}`);
 }
 
-const imageEmbed = (author, data) => {
+const imageEmbed = (author, data, endpoint) => {
   return new MessageEmbed()
     .setImage(data.url)
     .setColor("LUMINOUS_VIVID_PINK")
-    .setFooter(`${author.tag} - Powered by Nekos.life`, author.displayAvatarURL({ size: 128 }));
+    .setFooter(`${author.tag} - Powered by Nekos.life | ${endpoint}`, author.displayAvatarURL({ size: 128 }));
 }
 
 module.exports = {
   name: "nekos",
+  filename: __filename,
   description: "Envía una imágen desde Nekos.life",
   nsfw: true,
   enabled: true,
@@ -59,9 +61,10 @@ module.exports = {
   permissions: ["SEND_MESSAGES"],
 
   async execute(message = new Message(), args = new Array()) {
-    //Check if channel is NSFW
-    const { channel, author } = message;
-    const endpoint = args.shift() || "neko";
+
+    const { channel, author, content, guild } = message;
+    const prefix = database.get(guild.id, "prefix");
+    const endpoint = content.slice(prefix.length) || "neko";
 
     try {
       let response = await fetch(`https://nekos.life/api/v2/img/${endpoint}`);
@@ -69,7 +72,7 @@ module.exports = {
 
       const data = await response.json();
 
-      return await channel.send(imageEmbed(author, data));
+      return await channel.send(imageEmbed(author, data, endpoint));
 
     } catch (err) {
       console.log("Ha ocurrido un error en Nekos.life");

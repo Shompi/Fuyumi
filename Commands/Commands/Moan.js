@@ -9,6 +9,7 @@ const { Message } = require('discord.js');
 
 module.exports = {
   name: "moan",
+  filename: __filename,
   description: "😏",
   usage: "moan <Sin Parámetros>",
   nsfw: false,

@@ -13,6 +13,7 @@ const phrases = (join = new Array(), leave = new Array(), guild) =>
 
 module.exports = {
   name: "wfrases",
+  filename: __filename,
   description: "Muestra todas las frases de bienvenida configuradas en este servidor.",
   usage: "wfrases <Sin Parámetros>",
   nsfw: false,

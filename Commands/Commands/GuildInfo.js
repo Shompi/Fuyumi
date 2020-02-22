@@ -4,6 +4,7 @@ const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', '
 
 module.exports = {
   name: "ginfo",
+  filename: __filename,
   description: "Información general del servidor actual.",
   usage: "ginfo <Sin Parámetros>",
   nsfw: false,

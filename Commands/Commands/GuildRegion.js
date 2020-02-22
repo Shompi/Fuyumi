@@ -1,6 +1,8 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message, MessageEmbed, Collection } = require('discord.js');
 const voiceRegions = ['eu-central', 'india', 'london', 'japan', 'amsterdam', 'brazil', 'us-west', 'hongkong', 'southafrica', 'sydney', 'europe', 'singapore', 'us-central', 'eu-west', 'dubai', 'us-south', 'us-east', 'frankfurt', 'russia']
-let cooldown = false;
+const cooldowns = new Collection();
+
+
 
 const missingPermissions = (permission) =>
   new MessageEmbed()
@@ -13,19 +15,27 @@ const cooldownEmbed = new MessageEmbed()
   .setDescription(`Debes esperar al menos **5** segundos antes de volver a usar este comando!`)
   .setColor("BLUE");
 
+const noMemberPermissions = (author) =>
+  new MessageEmbed()
+    .setTitle(`❌ Permisos Insuficientes.`)
+    .setDescription(`Lo siento ${author}, debes tener un rol con el permiso "GESTIONAR SERVIDOR" para utilizar este comando.`)
+    .setColor("RED")
+    .setFooter("ERROR: MANAGE_GUILD");
+
 module.exports = {
   name: "region",
-  description: "Mueve la región de voz del servidor. Ambos parámetros son opcionales, pero solo puede haber una **Razón** si se especifica una **Región**.",
+  filename: __filename,
+  description: "Mueve la región de voz del servidor.\nAmbos parámetros son opcionales, pero solo puede haber una **Razón** si se especifica una **Región**.",
   usage: "region (Región) (Razón)",
   nsfw: false,
   enabled: true,
   aliases: [],
   permissions: ["MANAGE_GUILD"],
   async execute(message = new Message(), args = new Array()) {
-    const { guild, attachments, author } = message;
+    
+    const { guild, attachments, author, member } = message;
+    if (!member.hasPermission("MANAGE_GUILD", { checkAdmin: true, checkOwner: true })) return await noMemberPermissions(author);
     if (!guild.me.hasPermission('MANAGE_GUILD', { checkAdmin: true })) return await message.channel.send(missingPermissions(this.permissions));
-
-    if (cooldown) return await message.reply(cooldownEmbed);
 
     let region = args.shift().toLowerCase(), reason = args.join(" ");
     let _guild, image = null;
@@ -37,10 +47,6 @@ module.exports = {
       if (guild.region == 'brazil') _guild = await guild.setRegion('us-east', author.tag).catch(console.error);
       else _guild = await guild.setRegion('brazil', author.tag).catch(console.error);
 
-      cooldown = true;
-      setTimeout(() => {
-        cooldown = false;
-      }, 5000, cooldown);
 
 
       const embed = new MessageEmbed()

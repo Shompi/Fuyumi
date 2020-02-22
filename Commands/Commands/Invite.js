@@ -8,6 +8,7 @@ const invitation = (invite) =>
 
 module.exports = {
   name: "invite",
+  filename: __filename,
   description: "Enlace de invitación para invitarme a otros servidores.",
   usage: "invite <Sin Parámetros>",
   enabled: true,

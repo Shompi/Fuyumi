@@ -2,6 +2,7 @@ const { Message } = require('discord.js')
 
 module.exports = {
   name: "volume",
+  filename: __filename,
   description: "Modifica el volumen del bot.",
   usage: "volume [Número 1-25]",
   nsfw: false,

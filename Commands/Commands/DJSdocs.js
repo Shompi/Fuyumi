@@ -3,6 +3,7 @@ const fetch = require('node-fetch');
 
 module.exports = {
   name: "docs",
+  filename: __filename,
   description: "Documentación de Discord.js",
   usage: "docs [Query string] [stable/master/commando]",
   nsfw: false,

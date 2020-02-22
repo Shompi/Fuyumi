@@ -22,6 +22,7 @@ const toggled = (config, client = new Client()) => {
 
 module.exports = {
   name: "wtoggle",
+  filename: __filename,
   description: "Activa / Desactiva los **Mensajes de Bienvenida**.",
   usage: "wtoggle <Sin Parámetros>",
   nsfw: false,
