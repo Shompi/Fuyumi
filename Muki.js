@@ -9,7 +9,6 @@ const auth = require('./Keys/auth').mukiDev;
 
 for (const file of commandFiles) {
   const command = require(`./Commands/Commands/${file}`);
-  console.log(command);
   Muki.commands.set(command.name, command);
 }
 
@@ -36,7 +35,7 @@ const cmdNotEnabled = (author) =>
 const noCommandFound = (author) =>
   new Discord.MessageEmbed()
     .setTitle(`🔎 ERROR: 404`)
-    .setDescription(`${author}, ¡no tengo un comando con ese nombre!`)
+    .setDescription(`**${author}**, ¡No tengo un comando con ese nombre!`)
     .setColor("YELLOW");
 
 
@@ -83,18 +82,21 @@ Muki.on('message', async (message) => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
+
     if (message.content.startsWith(prefix)) {
 
-      let command = Muki.commands.get(commandName);
-      if (!command) command = Muki.commands.find(c => c.aliases.includes(commandName));
-      console.log(command);
+      const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
+      if (!command) return await channel.send(noCommandFound(author));
+
       if (!command.enabled) return await channel.send(cmdNotEnabled(author));
       if (command.nsfw && !channel.nsfw) return await channel.send(notNSFW);
 
       return command.execute(message, args);
+
     } else {
       //Other stuff im trying to plan.
     }
+
 
   } catch (error) {
     console.log(error);
