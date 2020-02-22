@@ -6,11 +6,10 @@
  * @endpoint https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY
  * @response JSON
  * Nasa hook:
- * ID: 643700164602626058
+ * ID: 
  * Token:
  */
 const { MessageEmbed, Webhook } = require('discord.js');
-const NASA = require('../../Classes/NASA');
 const { NASAkey } = require('../../Keys/auth');
 const endpoint = `https://api.nasa.gov/planetary/apod?api_key=${NASAkey}`
 const fetch = require('node-fetch');
