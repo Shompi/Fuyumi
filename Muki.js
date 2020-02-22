@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 Muki.commands = new Discord.Collection();
 Muki.EventHandlers = require('./Commands/EventHandlers');
-Muki.NASA.POTD = require('./Commands/NASA/POTD');
+Muki.NASA = require('./Commands/NASA/POTD');
 const fs = require('fs');
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
 const auth = require('./Keys/auth').mukiDev;
@@ -273,9 +273,9 @@ Muki.on('ready', async () => {
   }
 
   setImmediate(async () => {
-    await Muki.NASA.POTD(NASAWebHook).catch(console.error);
+    await Muki.NASA(NASAWebHook).catch(console.error);
     setInterval(async () => {
-      await Muki.NASA.POTD(NASAWebHook).catch(console.error);
+      await Muki.NASA(NASAWebHook).catch(console.error);
     }, 1000 * 60 * 60);
   });
 });
