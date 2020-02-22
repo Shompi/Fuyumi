@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
 Muki.commands = new Discord.Collection();
 Muki.EventHandlers = require('./Commands/EventHandlers');
+Muki.NASA.POTD = require('./Commands/NASA/POTD');
 const fs = require('fs');
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
 const auth = require('./Keys/auth').mukiDev;
