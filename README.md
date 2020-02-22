@@ -10,17 +10,18 @@ I uploaded the code so its easier for me to code it when im not in home.
 
 ### What does this bot do?
 
-* Well, it just helps me with the management of my guild, and also it can show images from different boorus such as Yande.re, Konachan, and also from nekos.life using their api.
+* Various things, very random tho. I suggest you NOT to try and run it yourself.
 
 ### What is this repository for? ###
 
 * Maintain version control for Muki
-* Version 3.0.0
+* Version 4.0.0 (BETA)
 
 ### How do I get set up? ###
-* You need node.js 12+ and git bash, then run:
-* open bash and clone this repository, then:
-* `npm install --save` in the repository folder.
+* You need node.js 12+ and git bash.
+* Open bash and clone this repository.
+* `npm install` in the repository folder.
+* You will need to add the tokens and all that by yourself.
 
 ### Who do I talk to? ###
 
