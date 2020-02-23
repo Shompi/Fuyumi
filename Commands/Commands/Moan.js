@@ -52,7 +52,7 @@ const PlayMoan = (connection = new VoiceConnection(), { guild }) => {
   const clips = fs.readdirSync("Commands/Music/Moans").filter(file => file.endsWith('.mp3'));
   const clip = clips[Math.floor(Math.random() * clips.length)];
 
-  const dispatcher = connection.play(`Commands/Music/Moans/${clip}`);
+  const dispatcher = connection.play(`Commands/Music/Moans/${clip}`, {bitrate: 96000, volume: 0.75, highWaterMark: 1<<10});
   
   dispatcher.on('end', () => {
     console.log(`Ended`);

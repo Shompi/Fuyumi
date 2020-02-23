@@ -37,10 +37,11 @@ module.exports = {
 
     if (guild.voice.connection) {
       guild.voice.connection.disconnect();
+      return await channel.send('👋');
+
       /*if (guild.voice.connection.dispatcher) {
         guild.voice.connection.dispatcher.end();
       } */
     }
-    return await channel.send('👋');
   }
 }
