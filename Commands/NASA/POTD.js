@@ -15,6 +15,18 @@ const endpoint = `https://api.nasa.gov/planetary/apod?api_key=${NASAkey}`
 const fetch = require('node-fetch');
 const database = require('../LoadDatabase');
 
+const imageEmbed = (response) => {
+  const embed = new MessageEmbed()
+    .setTitle(response.title)
+    .setColor("BLUE")
+    .setDescription(`${response.explanation}`)
+    .setFooter(`${  response.date ? response.date : Date()} - NASA API Astronomy Picture of the Day`);
+
+  if (response.media_type == 'image') embed.setImage(response.hdurl);
+  if (response.media_type == 'video') embed.attachFiles([response.url]);
+
+  return embed;
+}
 
 module.exports = async (Hook = new Webhook()) => {
   try {
@@ -22,16 +34,10 @@ module.exports = async (Hook = new Webhook()) => {
     let lastPicDate = database.nasaLastPicture.get('LASTPIC');
     console.log(lastPicDate + "   " + response.date);
     if (lastPicDate != response.date) {
-      const embed = new MessageEmbed()
-        .setTitle(response.title)
-        .setImage(response.url)
-        .setColor("BLUE")
-        .setDescription(`${response.explanation}\n${response.hdurl}`)
-        .setFooter(`${response.date ? response.date : Date()} - NASA API Astronomy Picture of the Day`);
-
 
       database.nasaLastPicture.set('LASTPIC', response.date);
-      return await Hook.send(embed);
+      return await Hook.send(imageEmbed(response));
+
     } else return console.log('La foto de la NASA no ha cambiado.');
   } catch (error) {
     console.log(error);

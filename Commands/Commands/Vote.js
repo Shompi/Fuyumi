@@ -83,17 +83,17 @@ module.exports = {
 
             if (!yes) yesCount = 0;
             else {
-              yesUsers = yes.users.filter(user => !user.bot).map(user => user.tag);
+              yesUsers = yes.users.cache.filter(user => !user.bot).map(user => user.tag);
               yesCount = yes.count - 1;
             }
             if (!no) noCount = 0;
             else {
-              noUsers = no.users.filter(user => !user.bot).map(user => user.tag);
+              noUsers = no.users.cache.filter(user => !user.bot).map(user => user.tag);
               noCount = no.count - 1;
             }
             if (!neutros) neutralCount = 0;
             else {
-              neutralUsers = neutros.users.filter(user => !user.bot).map(user => user.tag);
+              neutralUsers = neutros.users.cache.filter(user => !user.bot).map(user => user.tag);
               neutralCount = neutros.count - 1;
             }
 

@@ -23,7 +23,7 @@ module.exports = {
   //This command should be Bot OWNER only.
   name: "reload",
   filename: __filename,
-  aliases: ["rel"],
+  aliases: ["re"],
   description: "Reinicia / Recarga un comando.",
   usage: "reload <Sin Parámetros>",
   nsfw: false,
@@ -50,7 +50,7 @@ module.exports = {
       return await channel.send(success(command));
     } catch (error) {
       console.log(error);
-      channel.send("Hubo un error con la ejecución de este comando. Mira la consola.");
+      await channel.send("Hubo un error con la ejecución de este comando. Mira la consola.");
     }
   }
 }

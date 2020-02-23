@@ -6,7 +6,7 @@ Muki.EventHandlers = require('./Commands/EventHandlers');
 Muki.NASA = require('./Commands/NASA/POTD');
 const fs = require('fs');
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
-const auth = require('./Keys/auth').stable;
+const auth = require('./Keys/auth').mukiDev;
 
 for (const file of commandFiles) {
   const command = require(`./Commands/Commands/${file}`);
@@ -40,9 +40,10 @@ const noCommandFound = (author) =>
     .setColor("YELLOW");
 
 
-const pokecordFilter = (author, guild) => {
+const pokecordFilter = async (message) => {
+  const { author, guild } = message;
   if (author.id === '365975655608745985' && guild.id === "537484725896478733") {
-    message.delete({ timeout: 10000, reason: "Pokecord" });
+    await message.delete({ timeout: 10000, reason: "Pokecord" });
   }
 }
 
@@ -51,7 +52,7 @@ Muki.on('message', async (message) => {
     const { author, guild, channel, mentions } = message;
 
     if (!guild) return console.log(`${author.tag} ha enviado un mensaje através de un DM.`);
-    pokecordFilter(author, guild);
+    pokecordFilter(message);
     if (author.bot) return;
 
     //Webhooks
@@ -113,122 +114,35 @@ Muki.on('message', async (message) => {
 
 });
 
-
-
-//------------------------Muki listener on GuildMemberRemove ------------------------//
-Muki.on('guildMemberRemove', async (member) => {
-  await Muki.EventHandlers.Guild.MemberRemove(member, Muki);
-});
-
-//------------------------Muki listener on GuildMemberAdd ------------------------//
-Muki.on('guildMemberAdd', async member => {
-  if (member.partial) member = await member.fetch();
-  await Muki.EventHandlers.Guild.MemberAdd(member, Muki);
-});
-
-//------------------------Muki listener on guildMemberUpdate ------------------------//
-Muki.on('guildMemberUpdate', async (oldMember, newMember) => {
-});
-
-Muki.on('voiceStateUpdate', async (old, now) => {
+Muki.on('messageUpdate', async (old, now) => {
+  return;
+  if (now.author.bot) return;
+  const prefix = database.guildConfigs.get(guild.id).prefix;
   try {
-    await Muki.EventHandlers.Presence.GoLive(old, now, Muki);
+    if (old.content.startsWith(prefix) && now.content.startsWith(prefix)) {
+
+      const args = content.slice(prefix.length).split(/ +/);
+      const commandName = args.shift().toLowerCase();
+
+      const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
+      if (!command) return await MukiMessage.edit(noCommandFound(author));
+      if (!command.enabled) return await MukiMessage.edit(cmdNotEnabled(author));
+      if (command.nsfw && !channel.nsfw) return await MukiMessage.edit(notNSFW);
+      if (command.name != 'docs') return;
+
+      return command.execute(now, args);
+    }
+
+
   } catch (error) {
     console.log(error);
+    Muki.channels.cache.get("585990511790391309").send(error.message);
   }
-});
-//------------------------User Presence Change------------------------//
-Muki.on('presenceUpdate', async (old, now) => { //Tipo Presence
-  try {
-    if (!old) return;
-    await Muki.EventHandlers.Presence.Twitch(old, now);
-
-  } catch (e) {
-    console.log(e);
-  }
-});
-
-//------------------------Guild Update------------------------//
-Muki.on('guildUpdate', (oldGuild, newGuild) => {
-
-});
-
-Muki.on('guildBanAdd', async (guild, user) => {
-  if (!guild.systemChannel) return;
-  const embed = new Discord.MessageEmbed()
-    .setAuthor(user.tag, user.displayAvatarURL({ size: 256 }))
-    .setDescription(`Ha sido baneado de **${guild.name}**`)
-    .setColor('RED')
-    .setThumbnail(user.displayAvatarURL({ size: 256 }))
-    .setTimestamp();
-
-  return await guild.systemChannel.send(embed);
-});
-
-
-Muki.on('error', async (error) => {
-  console.log(error)
-  const e = new Discord.MessageEmbed().setColor("RED").setDescription(`${error}\n${error.stack}`);
-  return await Muki.channels.cache.get("585990511790391309").send(e).catch(console.error);
-});
-
-Muki.on('reconnecting', () => {
-  console.log('El bot se está reconectando...');
-});
-
-Muki.on('resume', (Replayed) => {
-  console.log(`Muki se ha reconectado, numero de eventos en Replayed: ${Replayed}`);
-});
-
-Muki.on('warn', (warn) => {
-  console.log("Advertencia recibida:");
-  console.log(warn);
-});
-
-Muki.on('guildCreate', async (guild) => {
-
-  const guildConfig = {
-    prefix: "muki!",
-    welcome: {
-      enabled: false,
-      channelID: null,
-      joinPhrases: [],
-      leavePhrases: []
-    }
-  }
-
-  const channel = guild.systemChannel;
-  const embed = new Discord.MessageEmbed()
-    .setTitle(`¡Hola!, mi prefijo es ${guildConfig.prefix}`)
-    .setDescription(
-      'Mi pequeña lista de comandos:\n' +
-      'NSFW:\n' +
-      '**neko**\n' +
-      '**lewd**\n' +
-      '**dere** <tag>\n' +
-      '**kona** <tag>\n' +
-      '**Otros:** ngif, erok, erofeet, les, yuri, feetg, eroyuri, kuni, tits, pussy.\n' +
-      'SFW:\n' +
-      '**tag** <palabra>\n' +
-      '**meow**\n\n' +
-      '¡Recuerda que **todos** mis comandos comienzan con mi prefijo!'
-    )
-    .setColor("BLUE")
-    .setFooter("Dudas, sugerencias o peticiones hablar con MukiFlen#3338")
-  if (!General) return await guild.owner.send(embed);
-  else await channel.send(embed);
-
-  database.guildConfigs.set(guild.id, guildConfig);
-});
-
-Muki.on('guildDelete', (guild) => {
-  database.guildConfigs.delete(guild.id);
-  console.log(`El bot ha abandonado la guild ${guild.name}`);
-  console.log(`Entrada de configuración:\n${database.guildConfigs.get(guild.id)} (Si es undefined está bien.)`);
 });
 
 Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
+  return;
   try {
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
@@ -279,6 +193,107 @@ Muki.on('ready', async () => {
     }, 1000 * 60 * 60);
   });
 });
+
+Muki.on('guildMemberRemove', async (member) => {
+  await Muki.EventHandlers.Guild.MemberRemove(member, Muki);
+});
+
+Muki.on('guildMemberAdd', async member => {
+  if (member.partial) member = await member.fetch();
+  await Muki.EventHandlers.Guild.MemberAdd(member, Muki);
+});
+
+Muki.on('voiceStateUpdate', async (old, now) => {
+  try {
+    await Muki.EventHandlers.Presence.GoLive(old, now, Muki);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+Muki.on('presenceUpdate', async (old, now) => { //Tipo Presence
+  try {
+    if (!old) return;
+    await Muki.EventHandlers.Presence.Twitch(old, now);
+
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+Muki.on('guildBanAdd', async (guild, user) => {
+  if (!guild.systemChannel) return;
+  const embed = new Discord.MessageEmbed()
+    .setAuthor(user.tag, user.displayAvatarURL({ size: 256 }))
+    .setDescription(`Ha sido baneado de **${guild.name}**`)
+    .setColor('RED')
+    .setThumbnail(user.displayAvatarURL({ size: 256 }))
+    .setTimestamp();
+
+  return await guild.systemChannel.send(embed);
+});
+
+Muki.on('error', async (error) => {
+  console.log(error)
+  const e = new Discord.MessageEmbed().setColor("RED").setDescription(`${error}\n${error.stack}`);
+  return await Muki.channels.cache.get("585990511790391309").send(e).catch(console.error);
+});
+
+Muki.on('reconnecting', () => {
+  console.log('El bot se está reconectando...');
+});
+
+Muki.on('resume', (Replayed) => {
+  console.log(`Muki se ha reconectado, numero de eventos en Replayed: ${Replayed}`);
+});
+
+Muki.on('warn', (warn) => {
+  console.log("Advertencia recibida:");
+  console.log(warn);
+});
+
+Muki.on('guildCreate', async (guild) => {
+
+  const guildConfig = {
+    prefix: "muki!",
+    welcome: {
+      enabled: false,
+      channelID: null,
+      joinPhrases: [],
+      leavePhrases: []
+    }
+  }
+
+  database.guildConfigs.set(guild.id, guildConfig);
+  const channel = guild.systemChannel;
+  const embed = new Discord.MessageEmbed()
+    .setTitle(`¡Hola!, mi prefijo es ${guildConfig.prefix}`)
+    .setDescription(
+      'Mi pequeña lista de comandos:\n' +
+      'NSFW:\n' +
+      '**neko**\n' +
+      '**lewd**\n' +
+      '**dere** <tag>\n' +
+      '**kona** <tag>\n' +
+      '**Otros:** ngif, erok, erofeet, les, yuri, feetg, eroyuri, kuni, tits, pussy.\n' +
+      'SFW:\n' +
+      '**tag** <palabra>\n' +
+      '**meow**\n\n' +
+      '¡Recuerda que **todos** mis comandos comienzan con mi prefijo!'
+    )
+    .setColor("BLUE")
+    .setFooter("Dudas, sugerencias o peticiones hablar con MukiFlen#3338")
+  if (!channel) return await guild.owner.send(embed);
+  else await channel.send(embed);
+});
+
+Muki.on('guildDelete', (guild) => {
+  database.guildConfigs.delete(guild.id);
+  console.log(`El bot ha abandonado la guild ${guild.name}`);
+  console.log(`Entrada de configuración:\n${database.guildConfigs.get(guild.id)} (Si es undefined está bien.)`);
+});
+
+
 
 Muki.ws.on('RESUMED', (data, shard) => {
   console.log("Websocket Resumed");

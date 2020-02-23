@@ -11,7 +11,7 @@ module.exports = {
   aliases: [],
   permissions: [],
   async execute(message = new Message(), args = new Array()) {
-    const { channel } = message;
+    const { channel, id } = message;
     const content = message.content.replace(/\s+/g, " ").split(" ");
     const project = content[2] || "stable";
     const queryString = content[1];
@@ -19,7 +19,7 @@ module.exports = {
     const endpoint = `https://djsdocs.sorta.moe/v2/embed?src=${project}&q=${queryString}`
     fetch(endpoint)
       .then(res => res.json())
-      .then(docs => channel.send(null, { embed: docs }))
+      .then((docs) => channel.send(null, { embed: docs }))
       .catch(console.error);
   }
 }
