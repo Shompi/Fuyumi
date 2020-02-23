@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const { MessageEmbed, Message } = require('discord.js');
 const endpoint = 'https://konachan.com/post.json?limit=40&tags=';
 const Booru = require('../../Classes/Booru');
+const path = require('path');
 
 
 const noResults = new MessageEmbed()
@@ -43,7 +44,7 @@ const errorEmbed = new MessageEmbed()
 
 module.exports = {
   name: "kona",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Busca imágenes en konachan.com con tags que sean válidos en la página.",
   usage: "kona [tags]",
   nsfw: true,

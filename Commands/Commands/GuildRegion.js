@@ -1,6 +1,7 @@
 const { Message, MessageEmbed, Collection } = require('discord.js');
 const voiceRegions = ['eu-central', 'india', 'london', 'japan', 'amsterdam', 'brazil', 'us-west', 'hongkong', 'southafrica', 'sydney', 'europe', 'singapore', 'us-central', 'eu-west', 'dubai', 'us-south', 'us-east', 'frankfurt', 'russia']
 const cooldowns = new Collection();
+const path = require('path');
 
 
 
@@ -24,7 +25,7 @@ const noMemberPermissions = (author) =>
 
 module.exports = {
   name: "region",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Mueve la región de voz del servidor.\nAmbos parámetros son opcionales, pero solo puede haber una **Razón** si se especifica una **Región**.",
   usage: "region (Región) (Razón)",
   nsfw: false,

@@ -2,6 +2,7 @@
 const { Message, MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 const database = require("../LoadDatabase").guildConfigs;
+const path = require('path');
 
 const ENDPOINTS =
   ['femdom', 'tickle',
@@ -52,9 +53,10 @@ const imageEmbed = (author, data, endpoint) => {
 }
 
 module.exports = {
-  name: "nekos",
-  filename: __filename,
+  name: "neko",
+  filename: path.basename(__filename),
   description: "Envía una imágen desde Nekos.life",
+  usage: "[neko / feet / ENDPOINT]",
   nsfw: true,
   enabled: true,
   aliases: ENDPOINTS,
@@ -65,6 +67,7 @@ module.exports = {
     const { channel, author, content, guild } = message;
     const prefix = database.get(guild.id, "prefix");
     const endpoint = content.slice(prefix.length) || "neko";
+    if (!ENDPOINTS.includes(endpoint)) return undefined;
 
     try {
       let response = await fetch(`https://nekos.life/api/v2/img/${endpoint}`);

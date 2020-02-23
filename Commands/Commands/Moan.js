@@ -5,6 +5,7 @@
 const Moaning = new Set();
 const { Message, MessageEmbed, VoiceConnection } = require('discord.js');
 const fs = require('fs');
+const path = require('path');
 
 const speakPermission = (author) =>
   new MessageEmbed()
@@ -27,7 +28,7 @@ const noMemberVoiceChannel = (author) =>
 
 module.exports = {
   name: "moan",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "😏",
   usage: "moan <Sin Parámetros>",
   nsfw: false,

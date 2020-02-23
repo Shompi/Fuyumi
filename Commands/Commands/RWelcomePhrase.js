@@ -2,6 +2,7 @@
 
 const { MessageEmbed, Message } = require('discord.js');
 const database = require('../LoadDatabase').guildConfigs;
+const path = require('path');
 
 const noPhrase = (author, prefix) => {
   return new MessageEmbed()
@@ -24,7 +25,7 @@ const succeed = new MessageEmbed()
 
 module.exports = {
   name: "wremfrase",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Quita una frase de bienvenida.",
   usage: "wremfrase [frase] (Debe ser exactamente igual).",
   nsfw: false,

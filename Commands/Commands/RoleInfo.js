@@ -1,4 +1,5 @@
 const { MessageEmbed, Message } = require('discord.js')
+const path = require('path');
 
 const noRole =
   new MessageEmbed()
@@ -19,7 +20,7 @@ const roleInfo = (role, guild) =>
 
 module.exports = {
   name: "roleinfo",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Muestra información general de un <Rol> de este servidor.",
   usage: "roleinfo [@Mención de Rol]",
   nsfw: false,

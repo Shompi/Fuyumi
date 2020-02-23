@@ -4,6 +4,8 @@ const episodesURL = 'https://animeflv.net/ver/';
 const animeURL = 'https://animeflv.net/anime/';
 const { SearchResponse } = require('../../Classes/AnimeFLV');
 const { Message, MessageEmbed } = require('discord.js');
+const path = require('path');
+
 
 const EmbedMaker = (message = new Message(), page) => {
 
@@ -27,7 +29,7 @@ const EmbedMaker = (message = new Message(), page) => {
 
 module.exports = {
   name: "flv",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Busca un animé en el catálogo de AnimeFLV.net",
   usage: "flv [Título del animé]",
   nsfw: false,

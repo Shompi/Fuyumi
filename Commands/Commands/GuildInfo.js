@@ -1,10 +1,11 @@
 const { MessageEmbed, Message } = require('discord.js');
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+const path = require('path');
 
 module.exports = {
   name: "ginfo",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Información general del servidor actual.",
   usage: "ginfo <Sin Parámetros>",
   nsfw: false,
@@ -12,7 +13,7 @@ module.exports = {
   aliases: [],
   permissions: [],
   async execute(message = new Message(), args = new Array()) {
-    const { guild, channel } = message;
+    const { guild, channel, member } = message;
     try {
 
       const members = await guild.members.fetch();

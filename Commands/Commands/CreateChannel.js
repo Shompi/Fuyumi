@@ -1,11 +1,12 @@
 const { Message, Client, GuildEmoji } = require('discord.js');
 const ErrorMsg = 'El tiempo para usar este comando ha expirado.';
 const ChannelTypes = ['text', 'voice'];
+const path = require('path');
 
 
 module.exports = {
   name: "newchannel",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Crea un nuevo canal en este servidor. Los separadores **|** son **OBLIGATORIOS**.",
   usage: "newchannel [Nombre] | [Tipo: texto/voz] | (Canal / Categoria Padre)",
   nsfw: false,

@@ -2,6 +2,7 @@ const { MessageEmbed, Message } = require('discord.js');
 let infopage = require('../../Classes/statusTemplate');
 const endpoint = 'https://srhpyqt94yxb.statuspage.io/api/v2/status.json';
 const fetch = require('node-fetch');
+const path = require('path');
 
 const connectionError = new MessageEmbed()
   .setColor('RED')
@@ -10,7 +11,7 @@ const connectionError = new MessageEmbed()
 
 module.exports = {
   name: "dstatus",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Muestra el estado de la API de Discord (desde statuspage.io).",
   usage: "dstatus <Sin Parámetros>",
   nsfw: false,

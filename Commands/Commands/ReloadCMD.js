@@ -1,5 +1,5 @@
 const { MessageEmbed, Message } = require('discord.js');
-const MUKIOWNER = "166263335220805634";
+const path = require('path');
 
 const noCommandFound = (author) =>
   new MessageEmbed()
@@ -22,7 +22,7 @@ const success = (command) =>
 module.exports = {
   //This command should be Bot OWNER only.
   name: "reload",
-  filename: __filename,
+  filename: path.basename(__filename),
   aliases: ["re"],
   description: "Reinicia / Recarga un comando.",
   usage: "reload <Sin Parámetros>",
@@ -31,14 +31,14 @@ module.exports = {
   permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
-    const { channel, author, client } = message;
+    const { channel, author, client: Muki } = message;
 
-    if (author.id !== MUKIOWNER) return;
+    if (author.id !== Muki.OWNER) return;
 
-    const Muki = client;
     if (!args.length) return await channel.send(noCommandSpecified(author));
 
     const command = Muki.commands.get(args[0]) || Muki.commands.find(c => c.aliases.includes(args[0]));
+
     if (!command) return await channel.send(noCommandFound(author));
 
     //If a command is found:

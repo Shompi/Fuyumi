@@ -1,6 +1,7 @@
 const { MessageEmbed, Message } = require('discord.js');
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+const path = require('path');
 
 const infoEmbed = (user, member, guild, memberinfo, userinfo) =>
   new MessageEmbed()
@@ -12,7 +13,7 @@ const infoEmbed = (user, member, guild, memberinfo, userinfo) =>
     .setTimestamp()
 
 const memberinfo = (member, gSince) =>
-  `**Roles:** ${member.roles.size}
+  `**Roles:** ${member.roles.cache.size}
 **Rol más alto:** <@&${member.roles.highest.id}>
 **Miembro desde:** ${gSince.day} ${gSince.date} de ${gSince.month} del ${gSince.year}`;
 
@@ -24,7 +25,7 @@ const userinfo = (user, mSince) =>
 
 module.exports = {
   name: "uinfo",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Muestra la información general de un usuario en específico. Si no se menciona a ningún usuario, se mostrará la información del autor del mensaje.",
   usage: "uinfo (@Mención de usuario)",
   nsfw: false,

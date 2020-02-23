@@ -3,6 +3,7 @@ const { MessageEmbed, Message } = require('discord.js');
 const endpoint = 'https://yande.re/tag.json?&type=&order=count&commit=Search&limit=20&name=';
 const postsEndpoint = 'https://yande.re/post.json?limit=100&tags=';
 const fetch = require('node-fetch');
+const path = require('path');
 
 
 const noResults = new MessageEmbed()
@@ -31,7 +32,7 @@ const getTagType = (type) => {
 
 module.exports = {
   name: "btags",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Booru Tag. Busca un tag en la base de datos de **Yandere.com**",
   usage: "btags [tag]",
   nsfw: false,

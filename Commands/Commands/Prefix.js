@@ -1,5 +1,6 @@
 const { MessageEmbed, Message } = require('discord.js');
 const database = require('../LoadDatabase').guildConfigs;
+const path = require('path');
 
 const noPrefix = (prefix) => {
   return new MessageEmbed()
@@ -27,7 +28,7 @@ const succeed = (prefix) => {
 
 module.exports = {
   name: "prefix",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Cambia mi prefijo en este servidor.",
   usage: "prefix [Nuevo Prefijo]",
   nsfw: false,

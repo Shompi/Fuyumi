@@ -1,9 +1,10 @@
 const { Message } = require('discord.js');
 const fetch = require('node-fetch');
+const path = require('path');
 
 module.exports = {
   name: "docs",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Documentación de Discord.js",
   usage: "docs [Query string] [stable/master/commando]",
   nsfw: false,

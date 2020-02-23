@@ -1,4 +1,5 @@
 const { MessageEmbed, Message } = require('discord.js');
+const path = require('path');
 
 const noVoiceChannel = (author) =>
   new MessageEmbed()
@@ -21,7 +22,7 @@ const differentChannel = (author) =>
 
 module.exports = {
   name: "disconnect",
-  filename: __filename,
+  filename: path.basename(__filename),
   aliases: [],
   description: "Me desconecta del canal de voz, si es que estoy en uno.",
   usage: "disconnect <Sin Parámetros>",

@@ -1,6 +1,8 @@
 //This command will list all join and leave phrases on the guild database.
 const { MessageEmbed, Message } = require('discord.js');
 const database = require('../LoadDatabase').guildConfigs;
+const path = require('path');
+
 
 const phrases = (join = new Array(), leave = new Array(), guild) =>
   new MessageEmbed()
@@ -13,7 +15,7 @@ const phrases = (join = new Array(), leave = new Array(), guild) =>
 
 module.exports = {
   name: "wfrases",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Muestra todas las frases de bienvenida configuradas en este servidor.",
   usage: "wfrases <Sin Parámetros>",
   nsfw: false,

@@ -1,14 +1,15 @@
 const { Message, MessageEmbed } = require('discord.js');
+const path = require('path');
 
 const invitation = (invite) =>
   new MessageEmbed()
-    .setTitle(`📩 Enlace de Invitación de Muki:`)
-    .setDescription(`[Cliquea aquí](${invite})`)
+    .setTitle(`📩 ¡Invítame a tu servidor!`)
+    .setDescription(`[->Haz click aquí<-](${invite})`)
     .setColor("BLUE");
 
 module.exports = {
   name: "invite",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Enlace de invitación para invitarme a otros servidores.",
   usage: "invite <Sin Parámetros>",
   enabled: true,

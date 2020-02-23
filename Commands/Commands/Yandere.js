@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const { MessageEmbed, Message } = require('discord.js');
 const Booru = require('../../Classes/Booru')
+const path = require('path');
 
 const noResults = new MessageEmbed()
   .setTitle('❌ No encontré nada con los tags que ingresaste.')
@@ -34,7 +35,7 @@ const showpage = async (post = Booru.YanderePost[0], message = new Message(), in
 
 module.exports = {
   name: "dere",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Busca imágenes en **Yande.re**.",
   usage: "dere [tags]",
   nsfw: true,
@@ -53,7 +54,6 @@ module.exports = {
       let blacklist = '+-loli'; //Tags blacklist
       let response = Booru.YanderePost;
 
-      console.log(query);
       let data = await fetch('https://yande.re/post.json?limit=100&tags=' + query + blacklist);
       if (data.status != 200) {
         await channel.send("Error al conectar con el servidor, codigo: " + data.status);

@@ -2,6 +2,7 @@
 
 const { MessageEmbed, Message, Client } = require('discord.js');
 const database = require('../LoadDatabase').guildConfigs;
+const path = require('path');
 
 const missingPermissions = (author) => {
   return new MessageEmbed()
@@ -22,7 +23,7 @@ const toggled = (config, client = new Client()) => {
 
 module.exports = {
   name: "wtoggle",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Activa / Desactiva los **Mensajes de Bienvenida**.",
   usage: "wtoggle <Sin Parámetros>",
   nsfw: false,

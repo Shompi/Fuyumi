@@ -1,4 +1,5 @@
 const { Message, MessageEmbed, GuildMember } = require('discord.js');
+const path = require('path');
 
 const infoEmbed = (author, guild, reason) =>
   new MessageEmbed()
@@ -15,7 +16,7 @@ const noTarget = (author) =>
 
 module.exports = {
   name: "mmute",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Silencia / De-silencia el micrófono de un miembro que esté en un canal de voz.",
   usage: "mmute [@Mención de miembro]",
   nsfw: false,

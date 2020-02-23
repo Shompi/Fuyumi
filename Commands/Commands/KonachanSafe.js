@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const { MessageEmbed, Message } = require('discord.js');
 const endpoint = 'http://konachan.net/post.json?limit=40&tags=';
 const Booru = require('../../Classes/Booru')
+const path = require('path');
 
 const getRating = {
   "e": "Explicito",
@@ -43,7 +44,7 @@ const showpage = (post = Booru.KonaPost[0], message = new Message(), index, tota
 
 module.exports = {
   name: "konasafe",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Busca imágenes en konachan.net (Safe for Work) con tags que sean válidos en la página.",
   usage: "konasafe [tags]",
   nsfw: false,

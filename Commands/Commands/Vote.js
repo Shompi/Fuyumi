@@ -7,10 +7,11 @@ const rejectedimage = 'https://puu.sh/EPc4k/ed4ca4cfc3.png';
 const neutralimage = 'https://puu.sh/EPcbj/d8fd38a401.png';
 const inProgress = 'https://puu.sh/EPcok/0c349a8d0f.png';
 const noVoteImage = 'https://puu.sh/EPe4V/e12a2b7355.png';
+const path = require('path');
 
 module.exports = {
   name: "vote",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Inicia una votación en el servidor. Solo se permite una votación en curso.",
   usage: "vote [Tiempo en minutos] [Pregunta / Propuesta]",
   nsfw: false,

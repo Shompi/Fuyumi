@@ -1,5 +1,6 @@
 const { MessageEmbed, Message } = require('discord.js');
 const database = require("../LoadDatabase").guildConfigs;
+const path = require('path');
 
 const missingPermissions = (author) => {
   return new MessageEmbed()
@@ -33,7 +34,7 @@ const succeed = new MessageEmbed()
 
 module.exports = {
   name: "waddfrase",
-  filename: __filename,
+  filename: path.basename(__filename),
   description: "Añade una frase de bienvenida. Si hay más de una frase configurada, se escogerá una al **azar**.",
   usage: "waddfrase [frase]",
   nsfw: false,
@@ -41,6 +42,7 @@ module.exports = {
   aliases: [],
   permissions: [],
   async execute(message = new Message(), args = new Array()) {
+    console.log(this.filename);
     const { member, guild, channel, author } = message;
     const configs = database.get(guild.id);
     if (!configs) return console.log(`Por alguna razón la guild ${guild.name} no tenia entrada de configuración. AddPhrase.js`);
@@ -52,7 +54,7 @@ module.exports = {
         if (configs.welcome.joinPhrases.includes(phrase)) return await channel.send(duplicated(author, phrase, configs.prefix));
 
         database.push(guild.id, phrase, "welcome.joinPhrases") //Push the phrase to the guildConfig database.
-        console.log(`Nueva frase añadida:\nGuild: ${guild.name}\nFrase: ${phrase}\nNuevo array: ${database.get(guild.id, "welcome.joinPhrases")}`);
+        //console.log(`Nueva frase añadida:\nGuild: ${guild.name}\nFrase: ${phrase}\nNuevo array: ${database.get(guild.id, "welcome.joinPhrases")}`);
         return await channel.send(succeed);
 
       } else return await channel.send(noPhrase(author));
