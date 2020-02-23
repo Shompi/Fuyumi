@@ -8,7 +8,6 @@ const CONECTORES = [
   "está transmitiendo en vivo en"
 ]
 
-module.exports = async (old = new Presence(), now = new Presence()) => {
   /**
    * 1.- Verificar que el usuario está stremeando
    * 2.- Verificar si el usuario estaba stremeando antes
@@ -16,14 +15,20 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
    * >Si son iguales = retornar
    * >Si son distintas = Actualizar el mensaje relacionado con el primer livestream.
    */
+
+module.exports = async (old = new Presence(), now = new Presence()) => {
+
   if (now.user.bot) return;
   if (!old) return;
+
   const activity = now.activities.find(act => act.type === 'STREAMING');
   const oldActivity = old.activities.find(act => act.type === 'STREAMING');
   if (!activity) return;
+
   if (activity && oldActivity) return console.log(`[STREAMING] ${now.member.user.tag} ya estaba stremeando de antes.`);
   const streamingChannel = now.member.guild.channels.cache.find(channel => channel.name == "directos" && channel.type == 'text');
   if (!streamingChannel) return console.log("No se encontró canal de streamings.");
+
   const timeNow = Date.now();
   try {
     console.log(`[STREAMING] User ${now.member.user.tag} está stremeando en ${activity.name}`);
@@ -57,7 +62,6 @@ const sendStreaming = async (now = new Presence(), activity, streamingChannel) =
     .setThumbnail(`${now.member.user.displayAvatarURL({ size: 256 })}`)
     .setTitle(`¡${now.member.displayName} ${CONECTORES[Math.floor(Math.random() * CONECTORES.length)]} ${activity.name}!`)
     .setDescription(`**${activity.details}**\n[Ver transmisión](${activity.url})`)
-    .setTimestamp()
     .setImage(image);
 
   return await streamingChannel.send(embed);
