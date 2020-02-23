@@ -31,7 +31,7 @@ module.exports = {
   description: "😏",
   usage: "moan <Sin Parámetros>",
   nsfw: false,
-  enabled: true,
+  enabled: false,
   aliases: [],
   permissions: ["SPEAK"],
   async execute(message = new Message(), args = new Array()) {
