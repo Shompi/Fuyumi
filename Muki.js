@@ -7,7 +7,7 @@ Muki.NASA = require('./Commands/NASA/POTD');
 Muki.OWNER = '166263335220805634';
 const fs = require('fs');
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
-const auth = require('./Keys/auth').mukiDev;
+const auth = require('./Keys/auth').stable;
 
 for (const file of commandFiles) {
   const command = require(`./Commands/Commands/${file}`);
@@ -143,7 +143,6 @@ Muki.on('messageUpdate', async (old, now) => {
 
 Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
-  return;
   try {
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
