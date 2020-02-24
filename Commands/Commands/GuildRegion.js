@@ -33,10 +33,10 @@ module.exports = {
   aliases: [],
   permissions: ["MANAGE_GUILD"],
   async execute(message = new Message(), args = new Array()) {
-    
-    const { guild, attachments, author, member } = message;
-    if (!member.hasPermission("MANAGE_GUILD", { checkAdmin: true, checkOwner: true })) return await noMemberPermissions(author);
-    if (!guild.me.hasPermission('MANAGE_GUILD', { checkAdmin: true })) return await message.channel.send(missingPermissions(this.permissions));
+
+    const { guild, attachments, author, member, channel } = message;
+    if (!member.hasPermission("MANAGE_GUILD", { checkAdmin: true, checkOwner: true })) return await channel.send(author);
+    if (!guild.me.hasPermission('MANAGE_GUILD', { checkAdmin: true })) return await channel.send(missingPermissions(this.permissions));
 
     let region = args.shift().toLowerCase(), reason = args.join(" ");
     let _guild, image = null;
@@ -59,8 +59,8 @@ module.exports = {
       if (image) embed.setImage(image);
 
       const channel = guild.systemChannel;
-      if (!channel) return await message.channel.send(embed);
-      else return await channel.send(embed);
+      if (!channel) return await channel.send(embed);
+      else return await systemChannel.send(embed);
 
     }
     else {
@@ -82,11 +82,11 @@ module.exports = {
         cooldown = false;
       }, 5000, cooldown);
 
-      const channel = guild.systemChannel;
+      const systemChannel = guild.systemChannel;
 
-      if (!channel) return await message.channel.send(embed);
+      if (!channel) return await channel.send(embed);
 
-      else return await channel.send(embed);
+      else return await systemChannel.send(embed);
     }
   }
 }
