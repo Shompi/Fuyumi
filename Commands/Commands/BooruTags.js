@@ -15,7 +15,7 @@ const tagsFound = (query, thumbnail, description) =>
     .setTitle(`Búsqueda: "${query}"`)
     .setColor('BLUE')
     .setThumbnail(thumbnail)
-    .addField('Resultados:', `${description.join('\n')}`);
+    .addFields({ name: 'Resultados:', value:`${description.join('\n')}`, inline: false});
 
 const getTagType = (type) => {
   const types = [
@@ -33,7 +33,7 @@ const getTagType = (type) => {
 module.exports = {
   name: "btags",
   filename: path.basename(__filename),
-  description: "Booru Tag. Busca un tag en la base de datos de **Yandere.com**",
+  description: "Booru Tag. Busca un tag en la base de datos de **Yande.re**",
   usage: "btags [tag]",
   nsfw: false,
   enabled: true,

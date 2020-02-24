@@ -30,22 +30,26 @@ module.exports = {
         year: guildCreated.getFullYear()
       }
 
-      const mJoinedAt = {
+      /* const mJoinedAt = {
         day: dias[memberFrom.getDay()],
         date: memberFrom.getDate(),
         month: meses[memberFrom.getMonth()],
         year: memberFrom.getFullYear()
-      }
+      } */
+
+      const fields = [
+        { name: 'ID:', value: guild.id, inline: true },
+        { name: 'Dueño:', value: `<@${guild.ownerID}>`, inline: true },
+        { name: 'Cantidad de Miembros:', value: `${guild.memberCount} (${users.size} usuarios \| ${bots.size} bots)\n${onlineUsers.size} En Linea 🟢`, inline: false },
+        { name: 'Canales:', value: `${guild.channels.cache.size} [${guild.channels.cache.filter(ch => ch.type == 'text').size} Texto \| ${guild.channels.cache.filter(ch => ch.type == 'voice').size} Voz \| ${guild.channels.cache.filter(ch => ch.type == 'category').size} Categorias]`, inline: false },
+        { name: 'Roles:', value: `${guild.roles.cache.size}, Rol más alto: <@&${guild.roles.highest.id}>`, inline: false },
+        { name: 'Región:', value: guild.region, inline: false },
+        { name: 'Creación:', value: `${gCreatedAt.day} ${gCreatedAt.date} de ${gCreatedAt.month} del ${gCreatedAt.year}`, inline: false }
+      ];
 
       const infoEmbed = new MessageEmbed()
         .setTitle(`${guild.name}`)
-        .addField('ID:', guild.id, true)
-        .addField('Dueño:', `<@${guild.ownerID}>`, true)
-        .addField('Cantidad de Miembros:', `${guild.memberCount} (${users.size} usuarios \| ${bots.size} bots)\n${onlineUsers.size} En Linea 🟢`)
-        .addField('Canales:', `${guild.channels.cache.size} [${guild.channels.cache.filter(ch => ch.type == 'text').size} Texto \| ${guild.channels.cache.filter(ch => ch.type == 'voice').size} Voz \| ${guild.channels.cache.filter(ch => ch.type == 'category').size} Categorias]`)
-        .addField('Roles:', `${guild.roles.cache.size}, Rol más alto: <@&${guild.roles.highest.id}>`)
-        .addField('Región:', guild.region)
-        .addField('Creación:', `${gCreatedAt.day} ${gCreatedAt.date} de ${gCreatedAt.month} del ${gCreatedAt.year}`)
+        .addFields(fields)
         .setThumbnail(guild.iconURL({ size: 512 }))
         .setColor('BLUE')
         .setTimestamp();

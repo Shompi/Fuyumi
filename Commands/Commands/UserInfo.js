@@ -7,8 +7,8 @@ const infoEmbed = (user, member, guild, memberinfo, userinfo) =>
   new MessageEmbed()
     .setTitle(`${user.tag}`)
     .setThumbnail(user.displayAvatarURL({ size: 512 }))
-    .addField('User Info:', userinfo)
-    .addField(`Info como Miembro de ${guild.name}`, memberinfo)
+    .addFields({ name: 'User Info:', value: userinfo },
+      { name: `Info como miembro de ${guildn.name}:`, memberinfo })
     .setColor(member.displayColor)
     .setTimestamp()
 

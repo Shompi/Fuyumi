@@ -1,10 +1,11 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
-const Discord = require('discord.js');
-const Muki = new Discord.Client({ partials: ['GUILD_MEMBER'] });
-Muki.commands = new Discord.Collection();
+const { Client, Collection, MessageEmbed, Webhook } = require('discord.js');
+const Muki = new Client({ partials: ['GUILD_MEMBER'] });
+Muki.commands = new Collection();
 Muki.EventHandlers = require('./Commands/EventHandlers');
 Muki.NASA = require('./Commands/NASA/POTD');
 Muki.OWNER = '166263335220805634';
+Muki.replies = new Collection();
 const fs = require('fs');
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
 const auth = require('./Keys/auth').stable;
@@ -20,32 +21,34 @@ let MukiConfigs = { status: "ONLINE", activityType: "PLAYING", activityTo: "muki
 const WebHooks = require('./Keys/hookTokens');
 const database = require('./Commands/LoadDatabase');
 /*-------------------------Inicio del BOT-------------------------*/
-let australGamingMemeHook = new Discord.Webhook();
-let NASAWebHook = new Discord.Webhook();
+let australGamingMemeHook = new Webhook();
+let NASAWebHook = new Webhook();
 
-const notNSFW = new Discord.MessageEmbed()
+const notNSFW = new MessageEmbed()
   .setTitle(`🛑 ¡Alto ahí!`)
   .setDescription(`¡Solo puedes utilizar este comando en canales **NSFW**!`)
   .setColor("RED");
 
 const cmdNotEnabled = (author) =>
-  new Discord.MessageEmbed()
+  new MessageEmbed()
     .setTitle(`🔌 ${author.username}`)
     .setDescription("Este comando esta deshabilitado globalmente.")
     .setColor('RED');
 
 const noCommandFound = (author) =>
-  new Discord.MessageEmbed()
+  new MessageEmbed()
     .setTitle(`🔎 ERROR: 404`)
     .setDescription(`**${author}**, ¡No tengo un comando con ese nombre!`)
     .setColor("YELLOW");
 
 
 const pokecordFilter = async (message) => {
-  const { author, guild } = message;
-  if (author.id === '365975655608745985' && guild.id === "537484725896478733") {
+  const { author, guild, channel } = message;
+  if (author.id === '365975655608745985' && guild.id === "537484725896478733" && channel.id !== '585990511790391309') {
     await message.delete({ timeout: 10000, reason: "Pokecord" });
   }
+
+  return undefined;
 }
 
 Muki.on('message', async (message) => {
@@ -60,7 +63,7 @@ Muki.on('message', async (message) => {
     if (channel.id == '622889689472303120') {
       if (message.attachments.size <= 0 || author.bot) return;
       const { name, url } = message.attachments.first();
-      const embed = new Discord.MessageEmbed()
+      const embed = new MessageEmbed()
         .setColor("BLUE")
         .setAuthor(`${author.tag}`, author.displayAvatarURL({ size: 64 }))
         .setTitle(message.content)
@@ -77,7 +80,7 @@ Muki.on('message', async (message) => {
     const prefix = database.guildConfigs.get(guild.id).prefix;
 
     if (mentions.has(Muki.user))
-      return await channel.send(new Discord.MessageEmbed()
+      return await channel.send(new MessageEmbed()
         .setColor("BLUE")
         .setDescription(`Mi prefijo en **${guild.name}** es: **${prefix}**`));
 
@@ -103,7 +106,7 @@ Muki.on('message', async (message) => {
 
   } catch (error) {
     console.log(error);
-    const e = new Discord.MessageEmbed()
+    const e = new MessageEmbed()
       .setColor("RED")
       .setTitle("¡Ha ocurrido un error!")
       .setAuthor("Stacktrace")
@@ -223,7 +226,7 @@ Muki.on('presenceUpdate', async (old, now) => { //Tipo Presence
 
 Muki.on('guildBanAdd', async (guild, user) => {
   if (!guild.systemChannel) return;
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(user.tag, user.displayAvatarURL({ size: 256 }))
     .setDescription(`Ha sido baneado de **${guild.name}**`)
     .setColor('RED')
@@ -235,7 +238,7 @@ Muki.on('guildBanAdd', async (guild, user) => {
 
 Muki.on('error', async (error) => {
   console.log(error)
-  const e = new Discord.MessageEmbed().setColor("RED").setDescription(`${error}\n${error.stack}`);
+  const e = new MessageEmbed().setColor("RED").setDescription(`${error}\n${error.stack}`);
   return await Muki.channels.cache.get("585990511790391309").send(e).catch(console.error);
 });
 
@@ -266,7 +269,7 @@ Muki.on('guildCreate', async (guild) => {
 
   database.guildConfigs.set(guild.id, guildConfig);
   const channel = guild.systemChannel;
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setTitle(`¡Hola!, mi prefijo es ${guildConfig.prefix}`)
     .setDescription(
       'Mi pequeña lista de comandos:\n' +

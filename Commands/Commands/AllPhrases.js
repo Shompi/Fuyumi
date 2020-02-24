@@ -7,8 +7,10 @@ const path = require('path');
 const phrases = (join = new Array(), leave = new Array(), guild) =>
   new MessageEmbed()
     .setTitle(`Frases de Bienvenida / Salida de la Guild ${guild.name}:`)
-    .addField("Entrada:", "-" + join.join("\n-"))
-    .addField("Salida:", "-" + leave.join("\n-"))
+    .addFields(
+      { name: 'Entrada:', value: `- ${join.join('\n-')}`, inline: false },
+      { name: 'Salida:', value: `- ${leave.join('\n-')}`, inline: false }
+    )
     .setThumbnail(guild.iconURL({ size: 256 }))
     .setColor("BLUE");
 
