@@ -8,7 +8,7 @@ const infoEmbed = (user, member, guild, memberinfo, userinfo) =>
     .setTitle(`${user.tag}`)
     .setThumbnail(user.displayAvatarURL({ size: 512 }))
     .addFields({ name: 'User Info:', value: userinfo },
-      { name: `Info como miembro de ${guildn.name}:`, memberinfo })
+      { name: `Info como miembro de ${guild.name}:`, memberinfo })
     .setColor(member.displayColor)
     .setTimestamp()
 
