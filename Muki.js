@@ -96,6 +96,7 @@ Muki.on('message', async (message) => {
 
       if (!command.enabled) return await channel.send(cmdNotEnabled(author));
       if (command.nsfw && !channel.nsfw) return await channel.send(notNSFW);
+      if (command.name === 'eval' && author.id !== Muki.OWNER) return;
 
       return command.execute(message, args);
 
