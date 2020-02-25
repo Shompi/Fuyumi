@@ -45,7 +45,7 @@ module.exports = {
     delete require.cache[require.resolve(`./${command.filename}`)];
 
     try {
-      const reload = require(`${command.filename}`);
+      const reload = require(`./${command.filename}`);
       Muki.commands.set(reload.name, reload);
       return await channel.send(success(command));
     } catch (error) {
