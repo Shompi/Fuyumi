@@ -37,7 +37,7 @@ module.exports = {
     const { guild, mentions, channel } = message;
     try {
       const user = mentions.users.first() || message.author;
-      const member = guild.member(user) || message.member;
+      const member = mentions.members.first() || message.member;
       const dMemberSince = user.createdAt;
       const gMemberSince = member.joinedAt;
 
