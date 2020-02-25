@@ -42,7 +42,7 @@ module.exports = {
     if (!command) return await channel.send(noCommandFound(author));
 
     //If a command is found:
-    delete require.cache[require.resolve(`${command.filename}`)];
+    delete require.cache[require.resolve(`./Commands/Commands/${command.filename}`)];
 
     try {
       const reload = require(`${command.filename}`);
