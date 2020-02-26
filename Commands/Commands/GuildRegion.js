@@ -8,7 +8,7 @@ const path = require('path');
 const missingPermissions = (permission) =>
   new MessageEmbed()
     .setTitle(`❌ ¡Me faltan permisos!`)
-    .setDescription(`Asegúrate que tengo el permiso ${permission}.`)
+    .setDescription(`Asegúrate que tengo el/los permiso/s ${permission.join(", ")}.`)
     .setColor("RED");
 
 const cooldownEmbed = new MessageEmbed()
@@ -47,8 +47,6 @@ module.exports = {
 
       if (guild.region == 'brazil') _guild = await guild.setRegion('us-east', author.tag).catch(console.error);
       else _guild = await guild.setRegion('brazil', author.tag).catch(console.error);
-
-
 
       const embed = new MessageEmbed()
         .setTitle(author.tag)
