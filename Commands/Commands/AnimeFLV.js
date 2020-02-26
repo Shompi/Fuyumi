@@ -46,9 +46,10 @@ module.exports = {
 
     let response = new SearchResponse();
 
-    response = await fetch(baseURL + query).then(res => res.json()).catch(console.error);
-    if (response.search.length == 0) return await channel.send("No he encontrado ningún Anime con ese nombre.");
+    //In case the fetching fails, we return an empty array.
+    response = await fetch(baseURL + query).then(res => res.json()).catch(er => { search: [] });
 
+    if (response.search.length == 0) return await channel.send("No he encontrado ningún Anime con ese nombre.");
     if (response.search.length == 1) return await channel.send(EmbedMaker(message, response.search[0]));
     else {
       let pageindex = 0;
