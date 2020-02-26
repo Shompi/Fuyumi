@@ -28,7 +28,7 @@ module.exports = {
   usage: "role [@Mención de Rol]",
   nsfw: false,
   enabled: true,
-  aliases: ['rinfo'],
+  aliases: ['rinfo', 'roleinfo'],
   permissions: ['MANAGE_ROLES'],
 
   async execute(message = new Message(), args = new Array()) {
