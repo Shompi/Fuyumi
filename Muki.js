@@ -142,7 +142,7 @@ Muki.on('ready', async () => {
     Muki.guilds.cache.forEach(guild => {
       if (database.guildConfigs.has(guild.id)) {
 
-        //return console.log(`La guild ${guild.name} ya tenia una entrada de configuración.\n${database.guildConfigs.get(guild.id)}`);
+        return console.log(`La guild ${guild.name} ya tenia una entrada de configuración.\n${database.guildConfigs.get(guild.id)}`);
         let configs = database.guildConfigs.get(guild.id);
         if (configs.adminRole) return;
         configs.adminRole = null;
@@ -175,7 +175,6 @@ Muki.on('ready', async () => {
     console.log(error);
     Muki.emit("error", error);
   }
-  return;
   setImmediate(async () => {
     await Muki.NASA(NASAWebHook).catch(console.error);
     setInterval(async () => {
