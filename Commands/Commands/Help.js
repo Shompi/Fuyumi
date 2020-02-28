@@ -1,4 +1,5 @@
-const {Message, MessageEmbed} = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
+const path = require('path');
 
 module.exports = {
   name: "help",
@@ -13,8 +14,5 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
     //For now lets just return a message.
     return await message.channel.send(`Este comando aún no está listo :(`);
-
-
-
   }
 }
