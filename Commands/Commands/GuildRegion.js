@@ -1,14 +1,14 @@
 const { Message, MessageEmbed, Collection } = require('discord.js');
 const voiceRegions = ['eu-central', 'india', 'london', 'japan', 'amsterdam', 'brazil', 'us-west', 'hongkong', 'southafrica', 'sydney', 'europe', 'singapore', 'us-central', 'eu-west', 'dubai', 'us-south', 'us-east', 'frankfurt', 'russia']
-const cooldowns = new Collection();
+const cooldowns = new Set();
 const path = require('path');
-
+const database = require('../LoadDatabase').guildConfigs;
 
 
 const missingPermissions = (permission) =>
   new MessageEmbed()
     .setTitle(`❌ ¡Me faltan permisos!`)
-    .setDescription(`Asegúrate que tengo el/los permiso/s ${permission.join(", ")}.`)
+    .setDescription(`Asegúrate de que yo tenga los siguientes permisos: [${permission.join(", ")}].`)
     .setColor("RED");
 
 const cooldownEmbed = new MessageEmbed()
@@ -19,72 +19,85 @@ const cooldownEmbed = new MessageEmbed()
 const noMemberPermissions = (author) =>
   new MessageEmbed()
     .setTitle(`❌ Permisos Insuficientes.`)
-    .setDescription(`Lo siento ${author}, debes tener un rol con el permiso "GESTIONAR SERVIDOR" para utilizar este comando.`)
+    .setDescription(`Lo siento ${author}, debes tener un rol autorizado para usar este comando.`)
     .setColor("RED")
     .setFooter("ERROR: MANAGE_GUILD");
+
+const usage = (prefix) =>
+  new MessageEmbed()
+    .setTitle('❌ Argumentos inválidos:')
+    .setDescription(`Debes especificar una región válida.`)
+    .addFields(
+      { name: "Ejemplo:", value: `\`${prefix}region brazil Pérdida de paquetes.\`` },
+      { name: "Regiones Disponibles:", value: voiceRegions.join(", ") }
+    )
+    .setColor("BLUE");
+
+const noAdminRole = (guild, prefix) =>
+  new MessageEmbed()
+    .setTitle(`${guild.name} no tiene un rol de Administrador / Staff`)
+    .setDescription(`Para añadir un rol de Administrador, escribe \`${prefix}adminrole [@Mención de rol]\`\n\nNota: El rol debe estar creado de antemano.`)
+    .setColor("BLUE");
+
+const roleNotFound =
+  new MessageEmbed()
+    .setTitle('🔎 No he encontrado el rol de administrador en esta guild.')
+    .setDescription(`Asegurate de que el rol exista, probablemente necesites usar el comando \`adminrole\` de nuevo.`)
+    .setColor("YELLOW");
+
+const success = (author, region, image, reason) =>
+  new MessageEmbed()
+    .setTitle(`¡${author.tag} ha cambiado la región de Voz!`)
+    .setDescription(`**Nueva región:** ${region.toUpperCase()}\n\n**Razón:** ${reason ? reason : "-"}`)
+    .setImage(image)
+    .setThumbnail(author.displayAvatarURL({ size: 512 }));
+
 
 module.exports = {
   name: "region",
   filename: path.basename(__filename),
-  description: "Mueve la región de voz del servidor.\nAmbos parámetros son opcionales, pero solo puede haber una **Razón** si se especifica una **Región**.",
-  usage: "region (Región) (Razón)",
+  description: "Mueve la región de voz del servidor.",
+  usage: "region [Región] (Razón)",
   nsfw: false,
   enabled: true,
   aliases: [],
   permissions: ["MANAGE_GUILD"],
   async execute(message = new Message(), args = new Array()) {
 
-    const { guild, attachments, author, member, channel } = message;
-    if (!member.hasPermission("MANAGE_GUILD", { checkAdmin: true, checkOwner: true })) return await channel.send(author);
+    const { guild, attachments, author, member, channel, client: Muki } = message;
+
+    if (cooldowns.has(guild.id)) return await channel.send(cooldownEmbed);
+
+    const guildConfigs = database.get(guild.id);
+    if (!guildConfigs) return console.log(`La guild ${guild.name} no tenia un archivo de configuración. GuildRegion.js`);
+
+    const adminRole = guildConfigs.adminRole;
+
+    // If the member running the command doesn't have the adminRole, and is NOT the owner of the guild...
+    if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true }) && !member.roles.cache.has(adminRole)) return await channel.send(noMemberPermissions(author));
+
+    // If the bot doesn't have the permissions to change the Guild Region...
     if (!guild.me.hasPermission('MANAGE_GUILD', { checkAdmin: true })) return await channel.send(missingPermissions(this.permissions));
 
+    if (args.length === 0) return await channel.send(usage(guildConfigs.prefix));
+
     let region = args.shift().toLowerCase(), reason = args.join(" ");
-    let _guild, image = null;
 
-    if (attachments.size >= 1) image = attachments.first().url;
+    // If there is no args OR the region entered is not a valid voice region...
+    if (!voiceRegions.includes(region)) return await channel.send(usage(guildConfigs.prefix));
 
-    if (!region) {
+    if (guild.region === region) return await channel.send(`${guild.name} ya se encuentra en esa región.`);
+    let image = null;
+    if (attachments.size >= 1) return image = attachments.first().url;
+    try {
+      await guild.setRegion(region, author.tag);
+      cooldowns.add(guild.id);
 
-      if (guild.region == 'brazil') _guild = await guild.setRegion('us-east', author.tag).catch(console.error);
-      else _guild = await guild.setRegion('brazil', author.tag).catch(console.error);
-
-      const embed = new MessageEmbed()
-        .setTitle(author.tag)
-        .setThumbnail(author.displayAvatarURL({ size: 256 }))
-        .setDescription(`Ha cambiado la región de **${guild.name}** a **${_guild.region.toUpperCase()}**`)
-        .setColor("BLUE")
-        .setTimestamp();
-      if (image) embed.setImage(image);
-
-      const channel = guild.systemChannel;
-      if (!channel) return await channel.send(embed);
-      else return await systemChannel.send(embed);
-
-    }
-    else {
-      if (!voiceRegions.includes(region)) return await message.reply(`¡la región que has ingresado no existe o la has escrito mal!\n${this.usage}`).catch(console.error);
-      if (guild.region === region) return await message.reply("la Guild ya se encuentra en esa región.");
-      _guild = await guild.setRegion(region);
-
-      const embed = new MessageEmbed()
-        .setTitle(author.tag)
-        .setThumbnail(author.displayAvatarURL({ size: 256 }))
-        .setDescription(`Ha cambiado la región de **${guild.name}** a **${_guild.region.toUpperCase()}**${reason ? `\n**Razón:** ${reason}` : ''}`)
-        .setColor("BLUE")
-        .setTimestamp();
-
-      if (image) embed.setImage(image);
-
-      cooldown = true;
-      setTimeout(() => {
-        cooldown = false;
-      }, 5000, cooldown);
-
-      const systemChannel = guild.systemChannel;
-
-      if (!channel) return await channel.send(embed);
-
-      else return await systemChannel.send(embed);
+      Muki.setTimeout(() => cooldowns.delete(guild.id), 5000);
+      return channel.send(success(author, region, image, reason));
+    } catch (error) {
+      console.log(error);
+      return await channel.send(`Ha ocurrido un error al ejecutar este comando.`);
     }
   }
 }

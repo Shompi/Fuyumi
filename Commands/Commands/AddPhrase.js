@@ -48,7 +48,7 @@ module.exports = {
     if (!configs) return console.log(`Por alguna razón la guild ${guild.name} no tenia entrada de configuración. AddPhrase.js`);
     const phrase = args.join(" ");
 
-    if (member.hasPermission("ADMINISTRATOR", { checkOwner: true })) {
+    if (member.hasPermission("ADMINISTRATOR", { checkOwner: true }) || member.roles.cache.has(configs.adminRole)) {
       if (phrase) {
         if (phrase.length > 256) return await channel.send(limitExceeded(author, phrase));
         if (configs.welcome.joinPhrases.includes(phrase)) return await channel.send(duplicated(author, phrase, configs.prefix));

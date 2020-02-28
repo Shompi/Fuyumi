@@ -6,5 +6,8 @@ module.exports = {
   Guild: {
     MemberRemove: require('./EventHandler/Guild/memberRemove/main'),
     MemberAdd: require('./EventHandler/Guild/memberAdd/main'),
+  },
+  ReactionAdd: {
+    Stars: require('./EventHandler/Stars/Stars')
   }
 }

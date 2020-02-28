@@ -15,6 +15,12 @@ const phrases = (join = new Array(), leave = new Array(), guild) =>
     .setColor("BLUE");
 
 
+const noAdminRole =
+  new MessageEmbed()
+    .setTitle(`¡Necesitas un rol de administrador!`)
+    .setColor("YELLOW")
+    .setDescription(`Un administrador debe configurar un rol de administrador con el comando:\n\`adminrole [@Mencion del rol]\``);
+
 module.exports = {
   name: "wfrases",
   filename: path.basename(__filename),
@@ -24,16 +30,25 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: [],
+
   async execute(message = new Message(), args = new Array()) {
     const { member, channel, guild } = message;
 
-    if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return undefined;
-
     const config = database.get(guild.id);
-    if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración.`);
 
+    if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración.`);
     const { joinPhrases, leavePhrases } = config.welcome;
 
-    return await channel.send(phrases(joinPhrases, leavePhrases, guild));
+    if (member.hasPermission('ADMINISTRATOR', { checkOwner: true })) {
+      return await channel.send(phrases(joinPhrases, leavePhrases, guild));
+
+    } else {
+      if (!config.adminRole) return await channel.send(noAdminRole);
+
+      if (member.roles.cache.has(adminRole)) {
+        return await channel.send(phrases(joinPhrases, leavePhrases, guild));
+      } else return await channel.send(noAdminRole);
+
+    }
   }
 }
