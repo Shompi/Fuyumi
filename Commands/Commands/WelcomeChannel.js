@@ -45,6 +45,9 @@ module.exports = {
       const mentionedChannel = mentions.channels.first();
       if (!mentionedChannel) return await channel.send(noChannel(config.prefix));
 
+      //Check if the channel exists in the guild.
+      if (!guild.channels.cache.has(mentionedChannel.id)) return await channel.send("El canal que has mencionado no existe en esta guild.");
+
       //If it was
       config.welcome.channelID = mentionedChannel.id;
       config.welcome.enabled = true;
