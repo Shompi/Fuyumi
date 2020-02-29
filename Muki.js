@@ -1,6 +1,6 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const { Client, Collection, MessageEmbed, Webhook } = require('discord.js');
-const Muki = new Client({ partials: ['GUILD_MEMBER'] });
+const Muki = new Client({ partials: ['GUILD_MEMBER'], disableEveryone: true });
 Muki.commands = new Collection();
 Muki.EventHandlers = require('./Commands/EventHandlers');
 Muki.NASA = require('./Commands/NASA/POTD');
