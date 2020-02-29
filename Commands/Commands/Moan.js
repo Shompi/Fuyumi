@@ -1,11 +1,9 @@
-/**
- * Moans Handler
- * Fun command.
- */
 const Moaning = new Set();
 const { Message, MessageEmbed, VoiceConnection } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const clips = fs.readdirSync("Commands/Music/Moans").filter(file => file.endsWith('.mp3'));
+
 
 const speakPermission = (author) =>
   new MessageEmbed()
@@ -32,14 +30,12 @@ module.exports = {
   description: "😏",
   usage: "moan <Sin Parámetros>",
   nsfw: false,
-  enabled: false,
+  enabled: true,
   aliases: [],
   permissions: ["SPEAK"],
   async execute(message = new Message(), args = new Array()) {
     const { guild, member, author, channel } = message;
-
-
-    const clips = fs.readdirSync("Commands/Music/Moans").filter(file => file.endsWith('.mp3'));
+    if (Moaning.has(guild.id)) return undefined;
     if (clips.length === 0) return channel.send("No hay archivos para reproducir.");
 
     if (Moaning.has(guild.id)) return;
@@ -52,22 +48,34 @@ module.exports = {
   }
 }
 
-const PlayMoan = (connection = new VoiceConnection(), { guild, channel }, clips) => {
-
+const PlayMoan = (connection = new VoiceConnection(), message, clips) => {
+  const { guild } = message;
   const clip = clips[Math.floor(Math.random() * clips.length)];
 
   const dispatcher = connection.play(`Commands/Music/Moans/${clip}`, { bitrate: 96000, volume: 0.75, highWaterMark: 1 << 10 });
 
   dispatcher.on('end', () => {
-    console.log(`Ended`);
-    Moaning.delete(guild.id);
-    connection.disconnect();
+    setTimeout(() => {
+      Moaning.delete(guild.id)
+      console.log("guild deleted");
+      connection.disconnect();
+    }, 1500);
   });
+
+  dispatcher.on('finish', () => {
+    console.log("Finished");
+    setTimeout(() => {
+      Moaning.delete(guild.id)
+      console.log("guild deleted");
+      connection.disconnect();
+    }, 1500);
+  })
 
   dispatcher.on('error', (error) => {
     Moaning.delete(guild.id);
     console.log("ERROR")
     console.log(error);
+    connection.disconnect();
   });
 
   dispatcher.on('start', () => {
