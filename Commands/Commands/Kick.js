@@ -45,9 +45,10 @@ module.exports = {
 
     if (!target) return await channel.send(noTarget);
     if (!target.kickable) return await channel.send(noPermissions);
+    
+    const reason = args.shift().join(" ");
 
     const kicked = await target.kick(reason);
-    const reason = args.shift().join(" ");
 
     return await channel.send(kicked({ guild, target, reason }));
   }
