@@ -12,7 +12,7 @@ const noPermissions = new MessageEmbed()
   .setDescription("Necesito el permiso 'KICK_MEMBERS' o 'EXPULSAR MIEMBROS' para poder ejecutar esta acción.")
   .setColor("RED");
 
-const kicked = (info) => {
+const success = (info) => {
   const { target, guild, reason } = info;
 
   return new MessageEmbed()
@@ -48,8 +48,8 @@ module.exports = {
 
     const reason = args.slice(1).join(" ");
 
-    const kicked = await target.kick(reason);
+    await target.kick(reason);
 
-    return await channel.send(kicked({ guild, target, reason }));
+    return await channel.send(success({ guild, target, reason }));
   }
 }
