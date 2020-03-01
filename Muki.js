@@ -79,12 +79,6 @@ Muki.on('message', async (message) => {
     //Actual bot behaviour
     const prefix = database.guildConfigs.get(guild.id).prefix;
 
-    if (mentions.has(Muki.user))
-      return await channel.send(new MessageEmbed()
-        .setColor("BLUE")
-        .setDescription(`Mi prefijo en **${guild.name}** es: **${prefix}**`));
-
-
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
