@@ -8,7 +8,7 @@ Muki.OWNER = '166263335220805634';
 Muki.replies = new Collection();
 const fs = require('fs');
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
-const auth = require('./Keys/auth').beta;
+const auth = require('./Keys/auth').stable;
 
 for (const file of commandFiles) {
   const command = require(`./Commands/Commands/${file}`);
@@ -17,8 +17,7 @@ for (const file of commandFiles) {
 
 /*-----------------------Archivos extra----------------------------*/
 let MukiConfigs = { status: "ONLINE", activityType: "PLAYING", activityTo: "muki!", prefix: "muki!" };
-//const Muki = require('./Modules/Modules');
-//const WebHooks = require('./Keys/hookTokens');
+const WebHooks = require('./Keys/hookTokens');
 const database = require('./Commands/LoadDatabase');
 /*-------------------------Inicio del BOT-------------------------*/
 let australGamingMemeHook = new Webhook();
@@ -93,7 +92,7 @@ Muki.on('message', async (message) => {
 
       database.guildConfigs.set(guild.id, guildConfig);
     }
-    
+
     const prefix = database.guildConfigs.get(guild.id, "prefix");
 
     const args = message.content.slice(prefix.length).split(/ +/);
@@ -132,7 +131,7 @@ Muki.on('message', async (message) => {
 
 Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
-  return;
+
   try {
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
