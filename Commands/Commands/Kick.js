@@ -2,6 +2,16 @@ const { MessageEmbed, Message } = require('discord.js');
 const database = require('../LoadDatabase').guildConfigs;
 const path = require('path');
 
+const targetMessage = (obj) => {
+  const { reason, guild } = obj;
+
+  return new MessageEmbed()
+    .setTitle(`Has sido expulsado de la guild ${guild.name}`)
+    .setDescription(`${reason ? reason : "-"}`)
+    .setThumbnail(guild.iconURL)
+    .setColor("RED");
+}
+
 const noTarget = new MessageEmbed()
   .setTitle(`🔎 No he encontrado al miembro!`)
   .setDescription("Asegúrate de que el usuario sea parte de esta guild, o que la id que ingresaste sea una id valida.")
@@ -17,7 +27,7 @@ const success = (info) => {
 
   return new MessageEmbed()
     .setTitle(`${target.user.username} ha sido expulsado.`)
-    .setImage(target.user.displayAvatarURL({ size: 512 }))
+    .setThumbnail(target.user.displayAvatarURL({ size: 512 }))
     .setColor("ORANGE")
     .setDescription(`${reason ? "-" : reason}`)
     .setFooter(guild.name, guild.iconURL({ size: 64 }))
@@ -47,7 +57,7 @@ module.exports = {
     if (!target.kickable) return await channel.send(noPermissions);
 
     const reason = args.slice(1).join(" ");
-
+    await target.send(targetMessage({reason, guild}));
     await target.kick(reason);
 
     return await channel.send(success({ guild, target, reason }));
