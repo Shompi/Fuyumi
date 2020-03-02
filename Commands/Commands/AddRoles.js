@@ -10,7 +10,7 @@ const noTarget = (usage) =>
 
 const missingPermissions = (permissions) =>
   new MessageEmbed()
-    .setTitle('Permisos insuficientes.')
+    .setTitle('🚫 Permisos insuficientes.')
     .setDescription(`Necesito el o los siguientes permisos:\n\`${permissions.join(", ")}\``)
     .setColor("RED");
 
@@ -34,8 +34,8 @@ const rolesAdded = (target) =>
 module.exports = {
   name: "addroles",
   aliases: ['addrole'],
-  description: "Añade uno o más roles al miembro objetivo, separados por una coma.",
-  usage: "addroles [@Miembro] [rol1, rol2, rol3, ...roln]",
+  description: "Añade uno o más roles a un miembro. Debes ingresar el **NOMBRE** del/los rol/es que quieres añadir al objetivo.",
+  usage: "addroles [@Miembro] [nombre 1, nombre 2, nombre 3, ...roln]",
   nsfw: false,
   enabled: true,
   permissions: ['MANAGE_ROLES'],
@@ -43,7 +43,7 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
 
     //Args will come like "<membermention> <rolename>, <rolename>, <rolename>"
-    const { channel, guild, member, author } = message;
+    const { channel, guild, member, author, client: Muki } = message;
     const { me, roles: GuildRoles, owner } = guild;
     const MukiHighest = me.roles.highest;
 
@@ -82,6 +82,7 @@ module.exports = {
     }
     catch (error) {
       console.log(error);
+      await Muki.users.cache.get(Muki.OWNER).send('Hubo un error con el comando addroles. ¡Mira la consola!');
       return await channel.send(errorEmbed);
     }
   }

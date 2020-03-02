@@ -13,7 +13,7 @@ module.exports = {
   name: "loadcmd",
   aliases: ["lcmd"],
   filename: path.basename(__filename),
-  description: "Recarga la carpeta de comandos y añade los que no estaban cargados.",
+  description: "Recarga la carpeta de comandos y añade los que no estaban cargados. (Comando de uso interno.)",
   usage: "loadcmd <Sin Parámetros>",
   nsfw: false,
   enabled: true,

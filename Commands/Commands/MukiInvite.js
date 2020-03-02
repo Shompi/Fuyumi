@@ -10,11 +10,11 @@ const invitation = (invite) =>
 module.exports = {
   name: "invite",
   filename: path.basename(__filename),
-  description: "Enlace de invitación para invitarme a otros servidores.",
+  description: "¡Mi enlace de invitación para que me invites a otros servidores!",
   usage: "invite <Sin Parámetros>",
   enabled: true,
   nsfw: false,
-  aliases: [],
+  aliases: ['inv'],
   permissions: [],
   async execute(message = new Message(), args = new Array()) {
     const { channel, client } = message;

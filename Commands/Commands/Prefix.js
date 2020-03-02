@@ -29,7 +29,7 @@ const succeed = (prefix) => {
 module.exports = {
   name: "prefix",
   filename: path.basename(__filename),
-  description: "Cambia mi prefijo en este servidor.",
+  description: "Cambia mi prefijo en el servidor.",
   usage: "prefix [Nuevo Prefijo]",
   nsfw: false,
   enabled: true,

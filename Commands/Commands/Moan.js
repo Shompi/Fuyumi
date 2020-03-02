@@ -54,14 +54,6 @@ const PlayMoan = (connection = new VoiceConnection(), message, clips) => {
 
   const dispatcher = connection.play(`Commands/Music/Moans/${clip}`, { bitrate: 96000, volume: 0.75, highWaterMark: 1 << 10 });
 
-  dispatcher.on('end', () => {
-    setTimeout(() => {
-      Moaning.delete(guild.id)
-      console.log("guild deleted");
-      connection.disconnect();
-    }, 1500);
-  });
-
   dispatcher.on('finish', () => {
     console.log("Finished");
     setTimeout(() => {

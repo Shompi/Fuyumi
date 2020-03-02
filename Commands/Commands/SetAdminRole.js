@@ -29,7 +29,11 @@ module.exports = {
 
     // Update the database configs for this guild.
     database.set(guild.id, config);
+    const embed = new MessageEmbed()
+      .setTitle(`¡Exito!`)
+      .setDescription(`El rol **${role.name}** (ID: **${role.id}**) es ahora el ¡Rol de Administrador!\n\nNota: Esto solo autoriza a los que tengan este rol, a utilizar mis comandos destinados a administradores. No les da ninguna clase de permiso extra en el servidor.`)
+      .setColor(role.color);
 
-    return await channel.send(`El rol ${role.name} (ID: ${role.id}) es ahora el ¡Rol de Administrador!`);
+    return await channel.send(embed);
   }
 }

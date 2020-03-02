@@ -26,8 +26,8 @@ const succeed = new MessageEmbed()
 module.exports = {
   name: "wremfrase",
   filename: path.basename(__filename),
-  description: "Quita una frase de bienvenida.",
-  usage: "wremfrase [frase] (Debe ser exactamente igual).",
+  description: "Quita una frase de bienvenida. La frase que ingreses debe ser exactamente igual a una que ya esté configurada.",
+  usage: "wremfrase [frase]",
   nsfw: false,
   enabled: true,
   aliases: [],

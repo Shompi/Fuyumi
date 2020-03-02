@@ -49,7 +49,7 @@ module.exports = {
   usage: "konasafe [tags]",
   nsfw: false,
   enabled: true,
-  aliases: [],
+  aliases: ['safe'],
   permissions: [],
 
   async execute(message = new Message(), args = new Array()) {

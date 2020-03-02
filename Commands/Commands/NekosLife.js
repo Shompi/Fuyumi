@@ -55,7 +55,7 @@ const imageEmbed = (author, data, endpoint) => {
 module.exports = {
   name: "neko",
   filename: path.basename(__filename),
-  description: "Envía una imágen desde Nekos.life",
+  description: "Obtiene una imágen desde Nekos.life y la envía al canal.",
   usage: "[neko / feet / ENDPOINT]",
   nsfw: true,
   enabled: true,
@@ -80,7 +80,10 @@ module.exports = {
     } catch (err) {
       console.log("Ha ocurrido un error en Nekos.life");
       console.log(err);
-      let Embed = new MessageEmbed().setTitle("Error en API Nekos.life").setDescription("Hubo un error con la api de Nekos.life, por favor avisale a ShompiFlen#3338").setColor('RED');
+      let Embed = new MessageEmbed()
+        .setTitle("Error en API Nekos.life")
+        .setDescription("Hubo un error con la api de Nekos.life, por favor avisale a ShompiFlen#3338")
+        .setColor('RED');
       return await channel.send(Embed);
     }
   }

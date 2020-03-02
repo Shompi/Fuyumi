@@ -37,7 +37,7 @@ const success = (info) => {
 
 module.exports = {
   name: "kick",
-  description: "Expulsa a un miembro del servidor.",
+  description: "Expulsa a un miembro del servidor. Si el comando lo ejecuta un miembro sin permisos para expulsar miembros, debe tener asignado el rol de administrador que configuras con el comando **adminrole**.",
   usage: "kick [id o @mención del miembro]",
   aliases: [],
   permissions: ["KICK_MEMBERS"],
@@ -57,7 +57,7 @@ module.exports = {
     if (!target.kickable) return await channel.send(noPermissions);
 
     const reason = args.slice(1).join(" ");
-    await target.send(targetMessage({reason, guild}));
+    await target.send(targetMessage({ reason, guild })).catch(err => console.log('No puedo mensajear a este usuario. ' + err));
     await target.kick(reason);
 
     return await channel.send(success({ guild, target, reason }));

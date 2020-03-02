@@ -24,7 +24,7 @@ const noAdminRole =
 module.exports = {
   name: "wfrases",
   filename: path.basename(__filename),
-  description: "Muestra todas las frases de bienvenida configuradas en este servidor.",
+  description: "Muestra todas las **frases de bienvenida** configuradas en este servidor.",
   usage: "wfrases <Sin Parámetros>",
   nsfw: false,
   enabled: true,

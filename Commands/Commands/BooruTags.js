@@ -33,7 +33,7 @@ const getTagType = (type) => {
 module.exports = {
   name: "btags",
   filename: path.basename(__filename),
-  description: "Booru Tag. Busca un tag en la base de datos de **Yande.re**",
+  description: "Booru Tags. Busca un tag en **yande.re/tags**",
   usage: "btags [tag]",
   nsfw: false,
   enabled: true,
