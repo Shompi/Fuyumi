@@ -1,6 +1,6 @@
 {
   "name": "muki",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "multifunctional bot for Discord",
   "main": "Muki.js",
   "dependencies": {
@@ -9,7 +9,7 @@
     "async-limiter": "^2.0.0",
     "better-sqlite-pool": "^0.2.3",
     "cheerio": "^1.0.0-rc.3",
-    "discord.js": "github:discordjs/discord.js",
+    "discord.js": "^12.0.1",
     "enmap": "^5.2.4",
     "ffmpeg-static": "^2.5.0",
     "fs": "0.0.2",
@@ -18,7 +18,7 @@
     "m3u8stream": "^0.6.4",
     "minecraft-query": "^1.0.9",
     "node-fetch": "^2.6.0",
-    "opusscript": "0.0.7",
+    "node-opus": "^0.3.3",
     "parse-time": "^0.1.4",
     "ws": "^7.2.1",
     "ytdl-core": "^1.0.7",
