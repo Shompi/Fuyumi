@@ -36,7 +36,7 @@ module.exports = {
   usage: "flv [Título del animé]",
   nsfw: false,
   enabled: true,
-  aliases: [],
+  aliases: ['anime', 'animeflv'],
   permissions: [],
   async execute(message = new Message(), args = new Array()) {
 
