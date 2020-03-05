@@ -37,7 +37,7 @@ module.exports = {
     let description = "**[OBLIGATORIO] (OPCIONAL) <SIN PARAMETROS>**\n\n";
 
     commands.forEach(command => {
-      description += `** ${command.name} **\n\`${prefix}${command.usage}\`\n-${command.description} [${command.nsfw ? '**NSFW**' : ""}] [${command.enabled ? '' : '**Este comando está actualmente desactivado.**'}]\n\n`
+      description += `** ${command.name} **\n\`${prefix}${command.usage}\`\n-${command.description} ${command.nsfw ? '[**NSFW**]' : ""} ${command.enabled ? '' : '[**Este comando está actualmente desactivado.**]'}\n\n`
     });
 
     try {
