@@ -1,4 +1,4 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message, MessageEmbed, Util } = require('discord.js');
 const path = require('path');
 const database = require('../LoadDatabase').guildConfigs;
 
@@ -37,11 +37,23 @@ module.exports = {
     let description = "**[OBLIGATORIO] (OPCIONAL) <SIN PARAMETROS>**\n\n";
 
     commands.forEach(command => {
-      description += `** ${command.name} **\n\`${prefix}${command.usage}\`\n-${command.description} ${command.nsfw ? '[**NSFW**]' : ""} ${command.enabled ? '' : '[**Este comando está actualmente desactivado.**]'}\n\n`
+      description += `\`${prefix}${command.usage}\`\n-${command.description} ${command.nsfw ? '[**NSFW**]' : ""} ${command.enabled ? '' : '[**Este comando está actualmente desactivado.**]'}\n\n`
     });
+    const descriptions = Util.splitMessage(description, { char: '\n\n' });
+    let embeds = [];
 
+    for (section of descriptions) {
+      embeds.push(
+        new MessageEmbed()
+          .setTitle(`Lista de comandos:`)
+          .setDescription(section)
+          .setColor("BLUE")
+      );
+    }
     try {
-      await author.send(description, { split: true });
+      for (embed of embeds) {
+        await author.send(embed);
+      }
       return await message.reply('¡Te he enviado mi lista de comandos por mensaje privado!')
     } catch (e) {
       console.log(e);
