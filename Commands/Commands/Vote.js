@@ -46,7 +46,9 @@ module.exports = {
 
 
     if (message.attachments.size >= 1) {
-      voteEmbed.setImage(message.attachments.first().url);
+      const attach = message.attachments.first().url;
+      if (attach.endsWith('jpeg') || attach.endsWith('jpg') || attach.endsWith('png'))
+        voteEmbed.setImage(attach);
     }
 
     channel.send(voteEmbed)
