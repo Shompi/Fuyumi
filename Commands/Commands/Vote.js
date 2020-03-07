@@ -44,6 +44,11 @@ module.exports = {
         .setFooter(`Votación número: ${votecount.get(guild.id)}`)
         .setThumbnail(inProgress);
 
+
+    if (message.attachments.size >= 1) {
+      voteEmbed.setImage(message.attachments.first().url);
+    }
+
     channel.send(voteEmbed)
       .then(async vote => {
 
