@@ -21,6 +21,7 @@ const WebHooks = require('./Keys/hookTokens');
 const database = require('./Commands/LoadDatabase');
 /*-------------------------Inicio del BOT-------------------------*/
 let australGamingMemeHook = new Webhook();
+let CotorrasMemeHook = new Webhook();
 let NASAWebHook = new Webhook();
 
 const notNSFW = new MessageEmbed()
@@ -61,18 +62,24 @@ Muki.on('message', async (message) => {
     //Webhooks
     if (channel.id == '622889689472303120') {
       if (message.attachments.size <= 0 || author.bot) return;
-      const { name, url } = message.attachments.first();
-      const embed = new MessageEmbed()
-        .setColor("BLUE")
-        .setAuthor(`${author.tag}`, author.displayAvatarURL({ size: 64 }))
-        .setTitle(message.content)
-        .setFooter(`Enviado desde: ${guild.name}`, `${guild.iconURL({ size: 64 })}`);
+      const { attachments } = message;
+      const embeds = [];
+      for (const attachment of attachments.values()) {
 
-      if (name.endsWith(".mp4") || name.endsWith(".webm")) embed.attachFiles([url])
-      else embed.setImage(url);
+        const { url, name } = attachment;
+        const embed = new MessageEmbed()
+          .setColor("BLUE")
+          .setAuthor(`${author.tag}`, author.displayAvatarURL({ size: 64 }))
+          .setFooter(`Enviado desde: ${guild.name}`, `${guild.iconURL({ size: 64 })}`);
 
-      await australGamingMemeHook.send(null, { embeds: [embed], avatarURL: guild.iconURL(), username: guild.name });
-      return await CotorrasMemeHook.send(null, { embeds: [embed], avatarURL: guild.iconURL(), username: guild.name });
+        if (name.endsWith(".mp4") || name.endsWith(".webm")) embed.attachFiles([url])
+        else embed.setImage(url);
+
+        embeds.push(embed);
+      }
+      embeds[0].setTitle(message.content);
+      await australGamingMemeHook.send(null, { embeds: embeds, avatarURL: guild.iconURL(), username: guild.name });
+      return await CotorrasMemeHook.send(null, { embeds: embeds, avatarURL: guild.iconURL(), username: guild.name });
     }
 
     //Actual bot behaviour
@@ -98,6 +105,7 @@ Muki.on('message', async (message) => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
+    if (mentions.users.has(Muki.user.id)) return await channel.send(`Mi prefijo es: \`${prefix}\``);
 
     if (message.content.startsWith(prefix)) {
 
@@ -153,7 +161,6 @@ Muki.on('ready', async () => {
     Muki.guilds.cache.forEach(guild => {
       if (database.guildConfigs.has(guild.id)) {
 
-        return console.log(`La guild ${guild.name} ya tenia una entrada de configuración.\n${database.guildConfigs.get(guild.id)}`);
         let configs = database.guildConfigs.get(guild.id);
         if (configs.adminRole) return;
         configs.adminRole = null;
