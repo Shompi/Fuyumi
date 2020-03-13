@@ -232,9 +232,6 @@ Muki.on('messageUpdate', async (old, message) => {
       message.channel.send("Hubo un error en este comando.");
     }
   }
-}
-
-
 });
 
 Muki.on('messageReactionAdd', async (reaction, user) => {
