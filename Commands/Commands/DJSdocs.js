@@ -35,7 +35,7 @@ module.exports = {
 
         Muki.Messages.set(id, messagePair);
         setTimeout(() => {
-          Messages.delete(id);
+          Muki.Messages.delete(id);
         }, 1000 * 60 * 3);
       })
       .catch(console.error);
