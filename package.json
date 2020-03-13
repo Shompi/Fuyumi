@@ -8,6 +8,7 @@
     "@types/node-fetch": "^2.5.4",
     "async-limiter": "^2.0.0",
     "better-sqlite-pool": "^0.2.3",
+    "bufferutil": "^4.0.1",
     "cheerio": "^1.0.0-rc.3",
     "discord.js": "^12.0.2",
     "enmap": "^5.2.4",
@@ -20,9 +21,11 @@
     "node-fetch": "^2.6.0",
     "node-opus": "^0.3.3",
     "parse-time": "^0.1.4",
+    "utf-8-validate": "^5.0.2",
     "ws": "^7.2.1",
     "ytdl-core": "^1.0.7",
-    "ytdl-core-discord": "^1.0.3"
+    "ytdl-core-discord": "^1.0.3",
+    "zlib-sync": "^0.1.6"
   },
   "devDependencies": {},
   "scripts": {
