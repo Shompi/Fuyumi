@@ -5,7 +5,7 @@ Muki.commands = new Collection();
 Muki.EventHandlers = require('./Commands/EventHandlers');
 Muki.NASA = require('./Commands/NASA/POTD');
 Muki.OWNER = '166263335220805634';
-Muki.replies = new Collection();
+Muki.Messages = new Collection();
 const fs = require('fs');
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
 const auth = require('./Keys/auth').stable;
@@ -199,6 +199,42 @@ Muki.on('ready', async () => {
       await Muki.NASA(NASAWebHook).catch(console.error);
     }, 1000 * 60 * 60);
   });
+});
+
+Muki.on('messageUpdate', async (old, message) => {
+  const { guild } = message;
+
+  const prefix = database.guildConfigs.get(guild.id, "prefix");
+  const args = message.content.slice(prefix.length).split(/ +/);
+  const commandName = args.shift().toLowerCase();
+
+
+  if (message.content.startsWith(prefix)) {
+
+    const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
+    if (!command) return await channel.send(noCommandFound(author));
+
+    if (command.name !== 'docs') return;
+
+    try {
+
+      if (Muki.Messages.has(message.id)) {
+        const docs = await command.execute(message, args);
+        const mukimsg = Muki.Messages.get(message.id);
+
+        return await mukimsg.muki.edit(null, { embed: docs });
+      } else {
+        return command.execute(message, args);
+      }
+
+    } catch (error) {
+      console.log(error);
+      message.channel.send("Hubo un error en este comando.");
+    }
+  }
+}
+
+
 });
 
 Muki.on('messageReactionAdd', async (reaction, user) => {
