@@ -216,6 +216,7 @@ Muki.on('messageUpdate', async (old, message) => {
 
     if (command.name !== 'docs') return;
 
+    if (!Muki.Messages.has(message.id)) return;
     try {
 
       return command.execute(message, args);
