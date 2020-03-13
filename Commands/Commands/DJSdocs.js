@@ -22,10 +22,12 @@ module.exports = {
       .then(res => res.json())
       .then(async (docs) => {
 
-        if (Muki.Messages.has(id)) return docs;
+        if (Muki.Messages.has(message.id)) {
+          const mukimsg = Muki.Messages.get(message.id);
+          return await mukimsg.muki.edit(null, { embed: docs });
+        }
 
         const sendedMsg = await channel.send(null, { embed: docs });
-
         const messagePair = {
           muki: sendedMsg,
           user: message

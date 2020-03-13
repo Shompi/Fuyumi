@@ -218,14 +218,7 @@ Muki.on('messageUpdate', async (old, message) => {
 
     try {
 
-      if (Muki.Messages.has(message.id)) {
-        const docs = await command.execute(message, args);
-        const mukimsg = Muki.Messages.get(message.id);
-
-        return await mukimsg.muki.edit(null, { embed: docs });
-      } else {
-        return command.execute(message, args);
-      }
+      return command.execute(message, args);
 
     } catch (error) {
       console.log(error);
