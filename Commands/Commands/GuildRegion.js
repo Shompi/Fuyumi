@@ -33,18 +33,6 @@ const usage = (prefix) =>
     )
     .setColor("BLUE");
 
-const noAdminRole = (guild, prefix) =>
-  new MessageEmbed()
-    .setTitle(`${guild.name} no tiene un rol de Administrador / Staff`)
-    .setDescription(`Para añadir un rol de Administrador, escribe \`${prefix}adminrole [@Mención de rol]\`\n\nNota: El rol debe estar creado de antemano.`)
-    .setColor("BLUE");
-
-const roleNotFound =
-  new MessageEmbed()
-    .setTitle('🔎 No he encontrado el rol de administrador en esta guild.')
-    .setDescription(`Asegurate de que el rol exista, probablemente necesites usar el comando \`adminrole\` de nuevo.`)
-    .setColor("YELLOW");
-
 const success = (author, region, image, reason) =>
   new MessageEmbed()
     .setTitle(`¡${author.tag} ha cambiado la región de Voz!`)
@@ -87,14 +75,19 @@ module.exports = {
     if (!voiceRegions.includes(region)) return await channel.send(usage(guildConfigs.prefix));
 
     if (guild.region === region) return await channel.send(`${guild.name} ya se encuentra en esa región.`);
+
     let image = null;
     if (attachments.size >= 1) return image = attachments.first().url;
+
     try {
       await guild.setRegion(region, author.tag);
       cooldowns.add(guild.id);
 
       Muki.setTimeout(() => cooldowns.delete(guild.id), 5000);
-      return channel.send(success(author, region, image, reason));
+      if (guild.systemChannel)
+        return guild.systemChannel.send(success(author, region, image, reason));
+      else
+        return channel.send(success(author, region, image, reason))
     } catch (error) {
       console.log(error);
       return await channel.send(`Ha ocurrido un error al ejecutar este comando.`);
