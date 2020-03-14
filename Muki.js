@@ -115,7 +115,7 @@ Muki.on('message', async (message) => {
       if (!command.enabled) return await channel.send(cmdNotEnabled(author));
       if (command.nsfw && !channel.nsfw) return await channel.send(notNSFW);
       if (command.name === 'eval' && author.id !== Muki.OWNER) return;
-
+      if (command.guildOnly && channel.type !== 'text') return await channel.send("No puedo ejecutar este comando en mensajes privados!");
       return command.execute(message, args);
 
     } else {
@@ -160,15 +160,7 @@ Muki.on('ready', async () => {
 
     Muki.guilds.cache.forEach(guild => {
       if (database.guildConfigs.has(guild.id)) {
-
-        let configs = database.guildConfigs.get(guild.id);
-        if (configs.adminRole) return;
-        configs.adminRole = null;
-
-        database.guildConfigs.set(guild.id, configs);
-        console.log(`Configuración de ${guild.name} actualizada!`);
-        console.log(configs);
-
+        return;
       } else {
         const guildConfig = {
           id: guild.id,

@@ -5,6 +5,7 @@ const path = require('path');
 
 module.exports = {
   name: "ginfo",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Información general del servidor actual.",
   usage: "ginfo <Sin Parámetros>",

@@ -28,6 +28,7 @@ const succeed = (prefix) => {
 
 module.exports = {
   name: "prefix",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Cambia mi prefijo en el servidor.",
   usage: "prefix [Nuevo Prefijo]",

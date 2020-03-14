@@ -43,6 +43,7 @@ const success = (author, region, image, reason) =>
 
 module.exports = {
   name: "region",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Mueve la región de voz del servidor.",
   usage: `region [Región] (Razón)\n\n Las regiones válidas son:\n\`\`\`${voiceRegions.join(", ")}\`\`\``,

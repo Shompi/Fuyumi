@@ -23,6 +23,7 @@ const roleInfo = (role, guild) =>
 
 module.exports = {
   name: "role",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Muestra la información general de un <Rol> de este servidor.",
   usage: "role [@Mención de Rol]",

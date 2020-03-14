@@ -37,6 +37,7 @@ const success = (info) => {
 
 module.exports = {
   name: "kick",
+  guildOnly: true,
   description: "Expulsa a un miembro del servidor. Si el comando lo ejecuta un miembro sin permisos para expulsar miembros, debe tener asignado el rol de administrador que configuras con el comando **adminrole**.",
   usage: "kick [id o @mención del miembro]",
   aliases: [],

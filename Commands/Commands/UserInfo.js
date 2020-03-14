@@ -25,6 +25,7 @@ const userinfo = (user, mSince) =>
 
 module.exports = {
   name: "uinfo",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Muestra la información general de un usuario en específico. Si no se menciona a ningún usuario, se mostrará la información del autor del mensaje.",
   usage: "uinfo (@Mención de usuario)",

@@ -23,6 +23,7 @@ const noAdminRole =
 
 module.exports = {
   name: "wfrases",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Muestra todas las **frases de bienvenida** configuradas en este servidor.",
   usage: "wfrases <Sin Parámetros>",

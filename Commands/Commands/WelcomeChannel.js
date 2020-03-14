@@ -24,6 +24,7 @@ const succeed = (channel = new TextChannel(), prefix) => {
 
 module.exports = {
   name: "wchannel",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Asigna una canal para enviar los **Mensajes de Bienvenida**.",
   usage: "wchannel [#Mencion del Canal]",

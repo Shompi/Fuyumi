@@ -7,6 +7,7 @@ const path = require('path');
 module.exports = {
   name: "newchannel",
   filename: path.basename(__filename),
+  guildOnly: true,
   description: "Crea un nuevo canal en este servidor. Los separadores **|** son **OBLIGATORIOS**.",
   usage: "newchannel [Nombre] | [Tipo: texto/voz] | (Canal / Categoria Padre)",
   nsfw: false,

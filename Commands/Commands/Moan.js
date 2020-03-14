@@ -26,6 +26,7 @@ const noMemberVoiceChannel = (author) =>
 
 module.exports = {
   name: "moan",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "😏",
   usage: "moan <Sin Parámetros>",

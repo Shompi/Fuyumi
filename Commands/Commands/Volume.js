@@ -3,6 +3,7 @@ const path = require('path');
 
 module.exports = {
   name: "volume",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Modifica el volumen del bot.",
   usage: "volume [Número 1-25]",

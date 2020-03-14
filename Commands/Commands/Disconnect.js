@@ -23,6 +23,7 @@ const differentChannel = (author) =>
 module.exports = {
   name: "disconnect",
   filename: path.basename(__filename),
+  guildOnly: true,
   aliases: [],
   description: "Me desconecta del canal de voz, si es que estoy en uno.",
   usage: "disconnect <Sin Parámetros>",

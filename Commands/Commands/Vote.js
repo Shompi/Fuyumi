@@ -11,6 +11,7 @@ const path = require('path');
 
 module.exports = {
   name: "vote",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Inicia una votación en el servidor. Solo se permite una votación simultanea por Servidor.",
   usage: "vote [Tiempo en minutos] [Pregunta / Propuesta]",

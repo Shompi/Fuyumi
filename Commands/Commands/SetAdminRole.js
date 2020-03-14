@@ -3,6 +3,7 @@ const path = require('path');
 const database = require('../LoadDatabase').guildConfigs;
 module.exports = {
   name: "adminrole",
+  guildOnly: true,
   aliases: [],
   filename: path.basename(__filename),
   description: "Configura un rol como Administrador, y autoriza a los miembros con éste a que utilicen mis comandos para administradores.",

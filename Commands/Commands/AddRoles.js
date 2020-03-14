@@ -33,6 +33,7 @@ const rolesAdded = (target) =>
 
 module.exports = {
   name: "addroles",
+  guildOnly: true,
   aliases: ['addrole'],
   description: "Añade uno o más roles a un miembro. Debes ingresar el **NOMBRE** del/los rol/es que quieres añadir al objetivo.",
   usage: "addroles [@Miembro] [nombre 1, nombre 2, nombre 3, ...roln]",
