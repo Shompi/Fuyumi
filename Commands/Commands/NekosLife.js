@@ -47,7 +47,10 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
 
     const { channel, author, content, guild } = message;
-    const prefix = database.get(guild.id, "prefix");
+    let prefix;
+    if (!guild) prefix = "muki!";
+    else prefix = database.get(guild.id, "prefix");
+
     const endpoint = content.slice(prefix.length);
 
     try {
