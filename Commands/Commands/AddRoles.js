@@ -35,7 +35,7 @@ module.exports = {
   name: "addroles",
   guildOnly: true,
   aliases: ['addrole'],
-  description: "Añade uno o más roles a un miembro. Debes ingresar el **NOMBRE** del/los rol/es que quieres añadir al objetivo.",
+  description: "Añade uno o más roles a un miembro. Debes escribir el **NOMBRE** del/los rol/es que quieres añadir al objetivo.",
   usage: "addroles [@Miembro] [nombre 1, nombre 2, nombre 3, ...roln]",
   nsfw: false,
   enabled: true,
@@ -59,7 +59,7 @@ module.exports = {
 
     const rolesToAdd = GuildRoles.cache.filter(role => roleNames.includes(role.name.toLowerCase()));
 
-    if (rolesToAdd.size === 0) return await channel.send(noRolesFound(this.usage));
+    if (rolesToAdd.size === 0) return channel.send(noRolesFound(this.usage));
 
     try {
       if (member.hasPermission('ADMINISTRATOR', { checkOwner: true })) {
@@ -67,24 +67,24 @@ module.exports = {
         //We dont want to filter the roles, just add them.
 
         await target.roles.add(rolesToAdd, message.author.tag);
-        return await channel.send(rolesAdded(target));
+        return channel.send(rolesAdded(target));
       } else {
 
         //If not, we dont want to add roles that are higher than the highest role of the member invoking the command.
-        if (!member.roles.cache.has(adminRole)) return await channel.send(`Debes tener el rol asignado como Rol de Administrador para usar este comando.\n\n\`${guildConfigs.prefix}adminrole [@Mención del Rol]\``);
+        if (!member.roles.cache.has(adminRole)) return channel.send(`Debes tener el rol asignado como Rol de Administrador para usar este comando.\n\n\`${guildConfigs.prefix}adminrole [@Mención del Rol]\``);
 
         const MemberHighest = member.roles.cache.get(adminRole);
         const filtered = rolesToAdd.filter(role => role.position <= MukiHighest.position && role.position <= MemberHighest.position);
-        if (filtered.size === 0) return await channel.send(noRolesFound(this.usage));
+        if (filtered.size === 0) return channel.send(noRolesFound(this.usage));
 
         await target.roles.add(filtered, message.author.tag);
-        return await channel.send(rolesAdded(target));
+        return channel.send(rolesAdded(target));
       }
     }
     catch (error) {
       console.log(error);
       await Muki.users.cache.get(Muki.OWNER).send('Hubo un error con el comando addroles. ¡Mira la consola!');
-      return await channel.send(errorEmbed);
+      return channel.send(errorEmbed);
     }
   }
 }

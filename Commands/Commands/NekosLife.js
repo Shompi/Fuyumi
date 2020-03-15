@@ -27,12 +27,10 @@ const NSFWENDPOINTS =
     'hentai', 'futanari', 'ero', 'solo', 'waifu', 'pwankg', 'eron', 'erokemo'
   ];
 
-const ErrorEmbed = (response) => {
-  return new MessageEmbed()
-    .setTitle("Error en la API")
-    .setColor("RED")
-    .setDescription(`Codigo de error: ${response.status}`);
-}
+const ErrorEmbed = new MessageEmbed()
+  .setTitle("Error en la API")
+  .setColor("RED")
+  .setDescription(`Codigo de error: ${response.status}`);
 
 const imageEmbed = (author, data, endpoint) => {
   return new MessageEmbed()
@@ -44,7 +42,7 @@ const imageEmbed = (author, data, endpoint) => {
 module.exports = {
   name: "neko",
   filename: path.basename(__filename),
-  description: "Obtiene una imágen desde Nekos.life y la envía al canal.\n**NOTA:** El endpoint debe ir inmediatamente luego del prefijo, sin espacios.",
+  description: `Obtiene una imágen desde Nekos.life y la envía al canal.\n**NOTA:** El endpoint debe ir inmediatamente luego del prefijo, sin espacios.\n\n**Lista de Endpoints:**\n\`\`\`\nSafe:\n${SFWENDPOINTS.join(", ")}\nNSFW:\n${NSFWENDPOINTS.join(", ")}\`\`\``,
   usage: "endpoint",
   nsfw: false,
   enabled: true,
@@ -58,6 +56,7 @@ module.exports = {
     const endpoint = content.slice(prefix.length);
 
     try {
+
       if (NSFWENDPOINTS.includes(endpoint) && !channel.nsfw) return await channel.send(notNSFW);
       else {
         let response = await fetch(`${API}${endpoint}`).then(res => res.json()).catch((msg) => null);
@@ -65,16 +64,12 @@ module.exports = {
 
         await channel.send(imageEmbed(author, response, endpoint));
       }
-
     }
     catch (err) {
       console.log("Ha ocurrido un error en Nekos.life");
       console.log(err);
-      let Embed = new MessageEmbed()
-        .setTitle("Error en API Nekos.life")
-        .setDescription("Hubo un error con la api de Nekos.life, por favor avisale a ShompiFlen#3338")
-        .setColor('RED');
-      await channel.send(Embed);
+
+      await channel.send(ErrorEmbed);
     }
   }
 

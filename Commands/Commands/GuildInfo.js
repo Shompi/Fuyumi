@@ -55,7 +55,7 @@ module.exports = {
         .setColor('BLUE')
         .setTimestamp();
 
-      return await channel.send(infoEmbed);
+      return channel.send(infoEmbed);
     }
     catch (error) {
       console.log(error);

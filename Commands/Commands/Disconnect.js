@@ -24,7 +24,7 @@ module.exports = {
   name: "disconnect",
   filename: path.basename(__filename),
   guildOnly: true,
-  aliases: [],
+  aliases: ['leave'],
   description: "Me desconecta del canal de voz, si es que estoy en uno.",
   usage: "disconnect <Sin Parámetros>",
   nsfw: false,
@@ -38,12 +38,8 @@ module.exports = {
     if (member.voice.channelID !== guild.me.voice.channelID) return await channel.send(differentChannel(author));
 
     if (guild.voice.connection) {
-      guild.voice.connection.disconnect();
-      return await channel.send('👋');
-
-      /*if (guild.voice.connection.dispatcher) {
-        guild.voice.connection.dispatcher.end();
-      } */
+      await guild.voice.channel.leave();
+      return channel.send('👋');
     }
   }
 }

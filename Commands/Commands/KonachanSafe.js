@@ -60,15 +60,15 @@ module.exports = {
     try {
 
       let pageindex = 0;
-      let data = await fetch(endpoint + query + '+rating:safe');
-      if (!data.ok) return await channel.send("Error al conectar con el servidor, codigo: " + data.status);
+      let data = await fetch(`${endpoint}${query}+rating:safe`);
+      if (!data.ok) return channel.send("Error al conectar con el servidor, codigo: " + data.status);
 
       response = await data.json();
 
-      if (response.length === 0) return await channel.send(noResults);
+      if (response.length === 0) return channel.send(noResults);
 
       const embed = showpage(response[pageindex], message, pageindex, response.length);
-      if (response.length == 1) return await channel.send(embed);
+      if (response.length == 1) return channel.send(embed);
 
       const msg = await channel.send(embed);
       await msg.react('⬅');
@@ -93,12 +93,12 @@ module.exports = {
         })
         .on('end', async () => {
           if (message.channel.type == 'dm') throw `No se pueden quitar las reacciones en un DM. (${message.author.tag})`;
-          return await msg.reactions.removeAll();
+          return msg.reactions.removeAll();
         });
     }
     catch (error) {
       console.log(error);
-      await message.reply(errorEmbed);
+      return message.reply(errorEmbed);
     }
   }
 }

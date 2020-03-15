@@ -45,6 +45,7 @@ module.exports = {
     if (!member.voice.channel.joinable) return await message.reply(connectPermission(author));
 
     const connection = await member.voice.channel.join();
+    channel.send(`😏`);
     PlayMoan(connection, message, clips);
   }
 }

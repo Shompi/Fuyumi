@@ -6,6 +6,11 @@ const { SearchResponse } = require('../../Classes/AnimeFLV');
 const { Message, MessageEmbed, MessageAttachment } = require('discord.js');
 const path = require('path');
 
+const usageEmbed = (usage, aliases) =>
+  new MessageEmbed()
+    .setColor("BLUE")
+    .setDescription(`Recuerda el modo de uso:\n\`${usage}\``)
+    .setFooter(`Tambien puedes usar este comando con: ${aliases.join(', ')}`);
 
 const EmbedMaker = (message = new Message(), page) => {
   const buff = Buffer.from(page.poster, "base64");
@@ -13,7 +18,7 @@ const EmbedMaker = (message = new Message(), page) => {
   return new MessageEmbed()
     .setTitle(`${page.title}\nRating: ${page.rating} ⭐`)
     .setColor(message.member.displayColor)
-    .attachFiles(new MessageAttachment(buff, "poster.png"))
+    .attachFiles([new MessageAttachment(buff, "poster.png")])
     .setThumbnail("attachment://poster.png")
     .setDescription(
       `**Generos:** ${page.genres.join(", ")}\n\n` +
@@ -24,7 +29,7 @@ const EmbedMaker = (message = new Message(), page) => {
       `[Ver el último episodio.](${episodesURL + page.episodes[1].id})` +
       `\n\n[¡Comienza a ver este Anime!](${episodesURL + page.episodes[page.episodes.length - 1].id})`
     )
-  .setFooter("<- API de Chris Michael Perez Santiago en Github", "https://avatars1.githubusercontent.com/u/21962584?s=460&v=4");
+    .setFooter("<- API de Chris Michael Perez Santiago en Github", "https://avatars1.githubusercontent.com/u/21962584?s=460&v=4");
 
 }
 
@@ -52,8 +57,8 @@ module.exports = {
     const firstMessage = await channel.send('Buscando...');
     response = await fetch(baseURL + query).then(res => res.json()).catch(er => { search: [] });
 
-    if (response.search.length == 0) return await firstMessage.edit("No he encontrado ningún Anime con ese nombre.");
-    if (response.search.length == 1) return await firstMessage.edit(EmbedMaker(message, response.search[0]));
+    if (response.search.length == 0) return firstMessage.edit("No he encontrado ningún Anime con ese nombre.", { embed: usageEmbed(this.usage, this.aliases) });
+    if (response.search.length == 1) return firstMessage.edit(EmbedMaker(message, response.search[0]));
     else {
       let pageindex = 0;
 
@@ -69,13 +74,13 @@ module.exports = {
         if (reaction.emoji.name === '➡') {
           pageindex++;
           if (pageindex == response.search.length) pageindex = 0;
-          const nextPage = await EmbedMaker(message, response.search[pageindex])
+          const nextPage = EmbedMaker(message, response.search[pageindex])
           await sendedMessage.edit(null, { embed: nextPage });
         }
         if (reaction.emoji.name === '⬅') {
           pageindex--;
           if (pageindex < 0) pageindex = response.search.length - 1;
-          const nextPage = await EmbedMaker(message, response.search[pageindex])
+          const nextPage = EmbedMaker(message, response.search[pageindex])
           await sendedMessage.edit(null, { embed: nextPage });
         }
       });

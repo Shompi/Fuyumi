@@ -91,9 +91,9 @@ module.exports = {
       }
 
     } catch (error) {
-      if (error.message == 'canceled') return await channel.send(`${error.emoji}`);
-      if (error.message == 'expired') return await channel.send(`${error.emoji}`);
-      if (error.message == 'bitrateError') return await channel.send(`${error.emoji}`);
+      if (error.message == 'canceled') return channel.send(`${error.emoji}`);
+      if (error.message == 'expired') return channel.send(`${error.emoji}`);
+      if (error.message == 'bitrateError') return channel.send(`${error.emoji}`);
     }
   }
 }

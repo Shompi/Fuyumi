@@ -100,23 +100,28 @@ Muki.on('message', async (message) => {
       database.guildConfigs.set(guild.id, guildConfig);
     }
 
-    const prefix = database.guildConfigs.get(guild.id, "prefix");
+    const prefix = database.guildConfigs.get(guild.id, "prefix") || 'muki!';
 
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
-    if (mentions.users.has(Muki.user.id)) return await channel.send(`Mi prefijo es: \`${prefix}\``);
+    if (mentions.users.has(Muki.user, { ignoreRoles: true, ignoreEveryone: true })) return channel.send(`Mi prefijo es: \`${prefix}\``);
 
     if (message.content.startsWith(prefix)) {
+      try {
+        const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
+        if (!command) return channel.send(noCommandFound(author));
 
-      const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
-      if (!command) return await channel.send(noCommandFound(author));
-
-      if (!command.enabled) return await channel.send(cmdNotEnabled(author));
-      if (command.nsfw && !channel.nsfw) return await channel.send(notNSFW);
-      if (command.name === 'eval' && author.id !== Muki.OWNER) return;
-      if (command.guildOnly && channel.type !== 'text') return await channel.send("No puedo ejecutar este comando en mensajes privados!");
-      return command.execute(message, args);
+        if (!command.enabled) return channel.send(cmdNotEnabled(author));
+        if (command.nsfw && !channel.nsfw) return channel.send(notNSFW);
+        if (command.name === 'eval' && author.id !== Muki.OWNER) return;
+        if (command.guildOnly && channel.type !== 'text') return channel.send("No puedo ejecutar este comando en mensajes privados!");
+        return command.execute(message, args);
+      }
+      catch (e) {
+        console.log(e);
+        return channel.send("Hubo un error al intentar ejecutar este comando.");
+      }
 
     } else {
       //Other stuff im trying to plan.

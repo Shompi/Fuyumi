@@ -15,7 +15,7 @@ const tagsFound = (query, thumbnail, description) =>
     .setTitle(`Búsqueda: "${query}"`)
     .setColor('BLUE')
     .setThumbnail(thumbnail)
-    .addFields({ name: 'Resultados:', value:`${description.join('\n')}`, inline: false});
+    .addFields({ name: 'Resultados:', value: `${description.join('\n')}`, inline: false });
 
 const getTagType = (type) => {
   const types = [
@@ -49,11 +49,11 @@ module.exports = {
     let tag = query.replace(" ", "_");
     response = await fetch(endpoint + tag).then(res => res.json());
 
-    if (response.length === 0 && query.endsWith('*')) return await channel.send(noResults);
+    if (response.length === 0 && query.endsWith('*')) return channel.send(noResults);
 
     if (response.length === 0 && !query.endsWith('*')) {
       response = await fetch(endpoint + tag + '*').then(res => res.json());
-      if (response.length === 0) return await channel.send(noResults);
+      if (response.length === 0) return channel.send(noResults);
     }
 
     let posts = YanderePost;
@@ -67,7 +67,7 @@ module.exports = {
     let description = [];
 
     for (let i = 0; i < response.length; i++) {
-      if (i >= 10) break;
+      if (i >= 20) break;
       let name = response[i].name.replace(/_/g, " ");
       let type = getTagType(response[i].type);
       description.push(`**${type}**\t - \t${name}`)
@@ -75,6 +75,6 @@ module.exports = {
 
 
     //if (response.length > 10) tagsFound.setFooter('Solo se muestran los primeros 10 tags con más posts.');
-    return await channel.send(tagsFound(query, thumbnail, description));
+    return channel.send(tagsFound(query, thumbnail, description));
   }
 }

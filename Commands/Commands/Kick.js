@@ -19,18 +19,17 @@ const noTarget = new MessageEmbed()
 
 const noPermissions = new MessageEmbed()
   .setTitle(`No tengo los permisos necesarios.`)
-  .setDescription("Necesito el permiso 'KICK_MEMBERS' o 'EXPULSAR MIEMBROS' para poder ejecutar esta acción.")
+  .setDescription("Necesito el permiso 'KICK_MEMBERS' o 'EXPULSAR MIEMBROS' para poder ejecutar esta acción.\nNo puedo expulsar a miembros que tengan permisos de ADMINISTRADOR")
   .setColor("RED");
 
 const success = (info) => {
   const { target, guild, reason } = info;
 
   return new MessageEmbed()
-    .setTitle(`${target.user.username} ha sido expulsado.`)
-    .setThumbnail(target.user.displayAvatarURL({ size: 512 }))
+    .setTitle(`${target.user.username} has sido expulsado de la guild ${guild.name}.`)
+    .setThumbnail(guild.iconURL({ size: 512 }))
     .setColor("ORANGE")
     .setDescription(`${reason ? "-" : reason}`)
-    .setFooter(guild.name, guild.iconURL({ size: 64 }))
     .setTimestamp();
 }
 
@@ -39,7 +38,7 @@ module.exports = {
   name: "kick",
   guildOnly: true,
   description: "Expulsa a un miembro del servidor. Si el comando lo ejecuta un miembro sin permisos para expulsar miembros, debe tener asignado el rol de administrador que configuras con el comando **adminrole**.",
-  usage: "kick [id o @mención del miembro]",
+  usage: "kick [**id** o **mención**]",
   aliases: [],
   permissions: ["KICK_MEMBERS"],
   nsfw: false,
@@ -51,16 +50,17 @@ module.exports = {
 
     const target = mentions.members.first() || await guild.members.fetch(args[0]);
     const adminRole = database.get(guild.id).adminRole;
-    if (!member.hasPermission('KICK_MEMBERS', { checkAdmin: true, checkOwner: true }) && !member.roles.cache.has(adminRole))
-      return await channel.send('No tienes permiso para usar este comando.');
+    if (!member.hasPermission(this.permissions, { checkAdmin: true, checkOwner: true }) && !member.roles.cache.has(adminRole))
+      return channel.send('No tienes permiso para usar este comando.');
 
-    if (!target) return await channel.send(noTarget);
-    if (!target.kickable) return await channel.send(noPermissions);
+    if (!target) return channel.send(noTarget);
+    if (target.hasPermission('ADMINISTRATOR', { checkAdmin: true, checkOwner: true })) return channel.send(noPermissions);
+    if (!target.kickable) return channel.send(noPermissions);
 
     const reason = args.slice(1).join(" ");
     await target.send(targetMessage({ reason, guild })).catch(err => console.log('No puedo mensajear a este usuario. ' + err));
     await target.kick(reason);
 
-    return await channel.send(success({ guild, target, reason }));
+    return channel.send(success({ guild, target, reason }));
   }
 }

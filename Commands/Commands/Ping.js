@@ -26,9 +26,9 @@ module.exports = {
     const wsPing = Muki.ws.ping;
 
     const now = Date.now();
-    const sendedMessage = await channel.send('Pong!');
+    const sendedMessage = await channel.send('🏓 Pong!');
     const millis = sendedMessage.createdTimestamp - now;
 
-    return await sendedMessage.edit(sendedMessage.content, { embed: pingEmbed(millis, wsPing) });
+    return sendedMessage.edit(sendedMessage.content, { embed: pingEmbed(millis, wsPing) });
   }
 }

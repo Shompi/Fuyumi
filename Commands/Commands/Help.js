@@ -28,8 +28,9 @@ module.exports = {
         .setTitle(`Comando: ${command.name}`)
         .setDescription(command.description)
         .addField("Modo de uso:", `\`${prefix}${command.usage}\``)
-        .setColor("BLUE")
-        .setFooter(`Aliases: ${command.aliases.join(", ")}`)
+        .setColor("BLUE");
+
+      if (command.name !== 'neko') commandUsage.setFooter(`Aliases: ${command.aliases.join(", ")}`);
 
       return await channel.send(commandUsage);
     }
