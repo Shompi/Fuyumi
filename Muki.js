@@ -55,7 +55,7 @@ Muki.on('message', async (message) => {
   try {
     const { author, guild, channel, mentions } = message;
 
-    if (!guild) return console.log(`${author.tag} ha enviado un mensaje através de un DM.`);
+    //if (!guild) return console.log(`${author.tag} ha enviado un mensaje através de un DM.`);
     pokecordFilter(message);
     if (author.bot) return;
 
