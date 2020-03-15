@@ -83,7 +83,7 @@ Muki.on('message', async (message) => {
     }
 
     //Actual bot behaviour
-    if (!database.guildConfigs.has(guild.id)) {
+    if (guild && !database.guildConfigs.has(guild.id)) {
       const guildConfig = {
         id: guild.id,
         name: guild.name,
@@ -100,7 +100,10 @@ Muki.on('message', async (message) => {
       database.guildConfigs.set(guild.id, guildConfig);
     }
 
-    const prefix = database.guildConfigs.get(guild.id, "prefix") || 'muki!';
+    let prefix;
+    if (guild) prefix = database.guildConfigs.get(guild.id, "prefix");
+    else prefix = "muki!";
+
 
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
