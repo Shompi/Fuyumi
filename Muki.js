@@ -108,7 +108,7 @@ Muki.on('message', async (message) => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
-    if (mentions.users.has(Muki.user, { ignoreRoles: true, ignoreEveryone: true })) return channel.send(`Mi prefijo es: \`${prefix}\``);
+    if (mentions.users.has(Muki.user.id)) return channel.send(`Mi prefijo es: \`${prefix}\``);
 
     if (message.content.startsWith(prefix)) {
       try {
