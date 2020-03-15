@@ -55,7 +55,7 @@ module.exports = {
 
     try {
 
-      if (NSFWENDPOINTS.includes(endpoint) && !channel.nsfw) return await channel.send(notNSFW);
+      if ((NSFWENDPOINTS.includes(endpoint) && !channel.nsfw) && channel.type !== 'dm') return channel.send(notNSFW);
       else {
         let response = await fetch(`${API}${endpoint}`).then(res => res.json()).catch((msg) => null);
         if (!response) throw new Error('Hubo un error en la api de nekos.life');
@@ -70,5 +70,4 @@ module.exports = {
       return channel.send("Ocurrió un error con la api de Nekos.life, inténtalo más tarde!");
     }
   }
-
 }
