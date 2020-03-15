@@ -19,7 +19,7 @@ const noTarget = new MessageEmbed()
 
 const noPermissions = new MessageEmbed()
   .setTitle(`No tengo los permisos necesarios.`)
-  .setDescription("Necesito el permiso 'KICK_MEMBERS' o 'EXPULSAR MIEMBROS' para poder ejecutar esta acción.\nNo puedo expulsar a miembros que tengan permisos de ADMINISTRADOR")
+  .setDescription("Necesito el permiso 'KICK_MEMBERS' o 'EXPULSAR MIEMBROS' para poder ejecutar esta acción.\n\n**NOTA:** No puedo expulsar a miembros que tengan permisos de **ADMINISTRADOR**.")
   .setColor("RED");
 
 const success = (info) => {
