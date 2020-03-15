@@ -27,11 +27,6 @@ const NSFWENDPOINTS =
     'hentai', 'futanari', 'ero', 'solo', 'waifu', 'pwankg', 'eron', 'erokemo'
   ];
 
-const ErrorEmbed = new MessageEmbed()
-  .setTitle("Error en la API")
-  .setColor("RED")
-  .setDescription(`Codigo de error: ${response.status}`);
-
 const imageEmbed = (author, data, endpoint) => {
   return new MessageEmbed()
     .setImage(data.url)
@@ -69,7 +64,7 @@ module.exports = {
       console.log("Ha ocurrido un error en Nekos.life");
       console.log(err);
 
-      await channel.send(ErrorEmbed);
+      return channel.send("Ocurrió un error con la api de Nekos.life, inténtalo más tarde!");
     }
   }
 
