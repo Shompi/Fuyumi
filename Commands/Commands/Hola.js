@@ -21,7 +21,7 @@ module.exports = {
 
     try {
       const connection = await member.voice.channel.join();
-      connection.play('../Hola/hola.mp3', { volume: 0.15, highWaterMark: 1 << 6 })
+      connection.play('Commands/Hola/hola.mp3', { volume: 0.15, highWaterMark: 1 << 6 })
         .on('start', () => {
           CurrentlyPlaying.add(guild.id);
         })
