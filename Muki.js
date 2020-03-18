@@ -1,14 +1,27 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
-const { Client, Collection, MessageEmbed, Webhook } = require('discord.js');
-const Muki = new Client({ partials: ['GUILD_MEMBER'], disableMentions: 'everyone' });
+const { MessageEmbed, Webhook } = require('discord.js');
+const MukiClient = require('./Classes/MukiClient');
+const auth = require('./Keys/auth').beta;
+const fs = require('fs');
+const GuildConfig = require('./Classes/GuildConfig');
+
+const Muki = new MukiClient({
+  status: "online",
+  activityType: "LISTENING",
+  activityTo: "nothing",
+  prefix: "muki!",
+  token: auth
+});
+
+
+
+/* new Client({ partials: ['GUILD_MEMBER'], disableMentions: 'everyone' });
 Muki.commands = new Collection();
 Muki.EventHandlers = require('./Commands/EventHandlers');
 Muki.NASA = require('./Commands/NASA/POTD');
 Muki.OWNER = '166263335220805634';
-Muki.Messages = new Collection();
-const fs = require('fs');
+Muki.Messages = new Collection(); */
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
-const auth = require('./Keys/auth').stable;
 
 for (const file of commandFiles) {
   const command = require(`./Commands/Commands/${file}`);
@@ -16,8 +29,7 @@ for (const file of commandFiles) {
 }
 
 /*-----------------------Archivos extra----------------------------*/
-let MukiConfigs = { status: "ONLINE", activityType: "PLAYING", activityTo: "muki!", prefix: "muki!" };
-const WebHooks = require('./Keys/hookTokens');
+// const WebHooks = require('./Keys/hookTokens');
 const database = require('./Commands/LoadDatabase');
 /*-------------------------Inicio del BOT-------------------------*/
 let australGamingMemeHook = new Webhook();
@@ -84,19 +96,7 @@ Muki.on('message', async (message) => {
 
     //Actual bot behaviour
     if (guild && !database.guildConfigs.has(guild.id)) {
-      const guildConfig = {
-        id: guild.id,
-        name: guild.name,
-        prefix: "muki!",
-        adminRole: null,
-        welcome: {
-          enabled: false,
-          channelID: null,
-          joinPhrases: [],
-          leavePhrases: []
-        }
-      };
-
+      const guildConfig = new GuildConfig(guild);
       database.guildConfigs.set(guild.id, guildConfig);
     }
 
@@ -147,7 +147,7 @@ Muki.on('message', async (message) => {
 
 Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
-
+  return;
   try {
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
@@ -170,18 +170,8 @@ Muki.on('ready', async () => {
       if (database.guildConfigs.has(guild.id)) {
         return;
       } else {
-        const guildConfig = {
-          id: guild.id,
-          name: guild.name,
-          prefix: "muki!",
-          adminRole: null,
-          welcome: {
-            enabled: false,
-            channelID: null,
-            joinPhrases: [],
-            leavePhrases: []
-          }
-        };
+        const guildConfig = new GuildConfig(guild);
+
         database.guildConfigs.set(guild.id, guildConfig);
         console.log(`Entrada para ${guild.name} creada!`);
       }
@@ -230,21 +220,21 @@ Muki.on('messageUpdate', async (old, message) => {
 });
 
 Muki.on('messageReactionAdd', async (reaction, user) => {
-  Muki.EventHandlers.ReactionAdd.Stars(reaction, user);
+  Muki.eventhandler.ReactionAdd.Stars(reaction, user);
 });
 
 Muki.on('guildMemberRemove', async (member) => {
-  await Muki.EventHandlers.Guild.MemberRemove(member, Muki);
+  await Muki.eventhandler.Guild.MemberRemove(member);
 });
 
 Muki.on('guildMemberAdd', async member => {
   if (member.partial) member = await member.fetch();
-  await Muki.EventHandlers.Guild.MemberAdd(member, Muki);
+  await Muki.eventhandler.Guild.MemberAdd(member);
 });
 
 Muki.on('voiceStateUpdate', async (old, now) => {
   try {
-    await Muki.EventHandlers.Presence.GoLive(old, now, Muki);
+    await Muki.eventhandler.VoiceStateUpdate.GoLive(old, now);
   } catch (error) {
     console.log(error);
   }
@@ -253,7 +243,7 @@ Muki.on('voiceStateUpdate', async (old, now) => {
 Muki.on('presenceUpdate', async (old, now) => { //Tipo Presence
   try {
     if (!old) return;
-    await Muki.EventHandlers.Presence.Twitch(old, now);
+    await Muki.eventhandler.Presence.Twitch(old, now);
 
   } catch (e) {
     console.log(e);
@@ -293,22 +283,11 @@ Muki.on('warn', (warn) => {
 
 Muki.on('guildCreate', async (guild) => {
 
-  const guildConfig = {
-    id: guild.id,
-    name: guild.name,
-    prefix: "muki!",
-    adminRole: null,
-    welcome: {
-      enabled: false,
-      channelID: null,
-      joinPhrases: [],
-      leavePhrases: []
-    }
-  }
+  const guildConfig = new GuildConfig(guild);
 
   database.guildConfigs.set(guild.id, guildConfig);
 
-  return await Muki.channels.cache.get("585990511790391309").send(`Nueva Guild ${guild.name} (${guild.id})!`);
+  return Muki.channels.cache.get("585990511790391309").send(`Nueva Guild ${guild.name} (${guild.id})!`);
 });
 
 Muki.on('guildDelete', (guild) => {
@@ -327,4 +306,4 @@ Muki.ws.on('RESUMED', (data, shard) => {
 
 console.log("Logging Muki...");
 
-Muki.login(auth);
+Muki.login(Muki.config.token);
