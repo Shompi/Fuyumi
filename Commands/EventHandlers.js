@@ -1,13 +1,15 @@
 module.exports = {
   Presence: {
-    Twitch: require('./EventHandler/Presence/Twitch'),
-    GoLive: require('./EventHandler/voiceStateUpdate/GoLive')
+    Twitch: require('./Events/Presence/Twitch'),
+  },
+  VoiceStateUpdate: {
+    GoLive: require('./Events/voiceStateUpdate/GoLive')
   },
   Guild: {
-    MemberRemove: require('./EventHandler/Guild/memberRemove/main'),
-    MemberAdd: require('./EventHandler/Guild/memberAdd/main'),
+    MemberAdd: require('./Events/Guild/memberAdd'),
+    MemberRemove: require('./Events/Guild/memberRemove'),
   },
   ReactionAdd: {
-    Stars: require('./EventHandler/Stars/Stars')
+    Stars: require('./Events/Stars/Stars')
   }
 }
