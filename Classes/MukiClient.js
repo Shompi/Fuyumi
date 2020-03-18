@@ -16,6 +16,8 @@ module.exports = class extends Client {
 
     this.eventhandler = require('../Commands/EventHandlers');
 
+    this.NASA = require('../Commands/NASA/POTD');
+    
     this.config = options;
   }
 }
