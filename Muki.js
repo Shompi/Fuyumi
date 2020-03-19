@@ -13,14 +13,6 @@ const Muki = new MukiClient({
   token: auth
 });
 
-
-
-/* new Client({ partials: ['GUILD_MEMBER'], disableMentions: 'everyone' });
-Muki.commands = new Collection();
-Muki.EventHandlers = require('./Commands/EventHandlers');
-Muki.NASA = require('./Commands/NASA/POTD');
-Muki.OWNER = '166263335220805634';
-Muki.Messages = new Collection(); */
 const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
 
 for (const file of commandFiles) {
@@ -57,7 +49,7 @@ const noCommandFound = (author) =>
 const pokecordFilter = async (message) => {
   const { author, guild, channel } = message;
   if (author.id === '365975655608745985' && guild.id === "537484725896478733" && channel.id !== '585990511790391309') {
-    await message.delete({ timeout: 10000, reason: "Pokecord" });
+    message.delete({ timeout: 10000, reason: "Pokecord" });
   }
 
   return undefined;
@@ -65,10 +57,13 @@ const pokecordFilter = async (message) => {
 
 Muki.on('message', async (message) => {
   try {
+    if (message.partial)
+      message = await message.fetch();
+
     const { author, guild, channel, mentions } = message;
 
     //if (!guild) return console.log(`${author.tag} ha enviado un mensaje através de un DM.`);
-    pokecordFilter(message);
+    pokecordFilter(message).catch(console.error);
     if (author.bot) return;
 
     //Webhooks
@@ -95,6 +90,7 @@ Muki.on('message', async (message) => {
     }
 
     //Actual bot behaviour
+    //If the guild is not on the database
     if (guild && !database.guildConfigs.has(guild.id)) {
       const guildConfig = new GuildConfig(guild);
       database.guildConfigs.set(guild.id, guildConfig);
@@ -103,7 +99,6 @@ Muki.on('message', async (message) => {
     let prefix;
     if (guild) prefix = database.guildConfigs.get(guild.id, "prefix");
     else prefix = "muki!";
-
 
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
@@ -114,10 +109,9 @@ Muki.on('message', async (message) => {
       try {
         const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
         if (!command) return channel.send(noCommandFound(author));
-
+        if (command.name === 'eval' && author.id !== Muki.OWNER) return;
         if (!command.enabled) return channel.send(cmdNotEnabled(author));
         if (command.nsfw && !channel.nsfw) return channel.send(notNSFW);
-        if (command.name === 'eval' && author.id !== Muki.OWNER) return;
         if (command.guildOnly && channel.type !== 'text') return channel.send("No puedo ejecutar este comando en mensajes privados!");
         return command.execute(message, args);
       }
@@ -147,7 +141,7 @@ Muki.on('message', async (message) => {
 
 Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
-  return;
+
   try {
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
@@ -155,26 +149,13 @@ Muki.on('ready', async () => {
     NASAWebHook = await Muki.fetchWebhook(WebHooks.NASAHook.id);
     console.log("Fetching Hook de Cotorras Gaming...");
     CotorrasMemeHook = await Muki.fetchWebhook(WebHooks.CotorrasMemeHook.id, WebHooks.CotorrasMemeHook.token);
-    if (!database.MukiSettings.has('settings'))
-      database.MukiSettings.set('settings', MukiConfigs);
 
     await Muki.user.setPresence({
       activity: {
         name: `${Muki.users.cache.size} users!`,
         type: "LISTENING"
       },
-      status: database.MukiSettings.get("settings", "status") || "online"
-    });
-
-    Muki.guilds.cache.forEach(guild => {
-      if (database.guildConfigs.has(guild.id)) {
-        return;
-      } else {
-        const guildConfig = new GuildConfig(guild);
-
-        database.guildConfigs.set(guild.id, guildConfig);
-        console.log(`Entrada para ${guild.name} creada!`);
-      }
+      status: "online"
     });
 
     console.log(`Bot listo: ${Date()}`);
@@ -183,6 +164,7 @@ Muki.on('ready', async () => {
     console.log(error);
     Muki.emit("error", error);
   }
+
   setImmediate(async () => {
     await Muki.NASA(NASAWebHook).catch(console.error);
     setInterval(async () => {
