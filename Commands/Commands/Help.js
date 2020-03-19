@@ -22,7 +22,7 @@ module.exports = {
 
     if (args[0]) {
       const command = commands.get(args[0]) || commands.find(c => c.aliases.includes(args[0]));
-      if (!command) return await channel.send("No encontré un comando con ese nombre.");
+      if (!command) return channel.send("No encontré un comando con ese nombre.");
 
       const commandUsage = new MessageEmbed()
         .setTitle(`Comando: ${command.name}`)
@@ -32,7 +32,7 @@ module.exports = {
 
       if (command.name !== 'neko') commandUsage.setFooter(`Aliases: ${command.aliases.join(", ")}`);
 
-      return await channel.send(commandUsage);
+      return channel.send(commandUsage);
     }
 
     let description = "**[OBLIGATORIO] (OPCIONAL) <SIN PARAMETROS>**\n\n";

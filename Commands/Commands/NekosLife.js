@@ -37,15 +37,15 @@ const imageEmbed = (author, data, endpoint) => {
 module.exports = {
   name: "neko",
   filename: path.basename(__filename),
-  description: `Obtiene una imágen desde Nekos.life y la envía al canal.\n**NOTA:** El endpoint debe ir inmediatamente luego del prefijo, sin espacios.\n\n**Lista de Endpoints:**\n\`\`\`\nSafe:\n${SFWENDPOINTS.join(", ")}\nNSFW:\n${NSFWENDPOINTS.join(", ")}\`\`\``,
-  usage: "endpoint",
+  description: `Obtiene una imágen desde Nekos.life y la envía al canal.`,
+  usage: "neko",
   nsfw: false,
   enabled: true,
   aliases: [...NSFWENDPOINTS, ...SFWENDPOINTS],
   permissions: ["SEND_MESSAGES"],
 
   async execute(message = new Message(), args = new Array()) {
-
+    
     const { channel, author, content, guild } = message;
     let prefix;
     if (!guild) prefix = "muki!";
