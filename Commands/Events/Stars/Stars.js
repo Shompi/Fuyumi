@@ -1,14 +1,20 @@
-const { MessageReaction, User } = require('discord.js');
+const { MessageReaction } = require('discord.js');
 
 
-module.exports = async (reaction = new MessageReaction(), user = new User()) => {
+module.exports = async (reaction = new MessageReaction(), user) => {
   const { message, users } = reaction;
 
   if (reaction.emoji.name !== '⭐') return;
   if (message.pinned) return;
 
   if (users.cache.size >= 5) {
-    if (message.pinnable) return await message.pin();
+    try {
+      if (message.pinnable)
+        await message.pin();
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
   return;
