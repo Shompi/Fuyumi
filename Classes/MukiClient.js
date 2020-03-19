@@ -11,6 +11,7 @@ module.exports = class extends Client {
     this.events = new Collection();
 
     this.OWNER = '166263335220805634';
+    this.SUPPORTGUILD = '537484725896478733';
 
     this.Messages = new Collection();
 
