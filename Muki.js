@@ -21,7 +21,7 @@ for (const file of commandFiles) {
 }
 
 /*-----------------------Archivos extra----------------------------*/
-// const WebHooks = require('./Keys/hookTokens');
+const WebHooks = require('./Keys/hookTokens');
 const database = require('./Commands/LoadDatabase');
 /*-------------------------Inicio del BOT-------------------------*/
 let australGamingMemeHook = new Webhook();
