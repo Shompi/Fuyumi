@@ -1,9 +1,11 @@
+const unknown = "https://puu.sh/F2ZUN/ea3856ca91.png"
+
+
 module.exports = (game = new String()) => {
   if (!game) return unknown;
   if (game.startsWith('NEKOPARA')) game = "NEKOPARA";
   if (game.startsWith('DayZ')) game = 'DayZ';
   //Make it an object literal
-  const unknown = "https://puu.sh/F2ZUN/ea3856ca91.png"
   const images = {
     "PAYDAY 2": "https://steamcdn-a.akamaihd.net/steam/apps/218620/header.jpg",
     "Grand Theft Auto V": "https://steamcdn-a.akamaihd.net/steam/apps/271590/header.jpg",
