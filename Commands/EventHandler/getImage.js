@@ -1,5 +1,5 @@
 module.exports = (game = new String()) => {
-
+  if (!game) return unknown;
   if (game.startsWith('NEKOPARA')) game = "NEKOPARA";
   if (game.startsWith('DayZ')) game = 'DayZ';
   //Make it an object literal
