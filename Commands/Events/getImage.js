@@ -1,9 +1,12 @@
+const unknown = "https://puu.sh/F2ZUN/ea3856ca91.png"
+
+
 module.exports = (game = new String()) => {
 
+  if (!game) return unknown;
   if (game.startsWith('NEKOPARA')) game = "NEKOPARA";
   if (game.startsWith('DayZ')) game = 'DayZ';
   //Make it an object literal
-  const unknown = "https://puu.sh/F2ZUN/ea3856ca91.png"
   const images = {
     "PAYDAY 2": "https://steamcdn-a.akamaihd.net/steam/apps/218620/header.jpg",
     "Grand Theft Auto V": "https://steamcdn-a.akamaihd.net/steam/apps/271590/header.jpg",
@@ -59,7 +62,7 @@ module.exports = (game = new String()) => {
     "MONSTER HUNTER: WORLD": "https://steamcdn-a.akamaihd.net/steam/apps/582010/header.jpg",
     "ARK: Survival Evolved": "https://steamcdn-a.akamaihd.net/steam/apps/346110/header.jpg",
     "Football Manager 2020": "https://steamcdn-a.akamaihd.net/steam/apps/1100600/header.jpg",
-    "Paladins":"https://steamcdn-a.akamaihd.net/steam/apps/444090/header.jpg",
+    "Paladins": "https://steamcdn-a.akamaihd.net/steam/apps/444090/header.jpg",
     "Twitch Sings": "https://puu.sh/FecmM/11f4534e24.png"
   };
 
