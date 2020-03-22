@@ -1,15 +1,18 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const { MessageEmbed, Webhook } = require('discord.js');
 const MukiClient = require('./Classes/MukiClient');
-const auth = require('./Keys/auth').beta;
+const auth = require('./Keys/auth').stable;
 const fs = require('fs');
 const GuildConfig = require('./Classes/GuildConfig');
 
 const Muki = new MukiClient({
-  status: "online",
-  activityType: "LISTENING",
-  activityTo: "nothing",
-  prefix: "muki!",
+  presence: {
+    status: "online",
+    activity: {
+      name: "en Cuarentena",
+      type: "PLAYING",
+    }
+  },
   token: auth
 });
 
@@ -152,13 +155,7 @@ Muki.on('ready', async () => {
     console.log("Fetching Hook de Cotorras Gaming...");
     CotorrasMemeHook = await Muki.fetchWebhook(WebHooks.CotorrasMemeHook.id, WebHooks.CotorrasMemeHook.token);
 
-    await Muki.user.setPresence({
-      activity: {
-        name: `${Muki.users.cache.size} users!`,
-        type: "LISTENING"
-      },
-      status: "online"
-    });
+    await Muki.user.setPresence(Muki.config.presence);
 
     console.log(`Bot listo: ${Date()}`);
 
@@ -266,7 +263,7 @@ Muki.on('warn', (warn) => {
 });
 
 Muki.on('guildCreate', async (guild) => {
-
+  if (database.guildConfigs.has(guild.id)) return;
   const guildConfig = new GuildConfig(guild);
 
   database.guildConfigs.set(guild.id, guildConfig);
