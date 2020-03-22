@@ -36,10 +36,12 @@ module.exports = async (Hook = new Webhook()) => {
     if (lastPicDate != response.date) {
 
       database.nasaLastPicture.set('LASTPIC', response.date);
-      return await Hook.send(imageEmbed(response));
+      return Hook.send(imageEmbed(response));
 
     } else return console.log('La foto de la NASA no ha cambiado.');
   } catch (error) {
-    console.log(error);
+    if(error.code === 'ETIMEDOUT') {
+      console.log("El request a la API de la NASA ha excedido el tiempo límite.\nETIMEDOUT.");
+    }
   }
 }
