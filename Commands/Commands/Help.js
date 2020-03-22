@@ -55,11 +55,11 @@ module.exports = {
       for (embed of embeds) {
         await author.send(embed);
       }
-      return await message.reply('¡Te he enviado mi lista de comandos por mensaje privado!')
+      return message.reply('¡Te he enviado mi lista de comandos por mensaje privado!')
     } catch (e) {
       console.log(e);
       console.log("No puedo mensajear a este usuario.");
-      return await message.reply('Al parecer no puedo enviarte mensajes privados, ¿Los tienes desactivados?');
+      return message.reply('Al parecer no puedo enviarte mensajes privados, ¿Los tienes desactivados?');
     }
   }
 }

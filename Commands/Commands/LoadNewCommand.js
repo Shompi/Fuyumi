@@ -43,6 +43,6 @@ module.exports = {
         commandNames.push(newCommand.name);
       }
     });
-    return await channel.send(addedCommands(commandsAdded, commandNames));
+    return channel.send(addedCommands(commandsAdded, commandNames));
   }
 }

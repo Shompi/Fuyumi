@@ -32,17 +32,17 @@ module.exports = {
   usage: "moan <Sin Parámetros>",
   nsfw: false,
   enabled: true,
-  aliases: [],
-  permissions: ["SPEAK"],
+  aliases: ["gemir", "gemidos"],
+  permissions: ["SPEAK", "CONNECT"],
   async execute(message = new Message(), args = new Array()) {
     const { guild, member, author, channel } = message;
     if (Moaning.has(guild.id)) return undefined;
     if (clips.length === 0) return channel.send("No hay archivos para reproducir.");
 
     if (Moaning.has(guild.id)) return;
-    if (!guild.me.hasPermission('SPEAK')) return await channel.send(speakPermission(author));
-    if (!member.voice.channel) return await message.reply(noMemberVoiceChannel(author));
-    if (!member.voice.channel.joinable) return await message.reply(connectPermission(author));
+    if (!guild.me.hasPermission('SPEAK')) return channel.send(speakPermission(author));
+    if (!member.voice.channel) return message.reply(noMemberVoiceChannel(author));
+    if (!member.voice.channel.joinable) return message.reply(connectPermission(author));
 
     const connection = await member.voice.channel.join();
     channel.send(`😏`);

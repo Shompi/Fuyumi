@@ -62,9 +62,10 @@ module.exports = {
       let blacklist = '+-loli'; //Tags blacklist
       let response = Booru.YanderePost;
 
-      let data = await fetch(`https://yande.re/post.json?limit=100&tags=${query}${blacklist}`).catch(err => "Fetch Error");
-      if (data == "Fetch Error")
-        return channel.send(fetchError);
+      let data = await fetch(`https://yande.re/post.json?limit=100&tags=${query}${blacklist}`).catch(e => {
+        throw 'Fetch Error: ' + e.code;
+      });
+
       response = await data.json();
 
       if (response.length === 0) return channel.send(noResults);
@@ -84,20 +85,20 @@ module.exports = {
             pageindex++;
             if (pageindex >= response.length) pageindex = 0;
             const page = showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            msg.edit(page);
           }
 
           if (reaction.emoji.name == '⬅') {
             pageindex--;
             if (pageindex < 0) pageindex = response.length - 1;
             const page = showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            msg.edit(page);
           }
 
           if (reaction.emoji.name == '🔄') {
             pageindex = Math.floor(Math.random() * response.length);
             const page = showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            msg.edit(page);
           }
 
         })
@@ -109,6 +110,7 @@ module.exports = {
     }
     catch (error) {
       console.log(error);
+      return channel.send(error);
     }
   }
 }

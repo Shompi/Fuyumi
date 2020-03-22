@@ -20,7 +20,7 @@ const imageEmbed = (response) => {
     .setTitle(response.title)
     .setColor("BLUE")
     .setDescription(`${response.explanation}`)
-    .setFooter(`${  response.date ? response.date : Date()} - NASA API Astronomy Picture of the Day`);
+    .setFooter(`${response.date ? response.date : Date()} - NASA API Astronomy Picture of the Day`);
 
   if (response.media_type == 'image') embed.setImage(response.hdurl);
   if (response.media_type == 'video') embed.attachFiles([response.url]);
@@ -28,20 +28,22 @@ const imageEmbed = (response) => {
   return embed;
 }
 
-module.exports = async (Hook = new Webhook()) => {
-  try {
-    const response = await fetch(endpoint).then(res => res.json());
-    let lastPicDate = database.nasaLastPicture.get('LASTPIC');
-    console.log(lastPicDate + "   " + response.date);
-    if (lastPicDate != response.date) {
+module.exports = (Hook = new Webhook()) => {
 
-      database.nasaLastPicture.set('LASTPIC', response.date);
-      return Hook.send(imageEmbed(response));
+  fetch(endpoint)
+    .then(res => res.json())
+    .then(async (response) => {
+      let lastPicDate = database.nasaLastPicture.get('LASTPIC');
+      console.log(lastPicDate + "   " + response.date);
+      if (lastPicDate != response.date) {
 
-    } else return console.log('La foto de la NASA no ha cambiado.');
-  } catch (error) {
-    if(error.code === 'ETIMEDOUT') {
-      console.log("El request a la API de la NASA ha excedido el tiempo límite.\nETIMEDOUT.");
-    }
-  }
+        database.nasaLastPicture.set('LASTPIC', response.date);
+        return Hook.send(imageEmbed(response));
+      }
+    })
+    .catch(error => {
+      if (error.code === 'ETIMEDOUT') {
+        console.log("El request a la API de la NASA ha excedido el tiempo límite.\nETIMEDOUT.");
+      }
+    });
 }

@@ -20,17 +20,17 @@ module.exports = {
   aliases: [],
   permissions: [],
 
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
     const { guild, channel, author, member } = message;
 
-    if (cooldowns.has(guild.id)) return await message.reply('Ya hay una votación en progreso.');
+    if (cooldowns.has(guild.id)) return message.reply('Ya hay una votación en progreso.');
 
     if (!votecount.has(guild.id)) votecount.set(guild.id, 1);
 
-    if (isNaN(args[0])) return await channel.send('No se pudo iniciar la votación. Error: Tiempo inválido.');
+    if (isNaN(args[0])) return channel.send('No se pudo iniciar la votación. Error: Tiempo inválido.');
 
     let time = args.shift() * 1000 * 60; //Mínimo un minuto
-    if (time < MINUTE) return await message.reply('No puedes comenzar una votación con una duración menor a 1 minuto.');
+    if (time < MINUTE) return message.reply('No puedes comenzar una votación con una duración menor a 1 minuto.');
 
     const timestamp = Date.now(); //Timestamp in milliseconds
 
@@ -73,7 +73,7 @@ module.exports = {
             votecount.dec(guild.id);
             cooldowns.delete(guild.id);
             const canceled = new MessageEmbed().setTitle(`❌ La votación ha sido cancelada.`).setColor("RED");
-            return await channel.send(canceled);
+            return channel.send(canceled);
           });
 
         const filter = (reaction, user) => reaction.emoji.name == '✅' || reaction.emoji.name == '❌' || reaction.emoji.name == '😐' && user.id !== '552272683543560194';

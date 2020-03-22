@@ -43,17 +43,17 @@ module.exports = {
     if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tiene entrada de configuración.`);
 
     const phrase = args.join(" ");
-    if (!phrase) return await channel.send(noPhrase(author, config.prefix));
+    if (!phrase) return channel.send(noPhrase(author, config.prefix));
 
     const { joinPhrases } = config.welcome;
 
-    if (!joinPhrases.includes(phrase)) return await channel.send(notFound(author));
+    if (!joinPhrases.includes(phrase)) return channel.send(notFound(author));
     else {
 
       const updatedPhrases = joinPhrases.filter(ph => ph !== phrase);
 
       database.set(guild.id, updatedPhrases, "welcome.joinPhrases");
-      return await channel.send(succeed);
+      return channel.send(succeed);
     }
   }
 }

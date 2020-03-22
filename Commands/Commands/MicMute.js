@@ -31,18 +31,18 @@ module.exports = {
       if (guild.me.hasPermission('MUTE_MEMBERS', { checkAdmin: true })) {
 
         const target = mentions.members.first();
-        if (!target) return await channel.send(noTarget(author));
+        if (!target) return channel.send(noTarget(author));
 
         const reason = args.splice(1).join(" ");
-        if (!target.voice.channel) return await message.reply(`El miembro ${target.displayName} no está en ningún canal de voz.`);
-        if (target.voice.serverMute) return await target.voice.setMute(false, reason)
+        if (!target.voice.channel) return message.reply(`El miembro ${target.displayName} no está en ningún canal de voz.`);
+        if (target.voice.serverMute) return target.voice.setMute(false, reason)
           .then(gm => message.channel.send(`He desmuteado a **<@${gm.id}>!**`));
 
         const mutedMember = await target.voice.setMute(true, reason);
         await channel.send(`He silenciado exitosamente a ${mutedMember.displayName}\n\nNo olvides desmutearlo mas tarde!`);
 
-        return await mutedMember.send(infoEmbed(author, guild, reason));
-      } else return await message.reply("necesito el permiso '**SILENCIAR MIEMBROS**' para ejecutar este comando.");
+        return mutedMember.send(infoEmbed(author, guild, reason));
+      } else return message.reply("necesito el permiso '**SILENCIAR MIEMBROS**' para ejecutar este comando.");
     }
     catch (error) {
       console.log(error);

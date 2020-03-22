@@ -12,6 +12,11 @@ const targetMessage = (obj) => {
     .setColor("RED");
 }
 
+const notAllowed = new MessageEmbed()
+  .setTitle("No puedo expulsar a este usuario.")
+  .setDescription('El miembro al que quieres expulsar es un Administrador o tiene un rol de admin.')
+  .setColor("RED");
+
 const noTarget = new MessageEmbed()
   .setTitle(`🔎 No he encontrado al miembro!`)
   .setDescription("Asegúrate de que el usuario sea parte de esta guild, o que la id que ingresaste sea una id valida.")
@@ -54,7 +59,7 @@ module.exports = {
       return channel.send('No tienes permiso para usar este comando.');
 
     if (!target) return channel.send(noTarget);
-    if (target.hasPermission('ADMINISTRATOR', { checkAdmin: true, checkOwner: true })) return channel.send(noPermissions);
+    if (target.hasPermission('ADMINISTRATOR', { checkAdmin: true, checkOwner: true }) || target.roles.has(adminRole)) return channel.send(notAllowed);
     if (!target.kickable) return channel.send(noPermissions);
 
     const reason = args.slice(1).join(" ");

@@ -33,9 +33,9 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
     const { author, channel, member, guild } = message;
 
-    if (!guild.voice) return await channel.send(noVoiceChannel(author));
-    if (!member.voice.channel) return await channel.send(noMemberVoiceChannel(author));
-    if (member.voice.channelID !== guild.me.voice.channelID) return await channel.send(differentChannel(author));
+    if (!guild.voice) return channel.send(noVoiceChannel(author));
+    if (!member.voice.channel) return channel.send(noMemberVoiceChannel(author));
+    if (member.voice.channelID !== guild.me.voice.channelID) return channel.send(differentChannel(author));
 
     if (guild.voice.connection) {
       await guild.voice.channel.leave();

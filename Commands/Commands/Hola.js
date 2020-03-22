@@ -25,7 +25,7 @@ module.exports = {
         .on('start', () => {
           CurrentlyPlaying.add(guild.id);
         })
-        .on('finish', async () => {
+        .on('finish', () => {
           return member.voice.channel.leave();
         })
         .on('error', error => {

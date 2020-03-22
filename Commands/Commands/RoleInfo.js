@@ -35,8 +35,8 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
     const { channel, mentions, guild } = message;
     const role = mentions.roles.first();
-    if (!role) return await channel.send(noRole(this.usage));
+    if (!role) return channel.send(noRole(this.usage));
 
-    return await channel.send(roleInfo(role, guild));
+    return channel.send(roleInfo(role, guild));
   }
 }
