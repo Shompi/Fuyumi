@@ -6,7 +6,7 @@ const path = require('path');
 const infoEmbed = (user, member, guild, memberinfo, userinfo) =>
   new MessageEmbed()
     .setTitle(`${user.tag}`)
-    .setThumbnail(user.displayAvatarURL({ size: 512 }))
+    .setThumbnail(user.displayAvatarURL({ size: 512, dynamic: true }))
     .addFields({ name: 'User Info:', value: userinfo },
       { name: `Info como miembro de ${guild.name}:`, value: memberinfo })
     .setColor(member.displayColor)
@@ -58,7 +58,7 @@ module.exports = {
       const memberInfo = memberinfo(member, gSince);
       const userInfo = userinfo(user, mSince);
 
-      return await channel.send(infoEmbed(user, member, guild, memberInfo, userInfo));
+      return channel.send(infoEmbed(user, member, guild, memberInfo, userInfo));
     } catch (error) {
       console.log(error);
     }

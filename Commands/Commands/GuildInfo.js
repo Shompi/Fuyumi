@@ -22,7 +22,6 @@ module.exports = {
       const onlineUsers = users.filter(user => user.presence.status != 'offline');
       const bots = members.filter(member => member.user.bot);
       const guildCreated = guild.createdAt;
-      const memberFrom = member.joinedAt;
 
       const gCreatedAt = {
         day: dias[guildCreated.getDay()],
@@ -51,7 +50,7 @@ module.exports = {
       const infoEmbed = new MessageEmbed()
         .setTitle(`${guild.name}`)
         .addFields(fields)
-        .setThumbnail(guild.iconURL({ size: 512 }))
+        .setThumbnail(guild.iconURL({ size: 512, dynamic: true }))
         .setColor('BLUE')
         .setTimestamp();
 
