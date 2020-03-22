@@ -139,7 +139,7 @@ Muki.on('message', async (message) => {
       .setTimestamp()
       .setDescription(`\`\`\`js\n${error.toString()} \`\`\` `)
 
-    return await Muki.channels.cache.get("585990511790391309").send(e);
+    return Muki.channels.cache.get("585990511790391309").send(e);
   }
 
 });
