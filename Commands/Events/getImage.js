@@ -3,6 +3,7 @@ const unknown = "https://puu.sh/F2ZUN/ea3856ca91.png"
 
 module.exports = (game = new String()) => {
 
+
   if (!game) return unknown;
   if (game.startsWith('NEKOPARA')) game = "NEKOPARA";
   if (game.startsWith('DayZ')) game = 'DayZ';
