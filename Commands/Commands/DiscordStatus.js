@@ -1,5 +1,4 @@
 const { MessageEmbed, Message } = require('discord.js');
-let infopage = require('../../Classes/statusTemplate');
 const endpoint = 'https://srhpyqt94yxb.statuspage.io/api/v2/status.json';
 const fetch = require('node-fetch');
 const path = require('path');
@@ -16,7 +15,7 @@ module.exports = {
   usage: "dstatus <Sin Parámetros>",
   nsfw: false,
   enabled: true,
-  aliases: [],
+  aliases: ["Discord", "discordstatus"],
   permissions: [],
   execute(message = new Message(), args = new Array()) {
 
