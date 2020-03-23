@@ -1,5 +1,4 @@
 const { MessageEmbed, Message } = require('discord.js');
-let infopage = require('../../Classes/statusTemplate');
 const endpoint = 'https://srhpyqt94yxb.statuspage.io/api/v2/status.json';
 const fetch = require('node-fetch');
 const path = require('path');
@@ -16,25 +15,26 @@ module.exports = {
   usage: "dstatus <Sin Parámetros>",
   nsfw: false,
   enabled: true,
-  aliases: [],
+  aliases: ["Discord", "discordstatus"],
   permissions: [],
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
 
     const { channel } = message;
-    infopage = await fetch(endpoint)
+    fetch(endpoint)
       .then(response => response.json())
+      .then((infopage) => {
+        const indicator = infopage.status.indicator;
+        let infoEmbed = new MessageEmbed().setAuthor("Discord Status", null, infopage.page.url);
+        //indicators none, minor, major, or critical,
+        if (indicator == 'none') infoEmbed.setColor("GREEN");
+        if (indicator == 'minor') infoEmbed.setColor("YELLOW");
+        if (indicator == 'major') infoEmbed.setColor("ORANGE");
+        if (indicator == 'critical') infoEmbed.setColor("RED");
+
+        infoEmbed.setDescription(infopage.status.description);
+
+        return channel.send(infoEmbed);
+      })
       .catch(error => channel.send(connectionError));
-
-    const indicator = infopage.status.indicator;
-    let infoEmbed = new MessageEmbed().setAuthor("Discord Status", null, infopage.page.url);
-    //indicators none, minor, major, or critical,
-    if (indicator == 'none') infoEmbed.setColor("GREEN");
-    if (indicator == 'minor') infoEmbed.setColor("YELLOW");
-    if (indicator == 'major') infoEmbed.setColor("ORANGE");
-    if (indicator == 'critical') infoEmbed.setColor("RED");
-
-    infoEmbed.setDescription(infopage.status.description);
-
-    return await channel.send(infoEmbed);
   }
 }

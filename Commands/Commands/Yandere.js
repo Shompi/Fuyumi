@@ -3,6 +3,11 @@ const { MessageEmbed, Message } = require('discord.js');
 const Booru = require('../../Classes/Booru')
 const path = require('path');
 
+const fetchError = new MessageEmbed()
+  .setTitle("❌ Fetch error.")
+  .setDescription("Lo siento, hubo un error al hacer el request a **yande.re/post**. Por favor inténtalo más tarde.")
+  .setColor("RED");
+
 const noResults = new MessageEmbed()
   .setTitle('❌ No encontré nada con los tags que ingresaste.')
   .setDescription('Nota: No puedes hacer una búsqueda con más de 3 tags debido a limitaciones de la api.')
@@ -51,17 +56,16 @@ module.exports = {
     try {
       let content = message.content.split(" ").slice(1).join(" ");
 
-      if (content.split(/\s*\+\s*/g).length >= 3) return await message.reply('lo siento, solo puedes usar un máximo de 3 tags para la búsqueda.');
+      if (content.split(/\s*\+\s*/g).length >= 3) return message.reply('lo siento, solo puedes usar un máximo de 3 tags para la búsqueda.');
 
       let query = content.replace(/\s*\+\s*/g, "+").replace(/\s+/g, "_");
       let blacklist = '+-loli'; //Tags blacklist
       let response = Booru.YanderePost;
 
-      let data = await fetch(`https://yande.re/post.json?limit=100&tags=${query}${blacklist}`);
-      if (data.status != 200) {
-        await channel.send("Error al conectar con el servidor, codigo: " + data.status);
-        return console.log(data);
-      }
+      let data = await fetch(`https://yande.re/post.json?limit=100&tags=${query}${blacklist}`).catch(e => {
+        throw 'Fetch Error: ' + e.code;
+      });
+
       response = await data.json();
 
       if (response.length === 0) return channel.send(noResults);
@@ -81,20 +85,20 @@ module.exports = {
             pageindex++;
             if (pageindex >= response.length) pageindex = 0;
             const page = showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            msg.edit(page);
           }
 
           if (reaction.emoji.name == '⬅') {
             pageindex--;
             if (pageindex < 0) pageindex = response.length - 1;
             const page = showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            msg.edit(page);
           }
 
           if (reaction.emoji.name == '🔄') {
             pageindex = Math.floor(Math.random() * response.length);
             const page = showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            msg.edit(page);
           }
 
         })
@@ -106,6 +110,7 @@ module.exports = {
     }
     catch (error) {
       console.log(error);
+      return channel.send(error);
     }
   }
 }

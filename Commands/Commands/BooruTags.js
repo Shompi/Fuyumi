@@ -5,6 +5,15 @@ const postsEndpoint = 'https://yande.re/post.json?limit=100&tags=';
 const fetch = require('node-fetch');
 const path = require('path');
 
+const fetchError = (error) => {
+  console.log(error);
+
+  return new MessageEmbed()
+    .setTitle('🚫 Hubo un error de conexión con yande.re/tags.')
+    .setColor("RED")
+    .setDescription("Por favor inténtalo mas tarde.")
+    .setFooter(`Código de error: ${error.code}`);
+}
 
 const noResults = new MessageEmbed()
   .setTitle('❌ No encontré ningún tag que coincida.')
@@ -37,28 +46,40 @@ module.exports = {
   usage: "btags [tag]",
   nsfw: false,
   enabled: true,
-  aliases: [],
+  aliases: ["boorutags", "yanderetag", "yanderetags", "ytags"],
   permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
     const { channel } = message;
-
+    const msg = await channel.send("Buscando...");
     let response = YandereTags;
     let query = args.join(" ").replace(/ +/g, " ");
 
     let tag = query.replace(" ", "_");
-    response = await fetch(endpoint + tag).then(res => res.json());
+    try {
+      response = await fetch(endpoint + tag).then(res => res.json());
+    } catch (e) {
+      return msg.edit(null, { embed: fetchError(e) });
+    }
 
-    if (response.length === 0 && query.endsWith('*')) return channel.send(noResults);
+    if (response.length === 0 && query.endsWith('*')) return msg.edit(null, { embed: noResults });
 
     if (response.length === 0 && !query.endsWith('*')) {
-      response = await fetch(endpoint + tag + '*').then(res => res.json());
-      if (response.length === 0) return channel.send(noResults);
+      try {
+        response = await fetch(endpoint + tag + '*').then(res => res.json());
+      } catch (e) {
+        return msg.edit(null, { embed: fetchError(e) });
+      }
+      if (response.length === 0) return msg.edit(null, { embed: noResults });
     }
 
     let posts = YanderePost;
     let thumbnail = null;
-    posts = await fetch(postsEndpoint + response[0].name).then(res => res.json());
+    try {
+      posts = await fetch(postsEndpoint + response[0].name).then(res => res.json());
+    } catch (e) {
+      return msg.edit(null, { embed: fetchError(e) });
+    }
     const filteredPosts = posts.filter(post => post.rating === 's' || post.rating === 'q');
     if (filteredPosts.length >= 1) {
       thumbnail = filteredPosts[Math.floor(Math.random() * filteredPosts.length)].sample_url;
@@ -67,14 +88,11 @@ module.exports = {
     let description = [];
 
     for (let i = 0; i < response.length; i++) {
-      if (i >= 20) break;
       let name = response[i].name.replace(/_/g, " ");
       let type = getTagType(response[i].type);
       description.push(`**${type}**\t - \t${name}`)
     }
 
-
-    //if (response.length > 10) tagsFound.setFooter('Solo se muestran los primeros 10 tags con más posts.');
-    return channel.send(tagsFound(query, thumbnail, description));
+    return msg.edit(null, { embed: tagsFound(query, thumbnail, description) });
   }
 }

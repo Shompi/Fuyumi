@@ -30,16 +30,16 @@ module.exports = {
   enabled: true,
   permissions: [],
 
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
     const { channel, author, client: Muki } = message;
 
     if (author.id !== Muki.OWNER) return;
 
-    if (!args.length) return await channel.send(noCommandSpecified(author));
+    if (!args.length) return channel.send(noCommandSpecified(author));
 
     const command = Muki.commands.get(args[0]) || Muki.commands.find(c => c.aliases.includes(args[0]));
 
-    if (!command) return await channel.send(noCommandFound(author));
+    if (!command) return channel.send(noCommandFound(author));
 
     //If a command is found:
     delete require.cache[require.resolve(`./${command.filename}`)];
@@ -47,10 +47,10 @@ module.exports = {
     try {
       const reload = require(`./${command.filename}`);
       Muki.commands.set(reload.name, reload);
-      return await channel.send(success(command));
+      return channel.send(success(command));
     } catch (error) {
       console.log(error);
-      await channel.send("Hubo un error con la ejecución de este comando. Mira la consola.");
+      return channel.send("Hubo un error con la ejecución de este comando. Mira la consola.");
     }
   }
 }

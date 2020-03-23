@@ -23,6 +23,7 @@ module.exports = {
 
     if (author.id !== Muki.OWNER) return;
 
+
     try {
       const code = args.join(" ");
       let evaled = await eval(code);
@@ -32,7 +33,7 @@ module.exports = {
 
       return channel.send(clean(evaled), { code: "js" });
     } catch (err) {
-      return channel.send(`\`ERROR\` \`\`\`js\n${clean(err)}\n\`\`\``);
+      return channel.send(err, { code: 'js' });
     }
 
   }

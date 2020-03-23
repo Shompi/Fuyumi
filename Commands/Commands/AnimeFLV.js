@@ -48,7 +48,7 @@ module.exports = {
     const { channel, author } = message;
     let search = args.join(" ");
 
-    if (!search) return await channel.send("No has ingresado ninguna palabra para realizar la búsqueda.");
+    if (!search) return channel.send("No has ingresado ninguna palabra para realizar la búsqueda.");
     let query = search.replace(/ +/g, '%20');
 
     let response = new SearchResponse();

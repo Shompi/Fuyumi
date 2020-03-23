@@ -1,16 +1,15 @@
-const cheerio = require('cheerio');
-const fetch = require('node-fetch');
+let p = new Promise((resolve, reject) => {
+  reject('No reason');
+});
 
 
-fetch('https://minecraft-es.gamepedia.com/Fantasma')
-  .then(res => {
-    if (!res.ok) return;
-    return res.text();
-  })
-  .then(html => {
-    const $ = cheerio.load(html);
-    const paragraph = $('.mw-parser-output');
-    const children = paragraph.children();
 
-    
-  })
+
+(async () => {
+  const value = await p.then(msg => console.log("Promise resolved.")).catch(msg => {
+    console.log(msg);
+    return "FetchError";
+  });
+
+  console.log(`Valor retornado por la promesa: ${value}`);
+})();

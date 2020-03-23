@@ -25,13 +25,13 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
   const oldActivity = old.activities.find(act => act.type === 'STREAMING');
   if (!activity) return;
 
-  if (activity && oldActivity) return console.log(`[STREAMING] ${now.member.user.tag} ya estaba stremeando de antes.`);
+  if (activity && oldActivity) return; //console.log(`[STREAMING] ${now.member.user.tag} ya estaba stremeando de antes.`);
   const streamingChannel = now.member.guild.channels.cache.find(channel => channel.name == "directos" && channel.type == 'text');
-  if (!streamingChannel) return console.log("No se encontró canal de streamings.");
+  if (!streamingChannel) return; //console.log("No se encontró canal de streamings.");
 
   const timeNow = Date.now();
   try {
-    console.log(`[STREAMING] User ${now.member.user.tag} está stremeando en ${activity.name}`);
+    //console.log(`[STREAMING] User ${now.member.user.tag} está stremeando en ${activity.name}`);
     const { member } = now;
     if (database.TwitchStream.has(member.id)) {
       //console.log(`now: ${activityName} db: ${dbmember.activityName}`);

@@ -35,7 +35,7 @@ module.exports = {
   name: "addroles",
   guildOnly: true,
   aliases: ['addrole'],
-  description: "Añade uno o más roles a un miembro. Debes escribir el **NOMBRE** del/los rol/es que quieres añadir al objetivo.",
+  description: "Añade uno o más roles a un miembro.",
   usage: "addroles [@Miembro] [nombre 1, nombre 2, nombre 3, ...roln]",
   nsfw: false,
   enabled: true,
@@ -48,8 +48,8 @@ module.exports = {
     const { me, roles: GuildRoles, owner } = guild;
     const MukiHighest = me.roles.highest;
 
-    if (!me.hasPermission('MANAGE_ROLES')) return await channel.send(missingPermissions(this.permissions));
-    if (!message.mentions.members) return await channel.send(noTarget(this.usage));
+    if (!me.hasPermission('MANAGE_ROLES')) return channel.send(missingPermissions(this.permissions));
+    if (!message.mentions.members) return channel.send(noTarget(this.usage));
 
     const guildConfigs = database.get(guild.id);
     const adminRole = guildConfigs.adminRole;
@@ -83,7 +83,7 @@ module.exports = {
     }
     catch (error) {
       console.log(error);
-      await Muki.users.cache.get(Muki.OWNER).send('Hubo un error con el comando addroles. ¡Mira la consola!');
+      Muki.users.cache.get(Muki.OWNER).send('Hubo un error con el comando addroles. ¡Mira la consola!');
       return channel.send(errorEmbed);
     }
   }

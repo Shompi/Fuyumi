@@ -17,23 +17,23 @@ module.exports = {
   name: "togglecmd",
   aliases: ["tcmd"],
   filename: path.basename(__filename),
-  description: "Activa / Desactiva un comando. (Este comando es para propósitos internos.)",
+  description: "Activa / Desactiva un comando.",
   usage: "togglecmd [Nombre del comando]",
   nsfw: false,
   enabled: true,
   permissions: [],
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
     const { channel, author, client: Muki } = message;
 
     if (author.id !== Muki.OWNER) return undefined;
 
     const command = Muki.commands.get(args[0]) || Muki.commands.find(c => c.aliases.includes(args[0]));
-    if (!command) return await channel.send(commandNotFound);
+    if (!command) return channel.send(commandNotFound);
 
     if (command.enabled) command.enabled = false;
     else command.enabled = true;
 
     Muki.commands.set(command.name, command);
-    return await channel.send(success(command));
+    return channel.send(success(command));
   }
 }

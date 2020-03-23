@@ -13,7 +13,7 @@ module.exports = {
   name: "loadcmd",
   aliases: ["lcmd"],
   filename: path.basename(__filename),
-  description: "Recarga la carpeta de comandos y añade los que no estaban cargados. (Comando de uso interno.)",
+  description: "Recarga la carpeta de comandos y añade los que no estaban cargados.",
   usage: "loadcmd <Sin Parámetros>",
   nsfw: false,
   enabled: true,
@@ -43,6 +43,6 @@ module.exports = {
         commandNames.push(newCommand.name);
       }
     });
-    return await channel.send(addedCommands(commandsAdded, commandNames));
+    return channel.send(addedCommands(commandsAdded, commandNames));
   }
 }

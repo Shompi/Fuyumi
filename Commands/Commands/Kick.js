@@ -12,6 +12,11 @@ const targetMessage = (obj) => {
     .setColor("RED");
 }
 
+const notAllowed = new MessageEmbed()
+  .setTitle("No puedo expulsar a este usuario.")
+  .setDescription('El miembro al que quieres expulsar es un Administrador o tiene un rol de admin.')
+  .setColor("RED");
+
 const noTarget = new MessageEmbed()
   .setTitle(`🔎 No he encontrado al miembro!`)
   .setDescription("Asegúrate de que el usuario sea parte de esta guild, o que la id que ingresaste sea una id valida.")
@@ -37,13 +42,13 @@ const success = (info) => {
 module.exports = {
   name: "kick",
   guildOnly: true,
-  description: "Expulsa a un miembro del servidor. Si el comando lo ejecuta un miembro sin permisos para expulsar miembros, debe tener asignado el rol de administrador que configuras con el comando **adminrole**.",
+  description: "Expulsa a un miembro del servidor.",
   usage: "kick [**id** o **mención**]",
   aliases: [],
   permissions: ["KICK_MEMBERS"],
   nsfw: false,
   enabled: true,
-  adminonly: true,
+  adminOnly: true,
   filename: path.basename(__filename),
   async execute(message = new Message(), args = new Array()) {
     const { channel, guild, mentions, member } = message;
@@ -54,7 +59,7 @@ module.exports = {
       return channel.send('No tienes permiso para usar este comando.');
 
     if (!target) return channel.send(noTarget);
-    if (target.hasPermission('ADMINISTRATOR', { checkAdmin: true, checkOwner: true })) return channel.send(noPermissions);
+    if (target.hasPermission('ADMINISTRATOR', { checkAdmin: true, checkOwner: true }) || target.roles.has(adminRole)) return channel.send(notAllowed);
     if (!target.kickable) return channel.send(noPermissions);
 
     const reason = args.slice(1).join(" ");
