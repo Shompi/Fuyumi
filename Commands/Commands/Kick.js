@@ -42,13 +42,13 @@ const success = (info) => {
 module.exports = {
   name: "kick",
   guildOnly: true,
-  description: "Expulsa a un miembro del servidor. Si el comando lo ejecuta un miembro sin permisos para expulsar miembros, debe tener asignado el rol de administrador que configuras con el comando **adminrole**.",
+  description: "Expulsa a un miembro del servidor.",
   usage: "kick [**id** o **mención**]",
   aliases: [],
   permissions: ["KICK_MEMBERS"],
   nsfw: false,
   enabled: true,
-  adminonly: true,
+  adminOnly: true,
   filename: path.basename(__filename),
   async execute(message = new Message(), args = new Array()) {
     const { channel, guild, mentions, member } = message;

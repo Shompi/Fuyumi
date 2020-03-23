@@ -13,7 +13,7 @@ module.exports = {
   name: "vote",
   guildOnly: true,
   filename: path.basename(__filename),
-  description: "Inicia una votación en el servidor. Solo se permite una votación simultanea por Servidor.",
+  description: "Inicia una votación en el servidor.",
   usage: "vote [Tiempo en minutos] [Pregunta / Propuesta]",
   nsfw: false,
   enabled: true,

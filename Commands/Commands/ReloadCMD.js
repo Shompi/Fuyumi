@@ -30,7 +30,7 @@ module.exports = {
   enabled: true,
   permissions: [],
 
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
     const { channel, author, client: Muki } = message;
 
     if (author.id !== Muki.OWNER) return;

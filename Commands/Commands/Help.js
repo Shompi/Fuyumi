@@ -38,7 +38,7 @@ module.exports = {
     let description = "**[OBLIGATORIO] (OPCIONAL) <SIN PARAMETROS>**\n\n";
 
     commands.forEach(command => {
-      description += `\`${prefix}${command.usage}\`\n-${command.description} ${command.nsfw ? '[**NSFW**]' : ""} ${command.enabled ? '' : '[**Este comando está actualmente desactivado.**]'}\n\n`
+      description += `\`${command.name}\`: ${command.description} ${command.nsfw ? '[**NSFW**]' : ""} ${command.enabled ? '' : '[**Este comando está actualmente desactivado.**]'}\n\n`
     });
     const descriptions = Util.splitMessage(description, { char: '\n\n' });
     let embeds = [];
@@ -46,7 +46,7 @@ module.exports = {
     for (section of descriptions) {
       embeds.push(
         new MessageEmbed()
-          .setTitle(`Lista de comandos:`)
+          .setTitle(`Prefijo en ${guild.name}: ${prefix}`)
           .setDescription(section)
           .setColor("BLUE")
       );

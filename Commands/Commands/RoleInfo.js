@@ -32,7 +32,7 @@ module.exports = {
   aliases: ['rinfo', 'roleinfo'],
   permissions: ['MANAGE_ROLES'],
 
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
     const { channel, mentions, guild } = message;
     const role = mentions.roles.first();
     if (!role) return channel.send(noRole(this.usage));

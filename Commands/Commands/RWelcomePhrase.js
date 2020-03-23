@@ -27,7 +27,7 @@ module.exports = {
   name: "wremfrase",
   guildOnly: true,
   filename: path.basename(__filename),
-  description: "Quita una frase de bienvenida. La frase que ingreses debe ser exactamente igual a una que ya esté configurada.",
+  description: "Quita una frase de bienvenida.",
   usage: "wremfrase [frase]",
   nsfw: false,
   enabled: true,

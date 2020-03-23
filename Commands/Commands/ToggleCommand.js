@@ -17,7 +17,7 @@ module.exports = {
   name: "togglecmd",
   aliases: ["tcmd"],
   filename: path.basename(__filename),
-  description: "Activa / Desactiva un comando. (Este comando es para propósitos internos.)",
+  description: "Activa / Desactiva un comando.",
   usage: "togglecmd [Nombre del comando]",
   nsfw: false,
   enabled: true,
