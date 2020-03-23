@@ -7,8 +7,10 @@ const infoEmbed = (user, member, guild, memberinfo, userinfo) =>
   new MessageEmbed()
     .setTitle(`${user.tag}`)
     .setThumbnail(user.displayAvatarURL({ size: 512, dynamic: true }))
-    .addFields({ name: 'User Info:', value: userinfo },
-      { name: `Info como miembro de ${guild.name}:`, value: memberinfo })
+    .addFields(
+      { name: 'User Info:', value: userinfo },
+      { name: `Info como miembro de ${guild.name}:`, value: memberinfo }
+    )
     .setColor(member.displayColor)
     .setTimestamp()
 
@@ -27,7 +29,7 @@ module.exports = {
   name: "uinfo",
   guildOnly: true,
   filename: path.basename(__filename),
-  description: "Muestra la información general de un usuario en específico. Si no se menciona a ningún usuario, se mostrará la información del autor del mensaje.",
+  description: "Tarjeta de información de un usuario.",
   usage: "uinfo (@Mención de usuario)",
   nsfw: false,
   enabled: true,
