@@ -1,11 +1,13 @@
-const guildConfig = {
-  id: guild.id,
-  name: guild.name,
-  prefix: "muki!",
-  welcome: {
-    enabled: false,
-    channelID: null,
-    joinPhrases: [],
-    leavePhrases: []
+module.exports = class {
+  constructor(guild) {
+    this.id = guild.id;
+    this.name = guild.name;
+    this.prefix = "muki!";
+    this.welcome = {
+      enabled: false,
+      channelID: null,
+      joinPhrases: [],
+      leavePhrases: []
+    }
   }
 }

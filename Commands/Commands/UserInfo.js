@@ -6,9 +6,11 @@ const path = require('path');
 const infoEmbed = (user, member, guild, memberinfo, userinfo) =>
   new MessageEmbed()
     .setTitle(`${user.tag}`)
-    .setThumbnail(user.displayAvatarURL({ size: 512 }))
-    .addFields({ name: 'User Info:', value: userinfo },
-      { name: `Info como miembro de ${guild.name}:`, value: memberinfo })
+    .setThumbnail(user.displayAvatarURL({ size: 512, dynamic: true }))
+    .addFields(
+      { name: 'User Info:', value: userinfo },
+      { name: `Info como miembro de ${guild.name}:`, value: memberinfo }
+    )
     .setColor(member.displayColor)
     .setTimestamp()
 
@@ -25,8 +27,9 @@ const userinfo = (user, mSince) =>
 
 module.exports = {
   name: "uinfo",
+  guildOnly: true,
   filename: path.basename(__filename),
-  description: "Muestra la información general de un usuario en específico. Si no se menciona a ningún usuario, se mostrará la información del autor del mensaje.",
+  description: "Tarjeta de información de un usuario.",
   usage: "uinfo (@Mención de usuario)",
   nsfw: false,
   enabled: true,
@@ -57,7 +60,7 @@ module.exports = {
       const memberInfo = memberinfo(member, gSince);
       const userInfo = userinfo(user, mSince);
 
-      return await channel.send(infoEmbed(user, member, guild, memberInfo, userInfo));
+      return channel.send(infoEmbed(user, member, guild, memberInfo, userInfo));
     } catch (error) {
       console.log(error);
     }

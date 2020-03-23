@@ -1,6 +1,12 @@
-const { Message } = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 const path = require('path');
+
+const TimedOut = (error) =>
+  new MessageEmbed()
+    .setTitle(`Error en el request: ${error.code}`)
+    .setDescription("Inténtalo más tarde.")
+    .setColor("RED");
 
 module.exports = {
   name: "docs",
@@ -11,16 +17,34 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: [],
-  async execute(message = new Message(), args = new Array()) {
-    const { channel, id } = message;
+  execute(message = new Message(), args = new Array()) {
+    const { channel, id, client: Muki } = message;
     const content = message.content.replace(/\s+/g, " ").split(" ");
     const project = content[2] || "stable";
     const queryString = content[1];
-    if (!queryString) return await channel.send("Necesitas ser más especifico.");
+    if (!queryString) return channel.send("Necesitas ser más especifico.");
+
     const endpoint = `https://djsdocs.sorta.moe/v2/embed?src=${project}&q=${queryString}`
     fetch(endpoint)
       .then(res => res.json())
-      .then((docs) => channel.send(null, { embed: docs }))
-      .catch(console.error);
+      .then(async (docs) => {
+
+        if (Muki.Messages.has(message.id)) {
+          const mukimsg = Muki.Messages.get(message.id);
+          return mukimsg.muki.edit(null, { embed: docs });
+        }
+
+        const sendedMsg = await channel.send(null, { embed: docs });
+        const messagePair = {
+          muki: sendedMsg,
+          user: message
+        }
+
+        Muki.Messages.set(id, messagePair);
+        setTimeout(() => {
+          Muki.Messages.delete(id);
+        }, 1000 * 60 * 3);
+      })
+      .catch(err => channel.send(TimedOut(err)));
   }
 }

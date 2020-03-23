@@ -34,8 +34,9 @@ const succeed = new MessageEmbed()
 
 module.exports = {
   name: "waddfrase",
+  guildOnly: true,
   filename: path.basename(__filename),
-  description: "Añade una frase de bienvenida. Si hay más de una frase configurada, se escogerá una al **azar**.",
+  description: "Añade una frase de bienvenida.",
   usage: "waddfrase [frase]",
   nsfw: false,
   enabled: true,

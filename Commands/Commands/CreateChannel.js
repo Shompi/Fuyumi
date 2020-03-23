@@ -7,7 +7,8 @@ const path = require('path');
 module.exports = {
   name: "newchannel",
   filename: path.basename(__filename),
-  description: "Crea un nuevo canal en este servidor. Los separadores **|** son **OBLIGATORIOS**.",
+  guildOnly: true,
+  description: "Crea un nuevo canal en este servidor.",
   usage: "newchannel [Nombre] | [Tipo: texto/voz] | (Canal / Categoria Padre)",
   nsfw: false,
   enabled: false,
@@ -90,9 +91,9 @@ module.exports = {
       }
 
     } catch (error) {
-      if (error.message == 'canceled') return await channel.send(`${error.emoji}`);
-      if (error.message == 'expired') return await channel.send(`${error.emoji}`);
-      if (error.message == 'bitrateError') return await channel.send(`${error.emoji}`);
+      if (error.message == 'canceled') return channel.send(`${error.emoji}`);
+      if (error.message == 'expired') return channel.send(`${error.emoji}`);
+      if (error.message == 'bitrateError') return channel.send(`${error.emoji}`);
     }
   }
 }

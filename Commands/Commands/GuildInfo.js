@@ -5,6 +5,7 @@ const path = require('path');
 
 module.exports = {
   name: "ginfo",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Información general del servidor actual.",
   usage: "ginfo <Sin Parámetros>",
@@ -21,7 +22,6 @@ module.exports = {
       const onlineUsers = users.filter(user => user.presence.status != 'offline');
       const bots = members.filter(member => member.user.bot);
       const guildCreated = guild.createdAt;
-      const memberFrom = member.joinedAt;
 
       const gCreatedAt = {
         day: dias[guildCreated.getDay()],
@@ -50,11 +50,11 @@ module.exports = {
       const infoEmbed = new MessageEmbed()
         .setTitle(`${guild.name}`)
         .addFields(fields)
-        .setThumbnail(guild.iconURL({ size: 512 }))
+        .setThumbnail(guild.iconURL({ size: 512, dynamic: true }))
         .setColor('BLUE')
         .setTimestamp();
 
-      return await channel.send(infoEmbed);
+      return channel.send(infoEmbed);
     }
     catch (error) {
       console.log(error);

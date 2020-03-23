@@ -23,6 +23,7 @@ const roleInfo = (role, guild) =>
 
 module.exports = {
   name: "role",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Muestra la información general de un <Rol> de este servidor.",
   usage: "role [@Mención de Rol]",
@@ -31,11 +32,11 @@ module.exports = {
   aliases: ['rinfo', 'roleinfo'],
   permissions: ['MANAGE_ROLES'],
 
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
     const { channel, mentions, guild } = message;
     const role = mentions.roles.first();
-    if (!role) return await channel.send(noRole(this.usage));
+    if (!role) return channel.send(noRole(this.usage));
 
-    return await channel.send(roleInfo(role, guild));
+    return channel.send(roleInfo(role, guild));
   }
 }

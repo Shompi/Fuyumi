@@ -3,24 +3,32 @@ const { MessageEmbed, Message } = require('discord.js');
 const Booru = require('../../Classes/Booru')
 const path = require('path');
 
+const fetchError = new MessageEmbed()
+  .setTitle("❌ Fetch error.")
+  .setDescription("Lo siento, hubo un error al hacer el request a **yande.re/post**. Por favor inténtalo más tarde.")
+  .setColor("RED");
+
 const noResults = new MessageEmbed()
   .setTitle('❌ No encontré nada con los tags que ingresaste.')
-  .setDescription('Nota: No puedes hacer una búsqueda con más de 3 tags debido a limitaciones del servidor.')
-  .setColor('RED')
+  .setDescription('Nota: No puedes hacer una búsqueda con más de 3 tags debido a limitaciones de la api.')
+  .setColor('RED');
 
-const getRating = (r) => {
-  if (r === 'e') return ("Explícito");
-  if (r === 'q') return ("Cuestionable");
-  if (r === 's') return ("Seguro");
-  return 'Desconocido';
-}
+const ratings = (rating) => {
 
-const showpage = async (post = Booru.YanderePost[0], message = new Message(), index, total) => {
-  const newRating = getRating(post.rating);
+  const r = {
+    e: "Explícito",
+    q: "Cuestionable",
+    s: "Seguro"
+  }
+
+  return r[rating] || 'Desconocido';
+};
+
+const showpage = (post = Booru.YanderePost[0], message = new Message(), index, total) => {
   const tags = post.tags.split(" ").slice(0, 10).join(", ").replace(/_/g, " ");
   const embed = new MessageEmbed()
     .setAuthor(`->Full Resolución<-`, null, post.file_url)
-    .setDescription(`**Resolución:** ${post.sample_width}x${post.sample_height} **Rating:** ${newRating}\n**Tags:** ${tags}`)
+    .setDescription(`**Resolución:** ${post.sample_width}x${post.sample_height} **Rating:** ${ratings(post.rating)}\n**Tags:** ${tags}`)
     .setImage(post.sample_url)
     .setFooter(`[${index + 1} de ${total}] - Post ID: ${post.id}`, message.author.displayAvatarURL({ size: 64 }))
     .setTimestamp();
@@ -48,23 +56,22 @@ module.exports = {
     try {
       let content = message.content.split(" ").slice(1).join(" ");
 
-      if (content.split(/\s*\+\s*/g).length >= 3) return await message.reply('lo siento, solo puedes usar un máximo de 3 tags para la búsqueda.');
+      if (content.split(/\s*\+\s*/g).length >= 3) return message.reply('lo siento, solo puedes usar un máximo de 3 tags para la búsqueda.');
 
       let query = content.replace(/\s*\+\s*/g, "+").replace(/\s+/g, "_");
       let blacklist = '+-loli'; //Tags blacklist
       let response = Booru.YanderePost;
 
-      let data = await fetch('https://yande.re/post.json?limit=100&tags=' + query + blacklist);
-      if (data.status != 200) {
-        await channel.send("Error al conectar con el servidor, codigo: " + data.status);
-        return console.log(data);
-      }
+      let data = await fetch(`https://yande.re/post.json?limit=100&tags=${query}${blacklist}`).catch(e => {
+        throw 'Fetch Error: ' + e.code;
+      });
+
       response = await data.json();
 
-      if (response.length === 0) return await channel.send(noResults);
+      if (response.length === 0) return channel.send(noResults);
 
       let pageindex = Math.floor(Math.random() * response.length);
-      const embed = await showpage(response[pageindex], message, pageindex, response.length);
+      const embed = showpage(response[pageindex], message, pageindex, response.length);
       const msg = await channel.send(embed);
 
       await msg.react('⬅');
@@ -77,29 +84,33 @@ module.exports = {
           if (reaction.emoji.name == '➡') {
             pageindex++;
             if (pageindex >= response.length) pageindex = 0;
-            const page = await showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            const page = showpage(response[pageindex], message, pageindex, response.length);
+            msg.edit(page);
           }
 
           if (reaction.emoji.name == '⬅') {
             pageindex--;
             if (pageindex < 0) pageindex = response.length - 1;
-            const page = await showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            const page = showpage(response[pageindex], message, pageindex, response.length);
+            msg.edit(page);
           }
 
           if (reaction.emoji.name == '🔄') {
             pageindex = Math.floor(Math.random() * response.length);
-            const page = await showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            const page = showpage(response[pageindex], message, pageindex, response.length);
+            msg.edit(page);
           }
 
         })
-        .on('end', async () => await msg.reactions.removeAll());
+        .on('end', async () => {
+          if (channel.type === 'dm') return;
+          else msg.reactions.removeAll();
+        })
 
     }
     catch (error) {
       console.log(error);
+      return channel.send(error);
     }
   }
 }

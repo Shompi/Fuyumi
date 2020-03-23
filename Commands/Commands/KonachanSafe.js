@@ -49,7 +49,7 @@ module.exports = {
   usage: "konasafe [tags]",
   nsfw: false,
   enabled: true,
-  aliases: [],
+  aliases: ['safe'],
   permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
@@ -60,15 +60,16 @@ module.exports = {
     try {
 
       let pageindex = 0;
-      let data = await fetch(endpoint + query + '+rating:safe');
-      if (!data.ok) return await channel.send("Error al conectar con el servidor, codigo: " + data.status);
+      let data = await fetch(`${endpoint}${query}+rating:safe`).catch(e => {
+        throw 'FetchError: ' + e.code;
+      });
 
       response = await data.json();
 
-      if (response.length === 0) return await channel.send(noResults);
+      if (response.length === 0) return channel.send(noResults);
 
       const embed = showpage(response[pageindex], message, pageindex, response.length);
-      if (response.length == 1) return await channel.send(embed);
+      if (response.length == 1) return channel.send(embed);
 
       const msg = await channel.send(embed);
       await msg.react('⬅');
@@ -80,25 +81,25 @@ module.exports = {
           if (reaction.emoji.name == '➡') {
             pageindex++;
             if (pageindex >= response.length) pageindex = 0;
-            const page = await showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            const page = showpage(response[pageindex], message, pageindex, response.length);
+            msg.edit(page);
           }
 
           if (reaction.emoji.name == '⬅') {
             pageindex--;
             if (pageindex < 0) pageindex = response.length - 1;
-            const page = await showpage(response[pageindex], message, pageindex, response.length);
-            await msg.edit(page);
+            const page = showpage(response[pageindex], message, pageindex, response.length);
+            msg.edit(page);
           }
         })
         .on('end', async () => {
           if (message.channel.type == 'dm') throw `No se pueden quitar las reacciones en un DM. (${message.author.tag})`;
-          return await msg.reactions.removeAll();
+          return msg.reactions.removeAll();
         });
     }
     catch (error) {
       console.log(error);
-      await message.reply(errorEmbed);
+      return message.reply(errorEmbed);
     }
   }
 }

@@ -23,16 +23,17 @@ module.exports = {
 
     if (author.id !== Muki.OWNER) return;
 
+
     try {
       const code = args.join(" ");
-      let evaled = eval(code);
+      let evaled = await eval(code);
 
       if (typeof evaled !== "string")
         evaled = require("util").inspect(evaled);
 
-      return await channel.send(clean(evaled), { code: "xl" });
+      return channel.send(clean(evaled), { code: "js" });
     } catch (err) {
-      return await channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+      return channel.send(err, { code: 'js' });
     }
 
   }

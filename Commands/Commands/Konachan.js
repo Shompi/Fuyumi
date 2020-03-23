@@ -45,7 +45,7 @@ const errorEmbed = new MessageEmbed()
 module.exports = {
   name: "kona",
   filename: path.basename(__filename),
-  description: "Busca imágenes en konachan.com con tags que sean válidos en la página.",
+  description: "Busca imágenes en **konachan.com** con tags que sean válidos en la página.",
   usage: "kona [tags]",
   nsfw: true,
   enabled: true,
@@ -61,13 +61,15 @@ module.exports = {
       let response = Booru.KonaPost;
       let blacklist = '+-loli+-rape'; //Tags blacklist
 
-      let data = await fetch(endpoint + query + blacklist);
-      if (!data.ok) return await channel.send("Error al conectar con el servidor, codigo: " + data.statusCode).catch(err => console.log(err));
+      let data = await fetch(endpoint + query + blacklist).catch(e => {
+        throw 'FetchError: ' + e.code;
+      });
+
       response = await data.json();
 
-      if (response.length === 0) return await channel.send(noResults);
+      if (response.length === 0) return channel.send(noResults);
 
-      const embed = await showpage(response[0], message, pageindex, response.length);
+      const embed = showpage(response[0], message, pageindex, response.length);
       const msg = await channel.send(embed);
 
       await msg.react('⬅');
@@ -79,23 +81,23 @@ module.exports = {
           if (reaction.emoji.name == '➡') {
             pageindex++;
             if (pageindex >= response.length) pageindex = 0;
-            const page = await showpage(response[pageindex], message, pageindex, response.length);
+            const page = showpage(response[pageindex], message, pageindex, response.length);
             await msg.edit(page);
           }
 
           if (reaction.emoji.name == '⬅') {
             pageindex--;
             if (pageindex < 0) pageindex = response.length - 1;
-            const page = await showpage(response[pageindex], message, pageindex, response.length);
+            const page = showpage(response[pageindex], message, pageindex, response.length);
             await msg.edit(page);
           }
 
         })
-        .on('end', async () => await msg.reactions.removeAll());
+        .on('end', () => msg.reactions.removeAll());
     }
     catch (e) {
       console.log(e);
-      await message.reply(errorEmbed);
+      return message.reply(errorEmbed);
     }
   }
 }

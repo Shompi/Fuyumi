@@ -23,6 +23,7 @@ const toggled = (config, client = new Client()) => {
 
 module.exports = {
   name: "wtoggle",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Activa / Desactiva los **Mensajes de Bienvenida**.",
   usage: "wtoggle <Sin Parámetros>",
@@ -30,12 +31,12 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: [],
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
     //In this command, content is irrelevant.
     const { author, guild, member, channel, client } = message;
 
     //Check Permissions.
-    if (!member.hasPermission("ADMINISTRATOR", { checkOwner: true })) return await channel.send(missingPermissions(author));
+    if (!member.hasPermission("ADMINISTRATOR", { checkOwner: true })) return channel.send(missingPermissions(author));
 
     const config = database.get(guild.id);
     if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración. WelcomeToggle.js`);
@@ -46,6 +47,6 @@ module.exports = {
 
     database.set(guild.id, config)
     console.log(`Mensajes de bienvenida ${config.welcome.enabled ? "Activados" : "Desactivados"} en la guild ${guild.name}`);
-    return await channel.send(toggled(config, client));
+    return channel.send(toggled(config, client));
   }
 }

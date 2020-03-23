@@ -23,15 +23,16 @@ const noAdminRole =
 
 module.exports = {
   name: "wfrases",
+  guildOnly: true,
   filename: path.basename(__filename),
-  description: "Muestra todas las frases de bienvenida configuradas en este servidor.",
+  description: "Muestra todas las **frases de bienvenida** configuradas en este servidor.",
   usage: "wfrases <Sin Parámetros>",
   nsfw: false,
   enabled: true,
   aliases: [],
   permissions: [],
 
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
     const { member, channel, guild } = message;
 
     const config = database.get(guild.id);
@@ -40,14 +41,14 @@ module.exports = {
     const { joinPhrases, leavePhrases } = config.welcome;
 
     if (member.hasPermission('ADMINISTRATOR', { checkOwner: true })) {
-      return await channel.send(phrases(joinPhrases, leavePhrases, guild));
+      return channel.send(phrases(joinPhrases, leavePhrases, guild));
 
     } else {
-      if (!config.adminRole) return await channel.send(noAdminRole);
+      if (!config.adminRole) return channel.send(noAdminRole);
 
       if (member.roles.cache.has(adminRole)) {
-        return await channel.send(phrases(joinPhrases, leavePhrases, guild));
-      } else return await channel.send(noAdminRole);
+        return channel.send(phrases(joinPhrases, leavePhrases, guild));
+      } else return channel.send(noAdminRole);
 
     }
   }

@@ -15,7 +15,7 @@ I uploaded the code so its easier for me to code it when im not in home.
 ### What is this repository for? ###
 
 * Maintain version control for Muki
-* Version 4.0.0 (BETA)
+* Version 4.0.1 Finally official!
 
 ### How do I get set up? ###
 * You need node.js 12+ and git bash.

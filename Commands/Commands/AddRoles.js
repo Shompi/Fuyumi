@@ -10,7 +10,7 @@ const noTarget = (usage) =>
 
 const missingPermissions = (permissions) =>
   new MessageEmbed()
-    .setTitle('Permisos insuficientes.')
+    .setTitle('🚫 Permisos insuficientes.')
     .setDescription(`Necesito el o los siguientes permisos:\n\`${permissions.join(", ")}\``)
     .setColor("RED");
 
@@ -33,9 +33,10 @@ const rolesAdded = (target) =>
 
 module.exports = {
   name: "addroles",
+  guildOnly: true,
   aliases: ['addrole'],
-  description: "Añade uno o más roles al miembro objetivo, separados por una coma.",
-  usage: "addroles [@Miembro] [rol1, rol2, rol3, ...roln]",
+  description: "Añade uno o más roles a un miembro.",
+  usage: "addroles [@Miembro] [nombre 1, nombre 2, nombre 3, ...roln]",
   nsfw: false,
   enabled: true,
   permissions: ['MANAGE_ROLES'],
@@ -43,12 +44,12 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
 
     //Args will come like "<membermention> <rolename>, <rolename>, <rolename>"
-    const { channel, guild, member, author } = message;
+    const { channel, guild, member, author, client: Muki } = message;
     const { me, roles: GuildRoles, owner } = guild;
     const MukiHighest = me.roles.highest;
 
-    if (!me.hasPermission('MANAGE_ROLES')) return await channel.send(missingPermissions(this.permissions));
-    if (!message.mentions.members) return await channel.send(noTarget(this.usage));
+    if (!me.hasPermission('MANAGE_ROLES')) return channel.send(missingPermissions(this.permissions));
+    if (!message.mentions.members) return channel.send(noTarget(this.usage));
 
     const guildConfigs = database.get(guild.id);
     const adminRole = guildConfigs.adminRole;
@@ -58,7 +59,7 @@ module.exports = {
 
     const rolesToAdd = GuildRoles.cache.filter(role => roleNames.includes(role.name.toLowerCase()));
 
-    if (rolesToAdd.size === 0) return await channel.send(noRolesFound(this.usage));
+    if (rolesToAdd.size === 0) return channel.send(noRolesFound(this.usage));
 
     try {
       if (member.hasPermission('ADMINISTRATOR', { checkOwner: true })) {
@@ -66,23 +67,24 @@ module.exports = {
         //We dont want to filter the roles, just add them.
 
         await target.roles.add(rolesToAdd, message.author.tag);
-        return await channel.send(rolesAdded(target));
+        return channel.send(rolesAdded(target));
       } else {
 
         //If not, we dont want to add roles that are higher than the highest role of the member invoking the command.
-        if (!member.roles.cache.has(adminRole)) return await channel.send(`Debes tener el rol asignado como Rol de Administrador para usar este comando.\n\n\`${guildConfigs.prefix}adminrole [@Mención del Rol]\``);
+        if (!member.roles.cache.has(adminRole)) return channel.send(`Debes tener el rol asignado como Rol de Administrador para usar este comando.\n\n\`${guildConfigs.prefix}adminrole [@Mención del Rol]\``);
 
         const MemberHighest = member.roles.cache.get(adminRole);
         const filtered = rolesToAdd.filter(role => role.position <= MukiHighest.position && role.position <= MemberHighest.position);
-        if (filtered.size === 0) return await channel.send(noRolesFound(this.usage));
+        if (filtered.size === 0) return channel.send(noRolesFound(this.usage));
 
         await target.roles.add(filtered, message.author.tag);
-        return await channel.send(rolesAdded(target));
+        return channel.send(rolesAdded(target));
       }
     }
     catch (error) {
       console.log(error);
-      return await channel.send(errorEmbed);
+      Muki.users.cache.get(Muki.OWNER).send('Hubo un error con el comando addroles. ¡Mira la consola!');
+      return channel.send(errorEmbed);
     }
   }
 }

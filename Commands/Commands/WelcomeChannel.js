@@ -24,6 +24,7 @@ const succeed = (channel = new TextChannel(), prefix) => {
 
 module.exports = {
   name: "wchannel",
+  guildOnly: true,
   filename: path.basename(__filename),
   description: "Asigna una canal para enviar los **Mensajes de Bienvenida**.",
   usage: "wchannel [#Mencion del Canal]",
@@ -31,7 +32,7 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: [],
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
 
     const { author, member, guild, mentions, channel } = message;
     const config = database.get(guild.id);
@@ -43,10 +44,10 @@ module.exports = {
 
       //Check if a channel was mentioned.
       const mentionedChannel = mentions.channels.first();
-      if (!mentionedChannel) return await channel.send(noChannel(config.prefix));
+      if (!mentionedChannel) return channel.send(noChannel(config.prefix));
 
       //Check if the channel exists in the guild.
-      if (!guild.channels.cache.has(mentionedChannel.id)) return await channel.send("El canal que has mencionado no existe en esta guild.");
+      if (!guild.channels.cache.has(mentionedChannel.id)) return channel.send("El canal que has mencionado no existe en esta guild.");
 
       //If it was
       config.welcome.channelID = mentionedChannel.id;
@@ -54,8 +55,8 @@ module.exports = {
 
       database.set(guild.id, config);
 
-      return await channel.send(succeed(mentionedChannel, config.prefix));
+      return channel.send(succeed(mentionedChannel, config.prefix));
     }
-    else return await channel.send(missingPermissions(author));
+    else return channel.send(missingPermissions(author));
   }
 }
