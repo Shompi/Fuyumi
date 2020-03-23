@@ -18,7 +18,7 @@ module.exports = {
   aliases: [],
   permissions: [],
   execute(message = new Message(), args = new Array()) {
-    const { channel, id, author, client: Muki } = message;
+    const { channel, id, client: Muki } = message;
     const content = message.content.replace(/\s+/g, " ").split(" ");
     const project = content[2] || "stable";
     const queryString = content[1];
