@@ -200,17 +200,17 @@ Muki.on('messageUpdate', async (old, message) => {
   }
 });
 
-Muki.on('messageReactionAdd', async (reaction, user) => {
+Muki.on('messageReactionAdd', (reaction, user) => {
   Muki.eventhandler.ReactionAdd.Stars(reaction, user);
 });
 
-Muki.on('guildMemberRemove', async (member) => {
-  await Muki.eventhandler.Guild.MemberRemove(member);
+Muki.on('guildMemberRemove', (member) => {
+  Muki.eventhandler.Guild.MemberRemove(member);
 });
 
 Muki.on('guildMemberAdd', async member => {
   if (member.partial) member = await member.fetch();
-  await Muki.eventhandler.Guild.MemberAdd(member);
+  Muki.eventhandler.Guild.MemberAdd(member);
 });
 
 Muki.on('voiceStateUpdate', async (old, now) => {
@@ -231,7 +231,7 @@ Muki.on('presenceUpdate', async (old, now) => { //Tipo Presence
   }
 });
 
-Muki.on('guildBanAdd', async (guild, user) => {
+Muki.on('guildBanAdd', (guild, user) => {
   if (!guild.systemChannel) return;
   const embed = new MessageEmbed()
     .setAuthor(user.tag, user.displayAvatarURL({ size: 256 }))
@@ -240,13 +240,13 @@ Muki.on('guildBanAdd', async (guild, user) => {
     .setThumbnail(user.displayAvatarURL({ size: 256 }))
     .setTimestamp();
 
-  return await guild.systemChannel.send(embed);
+  return guild.systemChannel.send(embed);
 });
 
 Muki.on('error', async (error) => {
   console.log(error)
   const e = new MessageEmbed().setColor("RED").setDescription(`${error}\n${error.stack}`);
-  return await Muki.channels.cache.get("585990511790391309").send(e).catch(console.error);
+  return Muki.channels.cache.get("585990511790391309").send(e).catch(console.error);
 });
 
 Muki.on('reconnecting', () => {
@@ -262,7 +262,7 @@ Muki.on('warn', (warn) => {
   console.log(warn);
 });
 
-Muki.on('guildCreate', async (guild) => {
+Muki.on('guildCreate', (guild) => {
   if (database.guildConfigs.has(guild.id)) return;
   const guildConfig = new GuildConfig(guild);
 
