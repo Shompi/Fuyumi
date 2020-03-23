@@ -164,9 +164,9 @@ Muki.on('ready', async () => {
     Muki.emit("error", error);
   }
 
-  setImmediate(() => {
+  Muki.setImmediate(() => {
     Muki.NASA(NASAWebHook);
-    setInterval(() => {
+    Muki.setInterval(() => {
       Muki.NASA(NASAWebHook);
     }, 1000 * 60 * 60);
   });
