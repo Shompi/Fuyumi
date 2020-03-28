@@ -33,6 +33,7 @@ module.exports = (Hook = new Webhook()) => {
   fetch(endpoint)
     .then(res => res.json())
     .then(async (response) => {
+      if (!response) return;
       let lastPicDate = database.nasaLastPicture.get('LASTPIC');
       console.log(lastPicDate + "   " + response.date);
       if (lastPicDate != response.date) {
