@@ -41,6 +41,9 @@ module.exports = {
 
     if (!["-add", "-rem", "-show"].includes(flag))
       return channel.send(missingArgument);
+      
+    if (args.length === 0)
+      return channel.send(`${author} debes escribir el nombre del rol que quieres agregar o quitar de la lista.`);
 
     const rolename = args.join(" ");
 

@@ -31,7 +31,13 @@ module.exports = {
   guildOnly: true,
   permissions: ["MANAGE_ROLES"],
   async execute(message = new Message(), args = new Array()) {
+
+
     const { client: Muki, guild, member, author, channel } = message;
+
+    if (args.length === 0)
+      return channel.send(`?${author} debes escribir el nombre del rol!`);
+
     const guildroles = guild.roles.cache;
     const { guildAutoRoles } = Muki.db;
 
