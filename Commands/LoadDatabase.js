@@ -7,9 +7,8 @@ module.exports = {
   YoutubeStream: new enmap({name:'youtube'}),
   nasaLastPicture: new enmap({name:'nasa'}),
   tags: new enmap({name:'tags'}),
-  webhooks: new enmap({name:'webhooks'}),
   votes: new enmap({name:'votes'}),
   votesCooldown: new enmap({name: 'cooldown'}),
-  osu: new enmap({name:"osu"}),
-  guildConfigs: new enmap({name:"guildconfigs"})
+  guildConfigs: new enmap({name:"guildconfigs"}),
+  guildAutoRoles: new enmap({name: "autoroles"})
 }

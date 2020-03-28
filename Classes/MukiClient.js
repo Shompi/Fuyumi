@@ -1,4 +1,5 @@
 const { Client, Collection } = require('discord.js');
+const db = require('../Commands/LoadDatabase');
 module.exports = class extends Client {
   constructor(options) {
     super({
@@ -20,5 +21,6 @@ module.exports = class extends Client {
     this.NASA = require('../Commands/NASA/POTD');
     
     this.config = options;
+    this.db = db;
   }
 }

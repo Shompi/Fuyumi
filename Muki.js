@@ -1,7 +1,7 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const { MessageEmbed, Webhook } = require('discord.js');
 const MukiClient = require('./Classes/MukiClient');
-const auth = require('./Keys/auth').stable;
+const auth = require('./Keys/auth').beta;
 const fs = require('fs');
 const GuildConfig = require('./Classes/GuildConfig');
 
