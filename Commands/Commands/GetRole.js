@@ -24,7 +24,7 @@ module.exports = {
   name: "getrole",
   filename: basename(__filename),
   aliases: ["roleget", "getrol"],
-  description: "Te auto asigna / quita el rol que especifiques.",
+  description: "Te asigna / quita el rol que especifiques.",
   usage: "getrole [Nombre del rol]",
   nsfw: false,
   enabled: true,

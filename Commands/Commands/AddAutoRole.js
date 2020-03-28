@@ -18,7 +18,7 @@ const autoRoleList = (roles) => {
 }
 module.exports = {
   name: "autorole",
-  description: "Añade / Quita un rol de los que se pueden auto asignar.",
+  description: "Añade / Quita un rol de los que se pueden auto asignar.\nPara ver la lista de roles auto-asignables, usa `-show` como argumento.",
   filename: basename(__filename),
   usage: "autorole [-add/-rem] [Nombre del rol]",
   adminOnly: false,
@@ -41,7 +41,7 @@ module.exports = {
 
     if (!["-add", "-rem", "-show"].includes(flag))
       return channel.send(missingArgument);
-      
+
     if (args.length === 0)
       return channel.send(`${author} debes escribir el nombre del rol que quieres agregar o quitar de la lista.`);
 
