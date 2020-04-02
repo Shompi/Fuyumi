@@ -51,15 +51,6 @@ module.exports = {
       }
     }
 
-    if (currentGiveaways.has(guild.id)) {
-      const currentgiveaway = currentGiveaways.get(guild.id);
-      if (!currentgiveaway.deleted)
-        return channel.send(`¡Lo siento ${author}, ya hay un sorteo en curso!, Por favor espera a que el sorteo termine para iniciar otro.`);
-      else {
-        currentGiveaways.delete(guild.id);
-      }
-    }
-
     const prefix = Muki.db.guildConfigs.get(guild.id).prefix;
 
     if (isNaN(giveawayTime))
