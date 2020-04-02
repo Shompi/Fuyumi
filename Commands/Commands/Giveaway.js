@@ -1,8 +1,6 @@
-const { MessageEmbed, Message, TextChannel } = require('discord.js');
+const { MessageEmbed, Message, Collection } = require('discord.js');
 const { basename } = require('path');
 const ONEHOUR = 1000 * 60 * 60;
-
-
 
 const giveawayEmbed = ({ member, sorteo, minutos }) => {
   return new MessageEmbed()
@@ -22,8 +20,7 @@ const giveawayEmbedFinished = (winner, sorteo, host) => {
     .setFooter(`¡Habla con ${host.tag} para reclamar tu premio!`)
 }
 
-
-const currentGiveaways = new Set();
+const currentGiveaways = new Collection();
 
 const channelNames = ["sorteos", "giveaway", "giveaways", "sorteo"];
 module.exports = {
@@ -41,10 +38,21 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
     const { guild, client: Muki, channel, member, author } = message;
 
+    const giveawayTime = args.shift();
+
+    if (giveawayTime == 'cancel') {
+      const giveawayToCancel = currentGiveaways.get(guild.id);
+      if (!giveawayToCancel)
+        return channel.send(`No hay ningún sorteo en curso...`);
+
+      if (author.id === giveawayToCancel.host && !giveawayToCancel.deleted) {
+        await giveawayToCancel.delete({ reason: "Cancelado por el usuario." }).catch(console.error);
+        return channel.send(`Tu sorteo ha sido cancelado.`);
+      }
+    }
+
     if (currentGiveaways.has(guild.id))
       return channel.send(`¡Lo siento ${author}, ya hay un sorteo en curso!, Por favor espera a que el sorteo termine para iniciar otro.`);
-
-    const giveawayTime = args.shift();
 
     const prefix = Muki.db.guildConfigs.get(guild.id).prefix;
 
@@ -57,6 +65,9 @@ module.exports = {
 
     if (giveawayTime < 1)
       return channel.send(`${author} lo siento, no puedes hacer un sorteo con una duración menor a 1 minuto.`);
+
+    if (args.length === 0)
+      return channel.send(`¡Debes escribir que es lo que vas a sortear!`);
 
     let giveawayChannel = guild.channels.cache.find(ch => ch.type === 'text' && channelNames.includes(ch.name));
 
@@ -98,10 +109,11 @@ module.exports = {
 
     console.log(`Giveaway channel: ${giveawayChannel.name}, ${giveawayChannel.id}`);
     const giveawayMessage = await giveawayChannel.send(giveawayEmbed({ member: member, sorteo: args.join(" "), minutos: giveawayTime }));
+    giveawayMessage.host = member.id;
 
     await giveawayMessage.react('🎉');
 
-    currentGiveaways.add(guild.id);
+    currentGiveaways.set(guild.id, giveawayMessage);
 
     await channel.send(`¡El sorteo ha comenzado en el canal <#${giveawayMessage.channel.id}>! `);
 
@@ -110,10 +122,11 @@ module.exports = {
     try {
       const collectedReactions = await giveawayMessage.awaitReactions(filter, { time: 1000 * 60 * giveawayTime });
 
+      //Giveaway is finished.
       currentGiveaways.delete(guild.id);
 
       if (giveawayMessage.deleted)
-        return channel.send(`¡${author} tu sorteo fué **eliminado** antes de que pudiera obtener las reacciones!`);
+        return;
 
       const reaction = collectedReactions.get('🎉');
 
