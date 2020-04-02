@@ -54,7 +54,7 @@ module.exports = {
     if (giveawayTime > ONEHOUR * 12)
       return channel.send(`${author} no puedes hacer un sorteo con una duración mayor a **12 horas.**\nRecuerda: El tiempo ingresado es convertido a **minutos** automáticamente.`);
 
-    if (giveawayTime <= 1)
+    if (giveawayTime < 1)
       return channel.send(`${author} lo siento, no puedes hacer un sorteo con una duración menor a 1 minuto.`);
 
     let giveawayChannel = guild.channels.cache.find(ch => ch.type === 'text' && channelNames.includes(ch.name));
