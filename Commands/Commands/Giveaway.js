@@ -71,6 +71,9 @@ module.exports = {
 
     if (!giveawayChannel) {
       console.log("Giveaway channel not found.");
+      if (!member.hasPermission(["MANAGE_CHANNELS"], {checkAdmin: true, checkOwner: true}))
+        return;
+        
       try {
         giveawayChannel = await guild.channels.create("giveaways", {
           type: 'text',
