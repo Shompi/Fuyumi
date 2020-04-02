@@ -59,7 +59,9 @@ module.exports = {
 
     let giveawayChannel = guild.channels.cache.find(ch => ch.type === 'text' && channelNames.includes(ch.name));
 
+
     if (!giveawayChannel) {
+      console.log("Giveaway channel not found.");
       try {
         giveawayChannel = await guild.channels.create("giveaways", {
           type: 'text',
@@ -78,6 +80,7 @@ module.exports = {
           ],
           reason: "Canal de sorteos."
         });
+
       } catch (err) {
         console.log(err);
         if (err.code) {
@@ -90,43 +93,43 @@ module.exports = {
 
         return channel.send(`Hubo un error con la ejecución de este comando, por favor inténtalo más tarde!`);
       }
+    }
 
+    console.log(`Giveaway channel: ${giveawayChannel.name}, ${giveawayChannel.id}`);
+    const giveawayMessage = await giveawayChannel.send(giveawayEmbed({ member: member, sorteo: args.join(" "), minutos: giveawayTime }));
 
-      const giveawayMessage = await giveawayChannel.send(giveawayEmbed({ member: member, sorteo: args.join(" "), minutos: giveawayTime }));
+    await giveawayMessage.react('🎉');
 
-      await giveawayMessage.react('🎉');
+    currentGiveaways.add(guild.id);
 
-      currentGiveaways.add(guild.id);
+    await channel.send(`¡El sorteo ha comenzado en el canal <#${giveawayMessage.channel.id}>! `);
 
-      await channel.send(`¡El sorteo ha comenzado en el canal <#${giveawayMessage.channel.id}>! `);
+    const filter = (reaction, user) => reaction.emoji.name == '🎉' && !user.bot;
 
-      const filter = (reaction, user) => reaction.emoji.name == '🎉' && !user.bot;
+    try {
+      const collectedReactions = await giveawayMessage.awaitReactions(filter, { time: 1000 * 60 * giveawayTime });
 
-      try {
-        const collectedReactions = await giveawayMessage.awaitReactions(filter, { time: 1000 * 60 * giveawayTime });
+      const reaction = collectedReactions.get('🎉');
 
-        const reaction = collectedReactions.get('🎉');
-
-        if (!reaction)
-          return;
-
-        if (reaction.count <= 1)
-          return channel.send(`${author} ¡tu sorteo ha sido anulado debido a la baja cantidad de participantes!`);
-
-        const choosenUser = reaction.users.cache.random();
-
-        await giveawayMessage.edit(`<@${choosenUser.id}>`, giveawayEmbedFinished(choosenUser, args.join(" "), member));
-
-        currentGiveaways.delete(guild.id);
-
+      if (!reaction)
         return;
-      } catch (err) {
 
-        console.log("Hubo un error en el comando Giveaway.js");
-        console.log(err);
+      if (reaction.count <= 1)
+        return channel.send(`${author} ¡tu sorteo ha sido anulado debido a la baja cantidad de participantes!`);
 
-        return channel.send(`${author} Ocurrió un error mientras se hacia el sorteo, ¡lo siento mucho!`);
-      }
+      const choosenUser = reaction.users.cache.random();
+
+      await giveawayMessage.edit(`<@${choosenUser.id}>`, giveawayEmbedFinished(choosenUser, args.join(" "), member));
+
+      currentGiveaways.delete(guild.id);
+
+      return;
+    } catch (err) {
+
+      console.log("Hubo un error en el comando Giveaway.js");
+      console.log(err);
+
+      return channel.send(`${author} Ocurrió un error mientras se hacia el sorteo, ¡lo siento mucho!`);
     }
   }
 }
