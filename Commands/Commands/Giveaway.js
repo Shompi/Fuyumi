@@ -8,17 +8,18 @@ const giveawayEmbed = ({ member, sorteo, minutos }) => {
   return new MessageEmbed()
     .setTitle(`¡${member.user.tag} ha iniciado un sorteo!`)
     .setThumbnail(member.user.displayAvatarURL({ size: 256, dynamic: true }))
-    .setDescription(`**${sorteo}**\n\n¡Reacciona con 🎉 y ya estarás participando!`)
+    .setDescription(`**${sorteo}**\n\n¡Reacciona con 🎉 para participar!`)
     .setColor("BLUE")
-    .setFooter(`Duración del sorteo: ${minutos}`);
+    .setFooter(`Duración del sorteo: ${minutos} minuto/s`);
 }
 
 const giveawayEmbedFinished = (winner, sorteo, host) => {
   return new MessageEmbed()
     .setTitle(`¡Felicidades ${winner.username}!`)
+    .setThumbnail(winner.displayAvatarURL({ size: 256, dynamic: true }))
     .setDescription(`Has ganado: **${sorteo}**\nSorteado por: <@${host.id}>`)
     .setColor("BLUE")
-    .setFooter(`¡Felicitaciones al ganador!`)
+    .setFooter(`¡Habla con ${host.tag} para reclamar tu premio!`)
 }
 
 
@@ -104,24 +105,30 @@ module.exports = {
 
     await channel.send(`¡El sorteo ha comenzado en el canal <#${giveawayMessage.channel.id}>! `);
 
-    const filter = (reaction, user) => reaction.emoji.name == '🎉' && !user.bot;
+    const filter = (reaction, user) => reaction.emoji.name == '🎉';
 
     try {
       const collectedReactions = await giveawayMessage.awaitReactions(filter, { time: 1000 * 60 * giveawayTime });
+
+      currentGiveaways.delete(guild.id);
+
+      if (giveawayMessage.deleted)
+        return channel.send(`¡${author} tu sorteo fué **eliminado** antes de que pudiera obtener las reacciones!`);
 
       const reaction = collectedReactions.get('🎉');
 
       if (!reaction)
         return;
 
-      if (reaction.count <= 1)
-        return channel.send(`${author} ¡tu sorteo ha sido anulado debido a la baja cantidad de participantes!`);
+      if (reaction.count <= 2) {
+        await channel.send(`${author} ¡tu sorteo ha sido anulado debido a la baja cantidad de participantes!`);
+        return giveawayMessage.delete()
+      }
 
-      const choosenUser = reaction.users.cache.random();
+      const choosenUser = reaction.users.cache.filter(user => !user.bot).random();
 
       await giveawayMessage.edit(`<@${choosenUser.id}>`, giveawayEmbedFinished(choosenUser, args.join(" "), member));
 
-      currentGiveaways.delete(guild.id);
 
       return;
     } catch (err) {
