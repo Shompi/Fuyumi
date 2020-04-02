@@ -24,8 +24,8 @@ const currentGiveaways = new Collection();
 
 const channelNames = ["sorteos", "giveaway", "giveaways", "sorteo"];
 module.exports = {
-  name: "giveaway",
-  aliases: ["sorteo", "sortear", "regalar", "gaway", "giveaways"],
+  name: "sorteo",
+  aliases: ["giveaway", "sortear", "regalar", "gaway", "giveaways"],
   nsfw: false,
   guildOnly: true,
   adminOnly: false,
@@ -112,7 +112,7 @@ module.exports = {
 
     currentGiveaways.set(guild.id, giveawayMessage);
 
-    await channel.send(`¡El sorteo ha comenzado en el canal <#${giveawayMessage.channel.id}>! `);
+    await channel.send(`¡El sorteo ha comenzado en el canal <#${giveawayMessage.channel.id}>!\nPara cancelarlo escribe \`${prefix}sorteo cancel\``);
 
     const filter = (reaction, user) => reaction.emoji.name == '🎉';
 
