@@ -128,7 +128,7 @@ module.exports = {
       const reaction = collectedReactions.get('🎉');
 
       if (!reaction)
-        return;
+        return channel.send(`${author}, No se consigió la cantidad necesaria de reacciones, o el emoji 🎉 fué quitado de las reacciones.`);
 
       if (reaction.count <= 2) {
         await channel.send(`${author} ¡tu sorteo ha sido anulado debido a la baja cantidad de participantes!`);
@@ -137,10 +137,8 @@ module.exports = {
 
       const choosenUser = reaction.users.cache.filter(user => !user.bot).random();
 
-      await giveawayMessage.edit(`<@${choosenUser.id}>`, giveawayEmbedFinished(choosenUser, args.join(" "), member));
-
-
-      return;
+      return giveawayMessage.edit(`<@${choosenUser.id}>`, giveawayEmbedFinished(choosenUser, args.join(" "), member));
+      
     } catch (err) {
 
       console.log("Hubo un error en el comando Giveaway.js");
