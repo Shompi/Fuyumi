@@ -13,7 +13,7 @@ const giveawayEmbed = ({ member, sorteo, minutos }) => {
 
 const giveawayEmbedFinished = (winner, sorteo, host) => {
   return new MessageEmbed()
-    .setTitle(`¡Felicidades ${winner.username}!`)
+    .setTitle(`🎇¡Felicidades ${winner.username} !🎊`)
     .setThumbnail(winner.displayAvatarURL({ size: 256, dynamic: true }))
     .setDescription(`Has ganado: **${sorteo}**\nSorteado por: <@${host.id}>`)
     .setColor("BLUE")
@@ -25,7 +25,7 @@ const currentGiveaways = new Collection();
 const channelNames = ["sorteos", "giveaway", "giveaways", "sorteo"];
 module.exports = {
   name: "giveaway",
-  aliases: ["sorteo", "sortear", "regalar", "gaway"],
+  aliases: ["sorteo", "sortear", "regalar", "gaway", "giveaways"],
   nsfw: false,
   guildOnly: true,
   adminOnly: false,
@@ -127,9 +127,10 @@ module.exports = {
 
       const reaction = collectedReactions.get('🎉');
 
-      if (!reaction)
-        return channel.send(`${author}, No se consigió la cantidad necesaria de reacciones, o el emoji 🎉 fué quitado de las reacciones.`);
-
+      if (!reaction) {
+        await giveawayMessage.delete({ reason: "Insuficientes participantes." });
+        return channel.send(`${author}, No se consigió la cantidad necesaria de reacciones, o el emoji "🎉" fué quitado de las reacciones.`);
+      }
       if (reaction.count <= 2) {
         await channel.send(`${author} ¡tu sorteo ha sido anulado debido a la baja cantidad de participantes!`);
         return giveawayMessage.delete()
@@ -138,7 +139,7 @@ module.exports = {
       const choosenUser = reaction.users.cache.filter(user => !user.bot).random();
 
       return giveawayMessage.edit(`<@${choosenUser.id}>`, giveawayEmbedFinished(choosenUser, args.join(" "), member));
-      
+
     } catch (err) {
 
       console.log("Hubo un error en el comando Giveaway.js");
