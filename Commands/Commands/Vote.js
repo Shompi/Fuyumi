@@ -18,7 +18,7 @@ module.exports = {
   usage: "vote [Tiempo en minutos] [Pregunta / Propuesta]",
   nsfw: false,
   enabled: true,
-  aliases: [],
+  aliases: ["votacion", "votar", "voto"],
   permissions: [],
 
   execute(message = new Message(), args = new Array()) {
