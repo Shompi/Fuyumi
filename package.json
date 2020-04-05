@@ -21,6 +21,7 @@
     "node-fetch": "^2.6.0",
     "node-opus": "^0.3.3",
     "parse-time": "^0.1.4",
+    "pretty-ms": "^6.0.1",
     "utf-8-validate": "^5.0.2",
     "ws": "^7.2.1",
     "ytdl-core": "^1.0.7",
