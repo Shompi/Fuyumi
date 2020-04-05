@@ -71,7 +71,7 @@ module.exports = {
 
     if (!giveawayChannel) {
       console.log("Giveaway channel not found.");
-      if (!member.hasPermission(["MANAGE_CHANNELS"], {checkAdmin: true, checkOwner: true}))
+      if (!member.hasPermission(["MANAGE_CHANNELS"], {checkAdmin: true, checkOwner: true}) || !guild.me.hasPermission('MANAGE_CHANNELS'))
         return;
         
       try {
