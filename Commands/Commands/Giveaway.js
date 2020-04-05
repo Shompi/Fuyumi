@@ -1,14 +1,16 @@
 const { MessageEmbed, Message, Collection } = require('discord.js');
 const { basename } = require('path');
+const Prettyms = require('pretty-ms');
 const ONEHOUR = 1000 * 60 * 60;
 
 const giveawayEmbed = ({ member, sorteo, minutos }) => {
+  const millis = (1000 * 60) * minutos;
   return new MessageEmbed()
     .setTitle(`¡${member.user.tag} ha iniciado un sorteo!`)
     .setThumbnail(member.user.displayAvatarURL({ size: 256, dynamic: true }))
     .setDescription(`**${sorteo}**\n\n¡Reacciona con 🎉 para participar!`)
     .setColor("BLUE")
-    .setFooter(`Duración del sorteo: ${minutos} minuto/s`);
+    .setFooter(`Termina en: ${Prettyms(millis, { verbose: true })}`);
 }
 
 const giveawayEmbedFinished = (winner, sorteo, host) => {
@@ -71,9 +73,9 @@ module.exports = {
 
     if (!giveawayChannel) {
       console.log("Giveaway channel not found.");
-      if (!member.hasPermission(["MANAGE_CHANNELS"], {checkAdmin: true, checkOwner: true}) || !guild.me.hasPermission('MANAGE_CHANNELS'))
+      if (!member.hasPermission(["MANAGE_CHANNELS"], { checkAdmin: true, checkOwner: true }) || !guild.me.hasPermission('MANAGE_CHANNELS'))
         return;
-        
+
       try {
         giveawayChannel = await guild.channels.create("giveaways", {
           type: 'text',
