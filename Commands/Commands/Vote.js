@@ -1,18 +1,19 @@
 const { MessageEmbed, Message } = require('discord.js');
-const votecount = require('../LoadDatabase').votes;
-const cooldowns = require('../LoadDatabase').votesCooldown;
-const MINUTE = 1000 * 60;
-const approvedimage = 'https://puu.sh/EPc3r/6dfaa029d1.png';
-const rejectedimage = 'https://puu.sh/EPc4k/ed4ca4cfc3.png';
-const neutralimage = 'https://puu.sh/EPcbj/d8fd38a401.png';
-const inProgress = 'https://puu.sh/EPcok/0c349a8d0f.png';
-const noVoteImage = 'https://puu.sh/EPe4V/e12a2b7355.png';
-const path = require('path');
+const { basename } = require('path');
+
+const votecount = require('../LoadDatabase').votes,
+  cooldowns = require('../LoadDatabase').votesCooldown,
+  MINUTE = 1000 * 60,
+  approvedimage = 'https://puu.sh/EPc3r/6dfaa029d1.png',
+  rejectedimage = 'https://puu.sh/EPc4k/ed4ca4cfc3.png',
+  neutralimage = 'https://puu.sh/EPcbj/d8fd38a401.png',
+  inProgress = 'https://puu.sh/EPcok/0c349a8d0f.png',
+  noVoteImage = 'https://puu.sh/EPe4V/e12a2b7355.png';
 
 module.exports = {
   name: "vote",
   guildOnly: true,
-  filename: path.basename(__filename),
+  filename: basename(__filename),
   description: "Inicia una votación en el servidor.",
   usage: "vote [Tiempo en minutos] [Pregunta / Propuesta]",
   nsfw: false,
