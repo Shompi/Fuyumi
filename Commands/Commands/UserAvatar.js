@@ -58,7 +58,7 @@ module.exports = {
                         embed = findUserByMention(message)
                     } else {
                         // Find user by name
-                        if (guild != null) {
+                        if (guild !== null) {
                             embed = findUserByName(message, user)
                         }
                     }
