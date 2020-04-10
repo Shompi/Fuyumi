@@ -36,7 +36,7 @@ module.exports = {
     const { client: Muki, guild, member, author, channel } = message;
 
     if (args.length === 0)
-      return channel.send(`?${author} debes escribir el nombre del rol!`);
+      return channel.send(`${author} debes escribir el nombre del rol!`);
 
     const guildroles = guild.roles.cache;
     const { guildAutoRoles } = Muki.db;
