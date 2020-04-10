@@ -37,7 +37,7 @@ module.exports = {
     name: "avatar",
     guildOnly: false,
     filename: path.basename(__filename),
-    description: "Ver el avatar de un usuario",
+    description: "Envía el avatar de un usuario",
     usage: "avatar (@Mención de usuario | ID | nombre de usuario)",
     nsfw: false,
     enabled: true,
@@ -45,32 +45,26 @@ module.exports = {
     permissions: [],
 
     async execute(message = new Message(), args = new Array()) {
-        try {
-            const { guild, channel, mentions } = message;
-            const user = args.shift();
-            let embed; 
-            if (noArgument(user)) {
-                embed = getAuthorAvatar(message)
-            } else {
-                if (isNaN(user)) {
-                    // A String input
-                    if (mentions.users.array().length > 0) {
-                        // Mentioned
-                        embed = findUserByMention(message)
-                    } else {
-                        // Find user by name
-                        if (guild !== null) {
-                            embed = findUserByName(message, user)
-                        }
-                    }
+        const { guild, channel, mentions } = message;
+        const user = args.join(" ")
+        let embed; 
+        if (noArgument(user)) {
+            embed = getAuthorAvatar(message)
+        } else {
+            if (isNaN(user)) {
+                // A String input
+                if (mentions.users.array().length > 0) {
+                    // Mentioned
+                    embed = findUserByMention(message)
                 } else {
-                    // A number input (or Discord ID)
-                    embed = await findUserByID(message, user)
+                    // Find user by name
+                    if (guild) embed = findUserByName(message, user);
                 }
+            } else {
+                // A number input (or Discord ID)
+                embed = await findUserByID(message, user)
             }
-            return channel.send(embed)
-        } catch (err) {
-            console.log(err)
         }
+        return channel.send(embed)
     }
 }
