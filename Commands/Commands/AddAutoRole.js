@@ -42,6 +42,12 @@ module.exports = {
     if (!["-add", "-rem", "-show"].includes(flag))
       return channel.send(missingArgument);
 
+
+    if (flag === '-show') {
+      const list = autoRoleList(autoRoles);
+      return channel.send(`Lista de roles auto-asignables:`, { embed: list });
+    }
+
     if (args.length === 0)
       return channel.send(`${author} debes escribir el nombre del rol que quieres agregar o quitar de la lista.`);
 
@@ -88,12 +94,6 @@ module.exports = {
       guildAutoRoles.set(guild.id, newRoles);
 
       return channel.send(`${author} el rol **${filteredRole.name}** se ha quitado de la lista!`);
-    }
-
-    if (flag === '-show') {
-      const list = autoRoleList(autoRoles);
-
-      return channel.send(`Lista de roles auto-asignables:`, { embed: list });
     }
   }
 }
