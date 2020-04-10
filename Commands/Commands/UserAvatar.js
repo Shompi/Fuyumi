@@ -8,7 +8,7 @@ const avatarEmbed = (user = new User()) =>
     .setColor('#add8e6')
 
 function noArgument(args) {
-    if (args == undefined) return true;
+    if (!args) return true;
 }
 
 function getAuthorAvatar(message = new Message()) {
