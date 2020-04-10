@@ -5,6 +5,7 @@ const avatarEmbed = (user = new User()) =>
     new MessageEmbed()
     .setTitle(`Avatar de ${user.username}`)
     .setImage(user.avatarURL({ size: 512, dynamic: true }))
+    .setColor('#add8e6')
 
 function noArgument(args) {
     if (args == undefined) return true;
@@ -14,8 +15,8 @@ function getAuthorAvatar(message = new Message()) {
     return avatarEmbed(message.author)
 }
 
-function findUserByID(message = new Message(), id) {
-    return avatarEmbed(message.client.users.cache.array().find(user => user.id == id))
+async function findUserByID(message = new Message(), id) {
+    return avatarEmbed(await message.client.users.fetch(id, true))
 }
 
 function findUserByMention(message = new Message()) {
@@ -64,7 +65,7 @@ module.exports = {
                     }
                 } else {
                     // A number input (or Discord ID)
-                    embed = findUserByID(message, user)
+                    embed = await findUserByID(message, user)
                 }
             }
             return channel.send(embed)
