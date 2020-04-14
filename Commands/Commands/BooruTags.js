@@ -5,6 +5,13 @@ const postsEndpoint = 'https://yande.re/post.json?limit=100&tags=';
 const fetch = require('node-fetch');
 const path = require('path');
 
+const noArgs = (member) => {
+  return new MessageEmbed()
+    .setTitle(`❌ ¡Faltan argumentos ${member.displayName}!`)
+    .setDescription(`¡Debes ingresar al menos una palabra para realizar la búsqueda de un tag!\n\nUtiliza el comando \`help tags\` para más información.`)
+    .setColor("RED");
+}
+
 const fetchError = (error) => {
   console.log(error);
 
@@ -42,7 +49,7 @@ const getTagType = (type) => {
 module.exports = {
   name: "tags",
   filename: path.basename(__filename),
-  description: "Busca un tag en **yande.re/tags**",
+  description: "Busca un tag en **yande.re/tags**\nEjemplo: `tags neko`",
   usage: "tags [palabra clave]",
   nsfw: false,
   enabled: true,
@@ -50,10 +57,14 @@ module.exports = {
   permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
+
+    if (args.length === 0)
+      return noArgs(message.member);
+
     const { channel } = message;
     const msg = await channel.send("Buscando...");
     let response = YandereTags;
-    let query = args.join(" ").replace(/ +/g, " ");
+    let query = args.join(" ").replace(/ +/g, " ").toLowerCase();
 
     let tag = query.replace(" ", "_");
     try {
