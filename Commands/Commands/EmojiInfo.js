@@ -6,6 +6,10 @@ const noArgs = (author) =>
     .setColor("BLUE")
     .setDescription(`${author} el argumento debe ser un emoji.`);
 
+const notValidEmoji = new MessageEmbed()
+  .setTitle(`❌ No has ingresado un custom Emoji.`)
+  .setDescription("¿Intentaste usar un emoji normal?, este comando solo funciona con Emojis Customs, ¡Lo siento!")
+  .setColor("RED");
 
 module.exports = {
   name: "emoji",
@@ -31,9 +35,12 @@ module.exports = {
     The returned array from String.match will contain the emoji id in the third element.
     */
 
-    const emojiID = content.match(regexp)[3];
+    const emojiID = content.match(regexp);
 
-    const emoji = Muki.emojis.cache.get(emojiID);
+    if (!emojiID)
+      return channel.send(notValidEmoji);
+
+    const emoji = Muki.emojis.cache.get(emojiID[3]);
 
     if (!emoji)
       return channel.send(`No tengo acceso a ese emoji :(`);
