@@ -1,9 +1,10 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
-const { MessageEmbed, Webhook } = require('discord.js');
+const { MessageEmbed, Webhook, Collection } = require('discord.js');
 const MukiClient = require('./Classes/MukiClient');
 const auth = require('./Keys/auth').stable;
 const fs = require('fs');
 const GuildConfig = require('./Classes/GuildConfig');
+const cooldowns = new Collection();
 
 const Muki = new MukiClient({
   presence: {
@@ -101,34 +102,76 @@ Muki.on('message', async (message) => {
       database.guildConfigs.set(guild.id, guildConfig);
     }
 
-    let prefix;
+    let prefix, startsWithMention = false;
+
     if (guild) prefix = database.guildConfigs.get(guild.id, "prefix");
     else prefix = "muki!";
 
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const commandName = args.shift().toLowerCase();
+    const firstWord = message.content.split(" ")[0];
 
-    if (mentions.users.has(Muki.user.id)) return channel.send(`Mi prefijo es: \`${prefix}\``);
+    if (!firstWord) //If the message doesnt have content.
+      return;
 
-    if (message.content.startsWith(prefix)) {
+    if ([`<@${Muki.user.id}>`, `<@!${Muki.user.id}>`].includes(firstWord))
+      startsWithMention = true;
+
+    if (message.content.startsWith(prefix) || startsWithMention) {
+
+      let args;
+
+      if (startsWithMention)
+        args = message.content.split(/ +/).shift();
+      else
+        args = message.content.slice(prefix.length).split(/ +/);
+
+      if (args.length == 0)
+        return channel.send(`**Mi prefijo es:** \`${prefix}\``);
+
+      const commandName = args.shift().toLowerCase();
+
+      const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
+      if (!command) return channel.send(noCommandFound(author));
+
+      if (command.name === 'eval' && author.id !== Muki.OWNER)
+        return;
+
+      if (!command.enabled)
+        return channel.send(cmdNotEnabled(author));
+
+      if (command.nsfw && !channel.nsfw)
+        return channel.send(notNSFW);
+
+      if (command.guildOnly && channel.type !== 'text')
+        return channel.send("No puedo ejecutar este comando en mensajes privados!");
+
+      if (!cooldowns.has(command.name)) {
+        cooldowns.set(command.name, new Collection());
+      }
+
+      const now = Date.now();
+      const timestamps = cooldowns.get(command.name);
+      const cooldownAmount = (command.cooldown || 3) * 1000;
+
+      if (timestamps.has(message.author.id)) {
+        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+        if (now < expirationTime) {
+          const timeLeft = (expirationTime - now) / 1000;
+          return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+        }
+      }
+
+      timestamps.set(message.author.id, now);
+      setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
       try {
-        const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
-        if (!command) return channel.send(noCommandFound(author));
-        if (command.name === 'eval' && author.id !== Muki.OWNER) return;
-        if (!command.enabled) return channel.send(cmdNotEnabled(author));
-        if (command.nsfw && !channel.nsfw) return channel.send(notNSFW);
-        if (command.guildOnly && channel.type !== 'text') return channel.send("No puedo ejecutar este comando en mensajes privados!");
         return command.execute(message, args);
       }
       catch (e) {
         console.log(e);
         return channel.send("Hubo un error al intentar ejecutar este comando.");
       }
-
-    } else {
-      //Other stuff im trying to plan.
     }
-
 
   } catch (error) {
     console.log(error);
