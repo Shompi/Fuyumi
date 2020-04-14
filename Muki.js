@@ -264,9 +264,22 @@ Muki.on('warn', (warn) => {
 
 Muki.on('guildCreate', (guild) => {
   if (database.guildConfigs.has(guild.id)) return;
+
+  const PRESENTATION = require('./Commands/Events/Guild/Join');
   const guildConfig = new GuildConfig(guild);
 
   database.guildConfigs.set(guild.id, guildConfig);
+
+  const systemChannel = guild.systemChannel;
+  if (!systemChannel) {
+    const channels = guild.channels.cache.filter(ch => ch.type === 'text' && ch.permissionsFor(guild.me).has('SEND_MESSAGES'));
+
+    if (channels.size > 0)
+      channels.random().send(PRESENTATION).catch(console.error);
+  }
+  else {
+    systemChannel.send(PRESENTATION).catch(console.error);
+  }
 
   return Muki.channels.cache.get("585990511790391309").send(`Nueva Guild ${guild.name} (${guild.id})!`);
 });
