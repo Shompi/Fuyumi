@@ -49,6 +49,10 @@ const noCommandFound = (author) =>
     .setDescription(`**${author}**, ¡No tengo un comando con ese nombre!`)
     .setColor("YELLOW");
 
+const onCooldown = (author, timeleft) =>
+  new MessageEmbed()
+    .setTitle(`⏳ ¡Aún no puedes usar este comando!`)
+    .setDescription(`${author}, ¡debes esperar ${timeleft.toFixed(1)} para volver a utilizar este comando!`)
 
 const pokecordFilter = async (message) => {
   const { author, guild, channel } = message;
@@ -152,14 +156,14 @@ Muki.on('message', async (message) => {
 
       const now = Date.now();
       const timestamps = cooldowns.get(command.name);
-      const cooldownAmount = (command.cooldown || 3) * 1000;
+      const cooldownAmount = (command.cooldown || 1) * 1000;
 
       if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
         if (now < expirationTime) {
           const timeLeft = (expirationTime - now) / 1000;
-          return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+          return message.reply(onCooldown(author, timeLeft));
         }
       }
 
