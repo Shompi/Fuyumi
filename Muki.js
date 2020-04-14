@@ -161,10 +161,8 @@ Muki.on('message', async (message) => {
       if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
-        if (now < expirationTime) {
-          const timeLeft = (expirationTime - now) / 1000;
-          return message.reply(onCooldown(author, timeLeft));
-        }
+        if (now < expirationTime)
+          return;
       }
 
       timestamps.set(message.author.id, now);
