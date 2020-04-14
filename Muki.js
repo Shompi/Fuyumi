@@ -120,13 +120,15 @@ Muki.on('message', async (message) => {
       let args;
 
       if (startsWithMention)
-        args = message.content.split(/ +/).shift();
+        args = message.content.split(/ +/).slice(1);
       else
         args = message.content.slice(prefix.length).split(/ +/);
 
       if (args.length == 0)
         return channel.send(`**Mi prefijo es:** \`${prefix}\``);
 
+
+      console.log(args);
       const commandName = args.shift().toLowerCase();
 
       const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
