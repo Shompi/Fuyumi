@@ -43,6 +43,8 @@ module.exports = {
   enabled: true,
   aliases: ['anime', 'animeflv'],
   permissions: [],
+  cooldown: 5,
+  
   async execute(message = new Message(), args = new Array()) {
 
     const { channel, author } = message;
