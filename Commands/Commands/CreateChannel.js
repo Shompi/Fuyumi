@@ -25,10 +25,6 @@ module.exports = {
     const filter = (msg) => msg.author.id === author.id;
     try {
 
-      const mukibye = Muki.emojis.cache.find(em => em.name === 'muki_bye');
-      const mukizzz = Muki.emojis.cache.find(em => em.name === 'muki_zzz');
-      const mukithumbs = Muki.emojis.cache.find(em => em.name === 'muki_thumbsup');
-
       let response = await channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] }).catch(err => {
         throw { message: 'expired', emoji: mukizzz };
       });
