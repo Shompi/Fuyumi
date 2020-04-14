@@ -40,13 +40,13 @@ const getTagType = (type) => {
 }
 
 module.exports = {
-  name: "btags",
+  name: "tags",
   filename: path.basename(__filename),
-  description: "Booru Tags. Busca un tag en **yande.re/tags**",
-  usage: "btags [tag]",
+  description: "Busca un tag en **yande.re/tags**",
+  usage: "tags [palabra clave]",
   nsfw: false,
   enabled: true,
-  aliases: ["boorutags", "yanderetag", "yanderetags", "ytags"],
+  aliases: ["boorutags", "yanderetag", "yanderetags", "ytags", "deretags"],
   permissions: [],
 
   async execute(message = new Message(), args = new Array()) {
