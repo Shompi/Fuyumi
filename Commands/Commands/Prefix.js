@@ -1,5 +1,4 @@
 const { MessageEmbed, Message } = require('discord.js');
-const database = require('../LoadDatabase').guildConfigs;
 const path = require('path');
 
 const noPrefix = (prefix) => {
@@ -38,19 +37,19 @@ module.exports = {
   permissions: [],
 
   execute(message = new Message(), args = new Array()) {
-    const { guild, channel, member, author } = message;
+    const { guild, channel, member, author, client: Muki } = message;
     const prefix = args.shift();
 
     if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return channel.send(missingPermissions(author));
 
-    const configs = database.get(guild.id);
+    const configs = Muki.db.guildConfigs.get(guild.id);
     if (!configs) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración.`);
 
     if (!prefix) return channel.send(noPrefix(configs.prefix));
 
     if (prefix.length > 5) return channel.send(limitExceeded);
 
-    database.set(guild.id, prefix, "prefix");
+    Muki.db.guildConfigs.set(guild.id, prefix, "prefix");
 
     return channel.send(succeed(prefix));
   }

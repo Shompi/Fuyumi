@@ -1,6 +1,6 @@
 const { Message, MessageEmbed } = require('discord.js');
 const path = require('path');
-const database = require('../LoadDatabase').guildConfigs;
+
 module.exports = {
   name: "adminrole",
   guildOnly: true,
@@ -13,10 +13,10 @@ module.exports = {
   usage: "adminrole [@Mencion del rol]",
 
   execute(message = new Message(), args = new Array()) {
-    const { mentions, author, guild, channel, member } = message;
+    const { mentions, guild, channel, member, client: Muki } = message;
 
     if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return channel.send(`Lo siento, este comando solo puede ser ejecutado por un Administrador o el Dueño de la Guild.`);
-    const config = database.get(guild.id);
+    const config = Muki.db.guildConfigs.get(guild.id);
 
     if (mentions.roles.size === 0) return channel.send(`Debes mencionar un rol!`);
 
@@ -29,7 +29,7 @@ module.exports = {
     config.adminRole = role.id;
 
     // Update the database configs for this guild.
-    database.set(guild.id, config);
+    Muki.db.guildConfigs.set(guild.id, config);
     const embed = new MessageEmbed()
       .setTitle(`¡Exito!`)
       .setDescription(`El rol **${role.name}** (ID: **${role.id}**) es ahora el ¡Rol de Administrador!\n\nNota: Esto solo autoriza a los que tengan este rol, a utilizar mis comandos destinados a administradores. No les da ninguna clase de permiso extra en el servidor.`)

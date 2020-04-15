@@ -1,20 +1,12 @@
 const { Message, MessageEmbed, Collection } = require('discord.js');
 const voiceRegions = ['eu-central', 'india', 'london', 'japan', 'amsterdam', 'brazil', 'us-west', 'hongkong', 'southafrica', 'sydney', 'europe', 'singapore', 'us-central', 'eu-west', 'dubai', 'us-south', 'us-east', 'frankfurt', 'russia']
-const cooldowns = new Set();
 const path = require('path');
-const database = require('../LoadDatabase').guildConfigs;
-
 
 const missingPermissions = (permission) =>
   new MessageEmbed()
     .setTitle(`❌ ¡Me faltan permisos!`)
     .setDescription(`Asegúrate de que yo tenga los siguientes permisos: [${permission.join(", ")}].`)
     .setColor("RED");
-
-const cooldownEmbed = new MessageEmbed()
-  .setTitle("Cooldown.")
-  .setDescription(`Debes esperar al menos **5** segundos antes de volver a usar este comando!`)
-  .setColor("BLUE");
 
 const noMemberPermissions = (author) =>
   new MessageEmbed()
@@ -51,14 +43,13 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: ["MANAGE_GUILD"],
-  cooldown: 3,
+  cooldown: 5,
   async execute(message = new Message(), args = new Array()) {
 
     const { guild, attachments, author, member, channel, client: Muki } = message;
 
-    if (cooldowns.has(guild.id)) return channel.send(cooldownEmbed);
+    const guildConfigs = Muki.db.guildConfigs.get(guild.id);
 
-    const guildConfigs = database.get(guild.id);
     if (!guildConfigs) return console.log(`La guild ${guild.name} no tenia un archivo de configuración. GuildRegion.js`);
 
     const adminRole = guildConfigs.adminRole;
@@ -83,9 +74,7 @@ module.exports = {
 
     try {
       await guild.setRegion(region, author.tag);
-      cooldowns.add(guild.id);
 
-      Muki.setTimeout(() => cooldowns.delete(guild.id), 5000);
       if (guild.systemChannel)
         return guild.systemChannel.send(success(author, region, image, reason));
       else

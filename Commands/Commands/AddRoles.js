@@ -1,6 +1,5 @@
 const { Message, MessageEmbed } = require('discord.js');
 const path = require('path');
-const database = require('../LoadDatabase').guildConfigs;
 
 const noTarget = (usage) =>
   new MessageEmbed()
@@ -44,14 +43,14 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
 
     //Args will come like "<membermention> <rolename>, <rolename>, <rolename>"
-    const { channel, guild, member, author, client: Muki } = message;
-    const { me, roles: GuildRoles, owner } = guild;
+    const { channel, guild, member, client: Muki } = message;
+    const { me, roles: GuildRoles } = guild;
     const MukiHighest = me.roles.highest;
 
     if (!me.hasPermission('MANAGE_ROLES')) return channel.send(missingPermissions(this.permissions));
     if (!message.mentions.members) return channel.send(noTarget(this.usage));
 
-    const guildConfigs = database.get(guild.id);
+    const guildConfigs = Muki.db.guildConfigs.get(guild.id);
     const adminRole = guildConfigs.adminRole;
     const target = message.mentions.members.first();
 

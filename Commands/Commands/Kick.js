@@ -1,5 +1,4 @@
 const { MessageEmbed, Message } = require('discord.js');
-const database = require('../LoadDatabase').guildConfigs;
 const path = require('path');
 
 const targetMessage = (obj) => {
@@ -51,10 +50,10 @@ module.exports = {
   adminOnly: true,
   filename: path.basename(__filename),
   async execute(message = new Message(), args = new Array()) {
-    const { channel, guild, mentions, member } = message;
+    const { channel, guild, mentions, member, client: Muki } = message;
 
     const target = mentions.members.first() || await guild.members.fetch(args[0]);
-    const adminRole = database.get(guild.id).adminRole;
+    const adminRole = Muki.db.guildConfigs.get(guild.id).adminRole;
     if (!member.hasPermission(this.permissions, { checkAdmin: true, checkOwner: true }) && !member.roles.cache.has(adminRole))
       return channel.send('No tienes permiso para usar este comando.');
 

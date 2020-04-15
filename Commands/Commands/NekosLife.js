@@ -1,7 +1,6 @@
 //Nekos.life API
 const { Message, MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
-const database = require("../LoadDatabase").guildConfigs;
 const path = require('path');
 const API = 'https://nekos.life/api/v2/img/';
 
@@ -46,10 +45,10 @@ module.exports = {
   cooldown: 1,
   async execute(message = new Message(), args = new Array()) {
 
-    const { channel, author, content, guild } = message;
+    const { channel, author, content, guild, client: Muki } = message;
     let prefix;
     if (!guild) prefix = "muki!";
-    else prefix = database.get(guild.id, "prefix");
+    else prefix = Muki.db.guildConfigs.get(guild.id, "prefix");
 
     const endpoint = content.slice(prefix.length);
 

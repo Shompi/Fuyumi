@@ -1,7 +1,6 @@
 //Toggle Welcome Messages.
 
 const { MessageEmbed, Message, Client } = require('discord.js');
-const database = require('../LoadDatabase').guildConfigs;
 const path = require('path');
 
 const missingPermissions = (author) => {
@@ -33,20 +32,20 @@ module.exports = {
   permissions: [],
   execute(message = new Message(), args = new Array()) {
     //In this command, content is irrelevant.
-    const { author, guild, member, channel, client } = message;
+    const { author, guild, member, channel, client: Muki } = message;
 
     //Check Permissions.
     if (!member.hasPermission("ADMINISTRATOR", { checkOwner: true })) return channel.send(missingPermissions(author));
 
-    const config = database.get(guild.id);
+    const config = Muki.db.guildConfigs.get(guild.id);
     if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración. WelcomeToggle.js`);
 
     //This basically means, if it was true, then its changed to false.
     //If it was false, then change it to true.
     config.welcome.enabled = config.welcome.enabled ? false : true;
 
-    database.set(guild.id, config)
+    Muki.db.guildConfigs.set(guild.id, config)
     console.log(`Mensajes de bienvenida ${config.welcome.enabled ? "Activados" : "Desactivados"} en la guild ${guild.name}`);
-    return channel.send(toggled(config, client));
+    return channel.send(toggled(config, Muki));
   }
 }

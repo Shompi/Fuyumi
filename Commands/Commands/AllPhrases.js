@@ -1,8 +1,6 @@
 //This command will list all join and leave phrases on the guild database.
 const { MessageEmbed, Message } = require('discord.js');
-const database = require('../LoadDatabase').guildConfigs;
 const path = require('path');
-
 
 const phrases = (join = new Array(), leave = new Array(), guild) =>
   new MessageEmbed()
@@ -33,9 +31,9 @@ module.exports = {
   permissions: [],
 
   execute(message = new Message(), args = new Array()) {
-    const { member, channel, guild } = message;
+    const { member, channel, guild, client: Muki } = message;
 
-    const config = database.get(guild.id);
+    const config = Muki.db.guildConfigs.get(guild.id);
 
     if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración.`);
     const { joinPhrases, leavePhrases } = config.welcome;
@@ -49,7 +47,6 @@ module.exports = {
       if (member.roles.cache.has(adminRole)) {
         return channel.send(phrases(joinPhrases, leavePhrases, guild));
       } else return channel.send(noAdminRole);
-
     }
   }
 }

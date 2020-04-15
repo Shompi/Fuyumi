@@ -1,6 +1,5 @@
 const { Message, MessageEmbed, Util } = require('discord.js');
 const path = require('path');
-const database = require('../LoadDatabase').guildConfigs;
 
 module.exports = {
   name: "help",
@@ -16,9 +15,8 @@ module.exports = {
     //For now lets just return a message.
     const { client: Muki, guild, channel, author } = message;
 
-    const prefix = database.get(guild.id, "prefix");
+    const prefix = Muki.db.guildConfigs.get(guild.id, "prefix");
     const { commands } = Muki;
-
 
     if (args[0]) {
       const command = commands.get(args[0]) || commands.find(c => c.aliases.includes(args[0]));

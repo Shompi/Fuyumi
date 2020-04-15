@@ -1,7 +1,6 @@
 //This command will remove phrases from the database, in this case, JOIN phrases.
 
 const { MessageEmbed, Message } = require('discord.js');
-const database = require('../LoadDatabase').guildConfigs;
 const path = require('path');
 
 const noPhrase = (author, prefix) => {
@@ -35,11 +34,11 @@ module.exports = {
   permissions: [],
 
   execute(message = new Message(), args = new Array()) {
-    const { member, channel, guild, author } = message;
+    const { member, channel, guild, author, client: Muki } = message;
 
     if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return undefined;
 
-    const config = database.get(guild.id);
+    const config = Muki.db.guildConfigs.get(guild.id);
     if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tiene entrada de configuración.`);
 
     const phrase = args.join(" ");
@@ -52,7 +51,7 @@ module.exports = {
 
       const updatedPhrases = joinPhrases.filter(ph => ph !== phrase);
 
-      database.set(guild.id, updatedPhrases, "welcome.joinPhrases");
+      Muki.db.guildConfigs.set(guild.id, updatedPhrases, "welcome.joinPhrases");
       return channel.send(succeed);
     }
   }

@@ -1,5 +1,4 @@
 const { MessageEmbed, Message, TextChannel } = require('discord.js');
-const database = require('../LoadDatabase').guildConfigs;
 const path = require('path');
 
 const missingPermissions = (author) => {
@@ -34,8 +33,8 @@ module.exports = {
   permissions: [],
   execute(message = new Message(), args = new Array()) {
 
-    const { author, member, guild, mentions, channel } = message;
-    const config = database.get(guild.id);
+    const { author, member, guild, mentions, channel, client: Muki } = message;
+    const config = Muki.db.guildConfigs.get(guild.id);
 
     if (!database.has(guild.id)) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración. WelcomeChannel.js`);
 
@@ -53,7 +52,7 @@ module.exports = {
       config.welcome.channelID = mentionedChannel.id;
       config.welcome.enabled = true;
 
-      database.set(guild.id, config);
+      Muki.db.guildConfigs.set(guild.id, config);
 
       return channel.send(succeed(mentionedChannel, config.prefix));
     }

@@ -1,5 +1,4 @@
 const { MessageEmbed, Message } = require('discord.js');
-const database = require("../LoadDatabase").guildConfigs;
 const path = require('path');
 
 const missingPermissions = (author) => {
@@ -42,23 +41,25 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: [],
-  async execute(message = new Message(), args = new Array()) {
-    console.log(this.filename);
-    const { member, guild, channel, author } = message;
+  execute(message = new Message(), args = new Array()) {
+
+    const { member, guild, channel, author, client: Muki } = message;
+    const database = Muki.db.guildConfigs;
     const configs = database.get(guild.id);
+
     if (!configs) return console.log(`Por alguna razón la guild ${guild.name} no tenia entrada de configuración. AddPhrase.js`);
     const phrase = args.join(" ");
 
     if (member.hasPermission("ADMINISTRATOR", { checkOwner: true }) || member.roles.cache.has(configs.adminRole)) {
       if (phrase) {
-        if (phrase.length > 256) return await channel.send(limitExceeded(author, phrase));
-        if (configs.welcome.joinPhrases.includes(phrase)) return await channel.send(duplicated(author, phrase, configs.prefix));
+        if (phrase.length > 256) return channel.send(limitExceeded(author, phrase));
+        if (configs.welcome.joinPhrases.includes(phrase)) return channel.send(duplicated(author, phrase, configs.prefix));
 
         database.push(guild.id, phrase, "welcome.joinPhrases") //Push the phrase to the guildConfig database.
         //console.log(`Nueva frase añadida:\nGuild: ${guild.name}\nFrase: ${phrase}\nNuevo array: ${database.get(guild.id, "welcome.joinPhrases")}`);
-        return await channel.send(succeed);
+        return channel.send(succeed);
 
-      } else return await channel.send(noPhrase(author));
-    } else return await channel.send(missingPermissions(author));
+      } else return channel.send(noPhrase(author));
+    } else return channel.send(missingPermissions(author));
   }
 }
