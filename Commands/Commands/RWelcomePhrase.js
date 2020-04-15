@@ -34,7 +34,7 @@ module.exports = {
   aliases: [],
   permissions: [],
 
-  async execute(message = new Message(), args = new Array()) {
+  execute(message = new Message(), args = new Array()) {
     const { member, channel, guild, author } = message;
 
     if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return undefined;
