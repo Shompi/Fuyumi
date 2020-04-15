@@ -26,7 +26,6 @@ for (const file of commandFiles) {
 
 /*-----------------------Archivos extra----------------------------*/
 const WebHooks = require('./Keys/hookTokens');
-const database = require('./Commands/LoadDatabase');
 /*-------------------------Inicio del BOT-------------------------*/
 let australGamingMemeHook = new Webhook();
 let CotorrasMemeHook = new Webhook();
@@ -101,14 +100,14 @@ Muki.on('message', async (message) => {
 
     //Actual bot behaviour
     //If the guild is not on the database
-    if (guild && !database.guildConfigs.has(guild.id)) {
+    if (guild && !Muki.db.guildConfigs.has(guild.id)) {
       const guildConfig = new GuildConfig(guild);
-      database.guildConfigs.set(guild.id, guildConfig);
+      Muki.db.guildConfigs.set(guild.id, guildConfig);
     }
 
     let prefix, startsWithMention = false;
 
-    if (guild) prefix = database.guildConfigs.get(guild.id, "prefix");
+    if (guild) prefix = Muki.db.guildConfigs.get(guild.id, "prefix");
     else prefix = "muki!";
 
     const firstWord = message.content.split(" ")[0];
@@ -223,7 +222,7 @@ Muki.on('messageUpdate', async (old, message) => {
   const { guild } = message;
   let prefix;
   if (!guild) prefix = "muki!";
-  else prefix = database.guildConfigs.get(guild.id, "prefix");
+  else prefix = Muki.db.guildConfigs.get(guild.id, "prefix");
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
 
@@ -310,12 +309,12 @@ Muki.on('warn', (warn) => {
 });
 
 Muki.on('guildCreate', (guild) => {
-  if (database.guildConfigs.has(guild.id)) return;
+  if (Muki.db.guildConfigs.has(guild.id)) return;
 
   const PRESENTATION = require('./Commands/Events/Guild/Join');
   const guildConfig = new GuildConfig(guild);
 
-  database.guildConfigs.set(guild.id, guildConfig);
+  Muki.db.guildConfigs.set(guild.id, guildConfig);
 
   const systemChannel = guild.systemChannel;
   if (!systemChannel) {
@@ -332,9 +331,9 @@ Muki.on('guildCreate', (guild) => {
 });
 
 Muki.on('guildDelete', (guild) => {
-  database.guildConfigs.delete(guild.id);
+  Muki.db.guildConfigs.delete(guild.id);
   console.log(`El bot ha abandonado la guild ${guild.name}`);
-  console.log(`Entrada de configuración:\n${database.guildConfigs.get(guild.id)} (Si es undefined está bien.)`);
+  console.log(`Entrada de configuración:\n${Muki.db.guildConfigs.get(guild.id)} (Si es undefined está bien.)`);
 });
 
 
