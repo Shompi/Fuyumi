@@ -1,9 +1,6 @@
 const { MessageEmbed, Message } = require('discord.js');
 const { basename } = require('path');
-
-const votecount = require('../LoadDatabase').votes,
-  cooldowns = require('../LoadDatabase').votesCooldown,
-  MINUTE = 1000 * 60,
+const MINUTE = 1000 * 60,
   approvedimage = 'https://puu.sh/EPc3r/6dfaa029d1.png',
   rejectedimage = 'https://puu.sh/EPc4k/ed4ca4cfc3.png',
   neutralimage = 'https://puu.sh/EPcbj/d8fd38a401.png',
@@ -22,9 +19,12 @@ module.exports = {
   permissions: [],
 
   execute(message = new Message(), args = new Array()) {
-    const { guild, channel, author, member } = message;
+    const { guild, channel, author, member, client: Muki } = message;
 
-    if (cooldowns.has(guild.id)) return message.reply('Ya hay una votación en progreso.');
+    //const cooldowns = Muki.db.votesCooldown;
+    const votecount = Muki.db.votes;
+
+    //if (cooldowns.has(guild.id)) return message.reply('Ya hay una votación en progreso.');
 
     if (!votecount.has(guild.id)) votecount.set(guild.id, 1);
 
