@@ -14,7 +14,7 @@ const notNSFW = new MessageEmbed()
 const SFWENDPOINTS =
   [
     'tickle', 'meow', 'poke', 'kiss', '8ball',
-    'lizard', 'cuddle', 'goose', 'avatar', 'hug', 'pat', 'smug', 'kemonomimi', 'wallpaper',
+    'lizard', 'cuddle', 'goose', 'hug', 'pat', 'smug', 'kemonomimi', 'wallpaper',
     'woof', 'baka', 'feed'
   ];
 
@@ -45,7 +45,7 @@ module.exports = {
   permissions: ["SEND_MESSAGES"],
   cooldown: 1,
   async execute(message = new Message(), args = new Array()) {
-    
+
     const { channel, author, content, guild } = message;
     let prefix;
     if (!guild) prefix = "muki!";
