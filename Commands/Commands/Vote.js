@@ -58,7 +58,7 @@ module.exports = {
 
         message.delete({ timeout: 10000 });
         votecount.inc(vote.guild.id);
-        cooldowns.set(guild.id, "foo");
+        //cooldowns.set(guild.id, "foo");
         //await db.set(message.author.id, 'cooldown', 1000 * 60); // 1 minute cooldown
         //await votedb.set('lastvote', votenumber);
 
@@ -72,7 +72,7 @@ module.exports = {
         vote.createReactionCollector(cancelfilter, { max: 1, time: time })
           .on('collect', async (reaction, user) => {
             votecount.dec(guild.id);
-            cooldowns.delete(guild.id);
+            //cooldowns.delete(guild.id);
             const canceled = new MessageEmbed().setTitle(`❌ La votación ha sido cancelada.`).setColor("RED");
             return channel.send(canceled);
           });
@@ -83,7 +83,7 @@ module.exports = {
         await vote.awaitReactions(filter, { time: time })
           .then(async collected => {
 
-            cooldowns.delete(guild.id);
+            //cooldowns.delete(guild.id);
 
             const yes = collected.get('✅');
             const no = collected.get('❌');
