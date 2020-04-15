@@ -31,7 +31,7 @@ module.exports = {
         .setColor("BLUE");
 
       if (command.name !== 'neko') commandUsage.setFooter(`Aliases: ${command.aliases.join(", ")}`);
-
+      else commandUsage.addField('Endpoints:', ` \`\`\`\n${command.aliases.join(", ")}\`\`\``);
       return channel.send(commandUsage);
     }
 
@@ -43,7 +43,7 @@ module.exports = {
 
       description += `\`${command.name}\`: ${command.description} ${command.nsfw ? '[**NSFW**]' : ""} ${command.enabled ? '' : '[**Este comando está actualmente desactivado.**]'}\n\n`
     });
-    
+
     const descriptions = Util.splitMessage(description, { char: '\n\n' });
     let embeds = [];
 
