@@ -30,6 +30,7 @@ module.exports = {
   enabled: true,
   guildOnly: true,
   permissions: ["MANAGE_ROLES"],
+  cooldown: 10,
   async execute(message = new Message(), args = new Array()) {
 
 

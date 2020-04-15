@@ -51,7 +51,7 @@ module.exports = {
   enabled: true,
   aliases: ['safe'],
   permissions: [],
-
+  cooldown: 5,
   async execute(message = new Message(), args = new Array()) {
     const { channel } = message;
     let response = Booru.KonaPost;

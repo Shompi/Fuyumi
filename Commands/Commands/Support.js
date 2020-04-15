@@ -9,6 +9,7 @@ module.exports = {
   usage: "support",
   description: "Enlace de invitación al servidor oficial de Muki.",
   enabled: true,
+  cooldown: 10,
   async execute(message = new Message(), args = new Array()) {
     const { channel, member, client: Muki } = message;
 

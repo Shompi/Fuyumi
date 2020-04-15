@@ -50,7 +50,7 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: [],
-
+  cooldown: 5,
   async execute(message = new Message(), args = new Array()) {
     const { channel, author } = message;
     try {

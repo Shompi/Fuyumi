@@ -51,6 +51,7 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: ["MANAGE_GUILD"],
+  cooldown: 3,
   async execute(message = new Message(), args = new Array()) {
 
     const { guild, attachments, author, member, channel, client: Muki } = message;

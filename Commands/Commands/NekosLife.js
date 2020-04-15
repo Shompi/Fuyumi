@@ -43,7 +43,7 @@ module.exports = {
   enabled: true,
   aliases: [...NSFWENDPOINTS, ...SFWENDPOINTS],
   permissions: ["SEND_MESSAGES"],
-
+  cooldown: 1,
   async execute(message = new Message(), args = new Array()) {
     
     const { channel, author, content, guild } = message;
