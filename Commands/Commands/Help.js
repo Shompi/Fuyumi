@@ -38,8 +38,12 @@ module.exports = {
     let description = "**[OBLIGATORIO] (OPCIONAL) <SIN PARAMETROS>**\n\n";
 
     commands.forEach(command => {
+      if (command.botOwnerOnly)
+        return;
+
       description += `\`${command.name}\`: ${command.description} ${command.nsfw ? '[**NSFW**]' : ""} ${command.enabled ? '' : '[**Este comando está actualmente desactivado.**]'}\n\n`
     });
+    
     const descriptions = Util.splitMessage(description, { char: '\n\n' });
     let embeds = [];
 
