@@ -38,7 +38,7 @@ module.exports = {
   name: "neko",
   filename: path.basename(__filename),
   description: `Obtiene una imágen desde Nekos.life y la envía al canal.`,
-  usage: "neko",
+  usage: "<endpoint>",
   nsfw: false,
   enabled: true,
   aliases: [...NSFWENDPOINTS, ...SFWENDPOINTS],
