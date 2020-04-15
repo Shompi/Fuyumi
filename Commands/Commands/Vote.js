@@ -17,7 +17,7 @@ module.exports = {
   enabled: true,
   aliases: ["votacion", "votar", "voto"],
   permissions: [],
-
+  cooldown: 60,
   execute(message = new Message(), args = new Array()) {
     const { guild, channel, author, member, client: Muki } = message;
 
