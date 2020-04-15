@@ -29,7 +29,7 @@ module.exports = {
   nsfw: false,
   enabled: true,
   permissions: [],
-
+  botOwnerOnly: true,
   execute(message = new Message(), args = new Array()) {
     const { channel, author, client: Muki } = message;
 

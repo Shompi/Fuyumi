@@ -17,7 +17,7 @@ module.exports = {
   nsfw: false,
   enabled: true,
   permissions: [],
-
+  botOwnerOnly: true,
   async execute(message = new Message(), args = new Array()) {
     const { channel, client: Muki, author } = message;
 
