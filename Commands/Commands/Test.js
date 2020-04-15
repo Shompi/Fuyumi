@@ -10,14 +10,15 @@ module.exports = {
   nsfw: false,
   enabled: true,
   filename: path.basename(__filename),
+  cooldown: 10,
   execute(message = new Message(), args = new Array()) {
     const { channel } = message;
     return channel.send('OK!');
 
- /*    return channel.send(new MessageEmbed()
-      .setTitle("Aqui está tu imagen!")
-      .attachFiles(new MessageAttachment(buff, "test.png"))
-      .setThumbnail("attachment://test.png")
-      .setColor("BLUE")); */
+    /*    return channel.send(new MessageEmbed()
+         .setTitle("Aqui está tu imagen!")
+         .attachFiles(new MessageAttachment(buff, "test.png"))
+         .setThumbnail("attachment://test.png")
+         .setColor("BLUE")); */
   }
 }
