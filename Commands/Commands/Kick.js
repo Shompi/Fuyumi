@@ -42,7 +42,7 @@ module.exports = {
   name: "kick",
   guildOnly: true,
   description: "Expulsa a un miembro del servidor.",
-  usage: "kick [**id** o **mención**]",
+  usage: "kick [ID | @Mención]",
   aliases: [],
   permissions: ["KICK_MEMBERS"],
   nsfw: false,
