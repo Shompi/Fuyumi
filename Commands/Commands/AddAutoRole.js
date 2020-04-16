@@ -20,7 +20,7 @@ module.exports = {
   name: "autorole",
   description: "Añade / Quita un rol de los que se pueden auto asignar.\nPara ver la lista de roles auto-asignables, usa `-show` como argumento.",
   filename: basename(__filename),
-  usage: "autorole [-add/-rem] [Nombre del rol]",
+  usage: "autorole [-add | -rem | -show] [Nombre del rol]",
   adminOnly: false,
   guildOnly: true,
   enabled: true,
