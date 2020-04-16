@@ -20,6 +20,14 @@ const noPermissions =
     .setDescription("¡Necesito el permiso \`MANAGE_ROLES\` en **mi Rol más alto** para poder añadir roles!\n\nO ¿Intentaste añadirte un rol mas alto que el mio?\n**¡No puedo hacer eso!**")
     .setColor("RED");
 
+const autoRoleList = (roles) => {
+  const description = roles.map(r => `**${r.name}** (ID: ${r.id})`).join("\n");
+
+  return new MessageEmbed()
+    .setDescription(description)
+    .setColor("BLUE");
+}
+
 module.exports = {
   name: "getrole",
   filename: basename(__filename),
@@ -36,14 +44,15 @@ module.exports = {
 
     const { client: Muki, guild, member, author, channel } = message;
 
-    if (args.length === 0)
-      return channel.send(`${author} debes escribir el nombre del rol!`);
-
     const guildroles = guild.roles.cache;
     const { guildAutoRoles } = Muki.db;
 
-    const rolename = args.join(" ");
     const autoroles = guildAutoRoles.get(guild.id) || []; //Array of objects {name, id}.
+
+    if (args.length === 0)
+      return channel.send(`${author} debes escribir el nombre del rol!`, { embed: autoRoleList(autoroles) });
+
+    const rolename = args.join(" ");
 
     if (autoroles.length === 0)
       return channel.send(`Lo siento ${author}, no hay ningun rol-autoasignable configurado en este servidor.`);
