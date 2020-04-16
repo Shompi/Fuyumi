@@ -48,9 +48,9 @@ module.exports = {
 
     const embed = new MessageEmbed()
       .setDescription(`**Comandos reiniciados exitósamente:**
-      \`\`\`${reloaded.join(", ")}\`\`\`
+      \`\`\`${reloaded.join(", ") || "-"}\`\`\`
       **Comandos no encontrados o que fallaron al reiniciar:**
-      \`\`\`${notReloaded.join(", ")}\`\`\``)
+      \`\`\`${notReloaded.join(", ") || "-"}\`\`\``)
       .setColor("BLUE");
 
     return channel.send(embed);
