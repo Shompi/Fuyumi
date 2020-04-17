@@ -54,7 +54,7 @@ module.exports = {
 
     if (!mentionMatch) return channel.send(noTarget(this.usage));
 
-    const memberID = mentionMatch[0].replace(/<@!?|>/g);
+    const memberID = mentionMatch[0].replace(/<@!?|>/g, "");
 
     const target = await guild.members.fetch(memberID);
 
