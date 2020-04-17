@@ -1,4 +1,4 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message, MessageEmbed, MessageMentions } = require('discord.js');
 const path = require('path');
 
 const noTarget = (usage) =>
@@ -35,7 +35,7 @@ module.exports = {
   guildOnly: true,
   aliases: ['addrole'],
   description: "Añade uno o más roles a un miembro.",
-  usage: "addroles [@Miembro] [nombre 1, nombre 2, nombre 3, ...roln]",
+  usage: "addroles [@Miembro] [Nombre del rol o roles separados por una coma]",
   nsfw: false,
   enabled: true,
   permissions: ['MANAGE_ROLES'],
@@ -47,12 +47,19 @@ module.exports = {
     const { me, roles: GuildRoles } = guild;
     const MukiHighest = me.roles.highest;
 
+
     if (!me.hasPermission('MANAGE_ROLES')) return channel.send(missingPermissions(this.permissions));
-    if (!message.mentions.members) return channel.send(noTarget(this.usage));
+
+    const mentionMatch = args.join().match(MessageMentions.USERS_PATTERN);
+
+    if (!mentionMatch) return channel.send(noTarget(this.usage));
+
+    const memberID = mentionMatch[0].replace(/<@!?|>/g);
+
+    const target = await guild.members.fetch(memberID);
 
     const guildConfigs = Muki.db.guildConfigs.get(guild.id);
     const adminRole = guildConfigs.adminRole;
-    const target = message.mentions.members.first();
 
     const roleNames = args.slice(1).join(" ").toLowerCase().split(", ");
 
