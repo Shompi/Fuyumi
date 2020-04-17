@@ -56,7 +56,9 @@ module.exports = {
 
     const memberID = mentionMatch[0].replace(/<@!?|>/g, "");
 
-    const target = await guild.members.fetch(memberID);
+    const target = await guild.members.fetch(memberID).catch(() => null);
+
+    if (!target) return;
 
     const guildConfigs = Muki.db.guildConfigs.get(guild.id);
     const adminRole = guildConfigs.adminRole;
