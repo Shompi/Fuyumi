@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { MessageEmbed, Message, MessageMentions } = require('discord.js');
 const path = require('path');
 
 const targetMessage = (obj) => {
@@ -42,7 +42,7 @@ module.exports = {
   name: "kick",
   guildOnly: true,
   description: "Expulsa a un miembro del servidor.",
-  usage: "kick [ID | @Mención]",
+  usage: "kick [@Mención] (Razón)",
   aliases: [],
   permissions: ["KICK_MEMBERS"],
   nsfw: false,
@@ -50,14 +50,25 @@ module.exports = {
   adminOnly: true,
   filename: path.basename(__filename),
   async execute(message = new Message(), args = new Array()) {
-    const { channel, guild, mentions, member, client: Muki } = message;
+    const { channel, guild, member, client: Muki } = message;
 
-    const target = mentions.members.first() || await guild.members.fetch(args[0]);
+    if (!args.length)
+      return channel.send(noTarget);
+
+    const mentionMatch = args[0].match(MessageMentions.USERS_PATTERN);
+
+    if (!mentionMatch) return;
+
+    const memberID = mentionMatch[0].replace(/<@!?|>/g, "");
+
+    const target = await guild.members.fetch(memberID).catch(() => null);
+    if (!target) return channel.send(noTarget);
+
     const adminRole = Muki.db.guildConfigs.get(guild.id).adminRole;
+
     if (!member.hasPermission(this.permissions, { checkAdmin: true, checkOwner: true }) && !member.roles.cache.has(adminRole))
       return channel.send('No tienes permiso para usar este comando.');
 
-    if (!target) return channel.send(noTarget);
     if (target.hasPermission('ADMINISTRATOR', { checkAdmin: true, checkOwner: true }) || target.roles.has(adminRole)) return channel.send(notAllowed);
     if (!target.kickable) return channel.send(noPermissions);
 
