@@ -59,7 +59,7 @@ module.exports = {
 
     const target = await guild.members.fetch(memberID).catch(() => null);
 
-    if (!target) return;
+    if (!target) return channel.send(noTarget);
 
     const guildConfigs = Muki.db.guildConfigs.get(guild.id);
     const adminRole = guildConfigs.adminRole;
