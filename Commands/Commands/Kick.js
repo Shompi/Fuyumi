@@ -60,6 +60,8 @@ module.exports = {
     if (!mentionMatch) return;
 
     const memberID = mentionMatch[0].replace(/<@!?|>/g, "");
+    if (memberID == Muki.user.id)
+      return channel.send(`¡No puedo expulsarme a mi misma!`);
 
     const target = await guild.members.fetch(memberID).catch(() => null);
     if (!target) return channel.send(noTarget);
