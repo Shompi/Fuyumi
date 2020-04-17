@@ -4,6 +4,7 @@ const path = require('path');
 const noTarget = (usage) =>
   new MessageEmbed()
     .setTitle('🎯 ¡No mencionaste al objetivo!')
+    .setDescription("¿O quizás mencionaste a un miembro que no está en este servidor?")
     .addFields({ name: 'Modo de uso:', value: usage })
     .setColor("RED");
 
