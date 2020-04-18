@@ -5,7 +5,6 @@ const auth = require('./Keys/auth').stable;
 const fs = require('fs');
 const GuildConfig = require('./Classes/GuildConfig');
 const cooldowns = new Collection();
-
 const Muki = new MukiClient({
   presence: {
     status: "online",
@@ -101,13 +100,15 @@ Muki.on('message', async (message) => {
     //Actual bot behaviour
     //If the guild is not on the database
     if (guild && !Muki.db.guildConfigs.has(guild.id)) {
+      console.log(`La guild ${guild.name} no estaba en la base de datos.`);
       const guildConfig = new GuildConfig(guild);
+
       Muki.db.guildConfigs.set(guild.id, guildConfig);
     }
 
     let prefix, startsWithMention = false;
 
-    if (guild) prefix = Muki.db.guildConfigs.get(guild.id, "prefix");
+    if (guild) prefix = Muki.db.guildConfigs.get(guild.id) || "muki!";
     else prefix = "muki!";
 
     const firstWord = message.content.split(" ")[0];
