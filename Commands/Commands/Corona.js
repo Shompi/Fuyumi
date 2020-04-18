@@ -87,13 +87,21 @@ const getCountryInformation = (response = [], countryCode = "CL") => {
   if (response.length === 0 || !response)
     return null;
 
-  const country = countryCode.toUpperCase();
+  const CODE = countryCode.toUpperCase();
 
   for (item of response) {
     console.log(item);
-    if (item.country.toUpperCase() === country
-      || item.countryInfo.iso2.toUpperCase() === country
-      || item.countryInfo.iso3.toUpperCase() === country)
+
+    const { iso2, iso3 } = item.countryInfo,
+      { country } = item;
+
+    if (country.toUpperCase() === CODE)
+      return item;
+
+    if (iso2 && iso2 === CODE)
+      return item;
+
+    if (iso3 && iso3 === CODE)
       return item;
   }
 
