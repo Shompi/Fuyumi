@@ -5,20 +5,18 @@ const { basename } = require('path');
 
 
 //Lets try to reduce the number of api requests.
-const LatestInformation = [];
+let LatestInformation = [];
 
 const apiRequest = async () => {
+
   const covidResponse = await fetch(ENDPOINT).then(res => res.json()).catch(() => null);
 
-  if (!covidResponse)
-    return null;
-
-  for (item of covidResponse)
-    LatestInformation.push(item);
-
-  console.log("Información COVID actualizada.");
+  if (covidResponse) {
+    LatestInformation = covidResponse;
+    console.log("Información COVID actualizada.");
+  }
+  return;
 }
-
 
 const fetchError = new MessageEmbed()
   .setTitle(`❌ ¡No pude encontrar el país que ingresaste!`)
@@ -55,7 +53,9 @@ const covidEmbed = (info) => {
     .setFooter(`Nuevos casos hoy: ${todayCases}`);
 }
 
-setInterval(apiRequest, 1000 * 60 * 30);
+setInterval(() => {
+  await apiRequest()
+}, 1000 * 60 * 30);
 
 module.exports = {
   name: "covid",
@@ -71,7 +71,7 @@ module.exports = {
 
     const countryCode = args[0];
 
-    if (!LatestInformation.length)
+    if (!LatestInformation || !LatestInformation.length)
       await apiRequest();
 
     const countryInfo = getCountryInformation(LatestInformation, countryCode);
@@ -87,10 +87,13 @@ const getCountryInformation = (response = [], countryCode = "CL") => {
   if (response.length === 0 || !response)
     return null;
 
+  const country = countryCode.toUpperCase();
+
   for (item of response) {
-    if (item.country.toUpperCase() === countryCode.toUpperCase()
-      || item.countryInfo.iso2.toUpperCase() === countryCode.toUpperCase()
-      || item.countryInfo.iso3.toUpperCase() === countryCode.toUpperCase())
+    console.log(item);
+    if (item.country.toUpperCase() === country
+      || item.countryInfo.iso2.toUpperCase() === country
+      || item.countryInfo.iso3.toUpperCase() === country)
       return item;
   }
 
