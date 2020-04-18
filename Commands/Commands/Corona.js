@@ -72,7 +72,7 @@ module.exports = {
     const countryCode = args[0];
 
     if (!LatestInformation.length)
-      LatestInformation = await apiRequest();
+      await apiRequest();
 
     const countryInfo = getCountryInformation(LatestInformation, countryCode);
 
