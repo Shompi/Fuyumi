@@ -53,7 +53,7 @@ const covidEmbed = (info) => {
     .setFooter(`Nuevos casos hoy: ${todayCases}`);
 }
 
-setInterval(() => {
+setInterval(async () => {
   await apiRequest()
 }, 1000 * 60 * 30);
 
