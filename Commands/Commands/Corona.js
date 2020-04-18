@@ -1,6 +1,7 @@
 const ENDPOINT = "https://corona.lmao.ninja/v2/countries";
 const fetch = require('node-fetch');
 const { MessageEmbed, Message } = require('discord.js');
+const { basename } = require('path');
 
 const fetchError = new MessageEmbed()
   .setTitle(`❌ Hubo un error con la api.`)
@@ -45,6 +46,7 @@ module.exports = {
   permissions: [],
   enabled: true,
   cooldown: 5,
+  filename: basename(__filename),
   async execute(message = new Message(), args = new Array()) {
     const { channel } = message;
 
