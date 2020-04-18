@@ -220,10 +220,13 @@ Muki.on('ready', async () => {
 });
 
 Muki.on('messageUpdate', async (old, message) => {
-  const { guild } = message;
+  const { guild, author } = message;
   let prefix;
+  if (author.bot) return;
+
   if (!guild) prefix = "muki!";
-  else prefix = Muki.db.guildConfigs.get(guild.id, "prefix");
+  else prefix = Muki.db.guildConfigs.get(guild.id).prefix;
+  
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
 
