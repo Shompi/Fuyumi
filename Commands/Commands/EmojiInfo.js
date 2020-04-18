@@ -21,7 +21,7 @@ module.exports = {
   nsfw: false,
   guildOnly: false,
   adminOnly: false,
-
+  filename: basename(__filename),
   execute(message = new Message(), args = new Array()) {
 
     const { channel, author, client: Muki, content } = message;
