@@ -21,8 +21,8 @@ const apiRequest = async () => {
 
 
 const fetchError = new MessageEmbed()
-  .setTitle(`❌ Hubo un error con la api.`)
-  .setDescription("Por favor inténtalo más tarde.")
+  .setTitle(`❌ ¡No pude encontrar el país que ingresaste!`)
+  .setDescription("Por favor asegúrate de ingresar el Nombre del país o el código **ISO2 / ISO3** correctamente..")
   .setColor("RED")
   .setTimestamp();
 
@@ -58,10 +58,10 @@ const covidEmbed = (info) => {
 setInterval(apiRequest, 1000 * 60 * 30);
 
 module.exports = {
-  name: "corona",
+  name: "covid",
   description: "Información de casos de COVID-19.",
   usage: "corona [Chile | CL | CHL]",
-  aliases: ["covid", "c19", "c-19", "covid19", "coronavirus"],
+  aliases: ["corona", "c19", "c-19", "covid19", "coronavirus"],
   permissions: [],
   enabled: true,
   cooldown: 5,
@@ -88,9 +88,11 @@ const getCountryInformation = (response = [], countryCode = "CL") => {
     return null;
 
   for (item of response) {
-    if (item.country.toLowerCase() === countryCode.toUpperCase()
+    if (item.country.toUpperCase() === countryCode.toUpperCase()
       || item.countryInfo.iso2.toUpperCase() === countryCode.toUpperCase()
       || item.countryInfo.iso3.toUpperCase() === countryCode.toUpperCase())
       return item;
   }
+
+  return null;
 }
