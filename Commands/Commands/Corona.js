@@ -13,8 +13,7 @@ const covidEmbed = (info) => {
   const { cases, todayCases, deaths, recovered, active, critical, tests, updated, country, countryInfo } = info;
 
   return new MessageEmbed()
-    .setTitle(`Información COVID-19 para ${country}`)
-    .setDescription(`**Fecha de la información:**\n${new Date(updated)}`)
+    .setTitle(`Última actualización: ${new Date(updated)}`)
     .addFields({
       name: "Casos Totales:", value: cases, inline: true
     },
@@ -33,8 +32,9 @@ const covidEmbed = (info) => {
       {
         name: "Muertes:", value: deaths, inline: true
       })
-    .setAuthor(countryInfo.iso3, countryInfo.flag)
-    .setColor("BLUE");
+    .setAuthor(`Información COVID-19 para ${country}`, countryInfo.flag)
+    .setColor("BLUE")
+    .setFooter(`Nuevos casos hoy: ${todayCases}`);
 }
 
 module.exports = {
