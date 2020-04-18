@@ -36,7 +36,7 @@ module.exports = {
     const { author, member, guild, mentions, channel, client: Muki } = message;
     const config = Muki.db.guildConfigs.get(guild.id);
 
-    if (!database.has(guild.id)) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración. WelcomeChannel.js`);
+    if (!config) return console.log(`Por alguna razón, la guild ${guild.name} no tenia entrada de configuración. WelcomeChannel.js`);
 
     //Check Permissions.
     if (member.hasPermission("ADMINISTRATOR", { checkOwner: true })) {
