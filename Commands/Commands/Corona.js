@@ -30,6 +30,7 @@ const covidEmbed = (info) => {
 
   return new MessageEmbed()
     .setTitle(`Última actualización: ${new Date(updated)}`)
+    .setAuthor(`Información del COVID-19 en ${country}`, countryInfo.flag)
     .addFields({
       name: "Casos Totales:", value: cases, inline: true
     },
@@ -48,7 +49,6 @@ const covidEmbed = (info) => {
       {
         name: "Muertes:", value: deaths, inline: true
       })
-    .setAuthor(`Información COVID-19 para ${country}`, countryInfo.flag)
     .setColor("BLUE")
     .setFooter(`Nuevos casos hoy: ${todayCases}`);
 }
