@@ -309,12 +309,8 @@ Muki.on('warn', (warn) => {
 });
 
 Muki.on('guildCreate', (guild) => {
-  if (Muki.db.guildConfigs.has(guild.id)) return;
 
   const PRESENTATION = require('./Commands/Events/Guild/Join');
-  const guildConfig = new GuildConfig(guild);
-
-  Muki.db.guildConfigs.set(guild.id, guildConfig);
 
   const systemChannel = guild.systemChannel;
   if (!systemChannel) {
