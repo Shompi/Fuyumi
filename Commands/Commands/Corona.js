@@ -3,6 +3,23 @@ const fetch = require('node-fetch');
 const { MessageEmbed, Message } = require('discord.js');
 const { basename } = require('path');
 
+
+//Lets try to reduce the number of api requests.
+const LatestInformation = [];
+
+const apiRequest = async () => {
+  const covidResponse = await fetch(ENDPOINT).then(res => res.json()).catch(() => null);
+
+  if (!covidResponse)
+    return null;
+
+  for (item of covidResponse)
+    LatestInformation.push(item);
+
+  console.log("Información COVID actualizada.");
+}
+
+
 const fetchError = new MessageEmbed()
   .setTitle(`❌ Hubo un error con la api.`)
   .setDescription("Por favor inténtalo más tarde.")
@@ -38,6 +55,8 @@ const covidEmbed = (info) => {
     .setFooter(`Nuevos casos hoy: ${todayCases}`);
 }
 
+setInterval(apiRequest, 1000 * 60 * 30);
+
 module.exports = {
   name: "corona",
   description: "Información de casos de COVID-19.",
@@ -52,18 +71,21 @@ module.exports = {
 
     const countryCode = args[0];
 
-    const covidResponse = await fetch(ENDPOINT).then(res => res.json()).catch(() => null);
+    if (!LatestInformation.length)
+      LatestInformation = await apiRequest();
 
-    if (!covidResponse)
+    const countryInfo = getCountryInformation(LatestInformation, countryCode);
+
+    if (!countryInfo)
       return channel.send(fetchError);
-
-    const countryInfo = getCountryInformation(covidResponse, countryCode);
 
     return channel.send(covidEmbed(countryInfo));
   }
 }
 
 const getCountryInformation = (response = [], countryCode = "CL") => {
+  if (response.length === 0 || !response)
+    return null;
 
   for (item of response) {
     if (item.country.toLowerCase() === countryCode.toUpperCase()
