@@ -108,7 +108,7 @@ Muki.on('message', async (message) => {
 
     let prefix, startsWithMention = false;
 
-    if (guild) prefix = Muki.db.guildConfigs.get(guild.id) || "muki!";
+    if (guild) prefix = Muki.db.guildConfigs.get(guild.id).prefix;
     else prefix = "muki!";
 
     const firstWord = message.content.split(" ")[0];
