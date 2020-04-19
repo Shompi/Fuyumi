@@ -50,8 +50,17 @@ module.exports = {
     if (!guild) prefix = "muki!";
     else prefix = Muki.db.guildConfigs.get(guild.id).prefix;
 
-    const endpoint = content.slice(prefix.length);
+
+    let endpoint = "neko";
+
+    if (content.startsWith("<@!552272683543560194>") || content.startsWith("<@552272683543560194>"))
+      endpoint = content.split(" ")[1];
+    else
+      endpoint = content.slice(prefix.length);
+
+    
     if (![...NSFWENDPOINTS, ...SFWENDPOINTS].includes(endpoint)) return;
+
     try {
 
       if ((NSFWENDPOINTS.includes(endpoint) && !channel.nsfw) && channel.type !== 'dm') return channel.send(notNSFW);
