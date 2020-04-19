@@ -48,7 +48,7 @@ module.exports = {
     const { channel, author, content, guild, client: Muki } = message;
     let prefix;
     if (!guild) prefix = "muki!";
-    else prefix = Muki.db.guildConfigs.get(guild.id, "prefix");
+    else prefix = Muki.db.guildConfigs.get(guild.id).prefix;
 
     const endpoint = content.slice(prefix.length);
 
