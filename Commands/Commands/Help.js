@@ -15,7 +15,7 @@ module.exports = {
     //For now lets just return a message.
     const { client: Muki, guild, channel, author } = message;
 
-    const prefix = Muki.db.guildConfigs.get(guild.id, "prefix");
+    const prefix = Muki.db.guildConfigs.get(guild.id).prefix || "muki!";
     const { commands } = Muki;
 
     if (args[0]) {

@@ -49,7 +49,9 @@ module.exports = {
 
     if (prefix.length > 5) return channel.send(limitExceeded);
 
-    Muki.db.guildConfigs.set(guild.id, prefix, "prefix");
+    configs.prefix = prefix;
+
+    Muki.db.guildConfigs.set(guild.id, configs);
 
     return channel.send(succeed(prefix));
   }
