@@ -51,7 +51,7 @@ module.exports = {
     else prefix = Muki.db.guildConfigs.get(guild.id).prefix;
 
     const endpoint = content.slice(prefix.length);
-
+    if (![...NSFWENDPOINTS, ...SFWENDPOINTS].includes(endpoint)) return;
     try {
 
       if ((NSFWENDPOINTS.includes(endpoint) && !channel.nsfw) && channel.type !== 'dm') return channel.send(notNSFW);
