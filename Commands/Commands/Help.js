@@ -26,6 +26,7 @@ module.exports = {
         .setTitle(`Comando: ${command.name}`)
         .setDescription(command.description)
         .addField("Modo de uso:", `\`${prefix}${command.usage}\``)
+        .addField("Cooldown:", `${command.cooldown || 2} segundos.`)
         .setColor("BLUE");
 
       if (command.name !== 'neko') commandUsage.setFooter(`Aliases: ${command.aliases.join(", ")}`);
