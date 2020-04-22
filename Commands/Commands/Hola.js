@@ -17,12 +17,14 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
     const { guild, channel, member } = message;
 
+    message.react("✌").catch(console.error);
+
     if (!member.voice.channel) return channel.send(`${member} debes estar en un canal de voz!`);
     if (!guild.me.hasPermission(this.permissions)) return channel.send(`¡Me faltan permisos!\n${member} asegurate de que tengo los permisos de voz **"CONECTAR"** y **"HABLAR"**.`);
 
     try {
       const connection = await member.voice.channel.join();
-      connection.play('Commands/Hola/hola.mp3', { volume: 0.30})
+      connection.play('Commands/Hola/hola.mp3', { volume: 0.30 })
         .on('start', () => {
           CurrentlyPlaying.add(guild.id);
         })
