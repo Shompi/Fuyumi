@@ -6,7 +6,7 @@ const CurrentlyPlaying = new Set();
 module.exports = {
   name: "hola",
   aliases: ["hello"],
-  permissions: ["CONNECT, SPEAK"],
+  permissions: ["CONNECT", "SPEAK"],
   description: "Reproduce un clip en el canal de voz en el que estás.",
   usage: "hola",
   nsfw: false,
