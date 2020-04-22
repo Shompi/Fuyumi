@@ -13,7 +13,7 @@ module.exports = {
   enabled: true,
   guildOnly: true,
   filename: basename(__filename),
-  cooldown: 5,
+  cooldown: 16,
   async execute(message = new Message(), args = new Array()) {
     const { guild, channel, member } = message;
 
@@ -22,7 +22,7 @@ module.exports = {
 
     try {
       const connection = await member.voice.channel.join();
-      connection.play('Commands/Hola/hola.mp3', { volume: 0.15})
+      connection.play('Commands/Hola/hola.mp3', { volume: 0.30})
         .on('start', () => {
           CurrentlyPlaying.add(guild.id);
         })
