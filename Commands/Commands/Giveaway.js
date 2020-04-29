@@ -6,7 +6,7 @@ const ONEHOUR = 1000 * 60 * 60;
 const infoEmbed =
   new MessageEmbed()
     .setTitle(`❌ ¡No puedes iniciar un sorteo!`)
-    .setDescription("Para hacer un sorteo, debe haber un canal llamado \"giveaways\" creado, o el comando debe ser ejecutado por alguien que tenga permisos de administrador o para administrar canales.")
+    .setDescription("Para hacer un sorteo, debe haber un canal llamado \"giveaways\" creado, o el comando debe ser ejecutado por alguien que tenga permisos de administrador o para administrar canales.\nTambién verifica que yo tenga el permiso **\"MANAGE_CHANNELS\"** para poder crear el canal.")
     .setColor("BLUE");
 
 const giveawayEmbed = ({ member, sorteo, minutos }) => {
