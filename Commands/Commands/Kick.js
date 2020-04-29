@@ -41,8 +41,8 @@ const success = (info) => {
 module.exports = {
   name: "kick",
   guildOnly: true,
-  description: "Expulsa a un miembro del servidor.",
-  usage: "kick [@Mención] (Razón)",
+  description: "Expulsa a un miembro del servidor. Se puede usar más de una mención o ID, pero siempre la primera será el miembro a expulsar.",
+  usage: "kick [@Mención || ID] (Razón)",
   aliases: [],
   permissions: ["KICK_MEMBERS"],
   nsfw: false,
@@ -55,15 +55,17 @@ module.exports = {
     if (!args.length)
       return channel.send(noTarget);
 
-    const mentionMatch = args[0].match(MessageMentions.USERS_PATTERN);
+    const content = args.join(" ");
+    const mentionMatch = content.match(MessageMentions.USERS_PATTERN) || content.match(/(\d{17,19})/g);
 
     if (!mentionMatch) return;
 
-    const memberID = mentionMatch[0].replace(/<@!?|>/g, "");
-    if (memberID == Muki.user.id)
+    const memberIDS = mentionMatch.map(mention => mention.replace(/<@!?|>/g, ""));
+
+    if (memberIDS[0] == Muki.user.id)
       return channel.send(`¡No puedo expulsarme a mi misma!`);
 
-    const target = await guild.members.fetch(memberID).catch(() => null);
+    const target = await guild.members.fetch(memberIDS[0]).catch(() => null);
     if (!target) return channel.send(noTarget);
 
     const adminRole = Muki.db.guildConfigs.get(guild.id).adminRole;
