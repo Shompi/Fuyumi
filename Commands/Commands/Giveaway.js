@@ -21,7 +21,7 @@ const giveawayEmbed = ({ member, sorteo, minutos }) => {
 
 const giveawayEmbedFinished = (winner, sorteo, host) => {
   return new MessageEmbed()
-    .setTitle(`🎇\t¡Felicidades ${winner.username} !\t🎊`)
+    .setTitle(`🎇\t¡Felicidades ${winner.username}!\t🎊`)
     .setThumbnail(winner.displayAvatarURL({ size: 256, dynamic: true }))
     .setDescription(`Has ganado: **${sorteo}**\nSorteado por: <@${host.id}>`)
     .setColor("BLUE")
