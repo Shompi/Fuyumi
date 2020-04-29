@@ -3,6 +3,12 @@ const { basename } = require('path');
 const Prettyms = require('pretty-ms');
 const ONEHOUR = 1000 * 60 * 60;
 
+const infoEmbed =
+  new MessageEmbed()
+    .setTitle(`❌ ¡No puedes iniciar un sorteo!`)
+    .setDescription("Para hacer un sorteo, debe haber un canal llamado \"giveaways\" creado, o el comando debe ser ejecutado por alguien que tenga permisos de administrador o para administrar canales.")
+    .setColor("BLUE");
+
 const giveawayEmbed = ({ member, sorteo, minutos }) => {
   const millis = (1000 * 60) * minutos;
   return new MessageEmbed()
@@ -23,8 +29,9 @@ const giveawayEmbedFinished = (winner, sorteo, host) => {
 }
 
 const currentGiveaways = new Collection();
-
 const channelNames = ["sorteos", "giveaway", "giveaways", "sorteo"];
+
+
 module.exports = {
   name: "sorteo",
   aliases: ["giveaway", "sortear", "regalar", "gaway", "giveaways"],
@@ -97,15 +104,7 @@ module.exports = {
 
       } catch (err) {
         console.log(err);
-        if (err.code) {
-          if (err.code === 30013)
-            return channel.send(`Lo siento ${author}, la Guild ${guild.name} ha alcanzado la máxima cantidad de canales.`);
-
-          if (err.code === 50013)
-            return channel.send(`Lo siento ${author}, ¡No existe un canal de sorteos y no puedo crear uno!\nNecesito el permiso **"MANAGE_CHANNELS".** para poder crear el canal de sorteos.`);
-        }
-
-        return channel.send(`Hubo un error con la ejecución de este comando, por favor inténtalo más tarde!`);
+        return channel.send(`Hubo un error al intentar crear el canal Giveaways. Verifica que yo tenga el permiso de administrar canales.`);
       }
     }
 
