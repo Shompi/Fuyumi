@@ -19,7 +19,7 @@ const giveawayEmbedFinished = (winner, sorteo, host) => {
     .setThumbnail(winner.displayAvatarURL({ size: 256, dynamic: true }))
     .setDescription(`Has ganado: **${sorteo}**\nSorteado por: <@${host.id}>`)
     .setColor("BLUE")
-    .setFooter(`¡Habla con ${host.tag} para reclamar tu premio!`)
+    .setFooter(`¡Habla con ${host.user.tag} para reclamar tu premio!`)
 }
 
 const currentGiveaways = new Collection();
@@ -73,8 +73,8 @@ module.exports = {
 
     if (!giveawayChannel) {
       console.log("Giveaway channel not found.");
-      if (!member.hasPermission(["MANAGE_CHANNELS"], { checkAdmin: true, checkOwner: true }) || !guild.me.hasPermission('MANAGE_CHANNELS'))
-        return;
+      if (!member.hasPermission("MANAGE_CHANNELS", { checkAdmin: true, checkOwner: true }) || !guild.me.hasPermission('MANAGE_CHANNELS'))
+        return channel.send(infoEmbed);
 
       try {
         giveawayChannel = await guild.channels.create("giveaways", {
