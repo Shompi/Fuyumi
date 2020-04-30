@@ -47,8 +47,10 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
     const { guild, client: Muki, channel, member, author } = message;
 
-    const giveawayTime = args.shift();
+    if(!member.hasPermission("ADMINISTRATOR", {checkOwner: true}) && guild.id !== "537484725896478733")
+      return channel.send(`Lo siento ${author}, ¡solo los miembros con el permiso "ADMINISTRADOR" pueden comenzar un sorteo!`);
 
+    const giveawayTime = args.shift();
     if (giveawayTime == 'cancel') {
       const giveawayToCancel = currentGiveaways.get(guild.id);
       if (!giveawayToCancel)
