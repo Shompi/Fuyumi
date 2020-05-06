@@ -15,9 +15,9 @@ const noMemberPermissions = (author) =>
     .setColor("RED")
     .setFooter("ERROR: MANAGE_GUILD");
 
-const usage = (prefix) =>
+const usage = (prefix, guild) =>
   new MessageEmbed()
-    .setTitle('❌ Argumentos inválidos:')
+    .setTitle(`La actual región de voz es: ${guild.region.toUpperCase()}`)
     .setDescription(`Debes especificar una región válida.`)
     .addFields(
       { name: "Ejemplo:", value: `\`${prefix}region brazil Pérdida de paquetes.\`` },
@@ -60,7 +60,7 @@ module.exports = {
     // If the bot doesn't have the permissions to change the Guild Region...
     if (!guild.me.hasPermission('MANAGE_GUILD', { checkAdmin: true })) return channel.send(missingPermissions(this.permissions));
 
-    if (args.length === 0) return channel.send(usage(guildConfigs.prefix));
+    if (args.length === 0) return channel.send(usage(guildConfigs.prefix), guild);
 
     let region = args.shift().toLowerCase(), reason = args.join(" ");
 
