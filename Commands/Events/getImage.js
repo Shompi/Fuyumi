@@ -64,7 +64,8 @@ module.exports = (game = new String()) => {
     "ARK: Survival Evolved": "https://steamcdn-a.akamaihd.net/steam/apps/346110/header.jpg",
     "Football Manager 2020": "https://steamcdn-a.akamaihd.net/steam/apps/1100600/header.jpg",
     "Paladins": "https://steamcdn-a.akamaihd.net/steam/apps/444090/header.jpg",
-    "Twitch Sings": "https://puu.sh/FecmM/11f4534e24.png"
+    "Twitch Sings": "https://puu.sh/FecmM/11f4534e24.png",
+    "VALORANT": "https://vgezone.com/wp-content/uploads/2020/03/valorant.jpg",
   };
 
   const imageUrl = images[game];
