@@ -19,6 +19,7 @@ module.exports = {
   permissions: [],
   botOwnerOnly: true,
   async execute(message = new Message(), args = new Array()) {
+    //This is asyncronous because if I need to await for a promise to resolve I dont have to do it with thens.
     const { channel, client: Muki, author } = message;
 
     if (author.id !== Muki.OWNER) return;
