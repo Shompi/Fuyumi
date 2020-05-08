@@ -211,6 +211,10 @@ Muki.on('ready', async () => {
     Muki.emit("error", error);
   }
 
+  setInterval(() => {
+    Muki.user.setPresence(Muki.config.presence).catch(() => console.log("Error setting the presence"));
+  }, 1000 * 60 * 30);
+
   Muki.setImmediate(() => {
     Muki.NASA(NASAWebHook);
     Muki.setInterval(() => {
