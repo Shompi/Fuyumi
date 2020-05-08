@@ -23,7 +23,7 @@ module.exports = {
       if (!command) return channel.send("No encontré un comando con ese nombre.");
 
       const commandUsage = new MessageEmbed()
-        .setTitle(`Comando: ${command.name}`)
+        .setTitle(`Comando: ${args[0].toUpperCase()}`)
         .setDescription(command.description)
         .addField("Modo de uso:", `\`${prefix}${command.usage}\``)
         .addField("Cooldown:", `${command.cooldown || 2} segundos.`)
