@@ -73,7 +73,7 @@ module.exports = {
     if (!member.hasPermission(this.permissions, { checkAdmin: true, checkOwner: true }) && !member.roles.cache.has(adminRole))
       return channel.send('No tienes permiso para usar este comando.');
 
-    if (target.hasPermission('ADMINISTRATOR', { checkAdmin: true, checkOwner: true }) || target.roles.has(adminRole)) return channel.send(notAllowed);
+    if (target.hasPermission('ADMINISTRATOR', { checkAdmin: true, checkOwner: true }) || target.roles.cache.has(adminRole)) return channel.send(notAllowed);
     if (!target.kickable) return channel.send(noPermissions);
 
     const reason = args.slice(1).join(" ");
