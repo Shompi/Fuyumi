@@ -33,7 +33,7 @@ const success = (info) => {
     .setTitle(`${target.user.username} has sido expulsado de la guild ${guild.name}.`)
     .setThumbnail(guild.iconURL({ size: 512 }))
     .setColor("ORANGE")
-    .setDescription(`${reason ? "-" : reason}`)
+    .setDescription(`${reason ? reason : "-"}`)
     .setTimestamp();
 }
 
