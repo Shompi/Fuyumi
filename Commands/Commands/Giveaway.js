@@ -19,11 +19,17 @@ const giveawayEmbed = ({ member, sorteo, minutos }) => {
     .setFooter(`Termina en: ${Prettyms(millis, { verbose: true })}`);
 }
 
-const giveawayEmbedFinished = (winner, sorteo, host) => {
+const giveawayEmbedFinished = (info) => {
+  // {host, winner, iterations, contestants, prize}
+
+  const {host, winner, iterations, contestants, prize} = info;
+  console.log(iterations);
+  
   return new MessageEmbed()
     .setTitle(`🎇\t¡Felicidades ${winner.username}!\t🎊`)
     .setThumbnail(winner.displayAvatarURL({ size: 256, dynamic: true }))
-    .setDescription(`Has ganado: **${sorteo}**\nSorteado por: <@${host.id}>`)
+    .setDescription(`Has ganado: **${prize}**\nSorteado por: <@${host.id}>`)
+    .addField('Mejor suerte para la próxima:', `\`\`\`${contestants.map(user => user.tag).join(", ")}\`\`\``)
     .setColor("BLUE")
     .setFooter(`¡Habla con ${host.user.tag} para reclamar tu premio!`)
 }
@@ -47,7 +53,7 @@ module.exports = {
   async execute(message = new Message(), args = new Array()) {
     const { guild, client: Muki, channel, member, author } = message;
 
-    if(!member.hasPermission("ADMINISTRATOR", {checkOwner: true}) && guild.id !== "537484725896478733")
+    if (!member.hasPermission("ADMINISTRATOR", { checkOwner: true }) && guild.id !== "537484725896478733")
       return channel.send(`Lo siento ${author}, ¡solo los miembros con el permiso "ADMINISTRADOR" pueden comenzar un sorteo!`);
 
     const giveawayTime = args.shift();
@@ -142,9 +148,19 @@ module.exports = {
         return giveawayMessage.delete()
       }
 
-      const choosenUser = reaction.users.cache.filter(user => !user.bot).random();
+      const users = reaction.users.cache.filter(user => !user.bot);
 
-      return giveawayMessage.edit(`<@${choosenUser.id}>`, giveawayEmbedFinished(choosenUser, args.join(" "), member));
+      let choosenUser;
+
+      let iter = Math.floor(Math.random() * 101);
+
+      for (let i = 0; i < iter; i++)
+        choosenUser = users.random();
+
+
+      users.delete(choosenUser.id);
+
+      return giveawayMessage.edit(`<@${choosenUser.id}>`, giveawayEmbedFinished({ winner: choosenUser, prize: args.join(" "), host: member, contestants: users, iterations: iter }));
 
     } catch (err) {
 
