@@ -31,7 +31,7 @@ const giveawayEmbedFinished = (info) => {
     .setDescription(`Has ganado: **${prize}**\nSorteado por: <@${host.id}>`)
     .addField('Mejor suerte para la próxima:', `\`\`\`${contestants.map(user => user.tag).join(", ")}\`\`\``)
     .setColor("BLUE")
-    .setFooter(`¡Habla con ${host.user.tag} para reclamar tu premio!`)
+    .setFooter(`Número de iteraciones: ${iterations}`)
 }
 
 const currentGiveaways = new Collection();
