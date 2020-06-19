@@ -191,6 +191,21 @@ Muki.on('message', async (message) => {
 
 });
 
+Muki.on('messageDelete', msg => {
+  if (msg.partial) {
+    return;
+  }
+
+  const embed = new MessageEmbed()
+    .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
+    .addField("Contenido:", msg.content)
+    .setDescription(`Mensaje Borrado.`)
+    .setColor("RED");
+
+  Muki.channels.cache.get("585990511790391309").send(embed);
+});
+
+
 Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
 
@@ -230,7 +245,7 @@ Muki.on('messageUpdate', async (old, message) => {
 
   if (!guild) prefix = "muki!";
   else prefix = Muki.db.guildConfigs.get(guild.id).prefix;
-  
+
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
 

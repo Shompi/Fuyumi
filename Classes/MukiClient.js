@@ -3,7 +3,7 @@ module.exports = class extends Client {
   constructor(options) {
     super({
       disableMentions: 'everyone',
-      partials: ["GUILD_MEMBER"]
+      partials: ["GUILD_MEMBER", "REACTION", "MESSAGE", "CHANNEL"]
     });
 
     this.commands = new Collection();
