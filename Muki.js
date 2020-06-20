@@ -198,7 +198,7 @@ Muki.on('messageDelete', msg => {
 
   const embed = new MessageEmbed()
     .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
-    .addField("Contenido:", msg.content)
+    .addField("Contenido:", msg.content ? msg.content : "Sin contenido.")
     .setDescription(`Mensaje Borrado.`)
     .setColor("RED");
 
