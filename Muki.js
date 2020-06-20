@@ -192,7 +192,12 @@ Muki.on('message', async (message) => {
 });
 
 Muki.on('messageDelete', msg => {
+  if (msg.channel.type === 'dm') return;
+
+  if (msg.guild && msg.guild.id !== "537484725896478733") return;
+
   if (msg.partial) {
+    console.log("A partial message was deleted.");
     return;
   }
 
