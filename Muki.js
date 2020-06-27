@@ -235,12 +235,12 @@ Muki.on('ready', async () => {
     Muki.user.setPresence(Muki.config.presence).catch(() => console.log("Error setting the presence"));
   }, 1000 * 60 * 30);
 
-  Muki.setImmediate(() => {
+ /*  Muki.setImmediate(() => {
     Muki.NASA(NASAWebHook);
     Muki.setInterval(() => {
       Muki.NASA(NASAWebHook);
     }, 1000 * 60 * 60);
-  });
+  }); */
 });
 
 Muki.on('messageUpdate', async (old, message) => {
