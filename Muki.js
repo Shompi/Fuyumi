@@ -28,7 +28,6 @@ const WebHooks = require('./Keys/hookTokens');
 /*-------------------------Inicio del BOT-------------------------*/
 let australGamingMemeHook = new Webhook();
 let CotorrasMemeHook = new Webhook();
-let NASAWebHook = new Webhook();
 
 const notNSFW = new MessageEmbed()
   .setTitle(`🛑 ¡Alto ahí!`)
@@ -217,8 +216,6 @@ Muki.on('ready', async () => {
   try {
     console.log("Fetching Hook de Austral Gaming...");
     australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
-    console.log("Fetching Hook de NASA...");
-    NASAWebHook = await Muki.fetchWebhook(WebHooks.NASAHook.id);
     console.log("Fetching Hook de Cotorras Gaming...");
     CotorrasMemeHook = await Muki.fetchWebhook(WebHooks.CotorrasMemeHook.id, WebHooks.CotorrasMemeHook.token);
 
@@ -231,16 +228,9 @@ Muki.on('ready', async () => {
     Muki.emit("error", error);
   }
 
-  setInterval(() => {
+  Muki.setInterval(() => {
     Muki.user.setPresence(Muki.config.presence).catch(() => console.log("Error setting the presence"));
   }, 1000 * 60 * 30);
-
- /*  Muki.setImmediate(() => {
-    Muki.NASA(NASAWebHook);
-    Muki.setInterval(() => {
-      Muki.NASA(NASAWebHook);
-    }, 1000 * 60 * 60);
-  }); */
 });
 
 Muki.on('messageUpdate', async (old, message) => {
