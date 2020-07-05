@@ -16,9 +16,12 @@ module.exports = async (member = new GuildMember()) => {
     const channel = Muki.channels.cache.get(config.welcome.channelID);
 
     //If channel comes undefined
-    if (!channel) return guild.systemChannel.send(salida(user, config)).catch(err => console.log(`La guild ${guild.name} no tiene canal de bienvenida, ni canal de sistema.`));
+    if (!channel) {
+      const systemchannel = guild.systemChannel;
+      if (!systemchannel) return;
+      else systemchannel.send(salida(user, config)).catch(err => console.log(`La guild ${guild.name} no tiene canal de bienvenida, ni canal de sistema.`));
 
-    else return channel.send(salida(user, config));
+    } else return channel.send(salida(user, config));
 
   }
   else return undefined;
