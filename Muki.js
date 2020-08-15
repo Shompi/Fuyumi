@@ -26,9 +26,6 @@ for (const file of commandFiles) {
 /*-----------------------Archivos extra----------------------------*/
 const WebHooks = require('./Keys/hookTokens');
 /*-------------------------Inicio del BOT-------------------------*/
-let australGamingMemeHook = new Webhook();
-let CotorrasMemeHook = new Webhook();
-
 const notNSFW = new MessageEmbed()
   .setTitle(`🛑 ¡Alto ahí!`)
   .setDescription(`¡Solo puedes utilizar este comando en canales **NSFW**!`)
@@ -214,15 +211,8 @@ Muki.on('ready', async () => {
   console.log(`Online en Discord como: ${Muki.user.tag}`);
 
   try {
-    console.log("Fetching Hook de Austral Gaming...");
-    australGamingMemeHook = await Muki.fetchWebhook(WebHooks.AGMemeHook.id, WebHooks.AGMemeHook.token);
-    console.log("Fetching Hook de Cotorras Gaming...");
-    CotorrasMemeHook = await Muki.fetchWebhook(WebHooks.CotorrasMemeHook.id, WebHooks.CotorrasMemeHook.token);
-
     await Muki.user.setPresence(Muki.config.presence);
-
     console.log(`Bot listo: ${Date()}`);
-
   } catch (error) {
     console.log(error);
     Muki.emit("error", error);
