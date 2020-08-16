@@ -60,7 +60,7 @@ module.exports = {
     // If the bot doesn't have the permissions to change the Guild Region...
     if (!guild.me.hasPermission('MANAGE_GUILD', { checkAdmin: true })) return channel.send(missingPermissions(this.permissions));
 
-    if (args.length === 0) return channel.send(usage(guildConfigs.prefix), guild);
+    if (args.length === 0) return channel.send(usage(guildConfigs.prefix, guild));
 
     let region = args.shift().toLowerCase(), reason = args.join(" ");
 
