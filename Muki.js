@@ -68,31 +68,6 @@ Muki.on('message', async (message) => {
     pokecordFilter(message).catch(console.error);
     if (author.bot) return;
 
-    //Webhooks
-    if (channel.id == '622889689472303120') {
-      if (message.attachments.size <= 0 || author.bot) return;
-      const { attachments } = message;
-      const embeds = [];
-      const files = [];
-      for (const attachment of attachments.values()) {
-
-        const { url, name } = attachment;
-        const embed = new MessageEmbed()
-          .setColor("BLUE")
-          .setAuthor(`${author.tag}`, author.displayAvatarURL({ size: 64 }))
-          .setFooter(`Enviado desde: ${guild.name}`, `${guild.iconURL({ size: 64 })}`);
-
-        if (name.endsWith(".mp4") || name.endsWith(".webm"))
-          files.push(attachment);
-        else embed.setImage(url);
-
-        embeds.push(embed);
-      }
-      embeds[0].setTitle(message.content);
-      await australGamingMemeHook.send(null, { embeds: embeds, avatarURL: guild.iconURL(), username: guild.name, files: files });
-      return await CotorrasMemeHook.send(null, { embeds: embeds, avatarURL: guild.iconURL(), username: guild.name, files: files });
-    }
-
     //Actual bot behaviour
     //If the guild is not on the database
     if (guild && !Muki.db.guildConfigs.has(guild.id)) {
