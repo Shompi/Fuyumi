@@ -38,7 +38,7 @@ module.exports = {
   guildOnly: true,
   filename: path.basename(__filename),
   description: "Mueve la región de voz del servidor.",
-  usage: `region [Región] (Razón)\`\n\nLas regiones válidas son:\n\`\`\`${voiceRegions.join(", ")}\`\`\``,
+  usage: `region [Región] (Razón)\`\n\nLas regiones válidas son:\n\`\`\`${voiceRegions.join(", ")}\`\``,
   nsfw: false,
   enabled: true,
   aliases: [],
