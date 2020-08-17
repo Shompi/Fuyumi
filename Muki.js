@@ -105,10 +105,14 @@ Muki.on('message', async (message) => {
 
       console.log(args);
       const commandName = args.shift().toLowerCase();
-
       const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
       if (!command) return channel.send(noCommandFound(author));
 
+      //Specific commands.
+      //Check channel id
+      if (channel.id === "707521827403989002" && command.name === 'players')
+        return command.execute(message, args);
+      //-----------------------------------------
       if (command.name === 'eval' && author.id !== Muki.OWNER)
         return;
 
