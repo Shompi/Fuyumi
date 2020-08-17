@@ -37,7 +37,7 @@ module.exports = {
     let description = "**[OBLIGATORIO] (OPCIONAL) <SIN PARAMETROS>**\n\n";
 
     commands.forEach(command => {
-      if (command.botOwnerOnly)
+      if (command.botOwnerOnly || command.exclusive)
         return;
 
       description += `\`${command.name}\`: ${command.description} ${command.nsfw ? '[**NSFW**]' : ""} ${command.enabled ? '' : '[**Este comando está actualmente desactivado.**]'}\n\n`
