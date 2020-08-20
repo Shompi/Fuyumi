@@ -1,7 +1,7 @@
 const ENDPOINT = require('../../Keys/brauj'),
   fetch = require('node-fetch'),
   { MessageEmbed, Message } = require('discord.js'),
-  {basename} = require('path');
+  { basename } = require('path');
 
 /**
  * @param ENDPOINT retorna un [] con objetos
@@ -21,27 +21,69 @@ module.exports = {
   nsfw: false,
   enabled: true,
   permissions: [],
-  usage: "players",
+  usage: "players [-n | -id] [username | ID]",
   exclusive: true,
   async execute(message = new Message(), args = new Array()) {
     const { guild, channel } = message;
 
     if (channel.id !== "707521827403989002") return; //fivemChannel
+    const players = await Request();
 
-    try {
-      const response = await fetch(ENDPOINT).then(response => response.json());
+    if (!players)
+      return channel.send(NoPlayers);
 
-      //If there are no players on the server.
-      if (response.length === 0)
-        return channel.send(NoPlayers);
+    if (players === -1)
+      return channel.send("Hubo un error al contactar con el servidor.");
 
+    if (args[0] && (args[0] === '-n' || args[0] === '-id')) {
+      if (!args[1])
+        return channel.send("Debes especificar un `nombre / ID` para buscar en el servidor.");
 
-      return channel.send(PlayersList(response));
+      const player = FindPlayer(args.shift(), args.join(" "), players);
+
+      if (!player)
+        return channel.send("No he encontrado ningún player con ese nombre / ID en el servidor.");
+
+      return channel.send(`\`${player.name}, ${player.id}, ${player.ping}\``);
 
     }
-    catch (e) {
-      channel.send("Ocurrió un error con la ejecución del comando!");
+    else return channel.send(PlayersList(players));
+  }
+}
+
+const FindPlayer = (searchMode, playerNameOrID, players = new Array()) => {
+
+  //Example object: { endpoint, id, identifiers: [], name, ping }
+  
+  //Search by name (Case-Insensitive)
+  if (searchMode === '-n') {
+    for (const player of players) {
+      if (player.name.toLowerCase() === playerNameOrID)
+        return player;
     }
+  }
+  else {
+    //Search player by the supplied ID.
+    for (const player of players) {
+      if (player.id === playerNameOrID)
+        return player;
+    }
+  }
+
+  return null;
+}
+
+const Request = async () => {
+  try {
+    const response = await fetch(ENDPOINT).then(response => response.json());
+
+    //If there are no players on the server.
+    if (response.length === 0) return null;
+
+    return response;
+  }
+  catch (e) {
+    return -1;
   }
 }
 
@@ -50,7 +92,7 @@ const PlayersList = (players = new Array()) => {
  * @param ENDPOINT retorna un [] con objetos
  * de tipo {endpoint, id, identifiers: [], name, ping }
  */
-  const LIST = players.map((player, index) => `${index + 1}.-${player.name}, ID: ${player.id}, Ping: ${player.ping <= -1 ? "Timed out":player.ping}`).join("\n");
+  const LIST = players.map((player, index) => `${index + 1}.-${player.name}, ID: ${player.id}, Ping: ${player.ping <= -1 ? "Timed out" : player.ping}`).join("\n");
 
   return new MessageEmbed()
     .setTitle(`Jugadores conectados: ${players.length}`)
