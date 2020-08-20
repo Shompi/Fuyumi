@@ -44,7 +44,7 @@ module.exports = {
       if (!player)
         return channel.send("No he encontrado ningún player con ese nombre / ID en el servidor.");
 
-      return channel.send(`\`${player.name}, ${player.id}, ${player.ping}\``);
+      return channel.send(`\`Username: ${player.name}, ID: ${player.id}, Ping: ${player.ping}\``);
 
     }
     else return channel.send(PlayersList(players));
@@ -52,9 +52,8 @@ module.exports = {
 }
 
 const FindPlayer = (searchMode, playerNameOrID, players = new Array()) => {
-
   //Example object: { endpoint, id, identifiers: [], name, ping }
-  
+
   //Search by name (Case-Insensitive)
   if (searchMode === '-n') {
     for (const player of players) {
@@ -65,7 +64,8 @@ const FindPlayer = (searchMode, playerNameOrID, players = new Array()) => {
   else {
     //Search player by the supplied ID.
     for (const player of players) {
-      if (player.id === playerNameOrID)
+      //Lazy comparison since playerNameOrID is a string which can be a number,  but player.id is always a number.
+      if (player.id == playerNameOrID)
         return player;
     }
   }
