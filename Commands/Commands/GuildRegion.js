@@ -75,12 +75,16 @@ module.exports = {
     try {
       await guild.setRegion(region, author.tag);
 
-      if (guild.systemChannel)
+      if (guild.systemChannel) {
+        await message.react("✅");
         return guild.systemChannel.send(success(author, region, image, reason));
-      else
+      }
+      else {
         return channel.send(success(author, region, image, reason))
+      }
     } catch (error) {
       console.log(error);
+      message.react("❌");
       return channel.send(`Ha ocurrido un error al ejecutar este comando.`);
     }
   }
