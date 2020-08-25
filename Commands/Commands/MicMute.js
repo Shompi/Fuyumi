@@ -15,11 +15,11 @@ const noTarget = (author) =>
     .setColor("RED");
 
 module.exports = {
-  name: "mmute",
+  name: "mute",
   guildOnly: true,
   filename: path.basename(__filename),
   description: "Silencia / De-silencia el micrófono de un miembro que esté en un canal de voz.",
-  usage: "mmute [@Mención de miembro]",
+  usage: "mute [@Mención de miembro]",
   nsfw: false,
   enabled: false,
   aliases: [],
@@ -27,25 +27,6 @@ module.exports = {
 
   async execute(message = new Message(), args = new Array()) {
     const { channel, guild, mentions, author } = message;
-    try {
-      if (guild.me.hasPermission('MUTE_MEMBERS', { checkAdmin: true })) {
 
-        const target = mentions.members.first();
-        if (!target) return channel.send(noTarget(author));
-
-        const reason = args.splice(1).join(" ");
-        if (!target.voice.channel) return message.reply(`El miembro ${target.displayName} no está en ningún canal de voz.`);
-        if (target.voice.serverMute) return target.voice.setMute(false, reason)
-          .then(gm => message.channel.send(`He desmuteado a **<@${gm.id}>!**`));
-
-        const mutedMember = await target.voice.setMute(true, reason);
-        await channel.send(`He silenciado exitosamente a ${mutedMember.displayName}\n\nNo olvides desmutearlo mas tarde!`);
-
-        return mutedMember.send(infoEmbed(author, guild, reason));
-      } else return message.reply("necesito el permiso '**SILENCIAR MIEMBROS**' para ejecutar este comando.");
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
+  } 
 }
