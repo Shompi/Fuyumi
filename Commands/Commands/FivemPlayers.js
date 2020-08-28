@@ -92,7 +92,7 @@ const PlayersList = (players = new Array()) => {
  * @param ENDPOINT retorna un [] con objetos
  * de tipo {endpoint, id, identifiers: [], name, ping }
  */
-  const LIST = players.map((player, index) => `${index + 1}.-${player.name}, ID: ${player.id}, Ping: ${player.ping <= -1 ? "Timed out" : player.ping}`).join("\n");
+  const LIST = players.sort((a,b) => a.id - b.id).map((player) => `ID: ${player.id}, ${player.name}, Ping: ${player.ping <= -1 ? "Timed out" : player.ping}`).join("\n");
 
   return new MessageEmbed()
     .setTitle(`Jugadores conectados: ${players.length}`)
