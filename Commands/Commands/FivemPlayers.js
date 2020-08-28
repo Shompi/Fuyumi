@@ -96,7 +96,7 @@ const PlayersList = (players = new Array()) => {
 
   return new MessageEmbed()
     .setTitle(`Jugadores conectados: ${players.length}`)
-    .setDescription("**Username -> ID -> Ping**\n```\n" + LIST + "```")
+    .setDescription("**ID -> Username -> Ping**\n```\n" + LIST + "```")
     .setColor("GREEN")
     .setFooter("Servidor: Fox Roleplay");
 }
