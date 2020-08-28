@@ -68,7 +68,5 @@ module.exports = (game = new String()) => {
     "VALORANT": "https://vgezone.com/wp-content/uploads/2020/03/valorant.jpg",
   };
 
-  const imageUrl = images[game];
-  if (!imageUrl) return unknown;
-  return imageUrl;
+  return images[game] || unknown;
 }
