@@ -80,7 +80,7 @@ module.exports = {
       } else {
 
         //If not, we dont want to add roles that are higher than the highest role of the member invoking the command.
-        if (!member.roles.cache.has(adminRole)) return channel.send(`Debes tener el rol asignado como Rol de Administrador para usar este comando.\n\n\`${guildConfigs.prefix}adminrole [@Mención del Rol]\``);
+        if (!member.roles.cache.has(adminRole)) return channel.send(`No puedes utilizar este comando.\n\`${guildConfigs.prefix}adminrole [@Mención del Rol]\``);
 
         const MemberHighest = member.roles.cache.get(adminRole);
         const filtered = rolesToAdd.filter(role => role.position <= MukiHighest.position && role.position <= MemberHighest.position);
