@@ -66,6 +66,13 @@ module.exports = (game = new String()) => {
     "Paladins": "https://steamcdn-a.akamaihd.net/steam/apps/444090/header.jpg",
     "Twitch Sings": "https://puu.sh/FecmM/11f4534e24.png",
     "VALORANT": "https://vgezone.com/wp-content/uploads/2020/03/valorant.jpg",
+    "Among Us": "https://steamcdn-a.akamaihd.net/steam/apps/945360/header.jpg",
+    "Fall Guys": "https://depor.com/resizer/pZkkvZ-_ICtrsqSEWWJTP6rIQd4=/580x330/smart/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/KJD63BKH5VFNFOMA6XTJ4DLZLA.jpg",
+    "Call of Duty®: Modern Warfare®": "https://hardzone.es/app/uploads-hardzone.es/2019/10/COD-MW.jpg",
+    "Wallpaper Engine": "https://steamcdn-a.akamaihd.net/steam/apps/431960/capsule_616x353.jpg",
+    "FiveM": "https://cheatingingaming.com/wp-content/uploads/2019/12/fivem-logo-3.png",
+    "Custom Status":"https://www.esportsportal.com/wp-content/uploads/2019/09/discord-banner-3.png",
+    "Heroes of the Storm": "https://static.heroesofthestorm.com/images/global/fb-share-1fcc54becc.jpg"
   };
 
   return images[game] || unknown;
