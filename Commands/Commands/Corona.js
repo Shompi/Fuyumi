@@ -20,7 +20,7 @@ const apiRequest = async () => {
 
 const fetchError = new MessageEmbed()
   .setTitle(`❌ ¡No pude encontrar el país que ingresaste!`)
-  .setDescription("Por favor asegúrate de ingresar el Nombre del país o el código **ISO2 / ISO3** correctamente..")
+  .setDescription("Por favor asegúrate de ingresar el Nombre del país o el código **ISO2 / ISO3** correctamente.")
   .setColor("RED")
   .setTimestamp();
 
