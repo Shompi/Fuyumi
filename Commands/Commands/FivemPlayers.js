@@ -98,5 +98,5 @@ const PlayersList = (players = new Array()) => {
     .setTitle(`Jugadores conectados: ${players.length}`)
     .setDescription("**ID -> Username -> Ping**\n```\n" + LIST + "```")
     .setColor("GREEN")
-    .setFooter("Servidor: Fox Roleplay");
+    .setFooter("Servidor: Desterrados RP");
 }
