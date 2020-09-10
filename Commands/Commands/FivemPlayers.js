@@ -13,6 +13,11 @@ const NoPlayers = new MessageEmbed()
   .setColor("BLUE")
   .setDescription("No hay jugadores conectados en el servidor.");
 
+const ServerError = new MessageEmbed()
+  .setColor("RED")
+  .setDescription("El servidor **no está en linea**.")
+  .setFooter("ERROR: Tiempo de espera excedido.");
+
 module.exports = {
   name: "players",
   aliases: ["pl"],
@@ -33,7 +38,7 @@ module.exports = {
       return channel.send(NoPlayers);
 
     if (players === -1)
-      return channel.send("Hubo un error al contactar con el servidor.");
+      return channel.send(ServerError);
 
     if (args[0] && (args[0] === '-n' || args[0] === '-id')) {
       if (!args[1])
@@ -75,7 +80,10 @@ const FindPlayer = (searchMode, playerNameOrID, players = new Array()) => {
 
 const Request = async () => {
   try {
-    const response = await fetch(ENDPOINT).then(response => response.json());
+    const response = await fetch(ENDPOINT,
+      {
+        timeout: 3000
+      }).then(response => response.json());
 
     //If there are no players on the server.
     if (response.length === 0) return null;
