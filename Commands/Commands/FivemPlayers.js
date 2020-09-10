@@ -1,4 +1,4 @@
-const ENDPOINT = require('../../Keys/brauj'),
+const ENDPOINT = require('../../Keys/fivemOser'),
   fetch = require('node-fetch'),
   { MessageEmbed, Message } = require('discord.js'),
   { basename } = require('path');
