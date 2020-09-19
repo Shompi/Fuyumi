@@ -1,5 +1,5 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
-const { MessageEmbed, Webhook, Collection } = require('discord.js');
+const { MessageEmbed, Collection } = require('discord.js');
 const MukiClient = require('./Classes/MukiClient');
 const auth = require('./Keys/auth').stable;
 const fs = require('fs');
@@ -23,8 +23,6 @@ for (const file of commandFiles) {
   Muki.commands.set(command.name, command);
 }
 
-/*-----------------------Archivos extra----------------------------*/
-const WebHooks = require('./Keys/hookTokens');
 /*-------------------------Inicio del BOT-------------------------*/
 const notNSFW = new MessageEmbed()
   .setTitle(`🛑 ¡Alto ahí!`)
@@ -43,29 +41,15 @@ const noCommandFound = (author) =>
     .setDescription(`**${author}**, ¡No tengo un comando con ese nombre!`)
     .setColor("YELLOW");
 
-const onCooldown = (author, timeleft) =>
-  new MessageEmbed()
-    .setTitle(`⏳ ¡Aún no puedes usar este comando!`)
-    .setDescription(`${author}, ¡debes esperar ${timeleft.toFixed(1)} para volver a utilizar este comando!`)
-
-const pokecordFilter = async (message) => {
-  const { author, guild, channel } = message;
-  if (author.id === '365975655608745985' && guild.id === "537484725896478733" && channel.id !== '585990511790391309') {
-    message.delete({ timeout: 10000, reason: "Pokecord" });
-  }
-
-  return undefined;
-}
-
 Muki.on('message', async (message) => {
   try {
     if (message.partial)
-      message = await message.fetch();
+      await message.fetch();
 
-    const { author, guild, channel, mentions } = message;
+    const { author, guild, channel } = message;
 
     //if (!guild) return console.log(`${author.tag} ha enviado un mensaje através de un DM.`);
-    pokecordFilter(message).catch(console.error);
+
     if (author.bot) return;
 
     //Actual bot behaviour
@@ -109,21 +93,25 @@ Muki.on('message', async (message) => {
       if (!command) return channel.send(noCommandFound(author));
 
       //Specific commands.
-      //Check channel id
+
+      //Check channel id (fivem channel on Exiliados)
       if (channel.id === "707521827403989002" && command.name === 'players')
         return command.execute(message, args);
       //-----------------------------------------
-      if (command.name === 'eval' && author.id !== Muki.OWNER)
+      if (command.botOwnerOnly && author.id !== Muki.OWNER)
         return;
 
       if (!command.enabled)
         return channel.send(cmdNotEnabled(author));
 
+      if (command.guildOnly && !guild)
+        return channel.send("No puedo ejecutar este comando en mensajes privados!");
+
+      if (command.moderationOnly && !message.member.permissions.has(command.permissions, true))
+        return;
+
       if (command.nsfw && !channel.nsfw)
         return channel.send(notNSFW);
-
-      if (command.guildOnly && channel.type !== 'text')
-        return channel.send("No puedo ejecutar este comando en mensajes privados!");
 
       if (!cooldowns.has(command.name)) {
         cooldowns.set(command.name, new Collection());
@@ -167,19 +155,18 @@ Muki.on('message', async (message) => {
 });
 
 Muki.on('messageDelete', msg => {
-  if (msg.channel.type === 'dm') return;
-
-  if (msg.guild && msg.guild.id !== "537484725896478733") return;
-
-  if (msg.partial) {
-    console.log("A partial message was deleted.");
+  if (msg.partial || !msg.guild) {
+    console.log("Se borró un mensaje parcial o el mensaje estaba en Dm's.");
     return;
   }
+
+  if (msg.guild && msg.guild.id !== "537484725896478733") return;
 
   const embed = new MessageEmbed()
     .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
     .addField("Contenido:", msg.content ? msg.content : "Sin contenido.")
-    .setDescription(`Mensaje Borrado.`)
+    .setDescription(`Archivos adjuntos: ${msg.attachments.size}`)
+    .setFooter(`Mensaje Borrado.`)
     .setColor("RED");
 
   Muki.channels.cache.get("585990511790391309").send(embed);
@@ -264,18 +251,6 @@ Muki.on('presenceUpdate', async (old, now) => { //Tipo Presence
   }
 });
 
-Muki.on('guildBanAdd', (guild, user) => {
-  if (!guild.systemChannel) return;
-  const embed = new MessageEmbed()
-    .setAuthor(user.tag, user.displayAvatarURL({ size: 256 }))
-    .setDescription(`Ha sido baneado de **${guild.name}**`)
-    .setColor('RED')
-    .setThumbnail(user.displayAvatarURL({ size: 256 }))
-    .setTimestamp();
-
-  return guild.systemChannel.send(embed);
-});
-
 Muki.on('error', async (error) => {
   console.log(error)
   const e = new MessageEmbed().setColor("RED").setDescription(`${error}\n${error.stack}`);
@@ -287,7 +262,7 @@ Muki.on('reconnecting', () => {
 });
 
 Muki.on('resume', (Replayed) => {
-  console.log(`Muki se ha reconectado, numero de eventos en Replayed: ${Replayed}`);
+  console.log(`Muki se ha reconectado, numero de eventos repetidos: ${Replayed}`);
 });
 
 Muki.on('warn', (warn) => {
@@ -310,23 +285,34 @@ Muki.on('guildCreate', (guild) => {
     systemChannel.send(PRESENTATION).catch(console.error);
   }
 
-  return Muki.channels.cache.get("585990511790391309").send(`Nueva Guild ${guild.name} (${guild.id})!`);
+  const joinedGuild = new MessageEmbed()
+    .setAuthor(`${guild.name} (${guild.id})`, guild.iconURL({ size: 64 }))
+    .setDescription(`Miembros: ${guild.memberCount}\nDueño: ${guild.owner.user.tag} (${guild.ownerID})\nCanales: ${guild.channels.cache.size}`)
+    .setFooter("GUILD_CREATE")
+    .setColor("GREEN");
+
+  return Muki.channels.cache.get("585990511790391309").send(joinedGuild);
 });
 
 Muki.on('guildDelete', (guild) => {
-  Muki.db.guildConfigs.delete(guild.id);
-  console.log(`El bot ha abandonado la guild ${guild.name}`);
-  console.log(`Entrada de configuración:\n${Muki.db.guildConfigs.get(guild.id)} (Si es undefined está bien.)`);
+
+  const leavedGuild = new MessageEmbed()
+    .setAuthor(`${guild.name} (${guild.id})`, guild.iconURL({ size: 64 }))
+    .setDescription(`Miembros: ${guild.memberCount}\nDueño: ${guild.owner.user.tag} (${guild.ownerID})\nCanales: ${guild.channels.cache.size}`)
+    .setFooter("GUILD_DELETE")
+    .setColor("ORANGE");
+
+  return Muki.channels.cache.get("585990511790391309").send(leavedGuild);
 });
 
 
 
 Muki.ws.on('RESUMED', (data, shard) => {
   console.log("Websocket Resumed");
-  console.log(data);
-  console.log(shard);
+  console.log(`${data}`);
+  console.log(`${shard}`);
 });
 
-console.log("Logging Muki...");
+console.log("Iniciando sesión en Discord...");
 
 Muki.login(Muki.config.token);
