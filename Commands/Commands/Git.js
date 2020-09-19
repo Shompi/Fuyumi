@@ -27,6 +27,7 @@ module.exports = {
 
     cmd.stderr.on('data', (data) => {
       console.error(`stderr: ${data}`);
+      log += data.toString();
       cmd.kill();
       message.channel.send("Ocurrió un error, revisa la consola!");
     });
