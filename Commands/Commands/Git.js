@@ -20,7 +20,7 @@ module.exports = {
 
     const cmd = spawn(GITPATH, ARGS);
     let log = "";
-    cmd.stdout.on("data", data => {
+    cmd.stdout.on("data", (data) => {
       console.log(`stdout ${data}`);
       log += data.toString();
     });
