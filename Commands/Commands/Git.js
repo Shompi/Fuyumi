@@ -29,12 +29,11 @@ module.exports = {
       console.error(`stderr: ${data}`);
       log += data.toString();
       cmd.kill();
-      message.channel.send("Ocurrió un error, revisa la consola!");
     });
 
     cmd.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
-
+      log += `${code}`;
       const logEmbed = new MessageEmbed()
         .setTitle("LOG")
         .setDescription(`\`\`\`${log}\`\`\``)
