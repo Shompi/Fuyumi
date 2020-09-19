@@ -1,17 +1,11 @@
 const { MessageEmbed, Message } = require('discord.js');
 const path = require('path');
 
-const noCommandSpecified = (author) =>
-  new MessageEmbed()
-    .setTitle(`💢 Comando no especificado.`)
-    .setDescription(`${author}, ¡debes especificar al menos un comando para recargar!`)
-    .setColor("RED")
-
 module.exports = {
   //This command should be Bot OWNER only.
   name: "reload",
   filename: path.basename(__filename),
-  aliases: ["re"],
+  aliases: [],
   description: "Reinicia / Recarga un comando. (Este es un comando interno.)",
   usage: "reload [Nombre del comando]",
   nsfw: false,
@@ -19,32 +13,46 @@ module.exports = {
   permissions: [],
   botOwnerOnly: true,
   execute(message = new Message(), args = new Array()) {
-    const { channel, author, client: Muki } = message;
-
-    if (author.id !== Muki.OWNER) return;
-
-    if (!args.length) return channel.send(noCommandSpecified(author));
-
+    const { channel, author, client } = message;
     const notReloaded = [], reloaded = [];
 
-    args.forEach(cmd => {
-      const command = Muki.commands.get(cmd) || Muki.commands.find(c => c.aliases.includes(cmd));
+    if (!args.length) {
+      client.commands.forEach(cmd => {
 
-      if (!command)
-        return notReloaded.push(cmd);
+        //If a command is found:
+        delete require.cache[require.resolve(`./${cmd.filename}`)];
 
-      //If a command is found:
-      delete require.cache[require.resolve(`./${command.filename}`)];
+        try {
+          const reload = require(`./${cmd.filename}`);
+          client.commands.set(reload.name, reload);
+          return reloaded.push(reload.name);
+        } catch (error) {
+          console.log(error);
+          return notReloaded.push(cmd);
+        }
+      });
+    }
+    else {
 
-      try {
-        const reload = require(`./${command.filename}`);
-        Muki.commands.set(reload.name, reload);
-        return reloaded.push(reload.name);
-      } catch (error) {
-        console.log(error);
-        return notReloaded.push(cmd);
-      }
-    });
+      args.forEach(cmd => {
+        const command = client.commands.get(cmd) || client.commands.find(c => c.aliases.includes(cmd));
+
+        if (!command)
+          return notReloaded.push(cmd);
+
+        //If a command is found:
+        delete require.cache[require.resolve(`./${command.filename}`)];
+
+        try {
+          const reload = require(`./${command.filename}`);
+          client.commands.set(reload.name, reload);
+          return reloaded.push(reload.name);
+        } catch (error) {
+          console.log(error);
+          return notReloaded.push(cmd);
+        }
+      });
+    }
 
     const embed = new MessageEmbed()
       .setDescription(`**Comandos reiniciados exitósamente:**

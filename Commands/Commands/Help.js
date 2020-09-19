@@ -3,20 +3,22 @@ const path = require('path');
 
 module.exports = {
   name: "help",
-  aliases: ["h"],
+  aliases: [],
   description: "Comando de ayuda.",
   filename: path.basename(__filename),
   nsfw: false,
   enabled: true,
   permissions: [],
   usage: "help (comando)",
-
+  guildOnly: false,
+  botOwnerOnly: false,
+  cooldown: 5,
   async execute(message = new Message(), args = new Array()) {
     //For now lets just return a message.
-    const { client: Muki, guild, channel, author } = message;
+    const { client, guild, channel, author } = message;
 
-    const prefix = Muki.db.guildConfigs.get(guild.id).prefix || "muki!";
-    const { commands } = Muki;
+    const prefix = "!";
+    const { commands } = client;
 
     if (args[0]) {
       const command = commands.get(args[0]) || commands.find(c => c.aliases.includes(args[0]));
