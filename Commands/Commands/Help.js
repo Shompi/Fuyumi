@@ -14,10 +14,9 @@ module.exports = {
   botOwnerOnly: false,
   cooldown: 5,
   async execute(message = new Message(), args = new Array()) {
-    //For now lets just return a message.
     const { client, guild, channel, author } = message;
 
-    const prefix = "!";
+    const prefix = client.db.guildConfigs.get(guild.id).prefix;
     const { commands } = client;
 
     if (args[0]) {
