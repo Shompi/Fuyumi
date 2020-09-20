@@ -1,6 +1,6 @@
 const { Message, MessageEmbed } = require('discord.js');
 const path = require('path');
-const VALIDOPERATIONS = ["-a", "-r", "-e"];
+const VALIDOPERATIONS = ["-a", "-r", "-e", "-s"];
 
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
   description: "Añade la imagen de un juego a la base de datos.",
   aliases: ["gameimg", "gimg"],
   filename: path.basename(__filename),
-  usage: "gimg [-a / -r / -e]",
+  usage: "gimg [-a / -r / -e / -s]",
   nsfw: false,
   enabled: true,
   permissions: [],
@@ -43,15 +43,36 @@ module.exports = {
 
     operation === "-a" ? addGame({ client, imageurl, gamename, channel: message.channel })
       : operation === "-e" ? editGame({ client, imageurl, gamename, channel: message.channel })
-        : remGame({ client, gamename, channel: message.channel });
+        : operation === "-s" ? searchGame({ client, gamename, channel: message.channel })
+          : remGame({ client, gamename, channel: message.channel });
 
   }
+}
+
+const searchGame = ({ client, gamename, channel }) => {
+  if (!client.db.gameImages.has(gamename))
+    return channel.send("Este juego no está en la base de datos.");
+
+  const url = client.db.gameImages.get(gamename);
+  const embed = new MessageEmbed()
+    .setImage(url)
+    .setColor("BLUE")
+    .setFooter(gamename);
+
+  return channel.send(embed);
 }
 
 const addGame = ({ client, imageurl, gamename, channel }) => {
   if (!client.db.gameImages.has(gamename)) {
     client.db.gameImages.set(gamename, imageurl);
-    return channel.send(`Se ha agregado la [imagen](${imageurl}) para el juego **${gamename}**.`);
+
+    const description = `Se ha agregado la [imagen](${imageurl}) para el juego **${gamename}**.`;
+    const embed = new MessageEmbed()
+      .setColor("BLUE")
+      .setThumbnail(imageurl)
+      .setDescription(description);
+
+    return channel.send(embed);
   }
 
   return channel.send("Este juego ya está registrado en la base de datos.");
@@ -71,5 +92,12 @@ const editGame = ({ client, imageurl, gamename, channel }) => {
 
   client.db.gameImages.set(gamename, imageurl);
 
-  return channel.send(`La imagen del juego **${gamename}** ha sido [cambiada](${imageurl}).`);
+  const description = `La imagen del juego **${gamename}** ha sido [cambiada](${imageurl}).`
+  const embed = new MessageEmbed()
+    .setColor("BLUE")
+    .setFooter(gamename)
+    .setDescription(description)
+    .setImage(imageurl);
+
+  return channel.send(embed);
 }
