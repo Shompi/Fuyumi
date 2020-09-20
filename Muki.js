@@ -1,7 +1,7 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const { MessageEmbed, Collection } = require('discord.js');
 const MukiClient = require('./Classes/MukiClient');
-const auth = require('./Keys/auth').stable;
+const auth = require('./Keys/auth').beta;
 const fs = require('fs');
 const GuildConfig = require('./Classes/GuildConfig');
 const cooldowns = new Collection();
@@ -101,7 +101,7 @@ Muki.on('message', async (message) => {
       if (command.botOwnerOnly && author.id !== Muki.OWNER)
         return;
 
-      if (!command.enabled)
+      if (!command.enabled && author.id !== Muki.OWNER)
         return channel.send(cmdNotEnabled(author));
 
       if (command.guildOnly && !guild)
