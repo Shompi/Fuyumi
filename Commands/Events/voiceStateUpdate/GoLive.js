@@ -7,9 +7,9 @@ module.exports = async (old = new VoiceState(), now = new VoiceState()) => {
     if (now.streaming) {
       const { member, client: Muki } = now;
       console.log(`User ${now.member.user.tag} is streaming`);
-      const activity = member.presence.activities[0];
+      const activity = member.presence.activities.find(act => act.type !== "CUSTOM_STATUS");
       if (!activity) return; //console.log(`[GO LIVE] El user ${member.user.tag} comenzó a stremear con Go Live pero no se encontró una actividad.`);
-      const activityName = activity.name;
+      const activityName = activity.name || "Actividad Desconocida";
       const timeNow = Date.now();
 
 

@@ -1,7 +1,6 @@
 const { MessageEmbed, Presence } = require('discord.js');
 const database = require('../../LoadDatabase');
 const TWOHOURS = 1000 * 60 * 60 * 2;
-const getImage = require('../getImage');
 const CONECTORES = [
   "ha comenzado a transmitir en",
   "está en vivo en",
@@ -38,14 +37,14 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
       const begun = database.TwitchStream.get(member.id, 'streamStarted');
 
       if ((timeNow - begun) >= TWOHOURS) {
-        await sendStreaming(now, activity, streamingChannel);
+        sendStreaming(now, activity, streamingChannel);
         database.TwitchStream.set(member.id, timeNow, "streamStarted");
         return console.log(database.TwitchStream.get(member.id));
       } else return; //If the elapsed time is not greater than two hours then we need to return.
 
     } else {
       //If the member was not in the database we need to add him in.
-      await sendStreaming(now, activity, streamingChannel);
+      sendStreaming(now, activity, streamingChannel);
       database.TwitchStream.set(member.id, timeNow, "streamStarted");
       return;
     }
@@ -54,9 +53,9 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
   }
 }
 
-const sendStreaming = async (now = new Presence(), activity, streamingChannel) => {
+const sendStreaming = (now = new Presence(), activity, streamingChannel) => {
   //In this case, activity.state is the name of the game being played.
-  const image = getImage(activity.state) || getImage('Actividad Desconocida');
+  const image = now.guild.client.db.gameImages.get(activity.state) || now.guild.client.db.gameImages.get("Actividad Desconocida");
   const embed = new MessageEmbed()
     .setColor(now.member.displayColor)
     .setThumbnail(`${now.member.user.displayAvatarURL({ size: 256 })}`)
@@ -64,5 +63,5 @@ const sendStreaming = async (now = new Presence(), activity, streamingChannel) =
     .setDescription(`**${activity.details}**\n[Ver transmisión](${activity.url})`)
     .setImage(image);
 
-  return await streamingChannel.send(embed);
+  return streamingChannel.send(embed);
 }
