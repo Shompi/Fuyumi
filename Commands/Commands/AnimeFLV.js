@@ -40,9 +40,12 @@ module.exports = {
   description: "Busca un animé en el catálogo de AnimeFLV.net",
   usage: "flv [Título del animé]",
   nsfw: false,
-  enabled: true,
+  enabled: false,
   aliases: ['anime', 'animeflv'],
   permissions: [],
+  moderationOnly: false,
+  guildOnly: false,
+  botOwnerOnly: false,
   cooldown: 5,
   
   async execute(message = new Message(), args = new Array()) {
