@@ -10,5 +10,6 @@ module.exports = {
   votes: new enmap({name:'votes'}),
   votesCooldown: new enmap({name: 'cooldown'}),
   guildConfigs: new enmap({name:"guildconfigs"}),
-  guildAutoRoles: new enmap({name: "autoroles"})
+  guildAutoRoles: new enmap({name: "autoroles"}),
+  gameImages: new enmap({name: "gameimages"}),
 }
