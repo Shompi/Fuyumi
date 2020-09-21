@@ -10,11 +10,11 @@ const sendStreaming = async (now = new VoiceState()) => {
 }
 
 const constructEmbed = (now = new VoiceState()) => {
+  const voiceChannel = now.member.voice.channel;
   if (!voiceChannel) return null;
   const activity = now.member.presence.activities.find(act => act.type !== "CUSTOM_STATUS");
   if (!activity) return null;
 
-  const voiceChannel = now.member.voice.channel;
   const image = now.client.db.gameImages.get(activity.name) || now.client.db.gameImages.get("Actividad Desconocida")
 
   return new MessageEmbed()
