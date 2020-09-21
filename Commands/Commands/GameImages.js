@@ -29,7 +29,7 @@ module.exports = {
     const operation = args.shift();
     console.log(`Operation: ${operation}`);
     if (!VALIDOPERATIONS.includes(operation))
-      return;
+      return message.channel.send("La operación no es valida, recuerda que las opciones son: `-r -a -e -s`")
 
     args = args.join(" ").split(" | ");
     const gamename = args.shift();
