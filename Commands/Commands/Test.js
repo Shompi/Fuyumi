@@ -11,6 +11,9 @@ module.exports = {
   enabled: true,
   filename: path.basename(__filename),
   cooldown: 10,
+  botOwnerOnly: true,
+  guildOnly: false,
+  moderationOnly: false,
   execute(message = new Message(), args = new Array()) {
     const { channel } = message;
     return channel.send('OK!');

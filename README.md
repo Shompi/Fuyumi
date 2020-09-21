@@ -1,30 +1,19 @@
 # README #
 
-### [ENG] 
-* This bot will probably not work for you correctly, unless you modify it to accomplish with your needs.
-I uploaded the code so its easier for me to code it when im not in home.
-
 ### [ESP]
-* Este bot probablemente no funcionará correctamente para ti, a menos que lo modifiques para que cumpla con tus necesidades.
-
-
-### What does this bot do?
-
-* Various things, very random tho. I suggest you NOT to try and run it yourself.
+* Mi primer botcito creado con la finalidad de usarlo en la Guild Exiliados, pero puede ser usado sin problemas en otros servidores.
 
 ### What is this repository for? ###
 
-* Maintain version control for Muki
-* Version 4.0.1 Finally official!
-
-### How do I get set up? ###
-* You need node.js 12+ and git bash.
-* Open bash and clone this repository.
-* `npm install` in the repository folder.
-* You will need to add the tokens and all that by yourself.
+* Version control para Muki
 
 ### Who do I talk to? ###
 
 * Repo owner or admin
-* ShompiFlen#3338 on Discord
+* ShompiFlen#3338 en Discord [ESP / ENG] :D
 * or through telegram @ShompiFlen
+
+### Where can I read the documentation? ###
+
+* Si quieres entender aun que sea en lo más mínimo como funciona este bot, necesitas saber lo básico de Javascript (ES6),
+saber usar node.js version >= 12.x.x, y saber usar discord.js v12, puedes ver la documentación de discord.js [aqui](https://discord.js.org).
