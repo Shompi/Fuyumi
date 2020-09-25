@@ -1,1 +1,0 @@
-worker: node Muki.js
