@@ -2,7 +2,8 @@ const ENDPOINT = "https://corona.lmao.ninja/v2/countries";
 const fetch = require('node-fetch');
 const { MessageEmbed, Message } = require('discord.js');
 const { basename } = require('path');
-
+const parsems = require("parse-ms");
+const parseMilliseconds = require("parse-ms");
 
 //Lets try to reduce the number of api requests.
 let LatestInformation = [];
@@ -27,9 +28,10 @@ const fetchError = new MessageEmbed()
 
 const covidEmbed = (info) => {
   const { cases, todayCases, deaths, recovered, active, critical, tests, updated, country, countryInfo } = info;
-
+const { hours, minutes, seconds } = parseMilliseconds(Date.now() - updated);
+  
   return new MessageEmbed()
-    .setTitle(`Última actualización: ${new Date(updated)}`)
+    .setTitle(`Última actualización hace ${hours || "0"} hora/s ${minutes || "0"} minuto/s ${seconds || "0"} segundo/s`)
     .setAuthor(`Información del COVID-19 en ${country}`, countryInfo.flag)
     .addFields({
       name: "Casos Totales:", value: cases, inline: true
