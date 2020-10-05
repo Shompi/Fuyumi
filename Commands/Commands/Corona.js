@@ -31,7 +31,7 @@ const covidEmbed = (info) => {
 const { hours, minutes, seconds } = parseMilliseconds(Date.now() - updated);
   
   return new MessageEmbed()
-    .setTitle(`Última actualización hace ${hours || "0"} hora/s ${minutes || "0"} minuto/s ${seconds || "0"} segundo/s`)
+    .setTitle(`Última actualización hace ${hours || "0"}h ${minutes || "0"}m ${seconds || "0"}s.`)
     .setAuthor(`Información del COVID-19 en ${country}`, countryInfo.flag)
     .addFields({
       name: "Casos Totales:", value: cases, inline: true
