@@ -31,7 +31,7 @@ const covidEmbed = (info) => {
 const { hours, minutes, seconds } = parseMilliseconds(Date.now() - updated);
   
   return new MessageEmbed()
-    .setTitle(`Última actualización hace ${hours || "0"}h ${minutes || "0"}m ${seconds || "0"}s.`)
+    .setFooter(`Última actualización hace ${hours || "0"}h ${minutes || "0"}m ${seconds || "0"}s.`)
     .setAuthor(`Información del COVID-19 en ${country}`, countryInfo.flag)
     .addFields({
       name: "Casos Totales:", value: cases, inline: true
@@ -52,7 +52,7 @@ const { hours, minutes, seconds } = parseMilliseconds(Date.now() - updated);
         name: "Muertes:", value: deaths, inline: true
       })
     .setColor("BLUE")
-    .setFooter(`Nuevos casos hoy: ${todayCases}`);
+    .setTitle(`Nuevos casos hoy: ${todayCases}`);
 }
 
 setInterval(async () => {
