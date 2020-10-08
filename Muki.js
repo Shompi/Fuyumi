@@ -1,7 +1,7 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const { MessageEmbed, Collection } = require('discord.js');
 const MukiClient = require('./Classes/MukiClient');
-const auth = require('./Keys/auth').stable;
+const auth = require('./Keys/auth').beta;
 const fs = require('fs');
 const GuildConfig = require('./Classes/GuildConfig');
 const cooldowns = new Collection();
@@ -234,11 +234,8 @@ Muki.on('guildMemberAdd', async member => {
 });
 
 Muki.on('voiceStateUpdate', async (old, now) => {
-  try {
-    await Muki.eventhandler.VoiceStateUpdate.GoLive(old, now);
-  } catch (error) {
-    console.log(error);
-  }
+
+  Muki.eventhandler.VoiceStateUpdate.GoLive(old, now);
 });
 
 Muki.on('presenceUpdate', async (old, now) => { //Tipo Presence

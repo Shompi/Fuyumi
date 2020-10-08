@@ -1,61 +1,45 @@
-const { VoiceState } = require('discord.js');
-const database = require('../../LoadDatabase');
+const { VoiceState, MessageEmbed } = require('discord.js');
 const TWOHOURS = 1000 * 60 * 60 * 2; // 2 Horas.
-const { sendStreaming, constructEmbed } = require('../Streamings');
+
+
 module.exports = async (old = new VoiceState(), now = new VoiceState()) => {
   try {
+    if (now.member.partial)
+      await member.fetch();
+
+
     if (now.streaming) {
-      const { member, client: Muki } = now;
-      console.log(`User ${now.member.user.tag} is streaming`);
-      const activity = member.presence.activities.find(act => act.type !== "CUSTOM_STATUS");
-      if (!activity) return; //console.log(`[GO LIVE] El user ${member.user.tag} comenzó a stremear con Go Live pero no se encontró una actividad.`);
-      const activityName = activity.name || "Actividad Desconocida";
-      const timeNow = Date.now();
+      const { client } = now;
+      let newuser = false;
 
-
-      if (database.GoLive.has(member.id)) {
-        //If the member is already in the database means that we already have a sended message... probably.
-        const dbmember = database.GoLive.get(member.id);
-        //console.log(`now: ${activityName} db: ${dbmember.activityName}`);
-        const begun = dbmember.streamStarted;
-
-        if ((timeNow - begun) >= TWOHOURS) {
-          const { channel, id } = await sendStreaming(now);
-          const timeNow = Date.now();
-          database.GoLive.set(member.id, { sendedMessage: { channel: channel.id, messageID: id }, activityName: activityName, streamStarted: timeNow });
-          return; //console.log(database.GoLive.get(member.id));
-        } else {
-          //If the elapsed time is not greater than two hours then we need to edit the message or return if the activity is the same as the previous.
-          //console.log(database.GoLive.get(member.id));
-          const dbmember = database.GoLive.get(member.id);
-          if (activityName == dbmember.activityName) return; //console.log(`[GO LIVE] El usuario ${member.user.tag} ya estaba transmitiendo esta actividad`);
-          const channel = Muki.channels.cache.get(dbmember.sendedMessage.channel);
-          const message = await channel.messages.cache.fetch(dbmember.sendedMessage.messageID);
-          const embed = constructEmbed(now);
-          if (!embed) return;
-
-          database.GoLive.set(member.id, activityName, "activityName");
-          console.log(database.GoLive.get(member.id));
-          return message.edit(embed);
-        }
-      } else {
-        //If the member was not in the database we need to add him in.
-        const message = await sendStreaming(now);
-        if (!message) return;
-        const streamer = {
-          streamStarted: timeNow,
-          tag: member.user.tag,
-          activityName: activityName,
-          sendedMessage: {
-            channel: message.channel.id,
-            messageID: message.id
-          }
-        };
-
-        database.GoLive.set(member.id, streamer);
-        return; //console.log(database.GoLive.get(member.id));
+      console.log("GO LIVE");
+      if (!client.db.GoLive.has(now.member.id)) {
+        client.db.GoLive.set(now.member.id, Date.now());
+        newuser = true;
       }
+
+      const timediff = Date.now() - client.db.GoLive.get(now.member.id);
+      console.log(`Timediff: ${timediff}`);
+      if (timediff < TWOHOURS && !newuser) return;
+
+      const livestreamChannel = now.guild.channels.cache.find(channel => channel.type === "text" && channel.name === "directos");
+
+      if (!livestreamChannel) return;
+
+      const game = now.member.presence.activities.find(activity => activity.type !== "CUSTOM_STATUS") || { name: "Actividad Desconocida" };
+      const defaultGame = "Actividad Desconocida";
+
+      const gameImage = client.db.gameImages.get(game.name);
+
+      const embed = new MessageEmbed()
+        .setThumbnail(now.member.user.displayAvatarURL({ size: 512, dynamic: true }))
+        .setTitle(`¡${now.member.displayName} ha comenzado a transmitir ${game.name || defaultGame} en el canal ${now.channel.name}!`)
+        .setImage(gameImage);
+
+      
+      livestreamChannel.send(embed);
     }
+
   } catch (error) {
     console.error(error);
   }
