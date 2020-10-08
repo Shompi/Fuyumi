@@ -12,4 +12,5 @@ module.exports = {
   guildConfigs: new enmap({name:"guildconfigs"}),
   guildAutoRoles: new enmap({name: "autoroles"}),
   gameImages: new enmap({name: "gameimages"}),
+  enabledStreams: new enmap({ name: "enabledstreams" }),
 }
