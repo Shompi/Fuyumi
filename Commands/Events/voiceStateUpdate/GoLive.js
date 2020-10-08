@@ -1,15 +1,28 @@
 const { VoiceState, MessageEmbed } = require('discord.js');
 const TWOHOURS = 1000 * 60 * 60 * 2; // 2 Horas.
-
+const config = {
+  enabled: false,
+  channel: "",
+}
 
 module.exports = async (old = new VoiceState(), now = new VoiceState()) => {
+  const { client, guild } = now;
+
+  if (!client.db.enabledStreams.has(guild.id)) {
+    client.db.enabledStreams.set(guild.id, config);
+  }
+
+  const guildConfig = client.db.enabledStreams.get(guild.id);
+  if (!guildConfig.enabled) return;
+
+
+
   try {
     if (now.member.partial)
       await member.fetch();
 
 
     if (now.streaming) {
-      const { client } = now;
       let newuser = false;
 
       console.log("GO LIVE");
@@ -22,21 +35,20 @@ module.exports = async (old = new VoiceState(), now = new VoiceState()) => {
       console.log(`Timediff: ${timediff}`);
       if (timediff < TWOHOURS && !newuser) return;
 
-      const livestreamChannel = now.guild.channels.cache.find(channel => channel.type === "text" && channel.name === "directos");
+      const livestreamChannel = guild.channels.cache.get(guildConfig.channel);
 
       if (!livestreamChannel) return;
 
       const game = now.member.presence.activities.find(activity => activity.type !== "CUSTOM_STATUS") || { name: "Actividad Desconocida" };
-      const defaultGame = "Actividad Desconocida";
-
+      
       const gameImage = client.db.gameImages.get(game.name);
 
       const embed = new MessageEmbed()
         .setThumbnail(now.member.user.displayAvatarURL({ size: 512, dynamic: true }))
-        .setTitle(`¡${now.member.displayName} ha comenzado a transmitir ${game.name || defaultGame} en el canal ${now.channel.name}!`)
+        .setTitle(`¡${now.member.displayName} ha comenzado a transmitir ${game.name} en el canal ${now.channel.name}!`)
         .setImage(gameImage);
 
-      
+
       livestreamChannel.send(embed);
     }
 

@@ -7,6 +7,11 @@ const CONECTORES = [
   "está transmitiendo en vivo en"
 ]
 
+let config = {
+  enabled: false,
+  channel: "",
+}
+
   /**
    * 1.- Verificar que el usuario está stremeando
    * 2.- Verificar si el usuario estaba stremeando antes
@@ -25,7 +30,19 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
   if (!activity) return;
 
   if (activity && oldActivity) return; //console.log(`[STREAMING] ${now.member.user.tag} ya estaba stremeando de antes.`);
-  const streamingChannel = now.member.guild.channels.cache.find(channel => channel.name == "directos" && channel.type == 'text');
+
+  const { client } = now.guild;
+
+  if (!client.db.enabledStreams.has(guild.id)) {
+    client.db.enabledStreams.set(guild.id, config);
+  }
+
+  config = client.db.enabledStreams.get(guild.id);
+
+  if (!config.enabled) return;
+
+  const streamingChannel = now.guild.channels.cache.get(config.channel);
+
   if (!streamingChannel) return; //console.log("No se encontró canal de streamings.");
 
   const timeNow = Date.now();
