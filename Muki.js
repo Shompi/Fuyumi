@@ -1,7 +1,7 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
 const { MessageEmbed, Collection } = require('discord.js');
 const MukiClient = require('./Classes/MukiClient');
-const auth = require('./Keys/auth').beta;
+const auth = require('./Keys/auth').stable;
 const fs = require('fs');
 const GuildConfig = require('./Classes/GuildConfig');
 const cooldowns = new Collection();
