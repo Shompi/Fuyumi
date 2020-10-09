@@ -31,7 +31,7 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
 
   if (activity && oldActivity) return; //console.log(`[STREAMING] ${now.member.user.tag} ya estaba stremeando de antes.`);
 
-  const { client } = now.guild;
+  const { client, guild } = now;
 
   if (!client.db.enabledStreams.has(guild.id)) {
     client.db.enabledStreams.set(guild.id, config);
