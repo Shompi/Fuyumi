@@ -39,7 +39,7 @@ module.exports = async (old = new VoiceState(), now = new VoiceState()) => {
 
       if (!livestreamChannel) return;
 
-      const game = now.member.presence.activities.find(activity => activity.type !== "CUSTOM_STATUS") || { name: "Actividad Desconocida" };
+      const game = now.member.presence.activities.find(activity => activity.type === "PLAYING") || now.member.presence.activities.find(activity => activity.type !== "CUSTOM_STATUS") || { name: "Actividad Desconocida" };
       
       const gameImage = client.db.gameImages.get(game.name);
 
