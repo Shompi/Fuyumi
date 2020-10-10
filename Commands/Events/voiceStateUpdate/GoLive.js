@@ -49,6 +49,7 @@ module.exports = async (old = new VoiceState(), now = new VoiceState()) => {
         .setImage(gameImage);
 
 
+      client.db.GoLive.set(now.member.id, Date.now());
       livestreamChannel.send(embed);
     }
 
