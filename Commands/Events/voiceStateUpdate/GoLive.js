@@ -41,6 +41,8 @@ module.exports = async (old = new VoiceState(), now = new VoiceState()) => {
 
       const game = now.member.presence.activities.find(activity => activity.type === "PLAYING") || now.member.presence.activities.find(activity => activity.type !== "CUSTOM_STATUS") || { name: "Actividad Desconocida" };
       
+      if (!game) return;
+
       const gameImage = client.db.gameImages.get(game.name);
 
       const embed = new MessageEmbed()
