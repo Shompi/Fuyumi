@@ -18,7 +18,12 @@ module.exports = {
   aliases: ["votacion", "votar", "voto"],
   permissions: [],
   cooldown: 60,
-  execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { guild, channel, author, member, client: Muki } = message;
 
     //const cooldowns = Muki.db.votesCooldown;

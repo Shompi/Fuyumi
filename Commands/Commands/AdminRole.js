@@ -12,7 +12,12 @@ module.exports = {
   enabled: true,
   usage: "adminrole [@Mencion del rol]",
 
-  execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { mentions, guild, channel, member, client: Muki } = message;
 
     if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return channel.send(`Lo siento, este comando solo puede ser ejecutado por un Administrador o el Dueño de la Guild.`);

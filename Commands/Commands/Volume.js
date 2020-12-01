@@ -11,7 +11,12 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: [],
-  execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { guild, channel, client } = message;
     try {
       if (guild.voice) {

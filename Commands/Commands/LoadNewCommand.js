@@ -19,7 +19,12 @@ module.exports = {
   enabled: true,
   permissions: [],
   botOwnerOnly: true,
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { author, channel, client: Muki } = message;
 
     if (author.id !== Muki.OWNER) return undefined;

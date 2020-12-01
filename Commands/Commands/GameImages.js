@@ -15,7 +15,12 @@ module.exports = {
   botOwnerOnly: true,
   guildOnly: false,
   moderationOnly: false,
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { client } = message;
     /* add, edit, remove
     - Example message: muki!gameimage [-a / -e / -r] 

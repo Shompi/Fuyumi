@@ -21,7 +21,12 @@ module.exports = {
   permissions: [],
   filename: path.basename(__filename),
   cooldown: 10,
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { channel, client: Muki } = message;
     const wsPing = Muki.ws.ping;
 

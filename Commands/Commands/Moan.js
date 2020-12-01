@@ -34,7 +34,12 @@ module.exports = {
   enabled: true,
   aliases: ["gemir", "gemidos"],
   permissions: ["SPEAK", "CONNECT"],
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { guild, member, author, channel } = message;
     if (Moaning.has(guild.id)) return undefined;
     if (clips.length === 0) return channel.send("No hay archivos para reproducir.");

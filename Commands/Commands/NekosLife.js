@@ -43,8 +43,12 @@ module.exports = {
   aliases: [...NSFWENDPOINTS, ...SFWENDPOINTS],
   permissions: ["SEND_MESSAGES"],
   cooldown: 1,
-  async execute(message = new Message(), args = new Array()) {
-
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { channel, author, content, guild, client: Muki } = message;
     let prefix;
     if (!guild) prefix = "muki!";

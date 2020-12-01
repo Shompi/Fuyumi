@@ -36,7 +36,12 @@ module.exports = {
   aliases: [],
   permissions: [],
 
-  execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { guild, channel, member, author, client: Muki } = message;
     const prefix = args.shift();
 

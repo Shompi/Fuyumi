@@ -68,7 +68,12 @@ module.exports = {
   enabled: true,
   cooldown: 5,
   filename: basename(__filename),
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { channel } = message;
 
     const countryCode = args[0];

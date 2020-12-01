@@ -17,8 +17,12 @@ module.exports = {
   enabled: true,
   aliases: ["Discord", "discordstatus"],
   permissions: [],
-  execute(message = new Message(), args = new Array()) {
-
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { channel } = message;
     fetch(endpoint)
       .then(response => response.json())

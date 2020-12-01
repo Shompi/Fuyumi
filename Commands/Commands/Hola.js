@@ -14,7 +14,12 @@ module.exports = {
   guildOnly: true,
   filename: basename(__filename),
   cooldown: 16,
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { guild, channel, member } = message;
 
     message.react("✌").catch(console.error);

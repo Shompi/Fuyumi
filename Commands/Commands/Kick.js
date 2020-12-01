@@ -49,7 +49,12 @@ module.exports = {
   enabled: true,
   adminOnly: true,
   filename: path.basename(__filename),
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { channel, guild, member, client: Muki } = message;
 
     if (!args.length)

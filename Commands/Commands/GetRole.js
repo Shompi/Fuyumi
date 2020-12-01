@@ -39,8 +39,12 @@ module.exports = {
   guildOnly: true,
   permissions: ["MANAGE_ROLES"],
   cooldown: 10,
-  async execute(message = new Message(), args = new Array()) {
-
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
 
     const { client: Muki, guild, member, author, channel } = message;
 

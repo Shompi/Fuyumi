@@ -16,8 +16,12 @@ module.exports = {
   botOwnerOnly: true,
   guildOnly: false,
 
-  execute(message = new Message(), args = new Array()) {
-
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const cmd = spawn(GITPATH, ARGS);
     let log = "";
     cmd.stdout.on("data", (data) => {

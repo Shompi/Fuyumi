@@ -13,7 +13,12 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: [],
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { guild, channel, member } = message;
     try {
 

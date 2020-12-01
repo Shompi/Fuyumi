@@ -56,8 +56,12 @@ module.exports = {
   aliases: ["boorutags", "yanderetag", "yanderetags", "ytags", "deretags"],
   permissions: [],
 
-  async execute(message = new Message(), args = new Array()) {
-
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     if (args.length === 0)
       return noArgs(message.member);
 

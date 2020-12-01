@@ -12,7 +12,12 @@ module.exports = {
   enabled: true,
   permissions: [],
   botOwnerOnly: true,
-  execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { channel, author, client } = message;
     const notReloaded = [], reloaded = [];
 

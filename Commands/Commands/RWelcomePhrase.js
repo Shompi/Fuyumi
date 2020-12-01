@@ -33,7 +33,12 @@ module.exports = {
   aliases: [],
   permissions: [],
 
-  execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { member, channel, guild, author, client: Muki } = message;
 
     if (!member.hasPermission('ADMINISTRATOR', { checkOwner: true })) return undefined;

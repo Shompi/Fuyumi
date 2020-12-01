@@ -51,7 +51,12 @@ module.exports = {
   aliases: [],
   permissions: [],
   cooldown: 5,
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { channel, author } = message;
     try {
       let content = message.content.split(" ").slice(1).join(" ");

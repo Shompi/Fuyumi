@@ -31,8 +31,12 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: [],
-  execute(message = new Message(), args = new Array()) {
-
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { author, member, guild, mentions, channel, client: Muki } = message;
     const config = Muki.db.guildConfigs.get(guild.id);
 

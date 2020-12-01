@@ -50,7 +50,12 @@ module.exports = {
   usage: "giveaway [Tiempo en minutos.] [Lo que quieres sortear]",
   filename: basename(__filename),
 
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { guild, client: Muki, channel, member, author } = message;
 
     if (!member.hasPermission("ADMINISTRATOR", { checkOwner: true }) && guild.id !== "537484725896478733")

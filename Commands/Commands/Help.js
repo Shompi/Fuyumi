@@ -13,7 +13,12 @@ module.exports = {
   guildOnly: false,
   botOwnerOnly: false,
   cooldown: 5,
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { client, guild, channel, author } = message;
 
     const prefix = client.db.guildConfigs.get(guild.id).prefix;

@@ -16,7 +16,12 @@ module.exports = {
   nsfw: false,
   aliases: ['inv'],
   permissions: [],
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { channel, client } = message;
     const invite = await client.generateInvite(607177824);
     return channel.send(invitation(invite))

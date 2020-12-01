@@ -30,8 +30,12 @@ module.exports = {
   enabled: true,
   aliases: [],
   permissions: [],
-  execute(message = new Message(), args = new Array()) {
-    //In this command, content is irrelevant.
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {    //In this command, content is irrelevant.
     const { author, guild, member, channel, client: Muki } = message;
 
     //Check Permissions.

@@ -21,8 +21,12 @@ module.exports = {
   botOwnerOnly: false,
   guildOnly: true,
   moderationOnly: false,
-  execute(message = new Message(), args = new Array()) {
-    /*Code Here*/
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {    /*Code Here*/
 
     const { guild, member, client } = message;
 

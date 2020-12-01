@@ -36,7 +36,12 @@ module.exports = {
   aliases: [],
   permissions: [],
 
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { guild, mentions, channel } = message;
     try {
       const user = mentions.users.first() || message.author;

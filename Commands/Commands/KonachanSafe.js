@@ -52,7 +52,12 @@ module.exports = {
   aliases: ['safe'],
   permissions: [],
   cooldown: 5,
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { channel } = message;
     let response = Booru.KonaPost;
     let content = message.content.split(" ").slice(1).join(" ");

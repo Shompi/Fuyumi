@@ -14,7 +14,12 @@ module.exports = {
   botOwnerOnly: true,
   guildOnly: false,
   moderationOnly: false,
-  execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { channel } = message;
     return channel.send('OK!');
 

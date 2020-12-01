@@ -30,7 +30,12 @@ module.exports = {
   nsfw: false,
   enabled: true,
   permissions: [],
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  execute(message, args) {
     const { author, channel, member, guild } = message;
 
     if (!guild.voice) return channel.send(noVoiceChannel(author));
@@ -38,7 +43,7 @@ module.exports = {
     if (member.voice.channelID !== guild.me.voice.channelID) return channel.send(differentChannel(author));
 
     if (guild.voice.connection) {
-      await guild.voice.channel.leave();
+      guild.voice.channel.leave();
       return channel.send('👋');
     }
   }

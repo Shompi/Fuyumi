@@ -41,8 +41,12 @@ module.exports = {
   enabled: true,
   permissions: ['MANAGE_ROLES'],
   filename: path.basename(__filename),
-  async execute(message = new Message(), args = new Array()) {
-
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     //Args will come like "<membermention> <rolename>, <rolename>, <rolename>"
     const { channel, guild, member, client: Muki } = message;
     const { me, roles: GuildRoles } = guild;

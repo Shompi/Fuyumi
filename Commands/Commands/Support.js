@@ -10,7 +10,12 @@ module.exports = {
   description: "Enlace de invitación al servidor oficial de Muki.",
   enabled: true,
   cooldown: 10,
-  async execute(message = new Message(), args = new Array()) {
+  /**
+   * 
+   * @param {Message} message 
+   * @param {Array} args 
+   */
+  async execute(message, args) {
     const { channel, member, client: Muki } = message;
 
     const support = Muki.guilds.cache.get(Muki.SUPPORTGUILD);
