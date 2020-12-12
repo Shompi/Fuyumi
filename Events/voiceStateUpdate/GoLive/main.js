@@ -1,11 +1,15 @@
-const { VoiceState, MessageEmbed } = require('discord.js');
+const { Presence, MessageEmbed } = require('discord.js');
 const TWOHOURS = 1000 * 60 * 60 * 2; // 2 Horas.
 const config = {
   enabled: false,
   channel: "",
 }
 
-module.exports = async (old = new VoiceState(), now = new VoiceState()) => {
+/**
+ * @param {Presence} old 
+ * @param {Presence} now 
+ */
+module.exports = async (old, now) => {
   const { client, guild } = now;
 
   if (!client.db.enabledStreams.has(guild.id)) {
@@ -14,8 +18,6 @@ module.exports = async (old = new VoiceState(), now = new VoiceState()) => {
 
   const guildConfig = client.db.enabledStreams.get(guild.id);
   if (!guildConfig.enabled) return;
-
-
 
   try {
     if (now.member.partial)
@@ -40,7 +42,7 @@ module.exports = async (old = new VoiceState(), now = new VoiceState()) => {
       if (!livestreamChannel) return;
 
       const game = now.member.presence.activities.find(activity => activity.type === "PLAYING") || now.member.presence.activities.find(activity => activity.type !== "CUSTOM_STATUS") || { name: "Actividad Desconocida" };
-      
+
       if (!game) return;
 
       const gameImage = client.db.gameImages.get(game.name);
