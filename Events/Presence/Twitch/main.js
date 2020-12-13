@@ -1,5 +1,5 @@
-const { MessageEmbed, Presence } = require('discord.js');
-const database = require('../../LoadDatabase');
+const { Presence, Activity, TextChannel, MessageEmbed } = require('discord.js');
+
 const TWOHOURS = 1000 * 60 * 60 * 2;
 const CONECTORES = [
   "ha comenzado a transmitir en",
@@ -12,6 +12,30 @@ let config = {
   channel: "",
 }
 
+/**
+ * @param {Presence} now 
+ * @param {Activity} activity 
+ * @param {TextChannel} streamingChannel 
+ */
+const sendStreaming = (now, activity, streamingChannel) => {
+  //In this case, activity.state is the name of the game being played.
+  const image = now.guild.client.db.gameImages.get(activity.state) || now.guild.client.db.gameImages.get("Actividad Desconocida");
+  const embed = new MessageEmbed()
+    .setColor(now.member.displayColor)
+    .setThumbnail(`${now.member.user.displayAvatarURL({ size: 256 })}`)
+    .setTitle(`¡${now.member.displayName} ${CONECTORES[Math.floor(Math.random() * CONECTORES.length)]} ${activity.name}!`)
+    .setDescription(`**${activity.details}**\n[Ver transmisión](${activity.url})`)
+    .setImage(image);
+
+  return streamingChannel.send(embed);
+}
+
+/**
+ * @param {Presence} old 
+ * @param {Presence} now 
+ */
+module.exports = (old, now) => {
+
   /**
    * 1.- Verificar que el usuario está stremeando
    * 2.- Verificar si el usuario estaba stremeando antes
@@ -20,7 +44,6 @@ let config = {
    * >Si son distintas = Actualizar el mensaje relacionado con el primer livestream.
    */
 
-module.exports = async (old = new Presence(), now = new Presence()) => {
 
   if (now.user.bot) return;
   if (!old) return;
@@ -32,6 +55,7 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
   if (activity && oldActivity) return; //console.log(`[STREAMING] ${now.member.user.tag} ya estaba stremeando de antes.`);
 
   const { client, guild } = now;
+  const database = client.db;
 
   if (!client.db.enabledStreams.has(guild.id)) {
     client.db.enabledStreams.set(guild.id, config);
@@ -70,15 +94,3 @@ module.exports = async (old = new Presence(), now = new Presence()) => {
   }
 }
 
-const sendStreaming = (now = new Presence(), activity, streamingChannel) => {
-  //In this case, activity.state is the name of the game being played.
-  const image = now.guild.client.db.gameImages.get(activity.state) || now.guild.client.db.gameImages.get("Actividad Desconocida");
-  const embed = new MessageEmbed()
-    .setColor(now.member.displayColor)
-    .setThumbnail(`${now.member.user.displayAvatarURL({ size: 256 })}`)
-    .setTitle(`¡${now.member.displayName} ${CONECTORES[Math.floor(Math.random() * CONECTORES.length)]} ${activity.name}!`)
-    .setDescription(`**${activity.details}**\n[Ver transmisión](${activity.url})`)
-    .setImage(image);
-
-  return streamingChannel.send(embed);
-}

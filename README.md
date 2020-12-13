@@ -1,19 +1,20 @@
 # README #
 
-### [ESP]
-* Mi primer botcito creado con la finalidad de usarlo en la Guild Exiliados, pero puede ser usado sin problemas en otros servidores.
+![Muki](https://cdn.discordapp.com/avatars/552272683543560194/99c25886d21ce826f672296537aedde4.jpg?size=2048)
+
+# Muki
+
+_My first JavaScript proyect, a Discord bot, the one that gave me so much knowledge about how JS works._
 
 ### What is this repository for? ###
 
-* Version control para Muki
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* ShompiFlen#3338 en Discord [ESP / ENG] :D
-* or through telegram @ShompiFlen
+_To maintain version control over Muki's development, plus it is easier for me to maintain, improve and update her code, also to accept suggestions, resolve issues, etc._
 
 ### Where can I read the documentation? ###
 
-* Si quieres entender aun que sea en lo más mínimo como funciona este bot, necesitas saber lo básico de Javascript (ES6),
-saber usar node.js version >= 12.x.x, y saber usar discord.js v12, puedes ver la documentación de discord.js [aqui](https://discord.js.org).
+_Muki itself doesn't have a documentation (besides the one showing the commands inside Discord.) but Im leaving the documentation for some of the packages that Muki is most dependent:_
+
+* [Discord.js v12+](https://discord.js.org/)
+* [node.js v14+](https://nodejs.org/)
+* [ENMAP](https://enmap.evie.dev/)
+* [node-fetch](https://github.com/node-fetch/node-fetch)

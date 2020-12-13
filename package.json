@@ -20,7 +20,6 @@
     "minecraft-query": "^1.0.9",
     "node-fetch": "^2.6.1",
     "node-opus": "^0.3.3",
-    "parse-ms": "^2.1.0",
     "parse-time": "^0.1.4",
     "pretty-ms": "^6.0.1",
     "utf-8-validate": "^5.0.2",
