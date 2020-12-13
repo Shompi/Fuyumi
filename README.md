@@ -12,7 +12,7 @@ _To maintain version control over Muki's development, plus it is easier for me t
 
 ### Where can I read the documentation? ###
 
-_Muki itself doesn't have a documentation (besides the one showing the commands inside Discord.) but Im leaving the documentation for some of the packages that Muki is most dependent for:_
+_Muki itself doesn't have a documentation (besides the one showing the commands inside Discord.) but Im leaving the documentation for some of the packages that Muki is most dependent:_
 
 * [Discord.js v12+](https://discord.js.org/)
 * [node.js v14+](https://nodejs.org/)
