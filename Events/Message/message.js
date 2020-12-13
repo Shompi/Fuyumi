@@ -68,7 +68,6 @@ module.exports = {
           return channel.send(`**Mi prefijo es:** \`${prefix}\``);
 
 
-        console.log(args);
         const commandName = args.shift().toLowerCase();
         const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
         if (!command) return channel.send(noCommandFound(author));
