@@ -1,6 +1,6 @@
 # README #
 
-![Muki](https://cdn.discordapp.com/avatars/552272683543560194/99c25886d21ce826f672296537aedde4.jpg?size=2048)
+![Muki](https://cdn.discordapp.com/avatars/552272683543560194/99c25886d21ce826f672296537aedde4.jpg?size=512)
 
 # Muki
 
