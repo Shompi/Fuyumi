@@ -1,12 +1,7 @@
 const fetch = require('node-fetch');
 const { MessageEmbed, Message } = require('discord.js');
-const Booru = require('../../Classes/Booru')
+const { YanderePost } = require('../../Classes/Booru')
 const path = require('path');
-
-const fetchError = new MessageEmbed()
-  .setTitle("❌ Fetch error.")
-  .setDescription("Lo siento, hubo un error al hacer el request a **yande.re/post**. Por favor inténtalo más tarde.")
-  .setColor("RED");
 
 const noResults = new MessageEmbed()
   .setTitle('❌ No encontré nada con los tags que ingresaste.')
@@ -24,7 +19,14 @@ const ratings = (rating) => {
   return r[rating] || 'Desconocido';
 };
 
-const showpage = (post = Booru.YanderePost[0], message = new Message(), index, total) => {
+/**
+ * 
+ * @param {YanderePost} post 
+ * @param {Message} message 
+ * @param {number} index 
+ * @param {number} total 
+ */
+const showpage = (post, message, index, total) => {
   const tags = post.tags.split(" ").slice(0, 10).join(", ").replace(/_/g, " ");
   const embed = new MessageEmbed()
     .setAuthor(`->Full Resolución<-`, null, post.file_url)
@@ -84,8 +86,8 @@ module.exports = {
       await msg.react('🔄');
       const filter = (reaction, user) => ((reaction.emoji.name === '⬅' || reaction.emoji.name === '➡' || reaction.emoji.name === '🔄') && user.id === author.id);
 
-      await msg.createReactionCollector(filter, { time: 1000 * 60 * 4 })
-        .on('collect', async (reaction, user) => {
+      msg.createReactionCollector(filter, { time: 1000 * 60 * 4 })
+        .on('collect', (reaction, user) => {
           if (reaction.emoji.name == '➡') {
             pageindex++;
             if (pageindex >= response.length) pageindex = 0;
@@ -107,7 +109,7 @@ module.exports = {
           }
 
         })
-        .on('end', async () => {
+        .on('end', () => {
           if (channel.type === 'dm') return;
           else msg.reactions.removeAll();
         })
