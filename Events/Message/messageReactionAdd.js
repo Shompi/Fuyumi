@@ -1,4 +1,4 @@
-const { MessageReaction, User } = require('discord.js');
+const { MessageReaction, User, TextChannel } = require('discord.js');
 const { basename } = require('path');
 
 //#region Stars reaction

@@ -1,13 +1,17 @@
+//@ts-check
 'use strict'
-const { MessageEmbed, Message } = require('discord.js');
+const { MessageEmbed, Message, Role, Collection } = require('discord.js');
 const { basename } = require('path');
 
+
+/**@param {Role} role */
 const roleRemove = (role) =>
   new MessageEmbed()
     .setTitle(`Te he quitado el rol ${role.name} exitósamente!`)
     .setDescription("Para volver a tener este rol, ejecuta el comando nuevamente.")
     .setColor("GREEN");
 
+/**@param {Role} role */
 const roleAdd = (role) =>
   new MessageEmbed()
     .setTitle(`Te he añadido el rol ${role.name} exitósamente!`)
@@ -20,6 +24,7 @@ const noPermissions =
     .setDescription("¡Necesito el permiso \`MANAGE_ROLES\` en **mi Rol más alto** para poder añadir roles!\n\nO ¿Intentaste añadirte un rol mas alto que el mio?\n**¡No puedo hacer eso!**")
     .setColor("RED");
 
+/**@param {Collection<string, Role>} roles */
 const autoRoleList = (roles) => {
   const description = roles.map(r => `**${r.name}** (ID: ${r.id})`).join("\n");
 
@@ -31,61 +36,150 @@ const autoRoleList = (roles) => {
 module.exports = {
   name: "getrole",
   filename: basename(__filename),
-  aliases: ["roleget", "getrol"],
-  description: "Te asigna / quita el rol que especifiques.",
+  aliases: [],
+  description: "Te asigna / quita el rol que especifiques.\nSi eres administrador, puedes escribir **<prefijo>getrole -add | -rem idDelRol1, idDelRol2** para añadir o quitar roles autoasignables.",
   usage: "getrole [Nombre del rol]",
   nsfw: false,
   enabled: true,
   guildOnly: true,
-  permissions: ["MANAGE_ROLES"],
-  cooldown: 10,
+  permissions: [],
+  flags: ['-add', '-rem'],
+  cooldown: 3,
   /**
    * 
    * @param {Message} message 
    * @param {Array} args 
    */
-  async execute(message, args) {
+  execute(message, args) {
+    const { client, guild } = message;
 
-    const { client: Muki, guild, member, author, channel } = message;
-
-    const guildroles = guild.roles.cache;
-    const { guildAutoRoles } = Muki.db;
-
-    const autoroles = guildAutoRoles.get(guild.id) || []; //Array of objects {name, id}.
-
-    if (args.length === 0)
-      return channel.send(`${author} debes escribir el nombre del rol!`, { embed: autoRoleList(autoroles) });
-
-    const rolename = args.join(" ");
-
-    if (autoroles.length === 0)
-      return channel.send(`Lo siento ${author}, no hay ningun rol-autoasignable configurado en este servidor.`);
-
-    if (autoroles.some(dbrol => dbrol.name.toLowerCase() === rolename.toLowerCase())) {
-
-      const role = guildroles.find(role => role.name.toLowerCase() === rolename.toLowerCase());
-      if (!role)
-        return channel.send(`No encontré el rol **${rolename}** en este servidor!`);
-
-      try {
-        if (!guild.me.permissions.has("MANAGE_ROLES", true))
-          return channel.send(noPermissions);
-
-        if (member.roles.cache.has(role.id)) {
-          //if the member already has the role and the role is configued as auto-role, we can remove it from him.
-          await member.roles.remove(role);
-
-          return channel.send(roleRemove(role));
-        }
-        else {
-          await member.roles.add(role);
-
-          return channel.send(roleAdd(role));
-        }
-      } catch (err) {
-        console.log(err);
-        return channel.send(`Hubo un error al ejecutar este comando.`, { embed: noPermissions });
-      }
+    // Si el usuario invocando el comando es administrador o dueño de la Guild:
+    if (message.member.hasPermission("ADMINISTRATOR", { checkOwner: true }) && this.flags.includes(args[0])) {
+      ExecuteAdminCommand(message, args);
+    } else {
+      ExecuteCommandNormally(message, args);
     }
   }
+}
+
+// Funciones:
+
+/**
+ * @param {Message} message
+ * @param {String[]} args
+ */
+const ExecuteAdminCommand = (message, args) => {
+
+  // Recursos fundamentales: Roles
+  const { client, guild } = message;
+
+  /** Roles que son parte de la Guild. */
+  const GuildRoles = guild.roles.cache;
+
+  /**
+  * Lista de roles guardados en la base de datos.
+  * @type {string[]} 
+  */
+  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id) || [];
+
+
+  // Funciones:
+
+  /** @param {String[]} args */
+  const AddRoleToDB = (args) => {
+    // Verificar que el o los roles existan en la Guild
+    const noExisten = [];
+    const Existen = [];
+
+    for (const roleID of args) {
+
+      // Si roleID no existe como ID de un rol en la Guild
+      if (!GuildRoles.has(roleID))
+        noExisten.push(roleID);
+
+      else {
+        // Si roleID EXISTE como ID válida de un rol en la Guild
+
+        if (GuildAutoRoles.includes(roleID)) continue; // Por que si ya está en la base de datos, no es necesario volver a colocarlo. 
+
+        Existen.push(GuildRoles.get(roleID).name);
+        GuildAutoRoles.push(roleID);
+
+      }
+    }
+
+    // Guardamos en la base de datos nuevamente
+    client.db.guildAutoRoles.set(guild.id, GuildAutoRoles);
+
+    return Existen;
+  }
+
+  /** @param {String[]} args */
+  const RemRoleFromDB = (args) => {
+    let newRoles = GuildAutoRoles;
+    const RoleNames = [];
+
+    for (const roleID of args) {
+      newRoles = newRoles.filter(roleid => roleid !== roleID);
+    }
+
+    // Guardamos en la base de datos los nuevos roles
+    client.db.guildAutoRoles.set(guild.id, newRoles);
+
+    for (const roleID of newRoles) {
+      if (!GuildAutoRoles.includes(roleID)) {
+        RoleNames.push(GuildRoles.get(roleID).name);
+      }
+    }
+
+    return RoleNames;
+  }
+
+  // Verificar el tipo de operacion que va a realizar el Administrador [-add o -rem]
+  const OP = args.shift(); // -add o -rem
+
+  if (OP == '-add') {
+    const AddedRoleNames = AddRoleToDB(args);
+
+    message.channel.send(`Se agregaron los siguientes roles: **${AddedRoleNames.join(", ")}**`);
+  }
+  else {
+    const RemovedRoleNames = RemRoleFromDB(args);
+
+    message.channel.send(`Se quitaron los siguientes roles: **${RemovedRoleNames.join(", ")}**`);
+  }
+}
+
+
+/**
+ * @param {Message} message 
+ * @param {String[]} args 
+ */
+const ExecuteCommandNormally = (message, args) => {
+
+  // Se busca el rol POR NOMBRE y se le asigna al miembro.
+  const { guild, client, member } = message;
+
+  const GuildRoles = guild.roles.cache;
+
+  /** @type {Array} */
+  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id) || [];
+
+  const toAdd = [], notAdded = [], toAddNames = [];
+
+  for (const rolename of args) {
+    const RoleInGuild = GuildRoles.find(role => role.name.toLowerCase() === rolename.toLowerCase());
+
+    if (RoleInGuild && GuildAutoRoles.includes(RoleInGuild.id)) {
+      toAdd.push(RoleInGuild.id);
+      toAddNames.push(RoleInGuild.name);
+    }
+    else notAdded.push(rolename);
+  }
+
+  member.roles.add(toAdd).then(member => {
+    message.channel.send(`Se te añadieron **${toAdd.length}** roles: **${toAddNames.join(", ")}**\nNo se te añadió: **${notAdded.join(", ")}**`);
+  }).catch(err => {
+    message.channel.send("Ocurrió un error al intentar añadirte los roles, verifica que yo tenga lo permisos adecuados y que mi rol sea más alto que los roles que estoy intentando dar.");
+  });
 }

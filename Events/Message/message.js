@@ -8,12 +8,6 @@ const notNSFW = new MessageEmbed()
   .setDescription(`¡Solo puedes utilizar este comando en canales **NSFW**!`)
   .setColor("RED");
 
-const cmdNotEnabled = (author) =>
-  new MessageEmbed()
-    .setTitle(`🔌 ${author.username}`)
-    .setDescription("Este comando esta deshabilitado globalmente.")
-    .setColor('RED');
-
 const noCommandFound = (author) =>
   new MessageEmbed()
     .setTitle(`🔎 ERROR: 404`)
@@ -72,17 +66,12 @@ module.exports = {
         const command = Muki.commands.get(commandName) || Muki.commands.find(c => c.aliases.includes(commandName));
         if (!command) return channel.send(noCommandFound(author));
 
-        //Specific commands.
-
-        //Check channel id (fivem channel on Exiliados)
-        if (channel.id === "707521827403989002" && command.name === 'players')
-          return command.execute(message, args);
-        //-----------------------------------------
+        // Validaciones:
         if (command.botOwnerOnly && author.id !== Muki.OWNER)
           return;
 
         if (!command.enabled && author.id !== Muki.OWNER)
-          return channel.send(cmdNotEnabled(author));
+          return;
 
         if (command.guildOnly && !guild)
           return channel.send("No puedo ejecutar este comando en mensajes privados!");
@@ -97,6 +86,7 @@ module.exports = {
           cooldowns.set(command.name, new Collection());
         }
 
+        // Validaciones de Cooldowns:
         const now = Date.now();
         const timestamps = cooldowns.get(command.name);
         const cooldownAmount = (command.cooldown || 2) * 1000;
@@ -119,7 +109,6 @@ module.exports = {
           return channel.send("Hubo un error al intentar ejecutar este comando.");
         }
       }
-
     } catch (error) {
       console.log(error);
       const e = new MessageEmbed()
