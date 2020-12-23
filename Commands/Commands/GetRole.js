@@ -83,7 +83,7 @@ const ExecuteAdminCommand = (message, args) => {
   * Lista de roles guardados en la base de datos.
   * @type {Array}
   */
-  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id).map(role => role.id) || [];
+  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id) || [];
 
 
   // Funciones:
