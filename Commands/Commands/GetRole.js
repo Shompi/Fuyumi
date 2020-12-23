@@ -38,12 +38,12 @@ module.exports = {
   filename: basename(__filename),
   aliases: [],
   description: "Te asigna / quita el rol que especifiques.\nSi eres administrador, puedes escribir **<prefijo>getrole -add | -rem idDelRol1, idDelRol2** para añadir o quitar roles autoasignables.",
-  usage: "getrole [Nombre del rol]",
+  usage: "getrole nombre del rol 1, ..., nombre del rol n",
   nsfw: false,
   enabled: true,
   guildOnly: true,
   permissions: [],
-  flags: ['-add', '-rem'],
+  flags: ['-add', '-rem', '-show'],
   cooldown: 3,
   /**
    * 
@@ -52,6 +52,9 @@ module.exports = {
    */
   execute(message, args) {
     const { client, guild } = message;
+
+    if (args.length === 0)
+      return ShowRoles(message);
 
     // Si el usuario invocando el comando es administrador o dueño de la Guild:
     if (message.member.hasPermission("ADMINISTRATOR", { checkOwner: true }) && this.flags.includes(args[0])) {
@@ -157,6 +160,9 @@ const ExecuteAdminCommand = (message, args) => {
  */
 const ExecuteCommandNormally = (message, args) => {
 
+  // Preparamos los argumentos, en este caso nombre de roles, separados por coma
+  const argumentos = args.join(" ").split(/,\s+/g);
+
   // Se busca el rol POR NOMBRE y se le asigna al miembro.
   const { guild, client, member } = message;
 
@@ -167,7 +173,7 @@ const ExecuteCommandNormally = (message, args) => {
 
   const toAdd = [], notAdded = [], toAddNames = [];
 
-  for (const rolename of args) {
+  for (const rolename of argumentos) {
     const RoleInGuild = GuildRoles.find(role => role.name.toLowerCase() === rolename.toLowerCase());
 
     if (RoleInGuild && GuildAutoRoles.includes(RoleInGuild.id)) {
@@ -182,4 +188,28 @@ const ExecuteCommandNormally = (message, args) => {
   }).catch(err => {
     message.channel.send("Ocurrió un error al intentar añadirte los roles, verifica que yo tenga lo permisos adecuados y que mi rol sea más alto que los roles que estoy intentando dar.");
   });
+}
+
+/** @param {Message} message */
+const ShowRoles = (message) => {
+  const { client, guild } = message;
+
+  /** @type {String[]} */
+  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id) || [];
+
+  const GuildRoles = guild.roles.cache;
+
+  const Roles = [];
+
+  for (const roleID of GuildAutoRoles) {
+    Roles.push(`${GuildRoles.get(roleID).name} ${roleID}`);
+  }
+
+  const embed = new MessageEmbed()
+    .setTitle("Roles que te puedes autoasignar:")
+    .setDescription(`\`\`\`\n${Roles.join("\n")}\`\`\``)
+    .setColor("BLUE")
+    .setThumbnail(guild.iconURL({ size: 512 }));
+
+  message.channel.send(embed);
 }
