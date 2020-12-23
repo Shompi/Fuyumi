@@ -153,6 +153,23 @@ const ExecuteAdminCommand = (message, args) => {
   }
 }
 
+/** @param {Message} message */
+const ShowRoles = (message) => {
+  const { client, guild } = message;
+
+  /** Arreglo de objetos {name: string id: string}*/
+  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id) || [];
+  console.log(GuildAutoRoles);
+
+  const embed = new MessageEmbed()
+    .setTitle("Roles que te puedes autoasignar:")
+    .setDescription(`\`\`\`\n${GuildAutoRoles.map(role => `${role.name} (${role.id})`).join("\n")}\`\`\``)
+    .setColor("BLUE")
+    .setThumbnail(guild.iconURL({ size: 512 }));
+
+  message.channel.send(embed);
+}
+
 
 /**
  * @param {Message} message 
@@ -171,38 +188,41 @@ const ExecuteCommandNormally = (message, args) => {
   /** Arreglo de objetos {name:, id:} */
   const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id).map(role => role.id) || [];
 
-  const toAdd = [], notAdded = [], toAddNames = [];
+  const toAdd = [], notAdded = [], toAddNames = [], toRemove = [];
 
   for (const rolename of argumentos) {
     const RoleInGuild = GuildRoles.find(role => role.name.toLowerCase() === rolename.toLowerCase());
 
     if (RoleInGuild && GuildAutoRoles.includes(RoleInGuild.id)) {
-      toAdd.push(RoleInGuild.id);
-      toAddNames.push(RoleInGuild.name);
+
+      // Verificar si el miembro ya tiene uno de los roles que se quiere asignar, de ser así, debemos quitarlo
+      if (member.roles.cache.has(RoleInGuild.id))
+        toRemove.push(RoleInGuild.id);
+
+      else {
+        toAdd.push(RoleInGuild.id);
+        toAddNames.push(RoleInGuild.name);
+      }
     }
     else notAdded.push(rolename);
   }
 
-  member.roles.add(toAdd).then(member => {
-    message.channel.send(`Se te añadieron **${toAdd.length}** roles: **${toAddNames.join(", ")}**\nNo se te añadió: **${notAdded.join(", ")}**`);
+  const MemberRoles = member.roles.cache;
+
+  for (const roleID of toRemove) {
+    MemberRoles.delete(roleID);
+  }
+
+  for (const roleID of toAdd) {
+    const GuildRole = GuildRoles.get(roleID);
+
+    MemberRoles.set(roleID, GuildRole);
+  }
+
+
+  member.roles.set(MemberRoles).then(member => {
+    message.reply(`Se te añadieron **${toAdd.length}** roles: **${toAddNames.join(", ")}**\nNo se te añadió: **-${notAdded.join(", ")}**`);
   }).catch(err => {
-    message.channel.send("Ocurrió un error al intentar añadirte los roles, verifica que yo tenga lo permisos adecuados y que mi rol sea más alto que los roles que estoy intentando dar.");
+    message.reply("Ocurrió un error al intentar añadirte los roles, verifica que yo tenga lo permisos adecuados y que mi rol sea más alto que los roles que estoy intentando dar.");
   });
-}
-
-/** @param {Message} message */
-const ShowRoles = (message) => {
-  const { client, guild } = message;
-
-/** Arreglo de objetos {name: string id: string}*/
-  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id) || [];
-  console.log(GuildAutoRoles);
-
-  const embed = new MessageEmbed()
-    .setTitle("Roles que te puedes autoasignar:")
-    .setDescription(`\`\`\`\n${GuildAutoRoles.map(role => `${role.name} (${role.id})`).join("\n")}\`\`\``)
-    .setColor("BLUE")
-    .setThumbnail(guild.iconURL({ size: 512 }));
-
-  message.channel.send(embed);
 }
