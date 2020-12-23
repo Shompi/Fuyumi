@@ -81,9 +81,9 @@ const ExecuteAdminCommand = (message, args) => {
 
   /**
   * Lista de roles guardados en la base de datos.
-  * @type {string[]} 
+  * @type {Array}
   */
-  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id) || [];
+  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id).map(role => role.id) || [];
 
 
   // Funciones:
@@ -95,19 +95,18 @@ const ExecuteAdminCommand = (message, args) => {
     const Existen = [];
 
     for (const roleID of args) {
-
+      const RoleInGuild = GuildRoles.get(roleID);
       // Si roleID no existe como ID de un rol en la Guild
-      if (!GuildRoles.has(roleID))
+      if (!RoleInGuild)
         noExisten.push(roleID);
 
       else {
         // Si roleID EXISTE como ID válida de un rol en la Guild
 
-        if (GuildAutoRoles.includes(roleID)) continue; // Por que si ya está en la base de datos, no es necesario volver a colocarlo. 
+        if (GuildAutoRoles.find(autorole => autorole.id === roleID)) continue; // Por que si ya está en la base de datos, no es necesario volver a colocarlo. 
 
         Existen.push(GuildRoles.get(roleID).name);
-        GuildAutoRoles.push(roleID);
-
+        GuildAutoRoles.push({ name: RoleInGuild.name, id: RoleInGuild.id });
       }
     }
 
@@ -130,7 +129,8 @@ const ExecuteAdminCommand = (message, args) => {
     client.db.guildAutoRoles.set(guild.id, newRoles);
 
     for (const roleID of newRoles) {
-      if (!GuildAutoRoles.includes(roleID)) {
+
+      if (!GuildAutoRoles.find(autorole => autorole.id === roleID)) {
         RoleNames.push(GuildRoles.get(roleID).name);
       }
     }
@@ -168,8 +168,8 @@ const ExecuteCommandNormally = (message, args) => {
 
   const GuildRoles = guild.roles.cache;
 
-  /** @type {Array} */
-  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id) || [];
+  /** Arreglo de objetos {name:, id:} */
+  const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id).map(role => role.id) || [];
 
   const toAdd = [], notAdded = [], toAddNames = [];
 
@@ -194,21 +194,13 @@ const ExecuteCommandNormally = (message, args) => {
 const ShowRoles = (message) => {
   const { client, guild } = message;
 
-  /** @type {String[]} */
+/** Arreglo de objetos {name: string id: string}*/
   const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id) || [];
   console.log(GuildAutoRoles);
-  return;
-  const GuildRoles = guild.roles.cache;
-
-  const Roles = [];
-
-  for (const roleID of GuildAutoRoles) {
-    Roles.push(`${GuildRoles.get(roleID).name} ${roleID}`);
-  }
 
   const embed = new MessageEmbed()
     .setTitle("Roles que te puedes autoasignar:")
-    .setDescription(`\`\`\`\n${Roles.join("\n")}\`\`\``)
+    .setDescription(`\`\`\`\n${GuildAutoRoles.map(role => role.name).join("\n")}\`\`\``)
     .setColor("BLUE")
     .setThumbnail(guild.iconURL({ size: 512 }));
 
