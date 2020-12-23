@@ -184,6 +184,7 @@ const ExecuteCommandNormally = (message, args) => {
   const { guild, client, member } = message;
 
   const GuildRoles = guild.roles.cache;
+  const MemberRoles = member.roles.cache;
 
   /** Arreglo de objetos {name:, id:} */
   const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id).map(role => role.id) || [];
@@ -196,32 +197,22 @@ const ExecuteCommandNormally = (message, args) => {
     if (RoleInGuild && GuildAutoRoles.includes(RoleInGuild.id)) {
 
       // Verificar si el miembro ya tiene uno de los roles que se quiere asignar, de ser así, debemos quitarlo
-      if (member.roles.cache.has(RoleInGuild.id))
+      if (member.roles.cache.has(RoleInGuild.id)) {
         toRemove.push(RoleInGuild.id);
+        MemberRoles.delete(RoleInGuild.id);
+      }
 
       else {
         toAdd.push(RoleInGuild.id);
         toAddNames.push(RoleInGuild.name);
+        MemberRoles.set(RoleInGuild.id, RoleInGuild);
       }
     }
     else notAdded.push(rolename);
   }
 
-  const MemberRoles = member.roles.cache;
-
-  for (const roleID of toRemove) {
-    MemberRoles.delete(roleID);
-  }
-
-  for (const roleID of toAdd) {
-    const GuildRole = GuildRoles.get(roleID);
-
-    MemberRoles.set(roleID, GuildRole);
-  }
-
-
   member.roles.set(MemberRoles).then(member => {
-    message.reply(`Se te añadieron **${toAdd.length}** roles: **${toAddNames.join(", ")}**\nNo se te añadió: **-${notAdded.join(", ")}**`);
+    message.reply(`✔`);
   }).catch(err => {
     message.reply("Ocurrió un error al intentar añadirte los roles, verifica que yo tenga lo permisos adecuados y que mi rol sea más alto que los roles que estoy intentando dar.");
   });
