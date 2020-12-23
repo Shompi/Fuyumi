@@ -196,7 +196,8 @@ const ShowRoles = (message) => {
 
   /** @type {String[]} */
   const GuildAutoRoles = client.db.guildAutoRoles.get(guild.id) || [];
-
+  console.log(GuildAutoRoles);
+  return;
   const GuildRoles = guild.roles.cache;
 
   const Roles = [];
