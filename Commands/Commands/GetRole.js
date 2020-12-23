@@ -212,7 +212,7 @@ const ExecuteCommandNormally = (message, args) => {
   }
 
   member.roles.set(MemberRoles).then(member => {
-    message.reply(`${toAddNames.length > 0 ? `Se te añadió el/los siguiente/s rol/es: **${toAddNames.join(", ")}**` : ""}\n${toRemoveNames.length > 0 ? `Se te quitó el/los siguiente/s rol/es: **${toRemoveNames.join(", ")}**` : ""}`);
+    message.reply(`${toAddNames.length > 0 ? `Se te añadieron los siguientes roles: **${toAddNames.join(", ")}**` : ""}\n${toRemoveNames.length > 0 ? `Se te quitaron los siguientes roles: **${toRemoveNames.join(", ")}**` : ""}`);
   }).catch(err => {
     message.reply("Ocurrió un error al intentar añadir / quitar roles, verifica que yo tenga lo permisos adecuados y que mi rol sea más alto que los roles que estoy intentando dar.");
   });
