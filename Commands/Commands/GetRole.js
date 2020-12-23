@@ -200,7 +200,7 @@ const ShowRoles = (message) => {
 
   const embed = new MessageEmbed()
     .setTitle("Roles que te puedes autoasignar:")
-    .setDescription(`\`\`\`\n${GuildAutoRoles.map(role => role.name).join("\n")}\`\`\``)
+    .setDescription(`\`\`\`\n${GuildAutoRoles.map(role => `${role.name} (${role.id})`).join("\n")}\`\`\``)
     .setColor("BLUE")
     .setThumbnail(guild.iconURL({ size: 512 }));
 
