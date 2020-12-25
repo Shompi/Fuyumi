@@ -60,7 +60,7 @@ module.exports = {
     }
 
     const embed = new MessageEmbed()
-      .setDescription(`**Comandos reiniciados exitósamente:**
+      .setDescription(`**Comandos reiniciados exitosamente:**
       \`\`\`${reloaded.join(", ") || "-"}\`\`\`
       **Comandos no encontrados o que fallaron al reiniciar:**
       \`\`\`${notReloaded.join(", ") || "-"}\`\`\``)
