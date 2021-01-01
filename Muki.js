@@ -106,7 +106,7 @@ Muki.on('guildDelete', (guild) => {
 
 Muki.ws.on('RESUMED', (data, shard) => {
   console.log("Websocket Resumed");
-  console.log(`${data}`);
+  console.log(`${JSON.stringify(data)}`);
   console.log(`${shard}`);
 });
 
