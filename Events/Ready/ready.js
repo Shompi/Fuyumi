@@ -2,7 +2,7 @@ const { Client } = require('discord.js');
 const { basename } = require('path');
 
 const activity = {
-  name: "Version 5.0 (Testing)!",
+  name: "En cuarentena",
   type: "PLAYING"
 }
 
