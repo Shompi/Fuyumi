@@ -3,6 +3,9 @@
   "version": "5.0.0",
   "description": "multifunctional bot for Discord",
   "main": "Muki.js",
+  "repository": {
+    "url": "https://github.com/Shompi/Muki"
+  },
   "dependencies": {
     "@discordjs/opus": "^0.1.0",
     "@types/node-fetch": "^2.5.4",
