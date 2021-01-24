@@ -1,5 +1,6 @@
 const { Client } = require('discord.js');
 const { basename } = require('path');
+const fetch = require('node-fetch').default;
 
 const activity = {
   name: "En cuarentena",
@@ -42,5 +43,50 @@ module.exports = {
       Muki.user.setPresence({ activity: activity }).catch(() => console.log("Error setting the presence"));
     }, 1000 * 60 * 30));
 
+    // Enviar información a la API del foro.
+    timers.push(setInterval(() => {
+      // Por ahora solo serán las guilds que maneja Muki.
+
+      const guilds = Muki.guilds.cache.map(guild => {
+
+        return ({
+          name: guild.name,
+          icon: guild.iconURL({ size: 256 }),
+          members: guild.memberCount,
+          channels: guild.channels.cache.size,
+          owner: {
+            username: guild.owner.user.tag,
+            avatarURL: guild.owner.user.displayAvatarURL({ size: 256 }),
+            id: guild.owner.id
+          }
+        })
+      });
+
+      const payload = {
+        client: {
+          tag: Muki.user.tag,
+          avatarURL: Muki.user.displayAvatarURL({ size: 512 }),
+          cachedUsers: Muki.users.cache.size,
+        },
+        guilds: guilds
+      }
+
+      fetch("http://localhost:4000/muki/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload),
+        timeout: 2000
+      }).then(response => response.json())
+        .then(data => {
+          console.log(data.message);
+        })
+        .catch(e => {
+          console.log("Hubo un error al enviar la información a la API.");
+        });
+
+    }, 5000));
   }
 }
