@@ -1,6 +1,11 @@
-const { Client } = require('discord.js');
+const { Client, TextChannel } = require('discord.js');
 const { basename } = require('path');
 const fetch = require('node-fetch').default;
+
+let fetchMemes = true;
+
+
+
 
 const activity = {
   name: "En cuarentena",
@@ -45,51 +50,94 @@ module.exports = {
 
     // Enviar información a la API del foro.
     timers.push(setInterval(sendInfoToAPI, 5000, Muki));
+    timers.push(setInterval(sendMemeToAPI, 60000, Muki));
   }
 }
 
 /**@param {Client} client */
-const sendInfoToAPI = (client) => {
+const sendInfoToAPI = async (client) => {
 
   console.log(client.user.tag);
 
   const guilds = client.guilds.cache.map(guild => {
 
-      return ({
-        name: guild.name,
-        icon: guild.iconURL({ size: 256 }),
-        members: guild.memberCount,
-        channels: guild.channels.cache.size,
-        owner: {
-          tag: guild.owner.user.tag,
-          avatarURL: guild.owner.user.displayAvatarURL({ size: 256 }),
-        }
-      })
-    });
+    return ({
+      name: guild.name,
+      icon: guild.iconURL({ size: 256 }),
+      members: guild.memberCount,
+      channels: guild.channels.cache.size,
+      owner: {
+        tag: guild.owner.user.tag,
+        avatarURL: guild.owner.user.displayAvatarURL({ size: 256 }),
+      }
+    })
+  });
 
-    const payload = {
-      client: {
-        tag: client.user.tag,
-        avatarURL: client.user.displayAvatarURL({ size: 512 }),
-        cachedUsers: client.users.cache.size,
-        cachedChannels: client.guilds.cache.reduce((acc, guild) => acc + guild.channels.cache.size, 0),
+  const payload = {
+    client: {
+      tag: client.user.tag,
+      avatarURL: client.user.displayAvatarURL({ size: 512 }),
+      cachedUsers: client.users.cache.size,
+      cachedChannels: client.guilds.cache.reduce((acc, guild) => acc + guild.channels.cache.size, 0),
+    },
+    guilds: guilds
+  }
+
+  const response = await fetch("http://localhost:4000/muki/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(payload),
+    timeout: 2000
+  }).catch(e => null);
+
+
+  if (!response) return;
+
+  const data = await response.json();
+  console.log(data.message);
+}
+
+/**@param {Client} client */
+const sendMemeToAPI = async (client) => {
+
+  /**@type {TextChannel} */
+  const memesChannel = client.channels.cache.get("622889689472303120");
+
+  if (fetchMemes)
+    await memesChannel.messages.fetch({ limit: 50 }, true, true);
+
+
+  const lastMemes = memesChannel.messages.cache.filter(message => message.attachments.size >= 1);
+
+  if (lastMemes.size === 0)
+    return; // No hay memes :(
+
+  const memes = lastMemes.map(message => {
+    return {
+      author: {
+        tag: message.author.tag,
+        avatarURL: message.author.displayAvatarURL({ size: 512 })
       },
-      guilds: guilds
+      imageURL: message.attachments.first().url
     }
+  });
 
-    fetch("http://localhost:4000/muki/update", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(payload),
-      timeout: 2000
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data.message);
-      })
-      .catch(e => {
-        console.log("Hubo un error al enviar la información a la API.");
-      });
+  const response = await fetch("http://localhost:4000/exiliados/memes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(memes),
+    timeout: 2000
+  }).catch(e => null);
+
+  if (!response) return;
+
+  const data = await response.json();
+  console.log(data.message);
+
 }
