@@ -21,7 +21,7 @@ module.exports = {
   async execute(message, args) {
     const { client, guild, channel, author } = message;
 
-    const prefix = client.db.guildConfigs.get(guild.id).prefix;
+    const prefix = guild ? client.db.guildConfigs.get(guild.id).prefix : "muki!";
     const { commands } = client;
 
     if (args[0]) {
