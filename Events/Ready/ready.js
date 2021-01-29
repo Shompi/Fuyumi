@@ -68,7 +68,7 @@ const sendInfoToAPI = async (client) => {
       channels: guild.channels.cache.size,
       owner: {
         tag: guild.owner.user.tag,
-        avatarURL: guild.owner.user.displayAvatarURL({ size: 256 }),
+        avatar_url: guild.owner.user.displayAvatarURL({ size: 256 }),
       }
     })
   });
@@ -76,9 +76,9 @@ const sendInfoToAPI = async (client) => {
   const payload = {
     client: {
       tag: client.user.tag,
-      avatarURL: client.user.displayAvatarURL({ size: 512 }),
-      cachedUsers: client.users.cache.size,
-      cachedChannels: client.guilds.cache.reduce((acc, guild) => acc + guild.channels.cache.size, 0),
+      avatar_url: client.user.displayAvatarURL({ size: 512 }),
+      cached_users: client.users.cache.size,
+      cached_channels: client.guilds.cache.reduce((acc, guild) => acc + guild.channels.cache.size, 0),
     },
     guilds: guilds
   }
@@ -92,12 +92,6 @@ const sendInfoToAPI = async (client) => {
     body: JSON.stringify(payload),
     timeout: 2000
   }).catch(e => null);
-
-
-  if (!response) return;
-
-  const data = await response.json();
-  console.log(data.message);
 }
 
 /**@param {Client} client */
@@ -119,9 +113,9 @@ const sendMemeToAPI = async (client) => {
     return {
       author: {
         tag: message.author.tag,
-        avatarURL: message.author.displayAvatarURL({ size: 512 })
+        avatar_url: message.author.displayAvatarURL({ size: 512 })
       },
-      imageURL: message.attachments.first().url
+      image_url: message.attachments.first().url
     }
   });
 
@@ -134,10 +128,4 @@ const sendMemeToAPI = async (client) => {
     body: JSON.stringify(memes),
     timeout: 2000
   }).catch(e => null);
-
-  if (!response) return;
-
-  const data = await response.json();
-  console.log(data.message);
-
 }
