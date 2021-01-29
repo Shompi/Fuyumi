@@ -55,7 +55,7 @@ module.exports = {
     for (section of descriptions) {
       embeds.push(
         new MessageEmbed()
-          .setTitle(`Prefijo en ${guild.name}: ${prefix}`)
+          .setTitle(`Prefijo en ${guild?.name}: ${prefix}`)
           .setDescription(section)
           .setColor("BLUE")
       );
