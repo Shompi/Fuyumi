@@ -21,7 +21,7 @@ module.exports = {
   async execute(message, args) {
     const { client, guild, channel, author } = message;
 
-    const prefix = client.db.guildConfigs.get(guild.id).prefix;
+    const prefix = guild ? client.db.guildConfigs.get(guild.id).prefix : "muki!";
     const { commands } = client;
 
     if (args[0]) {
@@ -55,7 +55,7 @@ module.exports = {
     for (section of descriptions) {
       embeds.push(
         new MessageEmbed()
-          .setTitle(`Prefijo en ${guild.name}: ${prefix}`)
+          .setTitle(`Prefijo en ${guild?.name}: ${prefix}`)
           .setDescription(section)
           .setColor("BLUE")
       );
