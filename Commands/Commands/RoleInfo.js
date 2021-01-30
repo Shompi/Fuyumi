@@ -14,8 +14,8 @@ const noRole = (usage) =>
     .setColor("RED");
 
 
-const roleInfo = (role, guild) =>
-  new MessageEmbed()
+const roleInfo = (role, guild) => {
+  return new MessageEmbed()
     .setTitle(role.name)
     .setDescription(`Miembros que tienen este rol:\n \`\`\`${role.members.map(member => member.displayName).join(', ')}\`\`\``)
     .addFields(
@@ -26,13 +26,14 @@ const roleInfo = (role, guild) =>
       { name: 'Creación:', value: role.createdAt }
     )
     .setColor(role.color);
+}
 
 module.exports = {
   name: "role",
   guildOnly: true,
   filename: path.basename(__filename),
   description: "Muestra la información general de un <Rol> de este servidor.",
-  usage: "role [@Mención de Rol]",
+  usage: "role [@Mención de Rol | ID]",
   nsfw: false,
   enabled: true,
   aliases: ['rinfo', 'roleinfo'],
@@ -50,15 +51,13 @@ module.exports = {
       return channel.send(noPermissions());
 
     /**@type {Role | string | null} */
-    let role = mentions.roles.first() || args[0];
-
-    if (!role)
-      if (!MessageMentions.ROLES_PATTERN.test(args[0]))
-        return channel.send(noRole(this.usage));
-
-      else
-        role = guild.roles.cache.get(args[0]);
-
+    let role = mentions.roles.first();
+    
+    if (!role) {
+      role = guild.roles.cache.get(args[0]);
+      if (!role)
+          return channel.send(noRole(this.usage));
+    }
 
     return channel.send(roleInfo(role, guild));
   }
