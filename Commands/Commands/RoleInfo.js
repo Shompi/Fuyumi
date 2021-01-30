@@ -1,4 +1,4 @@
-const { MessageEmbed, Message, MessageMentions } = require('discord.js')
+const { MessageEmbed, Message, MessageMentions, Role } = require('discord.js')
 const path = require('path');
 
 const noPermissions = () =>
@@ -49,9 +49,16 @@ module.exports = {
     if (!member.permissions.has("MANAGE_ROLES"))
       return channel.send(noPermissions());
 
-    const role = mentions.roles.first() || args[0];
+    /**@type {Role | string | null} */
+    let role = mentions.roles.first() || args[0];
 
-    if (!role || MessageMentions.ROLES_PATTERN.test(args[0])) return channel.send(noRole(this.usage));
+    if (!role)
+      if (!MessageMentions.ROLES_PATTERN.test(args[0]))
+        return channel.send(noRole(this.usage));
+
+      else
+        role = guild.roles.cache.get(args[0]);
+
 
     return channel.send(roleInfo(role, guild));
   }
