@@ -1,5 +1,11 @@
-const { MessageEmbed, Message } = require('discord.js')
+const { MessageEmbed, Message, MessageMentions } = require('discord.js')
 const path = require('path');
+
+const noPermissions = () =>
+  new MessageEmbed()
+    .setTitle("No tienes permiso para usar este comando.")
+    .setDescription("`MANAGE_ROLES`")
+    .setColor("RED");
 
 const noRole = (usage) =>
   new MessageEmbed()
@@ -38,9 +44,14 @@ module.exports = {
    * @param {Array} args 
    */
   execute(message, args) {
-    const { channel, mentions, guild } = message;
-    const role = mentions.roles.first();
-    if (!role) return channel.send(noRole(this.usage));
+    const { channel, mentions, guild, member } = message;
+
+    if (!member.permissions.has("MANAGE_ROLES"))
+      return channel.send(noPermissions());
+
+    const role = mentions.roles.first() || args[0];
+
+    if (!role || MessageMentions.ROLES_PATTERN.test(args[0])) return channel.send(noRole(this.usage));
 
     return channel.send(roleInfo(role, guild));
   }
