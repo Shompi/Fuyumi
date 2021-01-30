@@ -57,8 +57,6 @@ module.exports = {
 /**@param {Client} client */
 const sendInfoToAPI = async (client) => {
 
-  console.log(client.user.tag);
-
   const guilds = client.guilds.cache.map(guild => {
 
     return ({
@@ -83,7 +81,7 @@ const sendInfoToAPI = async (client) => {
     guilds: guilds
   }
 
-  const response = await fetch("http://localhost:4000/muki/update", {
+  await fetch("http://localhost:4000/muki/update", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -119,7 +117,7 @@ const sendMemeToAPI = async (client) => {
     }
   });
 
-  const response = await fetch("http://localhost:4000/exiliados/memes", {
+  await fetch("http://localhost:4000/exiliados/memes", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
