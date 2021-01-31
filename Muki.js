@@ -1,20 +1,31 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
-const { MessageEmbed, Collection } = require('discord.js');
-const MukiClient = require('./Classes/MukiClient');
-const Muki = new MukiClient();
-const auth = require('./Keys/auth').stable;
 const fs = require('fs');
+const auth = require('./Keys/auth').ShompiFlen;
+const { join } = require('path');
 
-const commandFiles = fs.readdirSync('./Commands/Commands').filter(file => file.endsWith(".js"));
-const eventFolders = fs.readdirSync("./Events"); //Esto retornará los nombres de las carpetas.
+const { CommandoClient } = require('discord.js-commando');
+const { MessageEmbed, Collection } = require('discord.js');
 
-//Carga de comandos
-for (const file of commandFiles) {
-  const command = require(`./Commands/Commands/${file}`);
-  Muki.commands.set(command.name, command);
-}
+const Muki = new CommandoClient({
+  owner: "166263335220805634",
+  disableMentions: "everyone",
+  partials: ["CHANNEL", "MESSAGE", "REACTION", "USER"]
+});
+
+// Registrar grupos de comandos
+Muki.registry
+  .registerGroups(
+    [
+      ['images', 'Imagenes'],
+      ['utility', 'Utilidades'],
+      ['moderation', 'Moderacion']
+    ]
+  )
+  .registerCommandsIn(join(__dirname, 'commands'));
+
 
 //Carga de eventos
+const eventFolders = fs.readdirSync("./Events"); //Esto retornará los nombres de las carpetas.
 for (const foldername of eventFolders) {
 
   const eventFiles = fs.readdirSync(`./Events/${foldername}`).filter(file => file.endsWith(".js"));
