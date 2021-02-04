@@ -1,28 +1,32 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
+const { CommandoGuild } = require('discord.js-commando');
 const fs = require('fs');
-const auth = require('./Keys/auth').ShompiFlen;
 const { join } = require('path');
+const CommandoClientEx = require('./Classes/CommandoClientExtended');
 
-const { CommandoClient } = require('discord.js-commando');
-const { MessageEmbed, Collection } = require('discord.js');
+const Muki = new CommandoClientEx();
 
-const Muki = new CommandoClient({
-  owner: "166263335220805634",
-  disableMentions: "everyone",
-  partials: ["CHANNEL", "MESSAGE", "REACTION", "USER"]
-});
+// Login.
+Muki.login(require('./Keys/auth').ShompiFlen);
 
 // Registrar grupos de comandos
 Muki.registry
+  .registerDefaultTypes()
   .registerGroups(
     [
-      ['images', 'Imagenes'],
-      ['utility', 'Utilidades'],
-      ['moderation', 'Moderacion']
+      ['images', 'Imágenes'],
+      ['utilities', 'Utilidades'],
+      ['moderation', 'Moderación']
     ]
   )
-  .registerCommandsIn(join(__dirname, 'commands'));
-
+  .registerDefaultGroups()
+  .registerDefaultCommands({
+    help: false,
+    ping: false,
+    prefix: false,
+    unknownCommand: false,
+  })
+  .registerCommandsIn(join(__dirname, 'commands'))
 
 //Carga de eventos
 const eventFolders = fs.readdirSync("./Events"); //Esto retornará los nombres de las carpetas.
@@ -36,19 +40,12 @@ for (const foldername of eventFolders) {
   }
 }
 
-
-/*-------------------------Inicio del BOT-------------------------*/
-
-// #region messageEvent
-Muki.on('message', (message) => {
-  Muki.events.get('message')?.execute(message);
-});
-//#endregion
-
 Muki.on('ready', () => {
 
   Muki.events.get('ready')?.execute(Muki);
 });
+
+Muki.on('error', console.error);
 
 Muki.on('messageUpdate', (old, message) => {
   Muki.events.get("messageUpdate")?.execute(old, message);
@@ -88,12 +85,6 @@ Muki.on('presenceUpdate', (old, now) => { //Tipo Presence
   Muki.events.get('presenceUpdate')?.execute(old, now);
 });
 
-Muki.on('error', (error) => {
-  console.log(error)
-  const e = new MessageEmbed().setColor("RED").setDescription(`${error}\n${error.stack}`);
-  return Muki.channels.cache.get("585990511790391309").send(e).catch(console.error);
-});
-
 Muki.on('reconnecting', () => {
   console.log('El bot se está reconectando...');
 });
@@ -106,6 +97,7 @@ Muki.on('warn', (warn) => {
   console.log("Advertencia recibida:");
   console.log(warn);
 });
+
 
 Muki.on('guildCreate', (guild) => {
   Muki.events.get('guildCreate')?.execute(guild);
@@ -122,4 +114,3 @@ Muki.ws.on('RESUMED', (data, shard) => {
 });
 
 console.log("Iniciando sesión en Discord...");
-Muki.login(auth);

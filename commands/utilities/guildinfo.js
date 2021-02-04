@@ -1,25 +1,28 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { Command, CommandoMessage } = require('discord.js-commando');
+const { MessageEmbed } = require('discord.js');
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-const path = require('path');
 
-module.exports = {
-  name: "ginfo",
-  guildOnly: true,
-  filename: path.basename(__filename),
-  description: "Información general del servidor actual.",
-  usage: "ginfo <Sin Parámetros>",
-  nsfw: false,
-  enabled: true,
-  aliases: [],
-  permissions: [],
+module.exports = class GuildInfoCommand extends Command {
+  constructor(client) {
+    super(client, {
+      name: 'guildinfo',
+      memberName: 'guildinfo',
+      aliases: ["ginfo"],
+      group: 'utilities',
+      description: 'Muestra la información del Servidor.',
+      clientPermissions: [],
+      examples: ["ginfo"],
+      details: "Este comando no requiere argumentos.",
+      guildOnly: true
+    });
+  }
   /**
-   * 
-   * @param {Message} message 
-   * @param {Array} args 
+   * @param { CommandoMessage } message 
+   * @param {*} args 
    */
-  async execute(message, args) {
-    const { guild, channel, member } = message;
+  async run(message) {
+    const { guild, channel } = message;
     try {
 
       const members = await guild.members.fetch();
@@ -40,7 +43,7 @@ module.exports = {
         date: memberFrom.getDate(),
         month: meses[memberFrom.getMonth()],
         year: memberFrom.getFullYear()
-      } */
+        */
 
       const fields = [
         { name: 'ID:', value: guild.id, inline: true },
@@ -52,14 +55,12 @@ module.exports = {
         { name: 'Creación:', value: `${gCreatedAt.day} ${gCreatedAt.date} de ${gCreatedAt.month} del ${gCreatedAt.year}`, inline: false }
       ];
 
-      const infoEmbed = new MessageEmbed()
+      return channel.send(new MessageEmbed()
         .setTitle(`${guild.name}`)
         .addFields(fields)
         .setThumbnail(guild.iconURL({ size: 512, dynamic: true }))
         .setColor('BLUE')
-        .setTimestamp();
-
-      return channel.send(infoEmbed);
+        .setTimestamp());
     }
     catch (error) {
       console.log(error);

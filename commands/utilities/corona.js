@@ -1,10 +1,48 @@
 const { MessageEmbed, Message } = require('discord.js');
-const { basename } = require('path');
 const fetch = require('node-fetch').default;
-const prettyms = require('pretty-ms');
 const ENDPOINT = "https://corona.lmao.ninja/v2/countries";
+const { Command, CommandoMessage } = require('discord.js-commando');
 
 const last_info = new Map();
+
+module.exports = class extends Command {
+  constructor(client) {
+    super(client, {
+      name: 'covid',
+      memberName: 'corona',
+      aliases: ['corona', 'c19', 'covid19'],
+      group: 'utilities',
+      description: 'Muestra estadísticas respecto al Covid-19.',
+      clientPermissions: [],
+      examples: ["covid", "covid chile", "covid arg", "covid USA"],
+      details: "Usar este comando sin argumentos mostrará las estadísticas de Chile.",
+      throttling: {
+        usages: 1,
+        duration: 10
+      },
+      args: [
+        {
+          key: "pais",
+          default: '',
+          prompt: '',
+          type: 'string'
+        }
+      ]
+    });
+  }
+
+  /**
+   * @param { CommandoMessage } message
+   * @param {*} args
+   */
+  async run(message, { pais }) {
+    if (!pais)
+      return getChileInformation(message);
+    else {
+      return getAnyCountry(message, pais);
+    }
+  }
+}
 
 /**
  * @param {Object} now 
@@ -152,28 +190,3 @@ const fetchError = new MessageEmbed()
   .setColor("RED")
   .setTimestamp();
 
-
-
-module.exports = {
-  name: "covid",
-  description: "Información de casos de COVID-19.",
-  usage: "corona [Chile | CL | CHL]",
-  aliases: ["corona", "c19", "c-19", "covid19", "coronavirus"],
-  permissions: [],
-  enabled: true,
-  cooldown: 5,
-  filename: basename(__filename),
-  /**
-   * 
-   * @param {Message} message 
-   * @param {Array} args 
-   */
-  async execute(message, args) {
-
-    if (!args[0])
-      return getChileInformation(message);
-    else {
-      return getAnyCountry(message, args[0]);
-    }
-  }
-}

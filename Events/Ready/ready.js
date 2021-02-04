@@ -4,14 +4,10 @@ const fetch = require('node-fetch').default;
 
 let fetchMemes = true;
 
-
-
-
 const activity = {
-  name: "En cuarentena",
+  name: "Testeando discord.js-commando",
   type: "PLAYING"
 }
-
 
 /**@type {NodeJS.Timeout[]} */
 const timers = [];
@@ -65,8 +61,8 @@ const sendInfoToAPI = async (client) => {
       members: guild.memberCount,
       channels: guild.channels.cache.size,
       owner: {
-        tag: guild.owner.user.tag,
-        avatar_url: guild.owner.user.displayAvatarURL({ size: 256 }),
+        tag: guild.owner?.user.tag,
+        avatar_url: guild.owner?.user.displayAvatarURL({ size: 256 }),
       }
     })
   });

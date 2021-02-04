@@ -1,7 +1,9 @@
-const fetch = require('node-fetch');
+const { Command } = require('discord.js-commando');
+
+
+const fetch = require('node-fetch').default;
 const { MessageEmbed, Message } = require('discord.js');
-const { YanderePost } = require('../../Classes/Booru')
-const path = require('path');
+const { YanderePost } = require('../../Classes/Booru');
 
 const noResults = new MessageEmbed()
   .setTitle('❌ No encontré nada con los tags que ingresaste.')
@@ -43,37 +45,42 @@ const showpage = (post, message, index, total) => {
   return embed;
 }
 
-module.exports = {
-  name: "dere",
-  filename: path.basename(__filename),
-  description: "Busca imágenes en **Yande.re**.",
-  usage: "dere [tags]",
-  nsfw: true,
-  enabled: true,
-  aliases: [],
-  permissions: [],
-  cooldown: 5,
+module.exports = class YandereCommand extends Command {
+  constructor(client) {
+    super(client, {
+      name: 'dere',
+      memberName: 'yandere',
+      aliases: ['yandere'],
+      group: 'images',
+      description: 'Busca imágenes en yande.re',
+      nsfw: true,
+      clientPermissions: ["EMBED_LINKS", "SEND_MESSAGES"],
+      examples: ["dere genshin impact + rating:safe", "dere barbara (genshin impact) + rating:safe"],
+      details: "Los espacios serán automáticamente parseados a guiones bajos.\nPara omitir un tag reemplaza el símbolo **+** por un **-**."
+    });
+  }
+
   /**
-   * 
-   * @param {Message} message 
-   * @param {Array} args 
+   * @param {Message} message
+   * @param {string} args
    */
-  async execute(message, args) {
+
+  async run(message, args) {
     const { channel, author } = message;
     try {
-      let content = message.content.split(" ").slice(1).join(" ");
 
-      if (content.split(/\s*\+\s*/g).length >= 3) return message.reply('lo siento, solo puedes usar un máximo de 3 tags para la búsqueda.');
+      if (args.split(/\s*\+\s*/g).length >= 3) return message.reply('lo siento, solo puedes usar un máximo de 3 tags para la búsqueda.');
 
-      let query = content.replace(/\s*\+\s*/g, "+").replace(/\s+/g, "_");
+      let query = args.replace(/\s*\+\s*/g, "+").replace(/\s+/g, "_");
+      console.log("QUERY: ", query);
       let blacklist = '+-loli'; //Tags blacklist
-      let response = Booru.YanderePost;
 
       let data = await fetch(`https://yande.re/post.json?limit=100&tags=${query}${blacklist}`).catch(e => {
         throw 'Fetch Error: ' + e.code;
       });
 
-      response = await data.json();
+      /**@type {YanderePost} */
+      const response = await data.json().catch(() => null);
 
       if (response.length === 0) return channel.send(noResults);
 
