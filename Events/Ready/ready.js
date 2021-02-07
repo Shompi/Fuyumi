@@ -4,14 +4,10 @@ const fetch = require('node-fetch').default;
 
 let fetchMemes = true;
 
-
-
-
 const activity = {
   name: "En cuarentena",
   type: "PLAYING"
 }
-
 
 /**@type {NodeJS.Timeout[]} */
 const timers = [];
@@ -98,9 +94,10 @@ const sendMemeToAPI = async (client) => {
   /**@type {TextChannel} */
   const memesChannel = client.channels.cache.get("622889689472303120");
 
-  if (fetchMemes)
+  if (fetchMemes) {
     await memesChannel.messages.fetch({ limit: 50 }, true, true);
-
+    fetchMemes = false;
+  }
 
   const lastMemes = memesChannel.messages.cache.filter(message => message.attachments.size >= 1);
 
