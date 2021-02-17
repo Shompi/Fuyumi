@@ -1,5 +1,5 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
-const { CommandoGuild } = require('discord.js-commando');
+const { MessageEmbed } = require('discord.js');
 const fs = require('fs');
 const { join } = require('path');
 const CommandoClientEx = require('./Classes/CommandoClientExtended');
@@ -16,7 +16,8 @@ Muki.registry
     [
       ['images', 'Imágenes'],
       ['utilities', 'Utilidades'],
-      ['moderation', 'Moderación']
+			['moderation', 'Moderación'],
+			['economy', 'Economía']
     ]
   )
   .registerDefaultGroups()
@@ -41,7 +42,6 @@ for (const foldername of eventFolders) {
 }
 
 Muki.on('ready', () => {
-
   Muki.events.get('ready')?.execute(Muki);
 });
 
