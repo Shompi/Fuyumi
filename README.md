@@ -1,7 +1,7 @@
 # TODO List:
 
 # Primera Etapa:
-- [] Convertir los comandos para que sean usables con discord.js-Commando
+- [] Convertir los comandos para que sean usables con discord.js-Commando **En progreso**
 - [] Crear un objeto que cumpla con las necesidades para las interacciones en el sistema de Economia.
 
 # Segunda Etapa:
