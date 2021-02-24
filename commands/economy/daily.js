@@ -1,8 +1,7 @@
 const { Command, CommandoMessage } = require('discord.js-commando');
-const balConfig = require('../../configs/balance');
 const millis = require('pretty-ms')
-const UserProfile = require('../../Classes/UserProfile');
-const { profileGet, profileSave } = require('./helpers/db');
+const balConfig = require('../../configs/balance');
+const { profileGet, profileClaimDaily } = require('./helpers/db');
 const Day = 1000 * 60 * 60 * 22;
 
 module.exports = class DailyCommand extends Command {
@@ -12,9 +11,9 @@ module.exports = class DailyCommand extends Command {
 			memberName: 'daily',
 			aliases: [],
 			group: 'economy',
-			description: `¡Reclama tus ${balConfig.bal.coin_name} diarias!`,
+			description: `¡Reclama tus ${balConfig.coin_name} diarias!`,
 			clientPermissions: [],
-			examples: ["daily"],
+			examples: ["daily", "diario"],
 			throttling: {
 				duration: 3600,
 				usages: 1
@@ -30,18 +29,7 @@ module.exports = class DailyCommand extends Command {
 			return diff < 0 ? false : true;
 		}
 
-		/** @param {UserProfile} profile */
-		this.updateProfile = (profile) => {
-			profile.balance.dailies.claimed_at = Date.now();
-
-			profile.balance.dailies.claimed++;
-
-			profile.balance.dailies.total_earned = profile.balance.dailies.total_earned + balConfig.bal.dailyAmount;
-
-			profile.balance.on_hand = profile.balance.on_hand + balConfig.bal.dailyAmount;
-
-			profileSave(profile.user_id, profile);
-		}
+		this.onError = (err, message, args, fromPattern) => console.log(err);
 	}
 
 	/**
@@ -59,9 +47,12 @@ module.exports = class DailyCommand extends Command {
 
 		if (this.isAbleToClaim(profile.balance.dailies.claimed_at)) {
 
-			this.updateProfile(profile);
+			const result = profileClaimDaily(profile);
 
-			return message.reply(`¡Haz reclamado tus **${balConfig.bal.dailyAmount}** ${balConfig.bal.coin_name} diarias!`);
+			if (result)
+				return message.reply(`¡Haz reclamado tus **${balConfig.dailyAmount}** ${balConfig.coin_name} diarias!`);
+			else
+				return message.reply("Ocurrio un error al intentar reclamar tu bono diario, comúnicate con **ShompiFlen#3338** para solucionarlo lo antes posible.");
 
 		} else {
 			return message.reply(`¡No puedes reclamar tu bono diario aún!\nDebes esperar \`${millis((profile.balance.dailies.claimed_at + Day) - Date.now())}\` más.`)

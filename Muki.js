@@ -1,5 +1,4 @@
 /*----------------------MODULOS PRINCIPALES---------------------------*/
-const { MessageEmbed } = require('discord.js');
 const fs = require('fs');
 const { join } = require('path');
 const CommandoClientEx = require('./Classes/CommandoClientExtended');
@@ -56,13 +55,19 @@ Muki.on('ready', () => {
 	Muki.events.get('ready')?.execute(Muki);
 });
 
+Muki.on('message', (message) => message.author.bot ? null : Muki.events.get('message')?.execute(message));
+
 Muki.on('error', console.error);
 
 Muki.on('messageUpdate', (old, message) => {
+	if (message.author.bot) return;
+
 	Muki.events.get("messageUpdate")?.execute(old, message);
 });
 
 Muki.on('messageReactionAdd', async (reaction, user) => {
+	if (user.bot) return;
+
 	if (reaction.partial)
 		await reaction.fetch();
 

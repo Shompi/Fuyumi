@@ -2,7 +2,7 @@
  * @author ShompiFlen
  */
 
-module.exports = class UserBalance {
+module.exports = class UserProfile {
 	/** @param {String} id El usuario al que se le creará su instancia en la base de datos.*/
 	constructor(id) {
 		// Key para la base de datos.
@@ -15,7 +15,7 @@ module.exports = class UserBalance {
 			experience: 0,
 
 			/**  Total de experiencia necesitada para subir al siguiente nivel. */
-			next_level_in: 0,
+			expToLevelUp: 0,
 		}
 
 		/** Total de mensajes enviados (Capturados por el bot.) */
@@ -41,10 +41,12 @@ module.exports = class UserBalance {
 			earned: 0,
 
 			/** El dinero total que ha donado el usuario. */
-			donated: 0,
-
-			/** El dinero total recibido a través de donaciones este usuario. */
-			received: 0,
+			donations: {
+				donated: 0,
+				received: 0,
+				top_donator: "No ha recibido donaciones.",
+				last_donator: "No ha recibido donaciones."
+			},
 
 			/** El dinero total que este miembro ha robado a otros usuarios. */
 			stolen_from_others: 0,

@@ -1,5 +1,8 @@
 const enmap = require('enmap');
 const Profile = require('../../../Classes/UserProfile');
+const balValues = require('../../../configs/balance');
+const expValues = require('../../../configs/experience');
+
 
 /** Dinero que los usuarios depositan en su banco, por ejemplo para no apostarlo todo por accidente. */
 const bank = new enmap({ name: 'bank' });
@@ -7,58 +10,30 @@ const bank = new enmap({ name: 'bank' });
 /** Perfil de los usuarios */
 const profiles = new enmap({ name: 'profiles' });
 
-/** @param {String} id */
-bankUserExists = (id) => bank.has(id) ? true : false;
-
-/** @param {String} id */
-bankCreate = (id) => bank.set(id, 0);
-
-/** @param {String} id */
-bankGetUser = (id) => {
-
-	// Verificar que el usuario existe
-	if (this.bankUserExists(id))
-		return bank.get(id);
-
-	else {
-		this.bankCreate(id);
-		return bank.get(id);
-	}
-};
+const bankGet = (id) => bank.ensure(id, 0);
 
 /**
  * @param {String} id 
- * @param {Number} amount 
+ * @param {Number} amount
+ * @returns {Number} cantidad total en el banco luego de actualizar. 
  */
-bankUpdate = (id, amount) => {
+const bankUpdate = (id, amount) => {
 
 	/** Dinero del usuario en el banco */
-	const userbank = bankGetUser(id);
+	const userbank = bank.ensure(id, 0);
 
 	bank.set(id, userbank + amount);
+	return bank.get(id);
 };
 
 /**
 * @param { String } id ID del usuario
 * @returns {Profile}
 */
-profileGet = (id) => {
-
-	if (profiles.has(id))
-		return profiles.get(id);
-
-	else {
-		const user_profile = new Profile(user);
-
-		profiles.set(id, user_profile);
-
-		return user_profile;
-	}
-
-};
+const profileGet = (id) => profiles.ensure(id, new Profile(id));
 
 /** @param {String} id */
-profileSave = (id, profile) => {
+const profileSave = (id, profile) => {
 	const result = profiles.set(id, profile);
 
 	if (!result)
@@ -67,9 +42,30 @@ profileSave = (id, profile) => {
 	return true;
 };
 
+/**
+ * @param {Profile} profile 
+ */
+const profileClaimDaily = (profile) => {
+
+	profile.balance.dailies.claimed_at = Date.now();
+
+	profile.balance.dailies.claimed++;
+
+	profile.balance.dailies.total_earned += balValues.dailyAmount;
+
+	profile.balance.earned += balValues.dailyAmount;
+
+	profile.balance.on_hand += balValues.dailyAmount;
+
+	profile.progress.experience += expValues.perDaily;
+
+	return profileSave(profile.user_id, profile);
+}
+
 module.exports = {
-	profileSave,
 	profileGet,
 	bankUpdate,
-	bankGetUser,
+	bankGet,
+	profileClaimDaily,
+	profileSave,
 }

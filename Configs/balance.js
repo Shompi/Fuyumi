@@ -7,9 +7,10 @@ Entre otras variables.
 */
 
 module.exports = {
-	bal: {
-		coin_name: "Muki Coins",
-		dailyAmount: 1000,
-		dailyExp: 50,
-	}
+	coin_name: "Muki Coins",
+	coin_name_short: "Mukis",
+	coin_code: "MC",
+	dailyAmount: 1000,
+	perMessage: 100,
+	perAttachment: 300,
 }

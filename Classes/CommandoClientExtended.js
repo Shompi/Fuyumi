@@ -16,6 +16,7 @@ module.exports = class ExtendedClient extends CommandoClient {
 				owner: "166263335220805634",
 			}
 		)
+		this.exiliados = "537484725896478733";
 		this.events = new Collection();
 		this.database = require('../loadEnmaps');
 	}
