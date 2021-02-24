@@ -1,5 +1,5 @@
 const { Command, CommandoMessage } = require('discord.js-commando');
-const balConfig = require('../../Configs/balance');
+const balConfig = require('../../configs/balance');
 const millis = require('pretty-ms')
 const UserProfile = require('../../Classes/UserProfile');
 const { profileGet, profileSave } = require('./helpers/db');
