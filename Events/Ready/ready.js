@@ -93,6 +93,7 @@ const sendInfoToAPI = async (client) => {
 /**@param {Client} client */
 const sendMemeToAPI = async (client) => {
 
+<<<<<<< HEAD
 	/**@type {TextChannel} */
 	const memesChannel = client.channels.cache.get("622889689472303120");
 
@@ -124,4 +125,38 @@ const sendMemeToAPI = async (client) => {
 		body: JSON.stringify(memes),
 		timeout: 2000
 	}).catch(e => null);
+=======
+  /**@type {TextChannel} */
+  const memesChannel = client.channels.cache.get("622889689472303120");
+
+  if (fetchMemes) {
+    await memesChannel.messages.fetch({ limit: 50 }, true, true);
+    fetchMemes = false;
+  }
+
+  const lastMemes = memesChannel.messages.cache.filter(message => message.attachments.size >= 1);
+
+  if (lastMemes.size === 0)
+    return; // No hay memes :(
+
+  const memes = lastMemes.map(message => {
+    return {
+      author: {
+        tag: message.author.tag,
+        avatar_url: message.author.displayAvatarURL({ size: 512 })
+      },
+      image_url: message.attachments.first().url
+    }
+  });
+
+  await fetch("http://localhost:4000/exiliados/memes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(memes),
+    timeout: 2000
+  }).catch(e => null);
+>>>>>>> main
 }
