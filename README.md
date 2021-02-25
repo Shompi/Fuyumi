@@ -1,6 +1,21 @@
+# TODO List:
+
+# Primera Etapa:
+- Convertir los comandos para que sean usables con discord.js-Commando **En progreso**
+- Crear un objeto que cumpla con las necesidades para las interacciones en el sistema de Economia.
+
+# Segunda Etapa:
+Comenzar añadiendo funciones básicas de economia:
+- Registro de balance (Banco) en la base de datos
+- Comando `!bal` para ver el balance
+- Funciones para generar dinero (Eventos, mensajes, etc)
+- Comandos para administradores como `!setmoney o !givemoney, !takemoney` etc.
+- Comandos interactivos como `!donate, !daily`
+
+
 # README #
 
-![Muki](https://cdn.discordapp.com/avatars/552272683543560194/99c25886d21ce826f672296537aedde4.jpg?size=512)
+![Muki](https://cdn.discordapp.com/avatars/552272683543560194/edd8bd6a1cf52f5bb28a1752f541c486.webp?size=256)
 
 # Muki
 
