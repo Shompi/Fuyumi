@@ -99,7 +99,6 @@ module.exports = class HelpCommand extends Command {
 
 
 			try {
-				console.log("110");
 				const description = this.client.registry.groups.map(group => {
 
 					if (['Commands', 'Utility'].includes(group.name) || group.commands.size === 0) return;
@@ -118,7 +117,7 @@ module.exports = class HelpCommand extends Command {
 				const splitted = Util.splitMessage(description, { char: "\n", maxLength: 1950 });
 
 				for (const chunk of splitted) {
-					await msg.channel.send(
+					await msg.direct(
 						new MessageEmbed()
 							.setDescription(chunk)
 							.setColor("BLUE")
