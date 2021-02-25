@@ -36,7 +36,7 @@ module.exports = class BalanceCommand extends Command {
 			`\n${balConfig.coin_name_short} Donados: ${balance.donations.donated}` +
 			`\n${balConfig.coin_name_short} Recibidos: ${balance.donations.received}` +
 			`\nTop Donador: ${balance.donations.top_donator.tag ?? ''} ${balance.donations.top_donator.amount ? `donó **${balance.donations.top_donator.amount} ${balConfig.coin_name_short}**` : ''}` +
-			`\nÚltimo Donador: ${balance.donations.last_donor}` +
+			`\nÚltimo Donador: ${balance.donations.last_donator}` +
 			`\n\n**__Robos__**` +
 			`\nTe han robado: ${balance.stolen_by_others} ${balConfig.coin_name_short}` +
 			`\nHas robado: ${balance.stolen_from_others} ${balConfig.coin_name_short}` +
