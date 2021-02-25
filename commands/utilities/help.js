@@ -1,5 +1,5 @@
 //@ts-check
-const { stripIndents, oneLine } = require('common-tags');
+const { oneLine } = require('common-tags');
 const { Command, CommandoMessage } = require('discord.js-commando');
 const { disambiguation } = require('discord.js-commando/src/util');
 
@@ -12,21 +12,16 @@ const constructEmbed = (commands) => {
 	const prefix = "muki!";
 	let aliases;
 	let commandName = commands[0].name;
-	let description = stripIndents`
-					${oneLine`
-						__**Descripción:**__\n${commands[0].description}
-						${commands[0].guildOnly ? ' (Solo funciona en Servidores)' : ''}
-						${commands[0].nsfw ? ' **(NSFW)**' : ''}
-					`}`;
+	let description = `__**Descripción:**__\n${commands[0].description} \n${commands[0].guildOnly ? ' (Solo funciona en Servidores)' : ''} ${commands[0].nsfw ? ' **(NSFW)**' : ''}`;
 
 	if (commands[0].aliases.length > 0)
 		aliases = `\nAliases: ${commands[0].aliases.join(', ')}`;
 
 	if (commands[0].examples)
-		description += `\n\n__**Ejemplos:**__\n\`\`\`${commands[0].examples.map(example => `${prefix}${example}`).join('\n')}\`\`\``;
+		description += `\n\`\`\`${commands[0].examples.map(example => `${prefix}${example}`).join('\n')}\`\`\``;
 
 	if (commands[0].details)
-		description += `\n\n__**Detalles:**__\n${commands[0].details}`;
+		description += `\n${commands[0].details}`;
 
 	const embed = new MessageEmbed()
 		.setDescription(description)
@@ -50,14 +45,14 @@ module.exports = class HelpCommand extends Command {
         El comando debe ser parte del nombre de un comando o el nombre completo.
         Si el nombre no es especificado, se listarán todos los comandos disponibles.
 			`,
-			examples: ['help', 'help prefix'],
-			guarded: true,
+			examples: [],
+			guarded: false,
 			args: [
 				{
 					key: 'command',
 					prompt: '¿Que comando quieres consultar?',
 					type: 'string',
-					default: ''
+					default: 'all'
 				}
 			]
 		});
