@@ -6,7 +6,7 @@ const CommandoClientEx = require('./Classes/CommandoClientExtended');
 const Muki = new CommandoClientEx();
 
 // Login.
-Muki.login(require('./Keys/auth').ShompiFlen);
+Muki.login(require('./Keys/auth').stable);
 
 // Registrar Proveedor de base de datos
 const sqlite = require('sqlite');

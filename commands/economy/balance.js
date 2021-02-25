@@ -3,7 +3,6 @@ const { MessageEmbed } = require('discord.js');
 const balConfig = require('../../configs/balance');
 const { bankGet, profileGet } = require('./helpers/db');
 
-
 module.exports = class BalanceCommand extends Command {
 	constructor(client) {
 		super(client, {
@@ -30,15 +29,14 @@ module.exports = class BalanceCommand extends Command {
 
 		const { balance } = profileGet(message.author.id);
 
-
 		const description =
-			`${balConfig.coin_name} en Mano: ${balance.on_hand}` +
-			`\n${balConfig.coin_name} en el Banco: ${bankGet(message.author.id)}` +
+			`${balConfig.coin_code} en Mano: ${balance.on_hand}` +
+			`\n${balConfig.coin_code} en el Banco: ${bankGet(message.author.id)}` +
 			`\n\n**__Donaciones__**` +
 			`\n${balConfig.coin_name_short} Donados: ${balance.donations.donated}` +
 			`\n${balConfig.coin_name_short} Recibidos: ${balance.donations.received}` +
-			`\nTop Donador: ${balance.donations.top_donator} ${balConfig.coin_name_short}` +
-			`\nÚltimo Donador: ${balance.donations.last_donor} ${balConfig.coin_name_short}` +
+			`\nTop Donador: ${balance.donations.top_donator.tag ?? ''} ${balance.donations.top_donator.amount ? `donó **${balance.donations.top_donator.amount} ${balConfig.coin_name_short}**` : ''}` +
+			`\nÚltimo Donador: ${balance.donations.last_donor}` +
 			`\n\n**__Robos__**` +
 			`\nTe han robado: ${balance.stolen_by_others} ${balConfig.coin_name_short}` +
 			`\nHas robado: ${balance.stolen_from_others} ${balConfig.coin_name_short}` +
@@ -49,7 +47,8 @@ module.exports = class BalanceCommand extends Command {
 				.setAuthor("Balance")
 				.setTitle(message.author.tag)
 				.setColor("BLUE")
-				.setDescription(description);
+				.setDescription(description)
+				.setThumbnail(message.author.displayAvatarURL({ size: 512, dynamic: true }));
 
 		message.channel.send(balanceEmbed);
 	}

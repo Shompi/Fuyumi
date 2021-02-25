@@ -26,20 +26,21 @@ module.exports = class EnableStreamsCommand extends Command {
 					type: 'string',
 					prompt: `Ingresa el tipo de operacion que quieres realizar: **${OPERATIONS.join(", ")}**`,
 					error: "Ocurrió un error con el comando, para más información sobre como utilizarlo usa **help streams**.",
-					wait: 10,
+					wait: 20,
 					oneOf: OPERATIONS,
 				},
 				{
 					key: "rest",
 					type: 'user|channel',
 					infinite: true,
+					prompt: "Si configurarás un canal, mencionalo. Si agregarás a un usuario o varios, mencionalos.",
 					error: "Ocurrió un error con el comando, para mas información sobre como utilizarlo usa **help streams**.",
-					prompt: "",
+					wait: 20,
 				}
 			],
 			userPermissions: ["ADMINISTRATOR"],
 			guildOnly: true,
-			argsPromptLimit: 0,
+			argsPromptLimit: 1,
 		});
 
 		this.onBlock = (message, reason) => null;

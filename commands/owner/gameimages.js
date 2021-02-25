@@ -9,6 +9,7 @@ module.exports = class extends Command {
 			memberName: 'gameimages',
 			aliases: ['gameimage'],
 			group: 'owner',
+			hidden: true,
 			description: 'Añade imágenes de juegos para los embeds de Live Streaming',
 			examples: ["gimage [Nombre del Juego] | [URL]"],
 			guildOnly: false,

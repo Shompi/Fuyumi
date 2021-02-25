@@ -24,7 +24,7 @@ module.exports = class UserProfile {
 		/** Total de veces que el jugador ha interactuado con un juego. */
 		this.games_played = 0;
 
-		/** Total de veces que el jugador ha perdido dinero en algun juego. */
+		/** Total de veces que el jugador ha perdido Monedas en algun juego. */
 		this.games_lost = 0;
 
 		/** Total de veces que el jugador ha ganado en algun juego. */
@@ -34,24 +34,33 @@ module.exports = class UserProfile {
 		this.date_registered = Date.now();
 
 		this.balance = {
-			/** Dinero actual en mano del usuario.*/
+			/** Monedas en mano del usuario.*/
 			on_hand: 0,
 
-			/** Dinero total que ha conseguido el usuario. */
+			/** Monedas totales que ha conseguido el usuario. */
 			earned: 0,
 
-			/** El dinero total que ha donado el usuario. */
 			donations: {
+				/** Monedas totales que este usuario ha donado */
 				donated: 0,
+
+				/** Monedas totales que este usuario ha recibido a través de donaciones */
 				received: 0,
-				top_donator: "No ha recibido donaciones.",
+
+				/** El usuario que más le ha donado a éste usuario */
+				top_donator: {
+					tag: null,
+					amount: null
+				},
+
+				/** El último usuario que le donó a éste usuario */
 				last_donator: "No ha recibido donaciones."
 			},
 
-			/** El dinero total que este miembro ha robado a otros usuarios. */
+			/** El Monedas total que este miembro ha robado a otros usuarios. */
 			stolen_from_others: 0,
 
-			/** Dinero total que le han robado a este usuario. */
+			/** Monedas total que le han robado a este usuario. */
 			stolen_by_others: 0,
 
 			dailies: {
@@ -62,7 +71,7 @@ module.exports = class UserProfile {
 				/** Timestamp de la última vez que el usuario reclamó su premio diario */
 				claimed_at: 0,
 
-				/** Dinero total reclamado por el bonus diario. */
+				/** Monedas total reclamado por el bonus diario. */
 				total_earned: 0
 			}
 		}

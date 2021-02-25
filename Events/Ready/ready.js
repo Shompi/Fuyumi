@@ -5,7 +5,7 @@ const fetch = require('node-fetch').default;
 let fetchMemes = true;
 
 const activity = {
-	name: "Mencioname!",
+	name: "@Muki help",
 	type: "LISTENING"
 }
 
