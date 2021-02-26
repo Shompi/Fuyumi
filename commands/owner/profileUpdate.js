@@ -4,7 +4,7 @@ const { profileUpdateDatabase } = require('../economy/helpers/db');
 module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'profileUpdate',
+			name: 'profileupdate',
 			memberName: 'profileUpdate',
 			aliases: [],
 			group: 'owner',
