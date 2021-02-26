@@ -74,19 +74,23 @@ const profileClaimDaily = (profile) => {
 
 const profileUpdateDatabase = () => {
 	const IDS = profiles.indexes;
-
+	let updated = 0;
 	for (const id of IDS) {
+		updated++;
 		const profile = profiles.get(id);
 
-		profile.last_donator = {
+		profile.donations.last_donator = {
 			tag: null,
 			amount: null
 		}
 
+		delete profile.last_donator;
+
+
 		profiles.set(id, profile);
 		console.log("UPDATED PROFILE:", profile);
 	}
-
+	console.log(`SE ACTUALIZARON ${updated} PERFILES.`);
 	return true;
 }
 
