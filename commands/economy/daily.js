@@ -25,8 +25,9 @@ module.exports = class DailyCommand extends Command {
 		this.isAbleToClaim = (claimed_at) => {
 
 			const diff = Date.now() - (claimed_at * Day);
-
-			return diff < 0 ? false : true;
+			console.log("CLAIMED_AT", claimed_at);
+			console.log("DIFF", diff);
+			return diff < 0;
 		}
 
 		this.onError = (err, message, args, fromPattern) => console.log(err);
