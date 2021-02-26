@@ -79,7 +79,7 @@ const profileUpdateDatabase = () => {
 		updated++;
 		const profile = profiles.get(id);
 
-		profile.donations.last_donator = {
+		profile.balance.donations.last_donator = {
 			tag: null,
 			amount: null
 		}
