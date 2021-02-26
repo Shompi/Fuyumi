@@ -43,6 +43,7 @@ module.exports = (old, now) => {
 	 * >Si son distintas = Actualizar el mensaje relacionado con el primer livestream.
 	 */
 
+	return;
 
 	if (now.user.bot) return;
 	if (!old) return;
