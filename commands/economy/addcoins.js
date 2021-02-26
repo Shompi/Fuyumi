@@ -16,7 +16,7 @@ module.exports = class AddCoinsCommand extends Command {
 			args: [
 				{
 					key: 'target',
-					type: 'string|user',
+					type: 'user|string',
 					prompt: "Menciona o ingresa la ID del usuario al que le quieres añadir fondos:",
 					error: "Ocurrió un error con el comando.",
 					wait: 10,
