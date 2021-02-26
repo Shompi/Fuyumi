@@ -9,7 +9,8 @@ module.exports = class extends Command {
 			aliases: [],
 			group: 'owner',
 			description: 'Actualizar la base de datos de perfiles.',
-			ownerOnly: true
+			ownerOnly: true,
+			hidden: true
 		});
 	}
 
