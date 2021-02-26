@@ -29,25 +29,15 @@ module.exports = class BalanceCommand extends Command {
 
 		const { balance } = profileGet(message.author.id);
 
-		const description =
-			`**${balConfig.coin_code} en Mano**: ${parseNumeral(balance.on_hand)}` +
-			`\n**${balConfig.coin_code} en el Banco**: ${parseNumeral(bankGet(message.author.id))}` +
-			`\n\n**__Donaciones__**` +
-			`\n${balConfig.coin_name_short} Donados: ${parseNumeral(balance.donations.donated)}` +
-			`\n${balConfig.coin_name_short} Recibidos: ${parseNumeral(balance.donations.received)}` +
-			`\nTop Donador: ${balance.donations.top_donator.tag ?? 'No ha recibido donaciones.'} ${balance.donations.top_donator.amount ? `donó **${parseNumeral(balance.donations.top_donator.amount)} ${balConfig.coin_name_short}**` : ''}` +
-			`\nÚltimo Donador: ${balance.donations.last_donator.amount ?? ''} ${parseNumeral(balance.donations.last_donator.amount) ?? ''}` +
-			`\n\n**__Robos__**` +
-			`\nTe han robado: ${parseNumeral(balance.stolen_by_others)} ${balConfig.coin_name_short}` +
-			`\nHas robado: ${parseNumeral(balance.stolen_from_others)} ${balConfig.coin_name_short}` +
-			`\n\n¡Has conseguido **${parseNumeral(balance.earned)} ${balConfig.coin_name}** en total!`;
-
 		const balanceEmbed =
 			new MessageEmbed()
 				.setAuthor("Balance")
 				.setTitle(message.author.tag)
 				.setColor("BLUE")
-				.setDescription(description)
+				.setDescription(
+					`**${balConfig.coin_name} en mano:** ${parseNumeral(balance.on_hand)}` +
+					`\n**${balConfig.coin_name} en banco:** ${parseNumeral(bankGet(message.author.id))}`
+				)
 				.setThumbnail(message.author.displayAvatarURL({ size: 512, dynamic: true }));
 
 		message.channel.send(balanceEmbed);

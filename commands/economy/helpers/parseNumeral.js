@@ -22,8 +22,9 @@ numeral.locale('cl');
  * @param {Number} number Número para formatear
  * @example 13040 => 13.040
  * @example 3994192.04 => 3.994.192,02
+ * @example null|undefined|'' => null
  */
-const parseNumeral = (number) => numeral(number).format('0.0');
+const parseNumeral = (number) => number ? numeral(number).format('0.0') : null;
 
 module.exports = {
 	parseNumeral
