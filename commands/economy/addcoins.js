@@ -69,8 +69,8 @@ module.exports = class AddCoinsCommand extends Command {
 
 
 		target.send(new MessageEmbed()
-			.setTitle(`¡Has recibido un deposito de ${Numeral(amount).format(0.0)} ${balConfig.coin_name}!`)
-			.setDescription(`Mensaje: ${razon}\n\nTienes un total de **${Numeral(updatedAmount).format(0.0)} ${balConfig.coin_name_short}** guardados en tu banco.`)
+			.setTitle(`¡Has recibido un deposito de ${Numeral(amount).format('0.0')} ${balConfig.coin_name}!`)
+			.setDescription(`Mensaje: ${razon}\n\nTienes un total de **${Numeral(updatedAmount).format('0.0')} ${balConfig.coin_name_short}** guardados en tu banco.`)
 			.setColor("BLUE")
 			.setTimestamp()
 		);
