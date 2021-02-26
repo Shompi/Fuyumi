@@ -3,6 +3,7 @@ const millis = require('pretty-ms')
 const balConfig = require('../../configs/balance');
 const { profileGet, profileClaimDaily } = require('./helpers/db');
 const Day = 1000 * 60 * 60 * 22;
+const { numeral } = require('./helpers/customNumeral');
 
 module.exports = class DailyCommand extends Command {
 	constructor(client) {
@@ -51,9 +52,9 @@ module.exports = class DailyCommand extends Command {
 			const result = profileClaimDaily(profile);
 
 			if (result)
-				return message.reply(`¡Haz reclamado tus **${balConfig.dailyAmount}** ${balConfig.coin_name} diarias!`);
+				return message.reply(`¡Haz reclamado tus **${numeral(balConfig.dailyAmount).format('0,0')}** ${balConfig.coin_name} diarias!`);
 			else
-				return message.reply("Ocurrio un error al intentar reclamar tu bono diario, comúnicate con **ShompiFlen#3338** para solucionarlo lo antes posible.");
+				return message.reply("Ocurrio un error al intentar reclamar tu bono diario, comunícate con **ShompiFlen#3338** para solucionarlo lo antes posible.");
 
 		} else {
 			return message.reply(`¡No puedes reclamar tu bono diario aún!\nDebes esperar \`${millis((profile.balance.dailies.claimed_at + Day) - Date.now())}\` más.`)
