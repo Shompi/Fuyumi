@@ -59,7 +59,10 @@ Muki.on('message', (message) => message.author.bot ? null : Muki.events.get('mes
 
 Muki.on('error', console.error);
 
-Muki.on('messageUpdate', (old, message) => {
+Muki.on('messageUpdate', async (old, message) => {
+	if (message.partial)
+		await message.fetch();
+
 	if (message.author.bot) return;
 
 	Muki.events.get("messageUpdate")?.execute(old, message);
