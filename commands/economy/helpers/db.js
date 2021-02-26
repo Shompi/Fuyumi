@@ -78,8 +78,10 @@ const profileUpdateDatabase = () => {
 	for (const id of IDS) {
 		const profile = profiles.get(id);
 
-		profile.last_donator.tag = null;
-		profile.last_donator.amount = null;
+		profile.last_donator = {
+			tag: null,
+			amount: null
+		}
 
 		profiles.set(id, profile);
 		console.log("UPDATED PROFILE:", profile);
