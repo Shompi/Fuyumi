@@ -72,6 +72,22 @@ const profileClaimDaily = (profile) => {
 	return profileSave(profile.user_id, profile);
 }
 
+const profileUpdateDatabase = () => {
+	const IDS = profiles.indexes;
+
+	for (const id of IDS) {
+		const profile = profiles.get(id);
+
+		profile.last_donator.tag = null;
+		profile.last_donator.amount = null;
+
+		profiles.set(id, profile);
+		console.log("UPDATED PROFILE:", profile);
+	}
+
+	return true;
+}
+
 module.exports = {
 	profileGet,
 	bankAddCoins,
@@ -79,4 +95,5 @@ module.exports = {
 	bankSetCoins,
 	profileClaimDaily,
 	profileSave,
+	profileUpdateDatabase,
 }

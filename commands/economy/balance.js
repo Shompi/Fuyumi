@@ -2,7 +2,7 @@ const { Command, CommandoMessage } = require('discord.js-commando');
 const { MessageEmbed } = require('discord.js');
 const balConfig = require('../../configs/balance');
 const { bankGet, profileGet } = require('./helpers/db');
-
+const { parseNumeral } = require('./helpers/parseNumeral');
 module.exports = class BalanceCommand extends Command {
 	constructor(client) {
 		super(client, {
@@ -30,17 +30,17 @@ module.exports = class BalanceCommand extends Command {
 		const { balance } = profileGet(message.author.id);
 
 		const description =
-			`**${balConfig.coin_code} en Mano**: ${balance.on_hand}` +
-			`\n**${balConfig.coin_code} en el Banco**: ${bankGet(message.author.id)}` +
+			`**${balConfig.coin_code} en Mano**: ${parseNumeral(balance.on_hand)}` +
+			`\n**${balConfig.coin_code} en el Banco**: ${parseNumeral(bankGet(message.author.id))}` +
 			`\n\n**__Donaciones__**` +
-			`\n${balConfig.coin_name_short} Donados: ${balance.donations.donated}` +
-			`\n${balConfig.coin_name_short} Recibidos: ${balance.donations.received}` +
-			`\nTop Donador: ${balance.donations.top_donator.tag ?? 'No ha recibido donaciones.'} ${balance.donations.top_donator.amount ? `donó **${balance.donations.top_donator.amount} ${balConfig.coin_name_short}**` : ''}` +
-			`\nÚltimo Donador: ${balance.donations.last_donator}` +
+			`\n${balConfig.coin_name_short} Donados: ${parseNumeral(balance.donations.donated)}` +
+			`\n${balConfig.coin_name_short} Recibidos: ${parseNumeral(balance.donations.received)}` +
+			`\nTop Donador: ${balance.donations.top_donator.tag ?? 'No ha recibido donaciones.'} ${balance.donations.top_donator.amount ? `donó **${parseNumeral(balance.donations.top_donator.amount)} ${balConfig.coin_name_short}**` : ''}` +
+			`\nÚltimo Donador: ${balance.donations.last_donator.amount ?? ''} ${parseNumeral(balance.donations.last_donator.amount) ?? ''}` +
 			`\n\n**__Robos__**` +
-			`\nTe han robado: ${balance.stolen_by_others} ${balConfig.coin_name_short}` +
-			`\nHas robado: ${balance.stolen_from_others} ${balConfig.coin_name_short}` +
-			`\n\n¡Has conseguido **${balance.earned} ${balConfig.coin_name}** en total!`;
+			`\nTe han robado: ${parseNumeral(balance.stolen_by_others)} ${balConfig.coin_name_short}` +
+			`\nHas robado: ${parseNumeral(balance.stolen_from_others)} ${balConfig.coin_name_short}` +
+			`\n\n¡Has conseguido **${parseNumeral(balance.earned)} ${balConfig.coin_name}** en total!`;
 
 		const balanceEmbed =
 			new MessageEmbed()

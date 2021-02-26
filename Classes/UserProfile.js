@@ -54,7 +54,10 @@ module.exports = class UserProfile {
 				},
 
 				/** El último usuario que le donó a éste usuario */
-				last_donator: "No ha recibido donaciones."
+				last_donator: {
+					tag: null,
+					amount: null
+				}
 			},
 
 			/** El Monedas total que este miembro ha robado a otros usuarios. */

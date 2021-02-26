@@ -2,7 +2,7 @@ const { User, MessageEmbed } = require('discord.js');
 const { Command, CommandoMessage } = require('discord.js-commando');
 const { bankAddCoins, bankSetCoins } = require('./helpers/db');
 const balConfig = require('../../Configs/balance');
-const { numeral: Numeral } = require('./helpers/customNumeral');
+const { parseNumeral } = require('./helpers/parseNumeral');
 const embedImage = "https://puu.sh/HkdOF/c96be264b6.png";
 
 module.exports = class AddCoinsCommand extends Command {
@@ -81,7 +81,7 @@ module.exports = class AddCoinsCommand extends Command {
 
 			case '-add':
 				updatedAmount = bankAddCoins(target.id, amount);
-				title = `¡Has recibido un depósito de ${Numeral(amount).format('0,0')} ${balConfig.coin_name}!`;
+				title = `¡Has recibido un depósito de ${parseNumeral(amount)} ${balConfig.coin_name}!`;
 				break;
 		}
 
@@ -89,7 +89,7 @@ module.exports = class AddCoinsCommand extends Command {
 
 		await target.send(new MessageEmbed()
 			.setTitle(title)
-			.setDescription(`**Mensaje:** ${razon}\n\nTienes un total de **${Numeral(updatedAmount).format('0,0')} ${balConfig.coin_name_short}** guardados en tu banco.`)
+			.setDescription(`**Mensaje:** ${razon}\n\nTienes un total de **${parseNumeral(updatedAmount)} ${balConfig.coin_name_short}** guardados en tu banco.`)
 			.setColor("BLUE")
 			.setThumbnail(embedImage)
 			.setTimestamp()
