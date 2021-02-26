@@ -16,6 +16,8 @@ numeral.register('locale', 'cl', {
 	}
 });
 
+numeral.locale('cl');
+
 module.exports = {
 	numeral
 }
