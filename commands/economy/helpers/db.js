@@ -26,6 +26,17 @@ const bankAddCoins = (id, amount) => {
 };
 
 /**
+ * Setea el banco de un usuario a {amount} directamente.
+ * @param {String} id 
+ * @param {Number} amount 
+ */
+const bankSetCoins = (id, amount) => {
+	bank.set(id, amount);
+
+	return amount;
+}
+
+/**
 * @param { String } id ID del usuario
 * @returns {Profile}
 */
@@ -65,6 +76,7 @@ module.exports = {
 	profileGet,
 	bankAddCoins,
 	bankGet,
+	bankSetCoins,
 	profileClaimDaily,
 	profileSave,
 }

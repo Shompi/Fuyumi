@@ -30,8 +30,8 @@ module.exports = class BalanceCommand extends Command {
 		const { balance } = profileGet(message.author.id);
 
 		const description =
-			`${balConfig.coin_code} en Mano: ${balance.on_hand}` +
-			`\n${balConfig.coin_code} en el Banco: ${bankGet(message.author.id)}` +
+			`**${balConfig.coin_code} en Mano**: ${balance.on_hand}` +
+			`\n**${balConfig.coin_code} en el Banco**: ${bankGet(message.author.id)}` +
 			`\n\n**__Donaciones__**` +
 			`\n${balConfig.coin_name_short} Donados: ${balance.donations.donated}` +
 			`\n${balConfig.coin_name_short} Recibidos: ${balance.donations.received}` +

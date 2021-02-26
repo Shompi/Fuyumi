@@ -1,10 +1,10 @@
 const { User, MessageEmbed } = require('discord.js');
 const { Command, CommandoMessage } = require('discord.js-commando');
-const { bankAddCoins } = require('./helpers/db');
+const { bankAddCoins, bankSetCoins } = require('./helpers/db');
 const balConfig = require('../../Configs/balance');
 const { numeral: Numeral } = require('./helpers/customNumeral');
-
 const embedImage = "https://puu.sh/HkdOF/c96be264b6.png";
+
 module.exports = class AddCoinsCommand extends Command {
 	constructor(client) {
 		super(client, {
@@ -14,7 +14,7 @@ module.exports = class AddCoinsCommand extends Command {
 			description: 'Añade fondos directamente al banco de un usuario.',
 			hidden: true,
 			ownerOnly: true,
-			examples: ["addfounds 1234567890101112 50000"],
+			examples: ["addcoins <@ShompiFlen> [-set | -add] <50000> [Razón]"],
 			args: [
 				{
 					key: 'target',
@@ -22,6 +22,14 @@ module.exports = class AddCoinsCommand extends Command {
 					prompt: "Menciona o ingresa la ID del usuario al que le quieres añadir fondos:",
 					error: "Ocurrió un error con el comando.",
 					wait: 10,
+				},
+				{
+					key: 'operation',
+					type: 'string',
+					prompt: "Ingresa la operacion que quieres realizar.",
+					error: "Ocurrió un error con el comando.",
+					wait: 10,
+					oneOf: ["-set", "-add"]
 				},
 				{
 					key: 'amount',
@@ -51,29 +59,37 @@ module.exports = class AddCoinsCommand extends Command {
 	 * @param { CommandoMessage } message 
 	 * @param {*} args 
 	 */
-	async run(message, { target, amount, razon }) {
+	async run(message, { target, amount, razon, operation }) {
 
 
 		let updatedAmount = 0;
+		let title = '';
 
-		if (target instanceof User) {
-			updatedAmount = bankAddCoins(target.id, amount);
-
-		} else {
-
+		if (!(target instanceof User)) {
 			target = await this.client.users.fetch(target).catch(e => null);
 
 			if (!target)
 				return message.channel.send("❌ La id no es válida para un Usuario de Discord.");
 
-			updatedAmount = bankAddCoins(target.id, amount);
 		}
 
-		message.react("✅");
+		switch (operation) {
+			case '-set':
+				updatedAmount = bankSetCoins(target.id, amount);
+				title = "Tus monedas han sido modificadas.";
+				break;
 
-		target.send(new MessageEmbed()
-			.setTitle(`¡Has recibido un depósito de ${Numeral(amount).format('0,0')} ${balConfig.coin_name}!`)
-			.setDescription(`Mensaje: ${razon}\n\nTienes un total de **${Numeral(updatedAmount).format('0,0')} ${balConfig.coin_name_short}** guardados en tu banco.`)
+			case '-add':
+				updatedAmount = bankAddCoins(target.id, amount);
+				title = `¡Has recibido un depósito de ${Numeral(amount).format('0,0')} ${balConfig.coin_name}!`;
+				break;
+		}
+
+		await message.react("✅");
+
+		await target.send(new MessageEmbed()
+			.setTitle(title)
+			.setDescription(`**Mensaje:** ${razon}\n\nTienes un total de **${Numeral(updatedAmount).format('0,0')} ${balConfig.coin_name_short}** guardados en tu banco.`)
 			.setColor("BLUE")
 			.setThumbnail(embedImage)
 			.setTimestamp()

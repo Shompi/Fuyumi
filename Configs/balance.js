@@ -10,7 +10,7 @@ module.exports = {
 	coin_name: "Muki Coins",
 	coin_name_short: "Mukis",
 	coin_code: "MC",
-	dailyAmount: 1000,
+	dailyAmount: 5000,
 	perMessage: 100,
 	perAttachment: 300,
 }
