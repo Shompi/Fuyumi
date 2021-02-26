@@ -1,8 +1,8 @@
-const { User } = require('discord.js');
+const { User, MessageEmbed } = require('discord.js');
 const { Command, CommandoMessage } = require('discord.js-commando');
 const { bankAddCoins } = require('./helpers/db');
 const balConfig = require('../../Configs/balance');
-
+const Numeral = require('numeral');
 module.exports = class AddCoinsCommand extends Command {
 	constructor(client) {
 		super(client, {
@@ -27,6 +27,15 @@ module.exports = class AddCoinsCommand extends Command {
 					prompt: "Cantidad de Muki Coins que le quieres depositar:",
 					error: "Ocurrió un error con el comando.",
 					wait: 10,
+				},
+				{
+					key: 'razon',
+					type: 'string',
+					infinite: true,
+					prompt: "Ingresa una razón para este depósito.",
+					error: "Ocurrió un error con el comando.",
+					wait: 30,
+					default: '-'
 				}
 			]
 		});
@@ -40,7 +49,7 @@ module.exports = class AddCoinsCommand extends Command {
 	 * @param { CommandoMessage } message 
 	 * @param {*} args 
 	 */
-	async run(message, { target, amount }) {
+	async run(message, { target, amount, razon }) {
 
 
 		let updatedAmount = 0;
@@ -58,6 +67,12 @@ module.exports = class AddCoinsCommand extends Command {
 			updatedAmount = bankAddCoins(target.id, amount);
 		}
 
-		target.send(`¡Se te han depositado **${amount} ${balConfig.coin_name}**!\nTienes un total de **${updatedAmount} ${balConfig.coin_name_short}** guardados en tu banco.`)
+
+		target.send(new MessageEmbed()
+			.setTitle(`¡Has recibido un deposito de ${Numeral(amount).format(0.0)} ${balConfig.coin_name}!`)
+			.setDescription(`Mensaje: ${razon}\n\nTienes un total de **${Numeral(updatedAmount).format(0.0)} ${balConfig.coin_name_short}** guardados en tu banco.`)
+			.setColor("BLUE")
+			.setTimestamp()
+		);
 	}
 }

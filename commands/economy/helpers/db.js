@@ -3,7 +3,6 @@ const Profile = require('../../../Classes/UserProfile');
 const balValues = require('../../../configs/balance');
 const expValues = require('../../../configs/experience');
 
-
 /** Dinero que los usuarios depositan en su banco, por ejemplo para no apostarlo todo por accidente. */
 const bank = new enmap({ name: 'bank' });
 
