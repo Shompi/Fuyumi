@@ -39,7 +39,7 @@ module.exports = class ProfileCommand extends Command {
 					`\nTu Top Donador: ${user_profile.balance.donations.top_donator.tag ?? 'No has recibido donaciones.'} ${user_profile.balance.donations.top_donator.amount ? `${parseNumeral(user_profile.balance.donations.top_donator.amount)} ${balConfig.coin_name_short}` : ''}` +
 					`\nÚltima donación recibida: ${user_profile.balance.donations.last_donator.tag ?? 'No has recibido donaciones.'} ${user_profile.balance.donations.last_donator.amount ? `${parseNumeral(user_profile.balance.donations.last_donator.amount)} ${balConfig.coin_name_short}` : ''}` +
 					`\n\n**Robos:**\nHas Robado: ${parseNumeral(user_profile.balance.stolen_from_others)}\nTe han Robado: ${parseNumeral(user_profile.balance.stolen_by_others)}` +
-					`\n\n**Diarios:**\nReclamados: ${user_profile.balance.dailies.claimed}\n Total de ${balConfig.coin_name_short}: ${parseNumeral(user_profile.balance.dailies.total_earned)}`
+					`\n\n**Diarios:**\nReclamados: ${user_profile.balance.dailies.claimed}\n Total Conseguido: ${parseNumeral(user_profile.balance.dailies.total_earned)} ${balConfig.coin_name_short}`
 				)
 				.setColor("BLUE")
 				.setFooter(`Has conseguido ${parseNumeral(user_profile.balance.earned)} desde`)
