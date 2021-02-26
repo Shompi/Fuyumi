@@ -13,16 +13,16 @@ const profiles = new enmap({ name: 'profiles' });
 const bankGet = (id) => bank.ensure(id, 0);
 
 /**
+ * Método para añadir fondos al banco de un usuario.
  * @param {String} id 
  * @param {Number} amount
  * @returns {Number} cantidad total en el banco luego de actualizar. 
  */
-const bankUpdate = (id, amount) => {
+const bankAddCoins = (id, amount) => {
 
-	/** Dinero del usuario en el banco */
-	const userbank = bank.ensure(id, 0);
+	const userCoins = bank.ensure(id, 0);
 
-	bank.set(id, userbank + amount);
+	bank.set(id, userCoins + amount);
 	return bank.get(id);
 };
 
@@ -64,7 +64,7 @@ const profileClaimDaily = (profile) => {
 
 module.exports = {
 	profileGet,
-	bankUpdate,
+	bankAddCoins,
 	bankGet,
 	profileClaimDaily,
 	profileSave,

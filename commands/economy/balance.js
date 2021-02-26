@@ -40,7 +40,7 @@ module.exports = class BalanceCommand extends Command {
 			`\n\n**__Robos__**` +
 			`\nTe han robado: ${balance.stolen_by_others} ${balConfig.coin_name_short}` +
 			`\nHas robado: ${balance.stolen_from_others} ${balConfig.coin_name_short}` +
-			`\n\n¡Has conseguido **${balance.earned} ${balConfig.coin_name}** desde que te registraste!`;
+			`\n\n¡Has conseguido **${balance.earned} ${balConfig.coin_name}** en total!`;
 
 		const balanceEmbed =
 			new MessageEmbed()

@@ -5,3 +5,4 @@ Keys
 data
 Tests
 .vscode
+*.db
