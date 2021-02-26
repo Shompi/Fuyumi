@@ -1,8 +1,8 @@
 const { User, MessageEmbed } = require('discord.js');
 const { Command, CommandoMessage } = require('discord.js-commando');
-const { bankAddCoins, bankSetCoins } = require('./helpers/db');
+const { bankAddCoins, bankSetCoins } = require('../economy/helpers/db');
 const balConfig = require('../../Configs/balance');
-const { parseNumeral } = require('./helpers/parseNumeral');
+const { parseNumeral } = require('../economy/helpers/parseNumeral');
 const embedImage = "https://puu.sh/HkdOF/c96be264b6.png";
 
 module.exports = class AddCoinsCommand extends Command {
@@ -10,7 +10,7 @@ module.exports = class AddCoinsCommand extends Command {
 		super(client, {
 			name: 'addcoins',
 			memberName: 'addcoins',
-			group: 'economy',
+			group: 'owner',
 			description: 'Añade fondos directamente al banco de un usuario.',
 			hidden: true,
 			ownerOnly: true,
