@@ -5,7 +5,7 @@ module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'profileupdate',
-			memberName: 'profileUpdate',
+			memberName: 'profileupdate',
 			aliases: [],
 			group: 'owner',
 			description: 'Actualizar la base de datos de perfiles.',
