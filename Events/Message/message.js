@@ -16,6 +16,9 @@ module.exports = {
 		// Ya que principalmente el evento de mensajes es manejado por discord.js-commando
 		// Esta parte será la encargada de dar experiencia y otros checks a los usuarios.
 
+		// Ignoraremos mensajes por DM
+		if (!guild)
+			return;
 		const user_profile = profileGet(author.id);
 
 		let totalExpGain = 0, totalCoinsGain = 0;
