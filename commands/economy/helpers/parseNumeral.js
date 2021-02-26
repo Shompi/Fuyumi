@@ -26,7 +26,7 @@ numeral.register('locale', 'cl', {
 const parseNumeral = (number) => {
 
 	numeral.locale('cl');
-	number ? numeral(number).format('0,0') : null
+	return number ? numeral(number).format('0,0') : null
 }
 
 module.exports = {
