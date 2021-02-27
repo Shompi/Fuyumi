@@ -45,6 +45,9 @@ module.exports = class extends Command {
 	 */
 	run(message, { target, amount }) {
 
+		if (message.author.id === target.id)
+			return message.reply("No puedes hacerte una donación a ti mismo.");
+
 		if (amount < 500)
 			return message.reply(`La cantidad mínima que puedes donar es de **${minAmount} ${balConfig.coin_name}.**`);
 
