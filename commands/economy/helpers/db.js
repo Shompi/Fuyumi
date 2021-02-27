@@ -37,6 +37,28 @@ const bankSetCoins = (id, amount) => {
 }
 
 /**
+ * Método para donar a otro usuario, las donaciones son directamente de banco a banco.
+ * @param {String} origin ID del usuario que realiza la donación
+ * @param {String} destination ID del usuario al que le están realizando la donación
+ * @param {Number} amount Cantidad de Monedas que se están donando, este valor DEBE ser positivo.
+ */
+
+const bankDonate = (origin, destination, amount) => {
+
+	// Primero nos aseguramos de que ambos usuarios estén en la base de datos.
+	bank.ensure(origin, 0);
+	bank.ensure(destination, 0);
+
+	// Restamos amount del banco origen
+	bank.math(origin, 'sub', amount);
+
+	// Añadimos amount al banco destination
+	bank.math(destination, 'add', amount);
+
+	return true;
+}
+
+/**
 * @param { String } id ID del usuario
 * @returns {Profile}
 */
@@ -99,6 +121,7 @@ module.exports = {
 	bankAddCoins,
 	bankGet,
 	bankSetCoins,
+	bankDonate,
 	profileClaimDaily,
 	profileSave,
 	profileUpdateDatabase,
