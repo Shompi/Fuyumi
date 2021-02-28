@@ -20,7 +20,6 @@ module.exports = class DepositCommand extends Command {
 				{
 					key: 'amount',
 					type: 'integer|string',
-					error: "Ocurrió un error con el comando.",
 					prompt: "Ingresa la cantidad de dinero que quieres depositar en tu banco",
 					default: 'all',
 				}

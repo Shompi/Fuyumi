@@ -20,14 +20,12 @@ module.exports = class AddCoinsCommand extends Command {
 					key: 'target',
 					type: 'user|string',
 					prompt: "Menciona o ingresa la ID del usuario al que le quieres añadir fondos:",
-					error: "Ocurrió un error con el comando.",
 					wait: 10,
 				},
 				{
 					key: 'operation',
 					type: 'string',
 					prompt: "Ingresa la operacion que quieres realizar.",
-					error: "Ocurrió un error con el comando.",
 					wait: 10,
 					oneOf: ["-set", "-add"]
 				},
@@ -35,7 +33,6 @@ module.exports = class AddCoinsCommand extends Command {
 					key: 'amount',
 					type: 'integer',
 					prompt: "Cantidad de Muki Coins que le quieres depositar:",
-					error: "Ocurrió un error con el comando.",
 					wait: 10,
 				},
 				{
@@ -43,7 +40,6 @@ module.exports = class AddCoinsCommand extends Command {
 					type: 'string',
 					infinite: true,
 					prompt: "Ingresa una razón para este depósito.",
-					error: "Ocurrió un error con el comando.",
 					wait: 30,
 					default: '-'
 				}
