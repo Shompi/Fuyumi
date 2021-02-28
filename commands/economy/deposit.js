@@ -1,5 +1,5 @@
 const { Command, CommandoMessage } = require('discord.js-commando');
-const { bankDeposit, profileGet } = require('./helpers/db');
+const { bankDeposit, profileGet, profileSave } = require('./helpers/db');
 const { parseNumeral } = require('./helpers/parseNumeral');
 const balConfig = require('../../Configs/balance');
 
@@ -59,6 +59,7 @@ module.exports = class DepositCommand extends Command {
 			user_profile.balance.on_hand -= amount;
 		}
 
+		profileSave(message.author.id, user_profile);
 		return message.reply(`¡Depositaste **${parseNumeral(deposited)} ${balConfig.coin_name}** en tu banco!`);
 	}
 }
