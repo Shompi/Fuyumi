@@ -28,7 +28,7 @@ module.exports = class DailyCommand extends Command {
 			const diff = Date.now() - (claimed_at + Day);
 			console.log("CLAIMED_AT", claimed_at);
 			console.log("DIFF", diff);
-			return diff < 0;
+			return diff >= 0;
 		}
 
 		this.onError = (err, message, args, fromPattern) => console.log(err);
