@@ -52,7 +52,8 @@ module.exports = class DonateCommand extends Command {
 			origin_profile.balance.donations.donated += amount;
 
 			dest_profile.balance.donations.received += amount;
-			dest_profile.balance.donations.last_donator = origin.tag;
+			dest_profile.balance.donations.last_donator.tag = origin.tag;
+			dest_profile.balance.donations.last_donator.amount = amount;
 
 			if (dest_profile.balance.donations.top_donator.amount < amount) {
 				dest_profile.balance.donations.top_donator.tag = origin.tag;
