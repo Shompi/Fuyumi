@@ -65,7 +65,7 @@ const bankDonate = (origin, destination, amount) => {
  */
 const bankDeposit = (id, amount) => {
 	bank.ensure(id, 0);
-	bank.math(id, 'sub', amount);
+	bank.math(id, 'add', amount);
 
 	return true;
 }
