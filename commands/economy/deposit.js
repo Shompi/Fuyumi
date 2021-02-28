@@ -1,0 +1,64 @@
+const { Command, CommandoMessage } = require('discord.js-commando');
+const { bankDeposit, profileGet } = require('./helpers/db');
+const { parseNumeral } = require('./helpers/parseNumeral');
+const balConfig = require('../../Configs/balance');
+
+module.exports = class DepositCommand extends Command {
+	constructor(client) {
+		super(client, {
+			name: 'deposit',
+			memberName: 'deposit',
+			aliases: ['depositar', 'deposito'],
+			group: 'economy',
+			description: `Deposita tus ${balConfig.coin_name} en tu banco.\nValor por defecto: 'all'`,
+			examples: ["deposit [valor]"],
+			throttling: {
+				duration: 60,
+				usages: 2,
+			},
+			args: [
+				{
+					key: 'amount',
+					type: 'integer|string',
+					error: "Ocurrió un error con el comando.",
+					prompt: "Ingresa la cantidad de dinero que quieres depositar en tu banco",
+					default: 'all',
+				}
+			]
+		});
+
+
+		this.onBlock = (message, reason) => null;
+		this.onError = (err, message, args, fromPattern) => console.log(err);
+	}
+
+	/**
+	 * @param { CommandoMessage } message 
+	 * @param {*} args 
+	 */
+	run(message, { amount }) {
+
+		// Se deposita desde las monedas ON_HAND hacia el banco.
+
+		const user_profile = profileGet(message.author.id);
+		let deposited = 0;
+
+		// Primero chequiemos que el usuario tiene dinero en mano
+		if (user_profile.balance.on_hand <= 0)
+			return message.reply("no tienes dinero en mano suficiente para depositarlo en el banco.");
+
+		if (amount >= user_profile.balance.on_hand || (amount === 'all' || amount === 'todo')) {
+			bankDeposit(message.author.id, user_profile.balance.on_hand);
+			deposited = user_profile.balance.on_hand;
+
+			user_profile.balance.on_hand = 0; // Depositó todo su dinero.
+		} else {
+			bankDeposit(message.author.id, amount);
+			deposited = amount;
+
+			user_profile.balance.on_hand -= amount;
+		}
+
+		return message.reply(`¡Depositaste **${parseNumeral(deposited)} ${balConfig.coin_name}** en tu banco!`);
+	}
+}

@@ -23,10 +23,11 @@ Muki.registry
 	.registerDefaultTypes()
 	.registerGroups(
 		[
-			['images', 'Imágenes',],
-			['utilities', 'Utilidades'],
-			['moderation', 'Moderación'],
+			['fun', 'Entretenimiento'],
 			['economy', 'Economía'],
+			['images', 'Imágenes',],
+			['moderation', 'Moderación'],
+			['utilities', 'Utilidades'],
 			['owner', 'Comandos del Dueño']
 		]
 	)

@@ -4,7 +4,7 @@ const { parseNumeral } = require('./helpers/parseNumeral');
 const balConfig = require('../../Configs/balance');
 const minAmount = 500;
 
-module.exports = class extends Command {
+module.exports = class DonateCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'donate',

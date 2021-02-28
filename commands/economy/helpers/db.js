@@ -59,6 +59,18 @@ const bankDonate = (origin, destination, amount) => {
 }
 
 /**
+ * Método usado para el comando !deposit [cantidad|all];
+ * @param {String} id ID del usuario
+ * @param {Number} amount Cantidad de dinero que depositará en su banco.
+ */
+const bankDeposit = (id, amount) => {
+	bank.ensure(id, 0);
+	bank.math(id, 'sub', amount);
+
+	return true;
+}
+
+/**
 * @param { String } id ID del usuario
 * @returns {Profile}
 */
@@ -119,6 +131,7 @@ const profileUpdateDatabase = () => {
 module.exports = {
 	profileGet,
 	bankAddCoins,
+	bankDeposit,
 	bankGet,
 	bankSetCoins,
 	bankDonate,
