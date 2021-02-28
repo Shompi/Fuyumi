@@ -19,7 +19,7 @@ module.exports = class DepositCommand extends Command {
 			args: [
 				{
 					key: 'amount',
-					type: 'integer',
+					type: 'integer|string',
 					prompt: "Ingresa la cantidad de dinero que quieres depositar en tu banco",
 					default: 'all',
 					wait: 10,
@@ -43,12 +43,12 @@ module.exports = class DepositCommand extends Command {
 		const user_profile = profileGet(message.author.id);
 		let deposited = 0;
 
-		if (isNaN(amount) && (amount !== 'all' && amount !== 'todo'))
-			return message.reply("Estás usando mal este comando, usa `help deposit` para más detalles");
-
 		// Primero chequiemos que el usuario tiene dinero en mano
 		if (user_profile.balance.on_hand <= 0)
 			return message.reply("no tienes dinero en mano suficiente para depositarlo en el banco.");
+
+		if (isNaN(amount) && (amount !== 'all' && amount !== 'todo'))
+			return message.reply("Estás usando mal este comando, usa `help deposit` para más detalles");
 
 		if (amount >= user_profile.balance.on_hand || (amount === 'all' || amount === 'todo')) {
 			bankDeposit(message.author.id, user_profile.balance.on_hand);
