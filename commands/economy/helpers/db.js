@@ -141,6 +141,8 @@ const leaderboard_bankcoins = () => {
 	console.log(banks);
 }
 
+leaderboard_bankcoins();
+
 module.exports = {
 	profileGet,
 	bankAddCoins,
