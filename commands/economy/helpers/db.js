@@ -146,14 +146,13 @@ const leaderboardNetworth = () => {
 	const profilesArray = Array.from(profiles.values());
 
 	for (const prof of profilesArray) {
-		const bank = bankGet(prof.user_id);
+		const bankCoins = bankGet(prof.user_id);
 
-		prof.balance.networth = bank + prof.balance.on_hand;
+		prof.balance.networth = bankCoins + prof.balance.on_hand;
 	}
 
-	const sorted = profilesArray.sort((a, b) => b.balance.networth - a.balance.networth);
+	return profilesArray.sort((a, b) => b.balance.networth - a.balance.networth);
 
-	console.log(sorted);
 }
 
 const leaderboardTotalEarned = () => {
@@ -168,7 +167,6 @@ const leaderboardWins = () => {
 	return profilesArray.sort((a, b) => b.games_win - a.games_win);
 }
 
-leaderboardNetworth();
 module.exports = {
 	profileGet,
 	bankAddCoins,
