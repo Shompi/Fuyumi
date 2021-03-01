@@ -128,6 +128,19 @@ const profileUpdateDatabase = () => {
 	return true;
 }
 
+/**
+ * @returns {Array}
+ */
+const leaderboard_bankcoins = () => {
+
+	const banks = bank.map((amount, key) => ({ coins: amount, user_id: key }));
+
+
+	banks.sort((vala, valb) => vala - valb);
+
+	console.log(banks);
+}
+
 module.exports = {
 	profileGet,
 	bankAddCoins,
