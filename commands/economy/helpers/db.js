@@ -115,9 +115,9 @@ const profileUpdateDatabase = () => {
 		const profile = profiles.get(id);
 
 		profile.balance.networth = 0;
+		profiles.set(id, profile);
 	}
 
-	profiles.set(id, profile);
 	console.log(`SE ACTUALIZARON ${updated} PERFILES.`);
 	return true;
 }
