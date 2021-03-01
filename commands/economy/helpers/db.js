@@ -168,8 +168,7 @@ const leaderboardWins = () => {
 	return profilesArray.sort((a, b) => b.games_win - a.games_win);
 }
 
-profileUpdateDatabase();
-
+leaderboardNetworth();
 module.exports = {
 	profileGet,
 	bankAddCoins,
