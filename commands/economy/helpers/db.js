@@ -141,9 +141,9 @@ const leaderboard_bankcoins = () => {
 const leaderboard_onHand = () => {
 	const profilesArray = Array.from(profiles.values());
 
-	profilesArray.sort((a, b) => b.balance.onHand - a.balance.onHand);
+	const sorted = profilesArray.sort((a, b) => b.balance.on_hand - a.balance.on_hand);
 
-	console.log(profilesArray);
+	console.log(sorted);
 }
 
 leaderboard_onHand();
