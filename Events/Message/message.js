@@ -41,7 +41,6 @@ module.exports = {
 		user_profile.balance.earned += totalCoinsGain;
 
 		profileSave(author.id, user_profile);
-		console.log(`USER ${author.tag} recibió ${totalExpGain} EXP y ${totalCoinsGain} Monedas.`);
 	}
 }
 

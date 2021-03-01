@@ -1,4 +1,5 @@
 const enmap = require('enmap');
+const UserProfile = require('../../../Classes/UserProfile');
 const Profile = require('../../../Classes/UserProfile');
 const balValues = require('../../../configs/balance');
 const expValues = require('../../../configs/experience');
@@ -113,17 +114,10 @@ const profileUpdateDatabase = () => {
 		updated++;
 		const profile = profiles.get(id);
 
-		profile.balance.donations.last_donator = {
-			tag: null,
-			amount: null
-		}
-
-		delete profile.last_donator;
-
-
-		profiles.set(id, profile);
-		console.log("UPDATED PROFILE:", profile);
+		profile.balance.networth = 0;
 	}
+
+	profiles.set(id, profile);
 	console.log(`SE ACTUALIZARON ${updated} PERFILES.`);
 	return true;
 }
@@ -131,22 +125,51 @@ const profileUpdateDatabase = () => {
 /**
  * @returns {Array}
  */
-const leaderboard_bankcoins = () => {
+const leaderboardBankCoins = () => {
 
 	const banks = bank.map((amount, key) => ({ coins: amount, user_id: key }));
 
 	return banks.sort((vala, valb) => valb.coins - vala.coins);
 }
 
-const leaderboard_onHand = () => {
+/**
+ * Retorna los perfiles ordenados de mayor a menor dependiendo de balance.on_hand
+ * @returns {UserProfile[]}
+ */
+const leaderboardOnHand = () => {
 	const profilesArray = Array.from(profiles.values());
 
-	const sorted = profilesArray.sort((a, b) => b.balance.on_hand - a.balance.on_hand);
+	return profilesArray.sort((a, b) => b.balance.on_hand - a.balance.on_hand);
+}
+
+const leaderboardNetworth = () => {
+	const profilesArray = Array.from(profiles.values());
+
+	for (const prof of profilesArray) {
+		const bank = bankGet(prof.user_id);
+
+		prof.balance.networth = bank + prof.balance.on_hand;
+	}
+
+	const sorted = profilesArray.sort((a, b) => b.balance.networth - a.balance.networth);
 
 	console.log(sorted);
 }
 
-leaderboard_onHand();
+const leaderboardTotalEarned = () => {
+	const profilesArray = Array.from(profiles.values());
+
+	return profilesArray.sort((a, b) => b.balance.earned - a.balance.earned);
+}
+
+const leaderboardWins = () => {
+	const profilesArray = Array.from(profiles.values());
+
+	return profilesArray.sort((a, b) => b.games_win - a.games_win);
+}
+
+profileUpdateDatabase();
+
 module.exports = {
 	profileGet,
 	bankAddCoins,
@@ -157,4 +180,9 @@ module.exports = {
 	profileClaimDaily,
 	profileSave,
 	profileUpdateDatabase,
+	leaderboardWins,
+	leaderboardOnHand,
+	leaderboardTotalEarned,
+	leaderboardBankCoins,
+	leaderboardNetworth,
 }

@@ -37,6 +37,9 @@ module.exports = class UserProfile {
 			/** Monedas en mano del usuario.*/
 			on_hand: 0,
 
+			/** Total de monedas que el usuario tiene entre su banco y sus monedas en mano */
+			networth: 0,
+
 			/** Monedas totales que ha conseguido el usuario. */
 			earned: 0,
 
