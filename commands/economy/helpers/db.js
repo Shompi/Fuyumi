@@ -136,9 +136,9 @@ const leaderboard_bankcoins = () => {
 	const banks = bank.map((amount, key) => ({ coins: amount, user_id: key }));
 
 
-	banks.sort((vala, valb) => vala.coins - vala.coins);
+	const banks_sorted = banks.sort((vala, valb) => vala.coins - vala.coins);
 
-	console.log(banks);
+	console.log(banks_sorted);
 }
 
 leaderboard_bankcoins();
