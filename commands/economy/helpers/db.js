@@ -135,14 +135,18 @@ const leaderboard_bankcoins = () => {
 
 	const banks = bank.map((amount, key) => ({ coins: amount, user_id: key }));
 
-
-	const banks_sorted = banks.sort((vala, valb) => vala.coins - valb.coins);
-
-	console.log(banks_sorted);
+	return banks.sort((vala, valb) => valb.coins - vala.coins);
 }
 
-leaderboard_bankcoins();
+const leaderboard_onHand = () => {
+	const profilesArray = Array.from(profiles.values());
 
+	profilesArray.sort((a, b) => b.balance.onHand - a.balance.onHand);
+
+	console.log(profilesArray);
+}
+
+leaderboard_onHand();
 module.exports = {
 	profileGet,
 	bankAddCoins,
