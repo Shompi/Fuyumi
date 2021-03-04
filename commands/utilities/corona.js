@@ -18,7 +18,7 @@ module.exports = class CoronaCommand extends Command {
 			details: "Usar este comando sin argumentos mostrará las estadísticas de Chile.",
 			throttling: {
 				usages: 1,
-				duration: 60
+				duration: 3
 			},
 			args: [
 				{
