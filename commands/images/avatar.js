@@ -1,6 +1,5 @@
-const { MessageEmbed, User, MessageMentions } = require('discord.js');
-const { Command, CommandoMessage } = require('discord.js-commando');
-
+const { MessageEmbed, User, Message } = require('discord.js');
+const { Command } = require('discord-akairo');
 
 /** @param {User} user*/
 const avatarEmbed = (user) =>
@@ -37,45 +36,41 @@ function findUserByName(message, name) {
 
 
 
-module.exports = class AvatarCommand extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'avatar',
-			memberName: 'avatar',
-			aliases: [],
-			group: 'images',
-			description: 'Muestra el avatar de un miembro',
-			examples: ["avatar ShompiFlen", "avatar @ShompiFlen"],
-			details: "El valor predeterminado será el miembro que ejecuta el comando.",
+class AvatarCommand extends Command {
+	constructor() {
+		super('avatar', {
+			aliases: ['avatar', 'avt'],
 			args: [
 				{
-					key: "p",
+					id: 'target',
 					type: 'user|string',
-					prompt: 'Menciona o ingresa la ID de un miembro:',
-					default: (message) => { return message.author },
+					default: (msg, data) => msg.author,
+					description: 'Usuario del cual quieres ver el avatar.'
 				}
 			]
 		});
 	}
 
 	/**
-	 * @param { CommandoMessage } message 
+	 * @param {Message} message 
 	 * @param {*} args 
 	 */
-	async run(message, { p }) {
+	async exec(message, { target }) {
 		const { channel } = message;
 		let embed;
 
-		if (p instanceof User) {
-			embed = avatarEmbed(p);
+		if (target instanceof User) {
+			embed = avatarEmbed(target);
 		} else {
-			if (isNaN(p)) {
-				embed = findUserByName(message, p);
+			if (isNaN(target)) {
+				embed = findUserByName(message, target);
 			} else {
-				embed = await findUserByID(message, p);
+				embed = await findUserByID(message, target);
 			}
 		}
 
 		channel.send(embed);
 	}
 }
+
+module.exports = AvatarCommand;
