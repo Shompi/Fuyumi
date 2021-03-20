@@ -1,6 +1,6 @@
 const { Client, TextChannel } = require('discord.js');
-const { basename } = require('path');
 const fetch = require('node-fetch').default;
+const { Listener } = require('discord-akairo');
 
 let fetchMemes = true;
 
@@ -15,22 +15,23 @@ const timers = [];
 console.log("Evento ready iniciado.");
 console.log("timers: " + timers.length);
 
-module.exports = {
-	name: "ready",
-	filename: basename(__filename),
-	path: __filename,
-	hasTimers: true,
-	clearTimers() {
-		for (const timer of timers) {
-			clearTimeout(timer);
-			clearInterval(timer);
-			clearImmediate(timer);
+class ReadyListener extends Listener {
+	constructor() {
+		super('ready', {
+			emitter: 'client',
+			event: 'ready'
+		});
+		this.hasTimers = true;
+		this.clearTimers = () => {
+			for (const timer of timers) {
+				clearTimeout(timer);
+				clearInterval(timer);
+				clearImmediate(timer);
+			}
 		}
-	},
-	/**
-	*@param {Client} Muki
-	*/
-	async execute(Muki) {
+	}
+
+	async exec(Muki = this.client) {
 		/*Code Here*/
 		console.log(`Online en Discord como: ${Muki.user.tag}`);
 
@@ -51,7 +52,6 @@ module.exports = {
 		timers.push(setInterval(sendMemeToAPI, 60000, Muki));
 	}
 }
-
 /**@param {Client} client */
 const sendInfoToAPI = async (client) => {
 
@@ -125,3 +125,6 @@ const sendMemeToAPI = async (client) => {
 		timeout: 2000
 	}).catch(e => null);
 }
+
+
+module.exports = ReadyListener;

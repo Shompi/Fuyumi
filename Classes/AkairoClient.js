@@ -1,4 +1,4 @@
-const { AkairoClient, CommandHandler } = require('discord-akairo');
+const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akairo');
 module.exports = class MukiClient extends AkairoClient {
 	constructor() {
 		super({
@@ -18,5 +18,12 @@ module.exports = class MukiClient extends AkairoClient {
 		});
 
 		this.commandHandler.loadAll();
+
+		this.listenerHandler = new ListenerHandler(this, {
+			directory: './listeners/'
+		});
+
+		this.commandHandler.useListenerHandler(this.listenerHandler);
+		this.listenerHandler.loadAll();
 	}
 }
