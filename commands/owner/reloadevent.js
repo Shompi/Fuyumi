@@ -1,32 +1,26 @@
 const { Message } = require('discord.js');
-const { Command, CommandoMessage } = require('discord.js-commando');
+const { Command } = require('discord-akairo');
 
-module.exports = class extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'revt',
-			memberName: 'reloadevent',
+class ReloadEventCommand extends Command {
+	constructor() {
+		super('revt', {
 			aliases: ['reloadevent', 'eventreload'],
-			group: 'owner',
 			description: 'Recarga un event handler.',
-			hidden: true,
 			ownerOnly: true,
 			args: [
 				{
-					key: 'evento',
-					prompt: "Ingresa el nombre del evento:",
-					type: 'string'
+					id: 'evento',
+					type: 'string',
+					prompt: {
+						start: 'Ingresa el nombre del event handler',
+						end: 'No se recibió un argumento válido, el comando ha sido cancelado.'
+					}
 				}
 			],
-			argsPromptLimit: 0
 		});
 	}
 
-	/**
-	 * @param { CommandoMessage } message 
-	 * @param {*} args 
-	 */
-	async run(message, { evento }) {
+	async exec(message, { evento }) {
 		const { channel } = message;
 
 		const event = this.client.events.get(evento);
@@ -57,3 +51,5 @@ module.exports = class extends Command {
 		}
 	}
 }
+
+module.exports = ReloadEventCommand;

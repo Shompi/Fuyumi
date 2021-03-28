@@ -1,31 +1,19 @@
-const { Command, CommandoMessage } = require('discord.js-commando');
 const { MessageEmbed } = require('discord.js');
 const balConfig = require('../../configs/balance');
 const { bankGet, profileGet } = require('./helpers/db');
 const { parseNumeral } = require('./helpers/parseNumeral');
-module.exports = class BalanceCommand extends Command {
-	constructor(client) {
-		super(client, {
+const { Command } = require('discord-akairo')
+
+class BalanceCommand extends Command {
+	constructor() {
+		super('balance', {
 			name: 'balance',
-			memberName: 'balance',
-			aliases: ['bal'],
-			group: 'economy',
-			description: 'Revisa tu situación economica, donaciones, robos, etc.',
-			throttling: {
-				duration: 10,
-				usages: 1
-			}
+			aliases: ['bal']
 		});
 
-		this.onError = (err, message, args, fromPattern) => console.log(err);
-		this.onBlock = (message, reason) => null;
 	}
 
-	/**
-	 * @param { CommandoMessage } message 
-	 * @param {*} args 
-	 */
-	run(message, args) {
+	exec(message, args) {
 
 		const { balance } = profileGet(message.author.id);
 
@@ -43,3 +31,5 @@ module.exports = class BalanceCommand extends Command {
 		message.channel.send(balanceEmbed);
 	}
 }
+
+module.exports = BalanceCommand;

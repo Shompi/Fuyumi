@@ -1,27 +1,16 @@
-const { Command, CommandoMessage } = require('discord.js-commando');
 const millis = require('pretty-ms')
 const balConfig = require('../../configs/balance');
 const { profileGet, profileClaimDaily } = require('./helpers/db');
 const Day = 1000 * 60 * 60 * 22;
 const { parseNumeral } = require('./helpers/parseNumeral');
+const { Command } = require('discord-akairo');
 
-module.exports = class DailyCommand extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'daily',
-			memberName: 'daily',
-			aliases: [],
-			group: 'economy',
-			description: `¡Reclama tus ${balConfig.coin_name} diarias!`,
-			clientPermissions: [],
-			examples: ["daily", "diario"],
-			throttling: {
-				duration: 3600,
-				usages: 1
-			}
+class DailyCommand extends Command {
+	constructor() {
+		super('daily', {
+			aliases: ['daily'],
+			description: `Reclama tus **${balConfig.coin_name}** diarias!`
 		});
-
-		this.onBlock = (message, reason) => null;
 
 		this.isAbleToClaim = (claimed_at) => {
 
@@ -30,15 +19,9 @@ module.exports = class DailyCommand extends Command {
 			console.log("DIFF", diff);
 			return diff >= 0;
 		}
-
-		this.onError = (err, message, args, fromPattern) => console.log(err);
 	}
 
-	/**
-	 * @param { CommandoMessage } message 
-	 * @param {*} args 
-	 */
-	run(message, args) {
+	exec(message, args) {
 
 		const { author } = message;
 
@@ -61,3 +44,5 @@ module.exports = class DailyCommand extends Command {
 		}
 	}
 }
+
+module.exports = DailyCommand;

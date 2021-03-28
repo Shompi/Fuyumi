@@ -1,43 +1,39 @@
-const { Command, CommandoMessage } = require('discord.js-commando');
 const { bankDonate, bankGet, profileGet, profileSave } = require('./helpers/db');
 const { parseNumeral } = require('./helpers/parseNumeral');
 const balConfig = require('../../Configs/balance');
 const { User } = require('discord.js');
 const minAmount = 500;
+const { Command } = require('discord-akairo');
 
-module.exports = class DonateCommand extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'donate',
-			memberName: 'donate',
-			aliases: ['donar', 'dono'],
-			group: 'economy',
+class DonateCommand extends Command {
+	constructor() {
+		super('donate', {
+			aliases: ['donate', 'donar', 'dono'],
 			description: 'Realiza una donación a otro usuario. La donación se hace directamente desde tu banco hacia el banco del destinatario.',
-			examples: ["donate <@ShompiFlen#3338> <1234>"],
-			details: "<REQUERIDO> [OPCIONAL]",
-			throttling: {
-				usages: 1,
-				duration: 10,
-			},
+			cooldown: 10,
+			ratelimit: 2,
 			args: [
 				{
-					key: 'target',
+					id: 'target',
 					type: 'user',
-					prompt: "Menciona al miembro al que le quieres donar",
+					prompt: {
+						start: "Menciona al miembro al que le quieres donar",
+						cancelWord: 'cancelar',
+						ended: 'No se recibió un argumento válido, el comando ha sido cancelado.'
+					},
 					wait: 10,
 				},
 				{
-					key: 'amount',
+					id: 'amount',
 					type: 'integer',
-					prompt: `Ingresa la cantidad de ${balConfig.coin_name} que le vas a donar`,
-					wait: 10,
+					prompt: {
+						start: `Ingresa la cantidad de ${balConfig.coin_name} que le vas a donar`,
+						cancelWord: 'cancelar',
+						ended: 'No se recibió un argumento válido, el comando ha sido cancelado.'
+					},
 				}
 			]
 		});
-
-		this.onError = (err, message, args, fromPattern) => console.log(err);
-		this.onBlock = (message, reason) => null;
-
 
 		/**
 		 * @param {User} origin 
@@ -65,10 +61,7 @@ module.exports = class DonateCommand extends Command {
 		}
 	}
 
-	/**
-	 * @param { CommandoMessage } message 
-	 */
-	run(message, { target, amount }) {
+	exec(message, { target, amount }) {
 
 		if (message.author.id === target.id)
 			return message.reply("No puedes hacerte una donación a ti mismo.");
@@ -85,3 +78,5 @@ module.exports = class DonateCommand extends Command {
 		return message.reply(`¡Has donado **${parseNumeral(amount)}** a ${target} exitósamente! Puedes ver tus fondos restantes usando el comando\`balance\``);
 	}
 }
+
+module.exports = DonateCommand;

@@ -40,12 +40,13 @@ class AvatarCommand extends Command {
 	constructor() {
 		super('avatar', {
 			aliases: ['avatar', 'avt'],
+			description: "Muestra el avatar de un usuario.",
 			args: [
 				{
 					id: 'target',
 					type: 'user|string',
 					default: (msg, data) => msg.author,
-					description: 'Usuario del cual quieres ver el avatar.'
+					description: 'Usuario del cual quieres ver el avatar. (default: El autor del mensaje)'
 				}
 			]
 		});

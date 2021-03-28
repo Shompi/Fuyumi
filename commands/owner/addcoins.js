@@ -1,46 +1,40 @@
 const { User, MessageEmbed } = require('discord.js');
-const { Command, CommandoMessage } = require('discord.js-commando');
+const { Command } = require('discord-akairo');
 const { bankAddCoins, bankSetCoins } = require('../economy/helpers/db');
 const balConfig = require('../../Configs/balance');
 const { parseNumeral } = require('../economy/helpers/parseNumeral');
 const embedImage = "https://puu.sh/HkdOF/c96be264b6.png";
 
-module.exports = class AddCoinsCommand extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'addcoins',
-			memberName: 'addcoins',
-			group: 'owner',
-			description: 'Añade fondos directamente al banco de un usuario.',
-			hidden: true,
+class AddCoinsCommand extends Command {
+	constructor() {
+		super('addcoins', {
+			aliases: ['addcoins'],
 			ownerOnly: true,
-			examples: ["addcoins <@ShompiFlen> [-set | -add] <50000> [Razón]"],
 			args: [
 				{
-					key: 'target',
+					id: 'target',
 					type: 'user|string',
-					prompt: "Menciona o ingresa la ID del usuario al que le quieres añadir fondos:",
-					wait: 10,
+					prompt: {
+						start: "Menciona o ingresa la ID del usuario al que le quieres añadir fondos:",
+						ended: "El miembro mencionado o la ID ingresada no es válida."
+					},
 				},
 				{
-					key: 'operation',
-					type: 'string',
-					prompt: "Ingresa la operacion que quieres realizar.",
-					wait: 10,
-					oneOf: ["-set", "-add"]
+					id: 'operation',
+					type: ["-add", "-set"],
+					default: "-add",
 				},
 				{
-					key: 'amount',
+					id: 'amount',
 					type: 'integer',
-					prompt: "Cantidad de Muki Coins que le quieres depositar:",
-					wait: 10,
+					prompt: {
+						start: "Ingresa la cantidad de monedas:",
+						ended: "El comando ha finalizado.",
+					}
 				},
 				{
-					key: 'razon',
+					id: 'razon',
 					type: 'string',
-					infinite: true,
-					prompt: "Ingresa una razón para este depósito.",
-					wait: 30,
 					default: '-'
 				}
 			]
@@ -55,7 +49,7 @@ module.exports = class AddCoinsCommand extends Command {
 	 * @param { CommandoMessage } message 
 	 * @param {*} args 
 	 */
-	async run(message, { target, amount, razon, operation }) {
+	async exec(message, { target, amount, razon, operation }) {
 
 
 		let updatedAmount = 0;
@@ -92,3 +86,5 @@ module.exports = class AddCoinsCommand extends Command {
 		).catch(() => null);
 	}
 }
+
+module.exports = AddCoinsCommand;

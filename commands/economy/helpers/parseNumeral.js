@@ -1,6 +1,6 @@
 const numeral = require('numeral');
 
-numeral.register('locale', 'cl', {
+/* numeral.register('locale', 'cl', {
 	delimiters: {
 		thousands: '.',
 		decimal: ','
@@ -14,7 +14,7 @@ numeral.register('locale', 'cl', {
 	currency: {
 		symbol: '$'
 	}
-});
+}); */
 
 
 /**

@@ -1,42 +1,28 @@
-const { Command, CommandoMessage } = require('discord.js-commando');
 const { bankDeposit, profileGet, profileSave } = require('./helpers/db');
 const { parseNumeral } = require('./helpers/parseNumeral');
 const balConfig = require('../../Configs/balance');
+const { Command } = require('discord-akairo');
 
-module.exports = class DepositCommand extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'deposit',
-			memberName: 'deposit',
-			aliases: ['depositar', 'deposito'],
-			group: 'economy',
+class DepositCommand extends Command {
+	constructor() {
+		super('deposit', {
+			aliases: ['deposit', 'depositar'],
 			description: `Deposita tus ${balConfig.coin_name} en tu banco.\nValor por defecto: 'all'`,
-			examples: ["deposit [valor]"],
-			throttling: {
-				duration: 60,
-				usages: 2,
-			},
+			ratelimit: 2,
+			cooldown: 10,
 			args: [
 				{
-					key: 'amount',
-					type: 'integer|string',
-					prompt: "Ingresa la cantidad de dinero que quieres depositar en tu banco",
+					id: 'amount',
+					type: 'integer',
+					otherwise: 'all',
 					default: 'all',
-					wait: 10,
 				}
 			]
 		});
 
-
-		this.onBlock = (message, reason) => null;
-		this.onError = (err, message, args, fromPattern) => console.log(err);
 	}
 
-	/**
-	 * @param { CommandoMessage } message 
-	 * @param {*} args 
-	 */
-	run(message, { amount }) {
+	exec(message, { amount }) {
 
 		// Se deposita desde las monedas ON_HAND hacia el banco.
 
@@ -66,3 +52,5 @@ module.exports = class DepositCommand extends Command {
 		return message.reply(`¡Depositaste **${parseNumeral(deposited)} ${balConfig.coin_name}** en tu banco!`);
 	}
 }
+
+module.exports = DepositCommand;

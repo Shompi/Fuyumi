@@ -1,29 +1,19 @@
-const { Command, CommandoMessage } = require('discord.js-commando');
 const { MessageEmbed } = require('discord.js');
+const { Command } = require('discord-akairo');
 const { spawn } = require('child_process');
 const GITPATH = "C:/Program Files/Git/git-cmd.exe"; // Asumiendo que el path siempre será el mismo.
 const ARGS = ["git pull && exit"]
 
-module.exports = class GitPull extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'gitpull',
-			memberName: 'gitpull',
-			aliases: ['gpull'],
-			group: 'owner',
+class GitPullCommand extends Command {
+	constructor() {
+		super('gitpull', {
+			aliases: ["gitpull", 'pull'],
 			description: 'Hace un git pull al respositorio del bot para sicronizar los datos.',
-			examples: [],
-			details: "",
 			ownerOnly: true,
-			hidden: true
 		});
 	}
 
-	/**
-	 * @param { CommandoMessage } message 
-	 * @param {*} args 
-	 */
-	run(message, args) {
+	exec(message, args) {
 		const cmd = spawn(GITPATH, ARGS);
 		let log = "";
 		cmd.stdout.on("data", (data) => {
@@ -49,3 +39,5 @@ module.exports = class GitPull extends Command {
 		});
 	}
 }
+
+module.exports = GitPullCommand;

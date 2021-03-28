@@ -1,24 +1,15 @@
 const { MessageEmbed } = require('discord.js');
-const { Command, CommandoMessage } = require('discord.js-commando');
+const { Command } = require('discord-akairo');
 const { profileGet, bankGet } = require('./helpers/db');
 const balConfig = require('../../configs/balance');
 const { parseNumeral } = require('./helpers/parseNumeral');
-module.exports = class ProfileCommand extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'profile',
-			memberName: 'profile',
-			aliases: ["perfil"],
-			group: 'economy',
-			description: 'Tu perfil con Muki, Muki Coins, Exp, Nivel, etc.',
-			throttling: {
-				duration: 10,
-				usages: 1,
-			},
-		});
 
-		this.onBlock = (message, reason) => null;
-		this.onError = (err, message, args, fromPattern) => console.log(err);
+class ProfileCommand extends Command {
+	constructor() {
+		super('profile', {
+			aliases: ["profile", "perfil"],
+			description: 'Tu perfil con Muki, Muki Coins, Exp, Nivel, etc.',
+		});
 	}
 
 	/**
@@ -48,3 +39,5 @@ module.exports = class ProfileCommand extends Command {
 		channel.send(profileEmbed);
 	}
 }
+
+module.exports = ProfileCommand;
