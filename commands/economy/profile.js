@@ -12,11 +12,7 @@ class ProfileCommand extends Command {
 		});
 	}
 
-	/**
-	 * @param { CommandoMessage } message 
-	 * @param {*} args 
-	 */
-	run({ author, channel }, args) {
+	exec({ author, channel }, args) {
 
 		const user_profile = profileGet(author.id);
 		const profileEmbed =

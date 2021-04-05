@@ -1,21 +1,17 @@
 const { Command } = require('discord-akairo');
+console.log('COMMAND TEST.JS LOADED');
 
 class TestCommand extends Command {
 	constructor() {
 		super('test', {
-			name: 'test',
+			aliases: ['test'],
 			description: 'Comando de test para probar que el bot responda a los comandos.',
 			ownerOnly: true
 		});
 	}
 
-	/**
-	 * @param { CommandoMessage } message 
-	 * @param {*} args 
-	 */
-	async exec(message, args) {
-		const { channel } = message;
-		return channel.send('OK!');
+	exec(message, args) {
+		return message.channel.send('OK!');
 	}
 }
 

@@ -1,4 +1,10 @@
 const { Presence, Activity, TextChannel, MessageEmbed } = require('discord.js');
+
+const enmap = require('enmap');
+const TwitchStream = new enmap({ name: 'twitch' });
+const gameImages = new enmap({ name: 'gameimages' });
+const enabledStreams = new enmap({ name: 'enabledstreams' });
+
 const TWOHOURS = 1000 * 60 * 60 * 2;
 const CONECTORES = [
 	"ha comenzado a transmitir en",
@@ -18,7 +24,7 @@ let config = {
  */
 const sendStreaming = (now, activity, streamingChannel) => {
 	//In this case, activity.state is the name of the game being played.
-	const image = now.guild.client.db.gameImages.get(activity.state) || now.guild.client.db.gameImages.get("Actividad Desconocida");
+	const image = gameImages.get(activity.state) || gameImages.get("Actividad Desconocida");
 	const embed = new MessageEmbed()
 		.setColor(now.member.displayColor)
 		.setThumbnail(`${now.member.user.displayAvatarURL({ size: 256 })}`)
@@ -43,8 +49,6 @@ module.exports = (old, now) => {
 	 * >Si son distintas = Actualizar el mensaje relacionado con el primer livestream.
 	 */
 
-	return;
-
 	if (now.user.bot) return;
 	if (!old) return;
 
@@ -55,13 +59,12 @@ module.exports = (old, now) => {
 	if (activity && oldActivity) return; //console.log(`[STREAMING] ${now.member.user.tag} ya estaba stremeando de antes.`);
 
 	const { client, guild } = now;
-	const database = client.db;
 
-	if (!client.db.enabledStreams.has(guild.id)) {
-		client.db.enabledStreams.set(guild.id, config);
+	if (!enabledStreams.has(guild.id)) {
+		enabledStreams.set(guild.id, config);
 	}
 
-	config = client.db.enabledStreams.get(guild.id);
+	config = enabledStreams.get(guild.id);
 
 	if (!config.enabled) return;
 
@@ -73,20 +76,20 @@ module.exports = (old, now) => {
 	try {
 		//console.log(`[STREAMING] User ${now.member.user.tag} está stremeando en ${activity.name}`);
 		const { member } = now;
-		if (database.TwitchStream.has(member.id)) {
+		if (TwitchStream.has(member.id)) {
 			//console.log(`now: ${activityName} db: ${dbmember.activityName}`);
-			const begun = database.TwitchStream.get(member.id, 'streamStarted');
+			const begun = TwitchStream.get(member.id, 'streamStarted');
 
 			if ((timeNow - begun) >= TWOHOURS) {
 				sendStreaming(now, activity, streamingChannel);
-				database.TwitchStream.set(member.id, timeNow, "streamStarted");
-				return console.log(database.TwitchStream.get(member.id));
+				TwitchStream.set(member.id, timeNow, "streamStarted");
+				return console.log(TwitchStream.get(member.id));
 			} else return; //If the elapsed time is not greater than two hours then we need to return.
 
 		} else {
 			//If the member was not in the database we need to add him in.
 			sendStreaming(now, activity, streamingChannel);
-			database.TwitchStream.set(member.id, timeNow, "streamStarted");
+			TwitchStream.set(member.id, timeNow, "streamStarted");
 			return;
 		}
 	} catch (error) {

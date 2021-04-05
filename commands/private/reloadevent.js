@@ -4,7 +4,7 @@ const { Command } = require('discord-akairo');
 class ReloadEventCommand extends Command {
 	constructor() {
 		super('revt', {
-			aliases: ['reloadevent', 'eventreload'],
+			aliases: ['revt', 'reloadevent', 'eventreload'],
 			description: 'Recarga un event handler.',
 			ownerOnly: true,
 			args: [

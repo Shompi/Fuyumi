@@ -2,4 +2,4 @@ const AkairoClient = require('./Classes/AkairoClient');
 
 const client = new AkairoClient();
 
-client.login(require('./Keys/auth').beta);
+client.login(require('./Keys/auth').stable);

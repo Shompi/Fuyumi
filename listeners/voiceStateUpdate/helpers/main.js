@@ -1,6 +1,7 @@
 const { Presence, MessageEmbed } = require('discord.js');
 const TWOHOURS = 1000 * 60 * 60 * 2; // 2 Horas.
-const { usersStreaming } = require('../../../loadEnmaps');
+const enmap = require('enmap');
+const database = new enmap({ name: 'streamings' });
 
 const config = {
 	enabled: false,
@@ -13,15 +14,17 @@ const config = {
  */
 module.exports = async (old, now) => {
 
+	console.log("GOLIVE TRIGGERED");
+	console.log("SIZE OF THE DB: ", database.size);
+	console.log("INFO ON DB:", database.random());
 
-	return;
 	const { client, guild } = now;
 
-	if (!usersStreaming.has(guild.id)) {
-		usersStreaming.set(guild.id, config);
+	if (!database.has(guild.id)) {
+		database.set(guild.id, config);
 	}
 
-	const guildConfig = usersStreaming.get(guild.id);
+	const guildConfig = database.get(guild.id);
 	if (!guildConfig.enabled) return;
 
 	try {
