@@ -1,5 +1,4 @@
 const { Command } = require('discord-akairo');
-console.log('COMMAND TEST.JS LOADED');
 
 class TestCommand extends Command {
 	constructor() {

@@ -1,6 +1,4 @@
-const { Message } = require('discord.js');
 const { Command } = require('discord-akairo');
-
 class ReloadEventCommand extends Command {
 	constructor() {
 		super('revt', {
@@ -13,7 +11,8 @@ class ReloadEventCommand extends Command {
 					type: 'string',
 					prompt: {
 						start: 'Ingresa el nombre del event handler',
-						end: 'No se recibió un argumento válido, el comando ha sido cancelado.'
+						time: 10000,
+						timeout: "No se recibió respuesta, el comando ha sido cancelado."
 					}
 				}
 			],
