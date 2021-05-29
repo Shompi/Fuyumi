@@ -24,7 +24,7 @@
 		"sqlite": "^4.0.19",
 		"sqlite3": "^5.0.2",
 		"utf-8-validate": "^5.0.4",
-		"ws": "^7.4.3",
+		"ws": "^7.4.6",
 		"zlib-sync": "^0.1.7"
 	},
 	"devDependencies": {},
