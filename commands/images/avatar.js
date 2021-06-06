@@ -1,6 +1,8 @@
 const { MessageEmbed, User, Message } = require('discord.js');
 const { Command } = require('discord-akairo');
 
+
+console.log('comando avatar AVATAR 2222');
 /** @param {User} user*/
 const avatarEmbed = (user) =>
 	new MessageEmbed()

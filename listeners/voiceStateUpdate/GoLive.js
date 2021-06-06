@@ -21,5 +21,4 @@ class VoiceStateUpdateListener extends Listener {
 	}
 }
 
-console.log("VOICESTATEUPDATE evento cargado.")
 module.exports = VoiceStateUpdateListener;

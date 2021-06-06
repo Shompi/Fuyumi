@@ -1,4 +1,5 @@
 const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akairo');
+const { Intents } = require('discord.js');
 module.exports = class MukiClient extends AkairoClient {
 	constructor() {
 		super({
@@ -7,6 +8,7 @@ module.exports = class MukiClient extends AkairoClient {
 		}, {
 			// Discord.js Client Options
 			disableMentions: 'everyone',
+			intents: Intents.ALL,
 		});
 
 		this.commandHandler = new CommandHandler(this, {

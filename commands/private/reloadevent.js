@@ -21,33 +21,15 @@ class ReloadEventCommand extends Command {
 
 	async exec(message, { evento }) {
 		const { channel } = message;
-
-		const event = this.client.events.get(evento);
+		const event = this.client.listenerHandler.modules.get(evento) ?? null;
 
 		if (!event)
-			return channel.send("No hay un evento registrado con ese nombre.");
+			return message.channel.send("No encontré un módulo de evento con ese nombre.");
 
-		//Si se encuentra el evento:
-		//Checkear si el evento contiene timers:
 		if (event.hasTimers)
 			event.clearTimers();
 
-		delete require.cache[require.resolve(event.path)];
-
-		try {
-			const reload = require(event.path);
-
-			// Borrar desde el set de eventos
-			this.client.events.delete(event.name);
-
-			// Agregarlo de nuevo a la Collection
-			this.client.events.set(reload.name, reload);
-
-			return channel.send(`El evento **${reload.name}** ha sido reiniciado.`);
-
-		} catch (error) {
-			console.log(error);
-		}
+		this.client.listenerHandler.reload(evento);
 	}
 }
 

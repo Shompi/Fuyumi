@@ -1,5 +1,5 @@
-const AkairoClient = require('./Classes/AkairoClient');
+const MukiClient = require('./Classes/MukiClient');
 
-const client = new AkairoClient();
+const client = new MukiClient();
 
 client.login(require('./Keys/auth').stable);

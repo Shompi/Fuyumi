@@ -1,48 +1,26 @@
 const { MessageEmbed, Message } = require('discord.js');
 const fetch = require('node-fetch').default;
 const ENDPOINT = "https://corona.lmao.ninja/v2/countries";
-const { Command, CommandoMessage } = require('discord.js-commando');
-
+const { Command } = require('discord-akairo');
 const last_info = new Map();
 
-module.exports = class CoronaCommand extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'covid',
-			memberName: 'corona',
-			aliases: ['corona', 'c19', 'covid19'],
-			group: 'utilities',
+class CoronaCommand extends Command {
+	constructor() {
+		super('covid', {
+			aliases: ['covid', 'c19', 'covid19'],
 			description: 'Muestra estadísticas respecto al Covid-19.',
-			clientPermissions: [],
-			examples: ["covid", "covid chile", "covid arg", "covid USA"],
-			details: "Usar este comando sin argumentos mostrará las estadísticas de Chile.",
-			throttling: {
-				usages: 1,
-				duration: 3
-			},
 			args: [
 				{
-					key: "pais",
-					default: 'CL',
-					prompt: 'Ingresa el pais que quieres consultar:',
+					id: "pais",
 					type: 'string',
+					default: 'CL',
 					error: "Ocurrió un error."
 				}
 			],
 		});
-
-		this.onBlock = (message, reason) => null;
-		this.onError = (err, message, args, fromPattern) => {
-			message.channel.send("Ocurrió un error en la ejecución del comando.");
-			return;
-		}
 	}
 
-	/**
-	 * @param { CommandoMessage } message
-	 * @param {*} args
-	 */
-	async run(message, { pais }) {
+	async exec(message, { pais }) {
 		if (!pais)
 			return getChileInformation(message);
 		else {
@@ -197,3 +175,5 @@ const fetchError = new MessageEmbed()
 	.setColor("RED")
 	.setTimestamp();
 
+
+module.exports = CoronaCommand;

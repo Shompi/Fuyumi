@@ -20,6 +20,4 @@ class PresenceUpdateListener extends Listener {
 		twitch(old, now);
 	}
 }
-
-console.log("PRESENCEUPDATE evento cargado")
 module.exports = PresenceUpdateListener;
