@@ -8,7 +8,11 @@ module.exports = class MukiClient extends AkairoClient {
 		}, {
 			// Discord.js Client Options
 			disableMentions: 'everyone',
-			intents: Intents.ALL,
+			intents: [
+				"GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS",
+				"DIRECT_MESSAGES", "DIRECT_MESSAGE_REACTIONS", "GUILD_BANS",
+				"GUILD_EMOJIS", "GUILD_PRESENCES", "GUILD_VOICE_STATES"
+			]
 		});
 
 		this.commandHandler = new CommandHandler(this, {

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Message } = require('discord.js');
 const { Command } = require('discord-akairo');
 const { spawn } = require('child_process');
 const GITPATH = "C:/Program Files/Git/git-cmd.exe"; // Asumiendo que el path siempre será el mismo.
@@ -12,7 +12,8 @@ class GitPullCommand extends Command {
 			ownerOnly: true,
 		});
 	}
-
+	/**
+	@param {Message} message */
 	exec(message, args) {
 		const cmd = spawn(GITPATH, ARGS);
 		let log = "";
@@ -35,7 +36,7 @@ class GitPullCommand extends Command {
 				.setDescription(`\`\`\`${log}\`\`\``)
 				.setColor("BLUE");
 
-			message.channel.send("OK!", { embed: logEmbed });
+			message.channel.send({ embed: logEmbed, content: 'OK' });
 		});
 	}
 }

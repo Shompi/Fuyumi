@@ -20,8 +20,8 @@ class EvalCommand extends Command {
 		if (this.client.ownerID !== "166263335220805634") return;
 		console.log('EVALED', code);
 		const resultEmbed = new MessageEmbed();
+		const timestamp = Date.now();
 		try {
-			const timestamp = Date.now();
 			let evaled = await eval(code);
 
 			if (typeof evaled !== "string")
@@ -30,14 +30,14 @@ class EvalCommand extends Command {
 			resultEmbed.setTitle(`⏳ ${Date.now() - timestamp}ms`)
 				.setDescription(`\`\`\`js\n${clean(evaled)}\`\`\``);
 
-			message.channel.send(resultEmbed);
+			message.channel.send({ embeds: [resultEmbed] });
 
 		} catch (err) {
 
 			resultEmbed.setTitle(`⏳ ${Date.now() - timestamp}ms`)
-				.setDescription(`\`\`\`js\n${clean(evaled)}\`\`\``);
+				.setDescription(`\`\`\`js\n${clean(err)}\`\`\``);
 
-			message.channel.send(resultEmbed);
+			message.channel.send({ embeds: [resultEmbed] });
 		}
 	}
 }

@@ -2,6 +2,8 @@ const { Listener } = require('discord-akairo');
 const { VoiceState } = require('discord.js');
 const GoLive = require('./helpers/main');
 
+// Constantes de seguridad
+const AvailableGuilds = ["537484725896478733"];
 
 class VoiceStateUpdateListener extends Listener {
 	constructor() {
@@ -17,7 +19,11 @@ class VoiceStateUpdateListener extends Listener {
 	*@param {VoiceState} now
 	*/
 	exec(old, now) {
-		GoLive(old, now);
+		if (now.member.user.bot) return;
+
+		if (AvailableGuilds.includes(now.guild.id)) {
+			GoLive(old, now);
+		}
 	}
 }
 

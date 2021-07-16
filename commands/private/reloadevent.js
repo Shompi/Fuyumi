@@ -30,6 +30,8 @@ class ReloadEventCommand extends Command {
 			event.clearTimers();
 
 		this.client.listenerHandler.reload(evento);
+
+		return message.channel.send(`El evento ${evento} fue reiniciado.`);
 	}
 }
 

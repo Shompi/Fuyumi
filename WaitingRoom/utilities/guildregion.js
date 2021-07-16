@@ -72,7 +72,7 @@ module.exports = class GuildRegion extends Command {
 	}
 
 	/**
-	 * @param { CommandoMessage } message 
+	 * @param {  } message 
 	 */
 	async run(message, { region, reason }) {
 		const { guild, member, channel, client } = message;

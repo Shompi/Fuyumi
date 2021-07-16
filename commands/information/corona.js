@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { MessageEmbed, Message, MessageButton, MessageActionRow } = require('discord.js');
 const fetch = require('node-fetch').default;
 const ENDPOINT = "https://corona.lmao.ninja/v2/countries";
 const { Command } = require('discord-akairo');
@@ -157,15 +157,34 @@ const getAnyCountry = async (message, code) => {
 	const embed = new MessageEmbed()
 		.setAuthor(`Información del covid-19 en ${data.country}`, data.countryInfo.flag)
 		.setTitle(`Casos Activos: ${data.active}`)
-		.addField("Total:", data.cases, true)
-		.addField("Recuperados:", data.recovered, true)
-		.addField("Fallecidos:", data.deaths, true)
-		.setColor("BLUE")
-		.addField("Pacientes Criticos:", data.critical, true)
-		.addField("Tests:", data.tests, true)
-		.addField("Habitantes:", data.population, true);
+		.addField("Total:", `${data.cases || "No data."}`, true)
+		.addField("Recuperados:", `${data.recovered || "No data."}`, true)
+		.addField("Fallecidos:", `${data.deaths || "No data."}`, true)
+		.addField("Pacientes Criticos:", `${data.critical || "No data."}`, true)
+		.addField("Tests:", `${data.tests || "No data."}`, true)
+		.addField("Habitantes:", `${data.population || "No data."}`, true)
+		.setColor("BLUE");
 
-	message.channel.send(embed);
+
+	const likeButton = new MessageButton()
+		.setLabel('👍')
+		.setCustomId('like')
+		.setStyle("SUCCESS");
+
+	const dislikeButton = new MessageButton()
+		.setLabel("👎")
+		.setCustomId('dislike')
+		.setStyle('DANGER');
+
+
+	const row = new MessageActionRow()
+		.addComponents([likeButton, dislikeButton]
+		);
+
+	message.channel.send({
+		embeds: [embed],
+		components: [row]
+	});
 }
 
 

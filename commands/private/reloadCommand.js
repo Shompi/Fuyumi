@@ -6,17 +6,17 @@ class ReloadCommand extends Command {
 			aliases: ['reload', 'reloadcmd'],
 			ownerOnly: true,
 			args: [{
-				id: 'command',
-				type: 'commandAlias',
+				id: 'comando',
+				type: 'command',
 			}]
 		});
 	}
 
-	async exec(message, { command }) {
-		if (!command) return message.reply("No se reconoció el comando.");
+	async exec(message, { comando }) {
+		if (!comando) return message.reply("No se reconoció el comando.");
 
-		command?.reload();
-		return message.reply(`El comando ${command.id} fué recargado.`);
+		comando?.reload();
+		return message.reply(`El comando ${comando.id} fué recargado.`);
 	}
 }
 

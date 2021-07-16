@@ -1,14 +1,15 @@
 const { Listener } = require('discord-akairo');
 const { Interaction } = require('discord.js');
-const { CovidCommand } = require('./responses/index.js');
-
+const { SetupInteraction } = require('./Setup/index');
+const { CovidCommand } = require('./Covid/covid')
+const { AddRoles } = require('./Buttons/roles');
 console.log("interaction module loaded");
 
 class InteractionEvent extends Listener {
 	constructor() {
-		super('interaction', {
+		super('interactionCreate', {
 			emitter: 'client',
-			event: 'interaction'
+			event: 'interactionCreate'
 		});
 	}
 
@@ -18,13 +19,24 @@ class InteractionEvent extends Listener {
 		if (interaction.isCommand()) {
 
 			const commandname = interaction.commandName;
-			console.log(commandname);
 			if (commandname === 'decir') {
+				if (!interaction.options[0])
+					return interaction.reply({ content: "Ocurrió un error con esta interacción.", ephemeral: true })
 				interaction.reply(interaction.options[0].value);
 			}
 
 			if (commandname === 'covid19') {
 				CovidCommand(interaction);
+			}
+
+			if (commandname === 'setup') {
+				SetupInteraction(interaction);
+			}
+		}
+
+		if (interaction.isButton()) {
+			if (interaction.customId.startsWith('role-')) {
+				AddRoles(interaction);
 			}
 		}
 	}

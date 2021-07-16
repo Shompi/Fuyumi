@@ -8,6 +8,7 @@ module.exports = (guild) => {
 			enabled: false,
 			join: [],
 			leave: [],
+			channelID: null,
 		}
 	});
 }
