@@ -5,15 +5,15 @@
 	"main": "Muki.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Shompi/Muki.git"
+		"url": "https://github.com/Shompi/Muki.git"
 	},
 	"dependencies": {
 		"@types/node-fetch": "^2.5.8",
 		"async-limiter": "^2.0.0",
 		"better-sqlite-pool": "^0.2.3",
 		"bufferutil": "^4.0.3",
-		"discord.js": "^12.5.1",
-		"discord.js-commando": "github:discordjs/Commando",
+		"discord-akairo": "github:discord-akairo/discord-akairo",
+		"discord.js": "github:discordjs/discord.js",
 		"enmap": "^5.8.4",
 		"fs": "0.0.2",
 		"lodash": "^4.17.21",
