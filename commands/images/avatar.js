@@ -2,39 +2,6 @@ const { MessageEmbed, User, Message } = require('discord.js');
 const { Command } = require('discord-akairo');
 
 
-console.log('comando avatar AVATAR 2222');
-/** @param {User} user*/
-const avatarEmbed = (user) =>
-	new MessageEmbed()
-		.setTitle(`Avatar de ${user.username}`)
-		.setDescription(`[PNG](${user.displayAvatarURL({ size: 1024, format: 'png' })}) | [JPEG](${user.displayAvatarURL({ size: 1024, format: 'jpeg' })}) | [GIF](${user.displayAvatarURL({ size: 1024, format: 'gif' })}) | [WEBP](${user.displayAvatarURL({ size: 1024, format: 'webp' })})`)
-		.setImage(user.displayAvatarURL({ size: 1024, dynamic: true }))
-		.setColor('#add8e6')
-
-/**
- * @param {CommandoMessage} message 
- * @param {String} id 
- */
-async function findUserByID(message, id) {
-	const user = await message.client.users.fetch(id, true).catch(e => null);
-
-	if (!user) return "La ID ingresada no es válida para un usuario de Discord.";
-	return avatarEmbed(user);
-}
-
-/**
- * @param {CommandoMessage} message 
- * @param {String} name 
- */
-function findUserByName(message, name) {
-	let membersList = message.guild.members.cache;
-	for (let [id, member] of membersList) {
-		if (member.displayName === name || member.user.username === name)
-			return avatarEmbed(member.user);
-	}
-
-	return "No encontré a ningún miembro con ese nombre, intenta usando la mención o la ID.";
-}
 
 
 
@@ -52,6 +19,31 @@ class AvatarCommand extends Command {
 				}
 			]
 		});
+
+		this.avatarEmbed = () => {
+			return new MessageEmbed()
+				.setTitle(`Avatar de ${user.username}`)
+				.setDescription(`[PNG](${user.displayAvatarURL({ size: 1024, format: 'png' })}) | [JPEG](${user.displayAvatarURL({ size: 1024, format: 'jpeg' })}) | [GIF](${user.displayAvatarURL({ size: 1024, format: 'gif' })}) | [WEBP](${user.displayAvatarURL({ size: 1024, format: 'webp' })})`)
+				.setImage(user.displayAvatarURL({ size: 1024, dynamic: true }))
+				.setColor('#add8e6');
+		}
+
+		this.findUserByID = async (message, id) => {
+			const user = await message.client.users.fetch(id, true).catch(e => null);
+
+			if (!user) return "La ID ingresada no es válida para un usuario de Discord.";
+			return avatarEmbed(user);
+		}
+
+		this.findUserByName = (message, name) => {
+			let membersList = message.guild.members.cache;
+			for (let [id, member] of membersList) {
+				if (member.displayName === name || member.user.username === name)
+					return avatarEmbed(member.user);
+			}
+
+			return "No encontré a ningún miembro con ese nombre, intenta usando la mención o la ID.";
+		}
 	}
 
 	/**
@@ -63,12 +55,12 @@ class AvatarCommand extends Command {
 		let embed;
 
 		if (target instanceof User) {
-			embed = avatarEmbed(target);
+			embed = this.avatarEmbed(target);
 		} else {
 			if (isNaN(target)) {
-				embed = findUserByName(message, target);
+				embed = this.findUserByName(message, target);
 			} else {
-				embed = await findUserByID(message, target);
+				embed = await this.findUserByID(message, target);
 			}
 		}
 

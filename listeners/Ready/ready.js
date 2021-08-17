@@ -3,10 +3,6 @@ const { TextChannel, MessageButton, MessageActionRow, MessageEmbed } = require('
 
 /**@type {NodeJS.Timeout[]} */
 const timers = [];
-
-console.log("Evento ready iniciado.");
-console.log("timers: " + timers.length);
-
 class ReadyListener extends Listener {
 	constructor() {
 		super('ready', {
@@ -28,6 +24,10 @@ class ReadyListener extends Listener {
 				this.client.user.setActivity({ name: 'Reviviendo... de a poco...', type: 'PLAYING' });
 			}, 10000));
 		}
+
+		this.LoadNewSlashCommand = () => {
+
+		}
 	}
 
 
@@ -36,44 +36,6 @@ class ReadyListener extends Listener {
 		/*Code Here*/
 		console.log(`Online en Discord como: ${client.user.tag}`);
 		console.log(`Bot listo: ${Date()}`);
-
-
-		/**@type {import('discord.js').ApplicationCommandData} */
-		const data = [{
-			name: 'setup',
-			description: 'Comandos para configurar ciertas funcionalidades dentro del servidor.',
-			options: [
-				{
-					name: 'livestreamings',
-					description: 'Configura un canal para enviar mensajes cuando un usuario transmite con GO LIVE, Twitch o Youtube.',
-					type: 'SUB_COMMAND',
-					options: [{
-						name: 'activados',
-						description: 'Activa o desactiva los mensajes automáticos para los livestreamings.',
-						type: 'BOOLEAN',
-						required: false
-					},
-					{
-						name: 'canaldetexto',
-						type: 'CHANNEL',
-						description: 'Canal en el cual quieres que los mensajes de livestream se envien.',
-						required: false,
-					},
-					{
-						name: 'twitch',
-						type: 'BOOLEAN',
-						required: false,
-						description: 'Activar los mensajes para usuarios que transmiten en Twitch.'
-					},
-					{
-						name: 'golive',
-						type: 'BOOLEAN',
-						required: false,
-						description: 'Activar los mensajes para usuarios que transmiten con Go Live.'
-					}]
-				}
-			]
-		}];
 
 		/**@type {TextChannel} */
 		const RolesChannel = client.channels.cache.get("865360481940930560");
@@ -266,7 +228,10 @@ class ReadyListener extends Listener {
 				components: [MiscRow1],
 			});
 		});
+
+
 		this.setActivity();
+		this.LoadNewSlashCommand();
 	}
 }
 

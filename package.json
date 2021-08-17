@@ -13,7 +13,7 @@
 		"better-sqlite-pool": "^0.2.3",
 		"bufferutil": "^4.0.3",
 		"discord-akairo": "github:discord-akairo/discord-akairo",
-		"discord.js": "github:discordjs/discord.js",
+		"discord.js": "^13.1.0",
 		"enmap": "^5.8.4",
 		"fs": "0.0.2",
 		"lodash": "^4.17.21",
@@ -22,7 +22,7 @@
 		"numeral": "^2.0.6",
 		"pretty-ms": "^6.0.1",
 		"sqlite": "^4.0.19",
-		"sqlite3": "^5.0.2",
+		"sqlite3": "^4.2.0",
 		"utf-8-validate": "^5.0.4",
 		"ws": "^7.4.6",
 		"zlib-sync": "^0.1.7"

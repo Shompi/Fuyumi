@@ -8,9 +8,9 @@ class ReloadEventCommand extends Command {
 			args: [
 				{
 					id: 'evento',
-					type: 'string',
+					type: 'listener',
 					prompt: {
-						start: 'Ingresa el nombre del event handler',
+						start: 'Ingresa el nombre del event listener',
 						time: 10000,
 						timeout: "No se recibió respuesta, el comando ha sido cancelado."
 					}
@@ -20,18 +20,17 @@ class ReloadEventCommand extends Command {
 	}
 
 	async exec(message, { evento }) {
-		const { channel } = message;
-		const event = this.client.listenerHandler.modules.get(evento) ?? null;
 
-		if (!event)
+
+		if (!evento)
 			return message.channel.send("No encontré un módulo de evento con ese nombre.");
 
-		if (event.hasTimers)
-			event.clearTimers();
+		if (evento.hasTimers)
+			evento.clearTimers();
 
-		this.client.listenerHandler.reload(evento);
+		evento.reload();
 
-		return message.channel.send(`El evento ${evento} fue reiniciado.`);
+		return message.channel.send(`El evento ${evento.id} fue reiniciado.`);
 	}
 }
 

@@ -1,5 +1,4 @@
 const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akairo');
-const { Intents } = require('discord.js');
 module.exports = class MukiClient extends AkairoClient {
 	constructor() {
 		super({
@@ -8,11 +7,11 @@ module.exports = class MukiClient extends AkairoClient {
 		}, {
 			// Discord.js Client Options
 			disableMentions: 'everyone',
-			intents: [
-				"GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS",
-				"DIRECT_MESSAGES", "DIRECT_MESSAGE_REACTIONS", "GUILD_BANS",
-				"GUILD_EMOJIS", "GUILD_PRESENCES", "GUILD_VOICE_STATES"
-			]
+			intents: ['GUILDS', 'GUILD_BANS', 'GUILD_EMOJIS_AND_STICKERS',
+				'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_PRESENCES', 'DIRECT_MESSAGES',
+				'DIRECT_MESSAGE_REACTIONS'
+			],
+			partials: ['MESSAGE', 'REACTION', 'USER', 'CHANNEL', 'GUILD_MEMBER']
 		});
 
 		this.commandHandler = new CommandHandler(this, {

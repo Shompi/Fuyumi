@@ -8,7 +8,7 @@ module.exports.CovidCommand = async (interaction) => {
 	console.log("COVID INTERACTION TRIGGERED");
 
 	const ENDPOINT = "https://corona.lmao.ninja/v2/countries";
-	const code = interaction.options.first()?.value || 'CL';
+	const code = interaction.options.get('pais', false).value || 'CL';
 
 
 	const apiRequest = async () => {

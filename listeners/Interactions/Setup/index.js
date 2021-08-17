@@ -13,9 +13,9 @@ module.exports.SetupInteraction = async (interaction) => {
 	 */
 
 	console.log('setup interaction');
+	const subcommand = interaction.options.get('livestreaming');
 
+	if (subcommand) {
 
-	if (interaction.isCommand()) {
-		console.log(interaction.options[0]);
 	}
 }
