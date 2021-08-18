@@ -3,7 +3,6 @@ const { Interaction } = require('discord.js');
 const { SetupInteraction } = require('./Setup/index');
 const { CovidCommand } = require('./Covid/covid')
 const { AddRoles } = require('./Buttons/roles');
-const { SetModRole } = require('./SetModRole/modRole');
 console.log("interaction module loaded");
 
 class InteractionEvent extends Listener {

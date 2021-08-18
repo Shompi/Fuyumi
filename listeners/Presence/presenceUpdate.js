@@ -1,5 +1,4 @@
 const { Presence } = require('discord.js');
-const twitch = require('./Twitch/main.js');
 const { Listener } = require('discord-akairo');
 
 class PresenceUpdateListener extends Listener {
@@ -17,7 +16,6 @@ class PresenceUpdateListener extends Listener {
 	*/
 	exec(old, now) {
 		/*Code Here*/
-		twitch(old, now);
 	}
 }
 module.exports = PresenceUpdateListener;

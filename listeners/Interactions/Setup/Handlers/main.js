@@ -1,6 +1,6 @@
 const { TextChannel } = require("discord.js");
-const enmap = require('enmap');
-const streamConfigs = new enmap({ name: 'livestreams' });
+//const enmap = require('enmap');
+//const streamConfigs = new enmap({ name: 'livestreams' });
 
 const defaultStreamConfig = {
 	active: false,
@@ -16,7 +16,7 @@ const defaultStreamConfig = {
  */
 module.exports.LiveStreamings = async (toggle = false, textChannel, guildID) => {
 
-	const configs = streamConfigs.ensure(guildID, defaultStreamConfig);
+	//const configs = streamConfigs.ensure(guildID, defaultStreamConfig);
 
 
 }
