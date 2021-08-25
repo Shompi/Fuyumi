@@ -57,15 +57,20 @@ class ReadyListener extends Listener {
 			.setStyle('SUCCESS')
 			.setLabel('Counter-Strike: GO');
 
+		const DayZButton = new MessageButton()
+			.setCustomId('role-')
+			.setStyle('SUCCESS')
+			.setLabel("Day Z");
+
 		const EscapeFromTarkovButton = new MessageButton()
 			.setCustomId('role-676967872807043072')
-			.setLabel('Escape from Tarkov')
-			.setStyle('SUCCESS');
+			.setStyle('SUCCESS')
+			.setLabel('Escape from Tarkov');
 
 		const FortniteButton = new MessageButton()
 			.setCustomId('role-627237678248886292')
 			.setLabel('Fortnite')
-			.setStyle('SUCCESS');
+			.setStyle('PRIMARY');
 
 		const GenshinImpactButton = new MessageButton()
 			.setCustomId('role-810412477116448769')
@@ -90,7 +95,7 @@ class ReadyListener extends Listener {
 		const RustButton = new MessageButton()
 			.setCustomId('role-639634253369442324')
 			.setLabel('Rust')
-			.setStyle('PRIMARY');
+			.setStyle('SUCCESS');
 
 		const SeaOfThievesButton = new MessageButton()
 			.setCustomId('role-854968345974669313')
@@ -117,21 +122,22 @@ class ReadyListener extends Listener {
 				AmongusButton,
 				ApexLegendsButton,
 				CSGOButton,
+				DayZButton,
 				EscapeFromTarkovButton,
-				FortniteButton,
 			]);
 
 		const row2 = new MessageActionRow()
 			.addComponents([
+				FortniteButton,
 				GenshinImpactButton,
 				LeagueButton,
 				MinecraftButton,
 				RocketLeagueButton,
-				RustButton,
 			]);
 
 		const row3 = new MessageActionRow()
 			.addComponents([
+				RustButton,
 				SeaOfThievesButton,
 				ValorantButton,
 				WarzoneButton,
