@@ -58,7 +58,7 @@ class ReadyListener extends Listener {
 			.setLabel('Counter-Strike: GO');
 
 		const DayZButton = new MessageButton()
-			.setCustomId('role-')
+			.setCustomId('role-879217872147185714')
 			.setStyle('SUCCESS')
 			.setLabel("Day Z");
 
