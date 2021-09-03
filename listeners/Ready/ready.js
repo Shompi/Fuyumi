@@ -97,6 +97,12 @@ class ReadyListener extends Listener {
 			.setLabel('Rust')
 			.setStyle('SUCCESS');
 
+		const ScumButton = new MessageButton()
+			.setCustomId('role-879217852337520640')
+			.setStyle('SUCCESS')
+			.setLabel('SCUM');
+
+
 		const SeaOfThievesButton = new MessageButton()
 			.setCustomId('role-854968345974669313')
 			.setStyle('SUCCESS')
@@ -115,7 +121,7 @@ class ReadyListener extends Listener {
 		const WarThunderButton = new MessageButton()
 			.setCustomId('role-865423770264928296')
 			.setLabel('War Thunder')
-			.setStyle('SUCCESS');
+			.setStyle('PRIMARY');
 
 		const row1 = new MessageActionRow()
 			.addComponents([
@@ -138,11 +144,16 @@ class ReadyListener extends Listener {
 		const row3 = new MessageActionRow()
 			.addComponents([
 				RustButton,
+				ScumButton,
 				SeaOfThievesButton,
 				ValorantButton,
 				WarzoneButton,
-				WarThunderButton,
 			]);
+
+		const row4 = new MessageActionRow()
+			.addComponents([
+				WarThunderButton,
+			])
 
 		const JuegosEmbed = new MessageEmbed()
 			.setColor('BLUE')
@@ -151,7 +162,7 @@ class ReadyListener extends Listener {
 		RolesChannel.messages.fetch('865370324044742656')
 			.then(message => {
 				message.edit({
-					components: [row1, row2, row3],
+					components: [row1, row2, row3, row4],
 					embeds: [JuegosEmbed],
 				})
 			});
