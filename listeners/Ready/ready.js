@@ -1,6 +1,7 @@
 const { Listener, AkairoClient } = require('discord-akairo');
 const { TextChannel, MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
-
+const keyv = require('keyv');
+const LIVESTREAM_TIMESTAMPS = new keyv({ namespace: 'livestreams' })
 /**@type {NodeJS.Timeout[]} */
 const timers = [];
 class ReadyListener extends Listener {
@@ -249,6 +250,8 @@ class ReadyListener extends Listener {
 
 		this.setActivity();
 		this.LoadNewSlashCommand();
+
+		console.log()
 	}
 }
 
