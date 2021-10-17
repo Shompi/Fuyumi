@@ -1,3 +1,4 @@
+const { Collection } = require('discord.js');
 const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akairo');
 module.exports = class MukiClient extends AkairoClient {
 	constructor() {
@@ -17,7 +18,7 @@ module.exports = class MukiClient extends AkairoClient {
 		this.commandHandler = new CommandHandler(this, {
 			// Options for the command handler
 			defaultCooldown: 3,
-			directory: './commands/',
+      directory: './Commands/',
 			prefix: 'muki!',
 			automateCategories: true,
 		});
@@ -25,10 +26,13 @@ module.exports = class MukiClient extends AkairoClient {
 		this.commandHandler.loadAll();
 
 		this.listenerHandler = new ListenerHandler(this, {
-			directory: './listeners/'
+      directory: './Listeners/'
 		});
 
 		this.commandHandler.useListenerHandler(this.listenerHandler);
 		this.listenerHandler.loadAll();
+
+    // Comandos de interacción
+    this.commands = new Collection();
 	}
 }

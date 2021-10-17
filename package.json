@@ -8,15 +8,17 @@
 		"url": "https://github.com/Shompi/Muki.git"
 	},
 	"dependencies": {
+		"@discordjs/builders": "^0.6.0",
+		"@discordjs/rest": "^0.1.0-canary.0",
 		"@keyv/sqlite": "^2.0.2",
 		"discord-akairo": "github:discord-akairo/discord-akairo",
-		"discord.js": "^13.1.0",
+		"discord.js": "^13.2.0",
 		"keyv": "^4.0.3"
 	},
-	"devDependencies": {},
 	"scripts": {
 		"test": "echo \"No se ha especificado ningun test.\" && exit 0",
-		"start": "node Muki.js"
+		"start": "node Muki.js",
+		"deploy": "node ./Deployment/deploy-commands.js"
 	},
 	"keywords": [
 		"bot",
