@@ -2,6 +2,7 @@ const CREDENTIALS = require('./config.json');
 const axios = require('axios').default;
 const keyv = require('keyv');
 const tokens = new keyv("sqlite://twitchtokens.sqlite", { namespace: 'twitchtokens' });
+const imagesLocalDB = new keyv("sqlite://gameimages.sqlite", { namespace: 'gameimages' });
 const defaultCover = "https://puu.sh/F2ZUN/ea3856ca91.png";
 
 
@@ -41,14 +42,18 @@ const getAccessToken = async () => {
   return tokens.get('token').token;
 }
 
-/** @param {string} gamename */
+/**
+ *
+ * @param {String} gamename
+ * @returns {Promise<String>}
+ */
 const getGameCoverByName = async (gamename) => {
 
-  /**@type {{
-    id: number,
-    cover:number,
-    name: string
-  }} */
+  // Primero chequemos que la imágen esté en la base de datos
+
+  const savedImage = await imagesLocalDB.get(gamename).catch(() => null);
+
+  if (savedImage) return savedImage;
 
   const access_token = await getAccessToken();
 
@@ -68,7 +73,12 @@ const getGameCoverByName = async (gamename) => {
   if (!cover)
     return console.log(defaultCover);
 
-  return console.log(`https:${cover.url.replace("t_thumb", "t_720p")}`);
+  const formatedUrl = `https:${cover.url.replace("t_thumb", "t_720p")}`;
+
+  // Guardamos la imagen a nuestra base de datos para evitar futuras consultas a la API
+  await imagesLocalDB.set(gamename, formatedUrl);
+
+  return formatedUrl;
 }
 
 module.exports = {

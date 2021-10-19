@@ -2,7 +2,7 @@ const { Presence, Activity, MessageEmbed, TextChannel, GuildMember } = require('
 const { Listener } = require('discord-akairo');
 const keyv = require('keyv');
 const LIVESTREAMS_TIMESTAMPS = new keyv('sqlite://database.sqlite', { namespace: 'livestreams' });
-const TWOHOURS = 1000 * 60 * 60 * 2;
+const HOURSLIMIT = 1000 * 60 * 60 * 3;
 const { getGameCoverByName } = require('../../GameImages/index');
 
 class PresenceUpdateListener extends Listener {
@@ -14,14 +14,18 @@ class PresenceUpdateListener extends Listener {
 
     this.hasTimers = false;
 
-    this.checkTwitchStream = async (/**@type {Presence} */ presence) => {
+    /**
+     * 
+     * @param {Presence} presence 
+     * @param {Presence} _old 
+     */
+    this.checkTwitchStream = async (presence, _old) => {
 
       // Funciones
-      const getLivestreamInfo = (/**@type {Presence} */ presence) => {
-        const { activities } = presence;
 
-        return activities.find(activity => activity.type === 'STREAMING');
-      }
+      /**@param {Presence} presence*/
+      const getLivestreamInfo = (presence) =>
+        presence.activities.find(activity => activity.type === 'STREAMING');
 
       const createEmbed = async (/**@type {Activity} */ activity, /**@type {GuildMember} */ member) => {
 
@@ -71,12 +75,12 @@ class PresenceUpdateListener extends Listener {
         sendLiveStream(presence);
 
       } else {
-        // Revisar si han pasado 2 horas desde que el usuario comenzó a transmitir
+        // Revisar si han pasado las horas necesarias desde que el usuario comenzó a transmitir
         const TIMENOW = Date.now();
 
         const TIMEDIFF = TIMENOW - USER_TIMESTAMP;
-        console.log(`TIMENOW: ${TIMENOW}\nUSER_TIMESTAMP: ${USER_TIMESTAMP}\nTIMEDIFF: ${TIMEDIFF}\nTWOHOURS: ${TWOHOURS}]`);
-        if (TIMEDIFF >= TWOHOURS) {
+        console.log(`TIMENOW: ${TIMENOW}\nUSER_TIMESTAMP: ${USER_TIMESTAMP}\nTIMEDIFF: ${TIMEDIFF}\nTWOHOURS: ${HOURSLIMIT}]`);
+        if (TIMEDIFF >= HOURSLIMIT) {
           sendLiveStream(presence);
           // Update timestamp
           await LIVESTREAMS_TIMESTAMPS.set(presence.user.id, Date.now());
@@ -93,7 +97,7 @@ class PresenceUpdateListener extends Listener {
 
     /* Esto solo funcionará para exiliados */
     if (now.guild.id === '537484725896478733') {
-      this.checkTwitchStream(now);
+      this.checkTwitchStream(now, old);
     }
 
   }
