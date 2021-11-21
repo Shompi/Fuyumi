@@ -70,8 +70,9 @@ const getGameCoverByName = async (gamename) => {
   /**@type {{id: number, url: string}} */
   const cover = response.data[0];
 
-  if (!cover)
-    return console.log(defaultCover);
+  if (!cover) return defaultCover;
+
+  console.log(`Juego sin imagen: ${gamename}`);
 
   const formatedUrl = `https:${cover.url.replace("t_thumb", "t_720p")}`;
 

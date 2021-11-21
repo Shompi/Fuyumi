@@ -220,6 +220,30 @@ module.exports = async (client) => {
     });
   });
 
+  // Streamer panel
+  const StreamerEmbed = new MessageEmbed()
+    .setTitle('Streamer Role')
+    .setColor('PURPLE')
+    .setDescription('¿Eres Streamer?, ¿Quieres que tus transmisiones aparezcan en el canal <#600159867239661578>?\nEntonces asignate este rol!');
+
+
+  const StreamerButton = new MessageButton()
+    .setCustomId('role-912096189443350548')
+    .setLabel('Streamer')
+    .setStyle('PRIMARY')
+
+  const StreamerRow1 = new MessageActionRow()
+    .addComponents([
+      StreamerButton
+    ]);
+
+  await RolesChannel.messages.fetch("912096885882363994").then(message => {
+    message.edit({
+      embeds: [StreamerEmbed],
+      components: [StreamerRow1]
+    })
+  });
+
   console.log("Los botones han sido cargados / actualizados!");
   return true;
 }
