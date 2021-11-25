@@ -2,6 +2,8 @@ const { Presence, Activity, MessageEmbed, TextChannel, GuildMember } = require('
 const { Listener } = require('discord-akairo');
 const keyv = require('keyv');
 const LIVESTREAMS_TIMESTAMPS = new keyv('sqlite://database.sqlite', { namespace: 'livestreams' });
+const StreamsConfigPerGuild = new keyv('sqlite://StreamsConfigs.sqlite', { namespace: 'streamsConfig' });
+
 const HOURSLIMIT = 1000 * 60 * 60 * 3;
 const { getGameCoverByName } = require('../../GameImages/index');
 
@@ -19,15 +21,42 @@ class PresenceUpdateListener extends Listener {
      * @param {Presence} presence 
      * @param {Presence} _old 
      */
+
     this.checkTwitchStream = async (presence, _old) => {
 
-      // Funciones
+      /**
+      * @param {GuildMember} member
+      */
+      const checkGuildConfigs = async (guildId) => {
 
-      /**@param {Presence} presence*/
-      const getLivestreamInfo = (presence) =>
-        presence.activities.find(activity => activity.type === 'STREAMING');
+        /**
+         * @type {{ roleId: string, channelId: string, enabled: boolean }}
+         */
+        const configs = await StreamsConfigPerGuild.get(guildId);
+        if (!configs) return false;
+        if (!configs.enabled) return false;
 
-      const createEmbed = async (/**@type {Activity} */ activity, /**@type {GuildMember} */ member) => {
+        return true;
+      }
+
+      /**
+      * @param {GuildMember} member 
+      */
+      const memberHasStreamerRole = async (member) => {
+        const StreamerRoleId = await StreamsConfigPerGuild.get(member.guild.id).then(configs => configs ? configs.roleId : "0000");
+        return member.roles.cache.has(StreamerRoleId);
+      }
+
+      /**
+      * @param {Presence} presence
+      */
+      const getLivestreamInfo = (presence) => presence.activities.find(activity => activity.type === 'STREAMING');
+
+      /**
+      * @param {Activity} activity
+      * @param {GuildMember} member
+      */
+      const createEmbed = async (activity, member) => {
 
         const gameImage = await getGameCoverByName(activity.state);
 
@@ -40,10 +69,17 @@ class PresenceUpdateListener extends Listener {
           .setImage(gameImage);
       }
 
-      const sendLiveStream = async (/**@type {Presence} */ presence) => {
-        /**@type {TextChannel} */
+      /**
+      * @param {Presence} presence
+      */
+      const sendLiveStream = async (presence) => {
 
-        const STREAM_CHANNEL = presence.client.channels.cache.get("600159867239661578");
+        const streamChannelId = await StreamsConfigPerGuild.get(presence.guild.id).then(configs => configs ? configs.channelId : "0000");
+
+        /**
+        * @type {TextChannel}
+        */
+        const STREAM_CHANNEL = presence.client.channels.cache.get(streamChannelId);
 
         STREAM_CHANNEL.send({
           embeds: [await createEmbed(STREAMED_ACTIVITY, presence.member)]
@@ -56,6 +92,9 @@ class PresenceUpdateListener extends Listener {
 
       if (!STREAMED_ACTIVITY) return;
       console.log(`USER ${presence.member.user.tag} has ACTIVITY ${STREAMED_ACTIVITY.details}`);
+
+      if (!(await checkGuildConfigs(presence.guild.id))) return;
+      if (!(await memberHasStreamerRole(presence.member))) return;
 
       let USER_TIMESTAMP = await LIVESTREAMS_TIMESTAMPS.get(presence.user.id).catch(() => null);
       let NEW_USER = false;
@@ -92,14 +131,13 @@ class PresenceUpdateListener extends Listener {
   *@param {Presence} old
   *@param {Presence} now
   */
-  exec(old, now) {
+  async exec(old, now) {
     /*Code Here*/
 
     /* Esto solo funcionará para exiliados */
     if (now.guild.id === '537484725896478733') {
       this.checkTwitchStream(now, old);
     }
-
   }
 }
 module.exports = PresenceUpdateListener;

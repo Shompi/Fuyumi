@@ -31,26 +31,18 @@ class InteractionEvent extends Listener {
 
       // Obtener el juego o actividad siendo stremeada, usaremos "find" para encontrar una activiad en estado "PLAYING"
       /**@type {Activity} */
-      let activity;
-      if (newState.member.presence && newState.member.presence.status === 'offline') {
-        activity = {
-          name: 'Actividad Desconocida',
-          state: ''
-        }
-      } else {
 
-        activity = newState.member.presence.activities.find(activity => activity.type === 'PLAYING');
-
-        if (!activity) activity = newState.member.presence.activities[0];
-
-      }
+      const activity = newState.member.presence?.activities?.find(activity => activity.type === 'PLAYING');
 
       const thumbnailUrl = await getGameCoverByName(activity?.name ?? 'Actividad Desconocida');
+
+
+
       console.log("THUMBNAIL:", thumbnailUrl);
 
       const liveEmbed = new MessageEmbed()
         .setTitle(`${newState.member.user.tag} ha comenzado a transmitir en ${newState.channel.name}!`)
-        .setDescription(`**${activity.name} - ${activity.state ?? ""}**`)
+        .setDescription(`**${activity?.name ?? ""} - ${activity?.state ?? ""}**`)
         .setThumbnail(newState.member.displayAvatarURL({ size: 512, dynamic: true }))
         .setImage(thumbnailUrl)
         .setColor(newState.member.displayColor);
