@@ -1,8 +1,8 @@
+console.log("interaction module loaded");
 const { Listener } = require('discord-akairo');
 const { Interaction } = require('discord.js');
-const MukiClient = require('../../Classes/MukiClient');
+const { ContextMenuHandler } = require('./ContextMenu/main');
 const ButtonAddRoles = require('./Buttons/roles');
-console.log("interaction module loaded");
 
 class InteractionEvent extends Listener {
   constructor() {
@@ -34,6 +34,11 @@ class InteractionEvent extends Listener {
       if (interaction.customId.startsWith('role-')) {
         ButtonAddRoles(interaction);
       }
+      else return interaction.reply({ content: "Este botón no tiene ningún propósito.", ephemeral: true });
+    }
+
+    if (interaction.isContextMenu()) {
+      ContextMenuHandler(interaction);
     }
   }
 }

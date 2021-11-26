@@ -1,5 +1,4 @@
 const { CommandInteraction, MessageEmbed } = require("discord.js");
-const fetch = require('node-fetch').default;
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const keyv = require('keyv');
 const StreamsConfigPerGuild = new keyv('sqlite://StreamsConfigs.sqlite', { namespace: 'streamsConfig' });

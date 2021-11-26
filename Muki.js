@@ -4,7 +4,7 @@ const client = new MukiClient();
 
 
 /** Cargar los slash commands */
-const slashCommandsFiles = fs.readdirSync('./listeners/Interactions/Commands').filter(file => file.endsWith('.js'));
+const slashCommandsFiles = fs.readdirSync('./listeners/Interactions/Commands').filter(file => file.endsWith('.js') && file.startsWith('cmd-'));
 
 for (const filename of slashCommandsFiles) {
   const command = require(`./listeners/Interactions/Commands/${filename}`);
