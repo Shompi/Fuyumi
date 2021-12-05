@@ -25,7 +25,7 @@ class InteractionEvent extends Listener {
 
       } catch (error) {
         console.error(error);
-        await interaction.reply({ content: error, ephemeral: true });
+        await interaction.reply({ content: "ocurrió un error con esta interacción", ephemeral: true });
       }
     }
 

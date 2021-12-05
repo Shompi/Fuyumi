@@ -21,6 +21,8 @@ module.exports = {
       .addChoice("Activados", "true")
       .addChoice("Desactivados", "false")
     ),
+  isGlobal: false,
+
   /**
   * @param {CommandInteraction} interaction
   * @return {Promise<string|MessageEmbed>}
