@@ -1,6 +1,10 @@
 const { CommandInteraction, MessageEmbed, MessageReaction, User, Collection, MessageButton, MessageActionRow } = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
+/**@type {Collection<string, {t_expires: number, user:User}>} */
+const timeouts = new Collection();
+
+
 /**
    * @param {CommandInteraction} interaction
    */
@@ -19,7 +23,6 @@ function validateArgs(interaction) {
     }
   }
 }
-
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -48,7 +51,18 @@ module.exports = {
   * @return {Promise<string|MessageEmbed>}
   */
   async execute(interaction) {
+
+
+    if (timeouts.has(interaction.user.id)) {
+      return await interaction.reply({
+        ephemeral: true,
+        content: `Debes esperar ${Math.round((timeouts.get(interaction.user.id).t_expires - Date.now()) / 1000)} segundos más.`
+      });
+    }
     if (interaction.inGuild()) {
+
+      timeouts.set(interaction.user.id, { t_expires: Date.now() + (1000 * 60 * 5) });
+      setTimeout(() => timeouts.delete(interaction.user.id), 1000 * 60 * 5);
 
       const check = validateArgs(interaction);
       await interaction.deferReply({ ephemeral: true });
@@ -64,7 +78,7 @@ module.exports = {
       const lfgMessageTemp = interaction.options.getString('mensaje', false);
       const lfgMentionTemp = interaction.options.getRole('mencionar', false);
 
-      const lfgMessage = `${lfgMentionTemp ? `${lfgMentionTemp} ${lfgMessageTemp ?? ""}` : `${lfgMessageTemp ?? ""}`}`;
+      const lfgMessage = `${lfgMentionTemp ? `${lfgMentionTemp} ${lfgMessageTemp ?? ""}` : `${lfgMessageTemp ?? ""}`} `;
 
       const partyEmbed = new MessageEmbed()
         .setTitle(`¡${interaction.member.user.tag} está buscando compañeros de grupo!`)
@@ -124,16 +138,15 @@ module.exports = {
 
         if (((check.partySize + 1) - partyMembers.size) === 0) {
           componentCollector.stop();
+        } else {
+
+          // update embed
+          const newEmbed = new MessageEmbed(partyEmbed)
+            .setDescription(`**Grupo:**\n${partyMembers.map((user) => `<@${user.id}>`).join("\n")}`)
+            .setFooter(`¡Se necesitan ${(check.partySize + 1) - partyMembers.size} jugadores más!`);
+
+          await partyMessage.edit({ embeds: [newEmbed] });
         }
-
-        // update embed
-        const newEmbed = new MessageEmbed(partyEmbed)
-          .setDescription(`**Grupo:**\n${partyMembers.map((user) => `<@${user.id}>`).join("\n")}`)
-          .setFooter(`¡Se necesitan ${(check.partySize + 1) - partyMembers.size} jugadores más!`);
-
-        await partyMessage.edit({ embeds: [newEmbed] });
-
-
       }).on('end', async (collected) => {
 
         // Chequear si la cantidad de usuarios en partyMembers es igual a check.partySize
