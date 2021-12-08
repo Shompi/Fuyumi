@@ -122,6 +122,10 @@ module.exports = {
           }
         }
 
+        if (((check.partySize + 1) - partyMembers.size) === 0) {
+          componentCollector.stop();
+        }
+
         // update embed
         const newEmbed = new MessageEmbed(partyEmbed)
           .setDescription(`**Grupo:**\n${partyMembers.map((user) => `<@${user.id}>`).join("\n")}`)
@@ -129,10 +133,6 @@ module.exports = {
 
         await partyMessage.edit({ embeds: [newEmbed] });
 
-
-        if (((check.partySize + 1) - partyMembers.size) === 0) {
-          componentCollector.stop();
-        }
 
       }).on('end', async (collected) => {
 
