@@ -27,17 +27,13 @@ class InteractionEvent extends Listener {
         console.error(error);
         await interaction.reply({ content: "ocurrió un error con esta interacción", ephemeral: true });
       }
-    }
 
-    // Button handlers
-    if (interaction.isButton()) {
+    } else if (interaction.isButton()) {
       if (interaction.customId.startsWith('role-')) {
         ButtonAddRoles(interaction);
       }
-      else return interaction.reply({ content: "Este botón no tiene ningún propósito.", ephemeral: true });
-    }
 
-    if (interaction.isContextMenu()) {
+    } else if (interaction.isContextMenu()) {
       ContextMenuHandler(interaction);
     }
   }

@@ -1,6 +1,5 @@
-const { CommandInteraction, MessageEmbed, MessageReaction, User, Collection } = require("discord.js");
+const { CommandInteraction, MessageEmbed, MessageReaction, User, Collection, MessageButton, MessageActionRow } = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
-
 
 /**
    * @param {CommandInteraction} interaction
@@ -29,13 +28,19 @@ module.exports = {
     .addIntegerOption(input => {
       return input.setName('faltan')
         .setDescription('Cantidad de jugadores que faltan para que el grupo esté completo, sin contarte a tí')
-        .setRequired(true)
+        .setRequired(true);
     })
     .addStringOption(input => {
       return input.setName("mensaje")
         .setDescription('Tu mensaje para crear este grupo')
         .setRequired(false);
+    })
+    .addRoleOption(role => {
+      return role.setName('mencionar')
+        .setDescription('Role que quieres mencionar en esta interacción')
+        .setRequired(false);
     }),
+
   isGlobal: false,
 
   /**
@@ -55,53 +60,81 @@ module.exports = {
 
       partyMembers.set(interaction.user.id, interaction.user);
 
-      const lfgMessage = interaction.options.getString('mensaje', false);
+
+      const lfgMessageTemp = interaction.options.getString('mensaje', false);
+      const lfgMentionTemp = interaction.options.getRole('mencionar', false);
+
+      const lfgMessage = `${lfgMentionTemp ? `${lfgMentionTemp} ${lfgMessageTemp ?? ""}` : `${lfgMessageTemp ?? ""}`}`;
 
       const partyEmbed = new MessageEmbed()
         .setTitle(`¡${interaction.member.user.tag} está buscando compañeros de grupo!`)
         .setThumbnail(interaction.user.displayAvatarURL({ size: 512, dynamic: true }))
-        .setDescription(`${lfgMessage ?? ""}\n${partyMembers.map(user => `<@${user.id}>`).join("\n")}`)
+        .setDescription(`**Grupo:**\n${partyMembers.map(user => `<@${user.id}>`).join("\n")}`)
         .setFooter(`¡Se necesitan ${check.partySize} jugadores más!`)
         .setColor(interaction.member.displayColor);
 
-      const partyMessage = await interaction.channel.send({ embeds: [partyEmbed] });
-      await partyMessage.react('✅');
+      const JoinButton = new MessageButton()
+        .setCustomId('join')
+        .setLabel('Unirse')
+        .setStyle('PRIMARY')
+
+      const LeaveButton = new MessageButton()
+        .setCustomId('leave')
+        .setLabel('Abandonar')
+        .setStyle('SECONDARY')
+
+      const actionRow = new MessageActionRow()
+        .addComponents([JoinButton, LeaveButton]);
+
+      const partyMessage = await interaction.channel.send({ content: lfgMessage, embeds: [partyEmbed], components: [actionRow] });
 
       /** 
       * @param {MessageReaction} reaction the reaction being added
       * @param {User} user the user who added the reaction
       */
 
-      const reactionCollector = partyMessage.createReactionCollector({ time: 1000 * 60 * 5 });
+      //TODO: usar interaccion con botones en vez de usar una reacción.
+      const componentCollector = partyMessage.createMessageComponentCollector({ time: 1000 * 60 * 5 });
 
-      reactionCollector.on('collect', async (reaction, user) => {
+      componentCollector.on('collect', async (buttonInteraction) => {
 
-        if (reaction.emoji.name !== '✅') return;
-        if (user.id === interaction.user.id) return console.log('Reaction ignored');
-        if (user.id === interaction.client.user.id) return console.log('Reaction ignored');
-        if (partyMembers.has(user.id)) return console.log("Reaction ignores (User already was on the party)");
+        if (buttonInteraction.isButton()) {
 
-        console.log("Reaction count: ", reaction.count);
+          switch (buttonInteraction.customId) {
 
-        if (reaction.count > check.partySize) {
-          // Check partyMembers
-          if (partyMembers.size === check.partySize + 1) {
-            reactionCollector.stop();
-          } else {
-            partyMembers.set(user.id, user);
+            case 'join':
+              if (partyMembers.has(buttonInteraction.user.id)) {
+                return await buttonInteraction.reply({ ephemeral: true, content: "Ya estás en la party." })
+              } else {
+                // Agregar al usuario a la party
+                partyMembers.set(buttonInteraction.user.id, buttonInteraction.user);
+                await buttonInteraction.reply({ ephemeral: true, content: "¡Has sido agregado a la party!" });
+              }
+              break;
+
+            case 'leave':
+              if (partyMembers.delete(buttonInteraction.user.id)) {
+                await buttonInteraction.reply({ ephemeral: true, content: "Has abandonado el grupo." });
+              } else {
+                return await buttonInteraction.reply({ ephemeral: true, content: "No estás en el grupo." });
+              }
+              break;
           }
-        } else {
-          partyMembers.set(user.id, user);
         }
 
         // update embed
         const newEmbed = new MessageEmbed(partyEmbed)
-          .setDescription(`${lfgMessage ?? ""}\n${partyMembers.map(user => `<@${user.id}>`).join("\n")}`)
+          .setDescription(`**Grupo:**\n${partyMembers.map((user) => `<@${user.id}>`).join("\n")}`)
           .setFooter(`¡Se necesitan ${(check.partySize + 1) - partyMembers.size} jugadores más!`);
 
         await partyMessage.edit({ embeds: [newEmbed] });
 
-      }).on('end', async (collected, reason) => {
+
+        if (((check.partySize + 1) - partyMembers.size) === 0) {
+          componentCollector.stop();
+        }
+
+      }).on('end', async (collected) => {
 
         // Chequear si la cantidad de usuarios en partyMembers es igual a check.partySize
         try {
@@ -114,7 +147,7 @@ module.exports = {
               .setFooter('');
 
             await partyMessage.edit({
-              embeds: [partyFail]
+              embeds: [partyFail], components: []
             });
 
             await interaction.editReply({
@@ -130,7 +163,7 @@ module.exports = {
               .setFooter('');
 
             await partyMessage.edit({
-              embeds: [partySuccessful]
+              embeds: [partySuccessful], components: []
             });
 
             await interaction.editReply({
