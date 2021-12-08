@@ -2,95 +2,142 @@ const { Presence, Activity, MessageEmbed, TextChannel, GuildMember } = require('
 const { Listener } = require('discord-akairo');
 const keyv = require('keyv');
 const LIVESTREAMS_TIMESTAMPS = new keyv('sqlite://database.sqlite', { namespace: 'livestreams' });
-const TWOHOURS = 1000 * 60 * 60 * 2;
-const IMAGES = require('./resources/images');
+const StreamsConfigPerGuild = new keyv('sqlite://StreamsConfigs.sqlite', { namespace: 'streamsConfig' });
+
+const HOURSLIMIT = 1000 * 60 * 60 * 3;
+const { getGameCoverByName } = require('../../GameImages/index');
+
 class PresenceUpdateListener extends Listener {
-	constructor() {
-		super('presenceUpdate', {
-			emitter: 'client',
-			event: 'presenceUpdate'
-		});
+  constructor() {
+    super('presenceUpdate', {
+      emitter: 'client',
+      event: 'presenceUpdate'
+    });
 
-		this.hasTimers = false;
+    this.hasTimers = false;
 
-		this.checkTwitchStream = async (/**@type {Presence} */ presence) => {
+    /**
+     * 
+     * @param {Presence} presence 
+     * @param {Presence} _old 
+     */
 
-			// Funciones
-			const getLivestreamInfo = (/**@type {Presence} */ presence) => {
-				const { activities } = presence;
+    this.checkTwitchStream = async (presence, _old) => {
 
-				return activities.find(activity => activity.type === 'STREAMING');
-			}
+      /**
+      * @param {GuildMember} member
+      */
+      const checkGuildConfigs = async (guildId) => {
 
-			const createEmbed = (/**@type {Activity} */ activity, /**@type {GuildMember} */ member) => {
-				return new MessageEmbed()
-					.setTitle(`¡${member.displayName} ha comenzado a transmitir en ${activity.name}!`)
-					.setDescription(`${activity.details}\nJugando a: ${activity.state}\n[-> Únete a la transmisión <-](${activity.url})`)
-					.setColor(member.displayColor)
-					.setThumbnail(member.user.displayAvatarURL({ size: 512, dynamic: true }))
-					.setImage(IMAGES.Twitch);
-			}
+        /**
+         * @type {{ roleId: string, channelId: string, enabled: boolean }}
+         */
+        const configs = await StreamsConfigPerGuild.get(guildId);
+        if (!configs) return false;
+        if (!configs.enabled) return false;
 
-			const sendLiveStream = (/**@type {Presence} */ presence) => {
-				/**@type {TextChannel} */
+        return true;
+      }
 
-				const STREAM_CHANNEL = presence.client.channels.cache.get("600159867239661578");
+      /**
+      * @param {GuildMember} member 
+      */
+      const memberHasStreamerRole = async (member) => {
+        const StreamerRoleId = await StreamsConfigPerGuild.get(member.guild.id).then(configs => configs ? configs.roleId : "0000");
+        return member.roles.cache.has(StreamerRoleId);
+      }
 
-				STREAM_CHANNEL.send({
-					embeds: [createEmbed(STREAMED_ACTIVITY, presence.member)]
-				});
-			}
-			//************ */
+      /**
+      * @param {Presence} presence
+      */
+      const getLivestreamInfo = (presence) => presence.activities.find(activity => activity.type === 'STREAMING');
 
-			// Chequear que haya una actividad siendo stremeada
-			const STREAMED_ACTIVITY = getLivestreamInfo(presence);
+      /**
+      * @param {Activity} activity
+      * @param {GuildMember} member
+      */
+      const createEmbed = async (activity, member) => {
 
-			if (!STREAMED_ACTIVITY) return;
-			console.log(`USER ${presence.member.user.tag} has ACTIVITY ${STREAMED_ACTIVITY.details}`);
+        const gameImage = await getGameCoverByName(activity.state);
 
-			let USER_TIMESTAMP = await LIVESTREAMS_TIMESTAMPS.get(presence.user.id).catch(() => null);
-			let NEW_USER = false;
+        return new MessageEmbed()
+          .setAuthor(`¡${member.displayName} ha comenzado a transmitir en ${activity.name}!`, null, activity.url)
+          .setTitle(activity.details)
+          .setDescription(`[-> Únete a la transmisión <-](${activity.url})`)
+          .setColor(member.displayColor)
+          .setThumbnail(member.user.displayAvatarURL({ size: 512, dynamic: true }))
+          .setImage(gameImage);
+      }
 
-			if (!USER_TIMESTAMP) {
-				// Si el usuario no está lo agregamos
-				console.log("USER WAS NOT ON DB");
-				await LIVESTREAMS_TIMESTAMPS.set(presence.user.id, Date.now());
-				USER_TIMESTAMP = await LIVESTREAMS_TIMESTAMPS.get(presence.user.id);
-				NEW_USER = !NEW_USER;
-			}
+      /**
+      * @param {Presence} presence
+      */
+      const sendLiveStream = async (presence) => {
 
-			console.log(`NEW USER: ${NEW_USER}, TIMESTAMP: ${USER_TIMESTAMP}`);
+        const streamChannelId = await StreamsConfigPerGuild.get(presence.guild.id).then(configs => configs ? configs.channelId : "0000");
 
-			if (NEW_USER) {
+        /**
+        * @type {TextChannel}
+        */
+        const STREAM_CHANNEL = presence.client.channels.cache.get(streamChannelId);
 
-				sendLiveStream(presence);
+        STREAM_CHANNEL.send({
+          embeds: [await createEmbed(STREAMED_ACTIVITY, presence.member)]
+        });
+      }
+      //************ */
 
-			} else {
-				// Revisar si han pasado 2 horas desde que el usuario comenzó a transmitir
-				const TIMENOW = Date.now();
+      // Chequear que haya una actividad siendo stremeada
+      const STREAMED_ACTIVITY = getLivestreamInfo(presence);
 
-				const TIMEDIFF = TIMENOW - USER_TIMESTAMP;
-				console.log(`TIMENOW: ${TIMENOW}\nUSER_TIMESTAMP: ${USER_TIMESTAMP}\nTIMEDIFF: ${TIMEDIFF}\nTWOHOURS: ${TWOHOURS}]`);
-				if (TIMEDIFF >= TWOHOURS) {
-					sendLiveStream(presence);
-					// Update timestamp
-					await LIVESTREAMS_TIMESTAMPS.set(presence.user.id, Date.now());
-				} else return;
-			}
-		}
-	}
-	/**
-	*@param {Presence} old
-	*@param {Presence} now
-	*/
-	exec(old, now) {
-		/*Code Here*/
+      if (!STREAMED_ACTIVITY) return;
+      console.log(`USER ${presence.member.user.tag} has ACTIVITY ${STREAMED_ACTIVITY.details}`);
 
-		/* Esto solo funcionará para exiliados */
-		if (now.guild.id === '537484725896478733') {
-			this.checkTwitchStream(now);
-		}
+      if (!(await checkGuildConfigs(presence.guild.id))) return;
+      if (!(await memberHasStreamerRole(presence.member))) return;
 
-	}
+      let USER_TIMESTAMP = await LIVESTREAMS_TIMESTAMPS.get(presence.user.id).catch(() => null);
+      let NEW_USER = false;
+
+      if (!USER_TIMESTAMP) {
+        // Si el usuario no está lo agregamos
+        console.log("USER WAS NOT ON DB");
+        await LIVESTREAMS_TIMESTAMPS.set(presence.user.id, Date.now());
+        USER_TIMESTAMP = await LIVESTREAMS_TIMESTAMPS.get(presence.user.id);
+        NEW_USER = !NEW_USER;
+      }
+
+      console.log(`NEW USER: ${NEW_USER}, TIMESTAMP: ${USER_TIMESTAMP}`);
+
+      if (NEW_USER) {
+
+        sendLiveStream(presence);
+
+      } else {
+        // Revisar si han pasado las horas necesarias desde que el usuario comenzó a transmitir
+        const TIMENOW = Date.now();
+
+        const TIMEDIFF = TIMENOW - USER_TIMESTAMP;
+        console.log(`TIMENOW: ${TIMENOW}\nUSER_TIMESTAMP: ${USER_TIMESTAMP}\nTIMEDIFF: ${TIMEDIFF}\nTWOHOURS: ${HOURSLIMIT}]`);
+        if (TIMEDIFF >= HOURSLIMIT) {
+          sendLiveStream(presence);
+          // Update timestamp
+          await LIVESTREAMS_TIMESTAMPS.set(presence.user.id, Date.now());
+        } else return;
+      }
+    }
+  }
+  /**
+  *@param {Presence} old
+  *@param {Presence} now
+  */
+  async exec(old, now) {
+    /*Code Here*/
+
+    /* Esto solo funcionará para exiliados */
+    if (now.guild.id === '537484725896478733') {
+      this.checkTwitchStream(now, old);
+    }
+  }
 }
 module.exports = PresenceUpdateListener;

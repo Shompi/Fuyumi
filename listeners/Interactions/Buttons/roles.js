@@ -1,16 +1,16 @@
 const { ButtonInteraction } = require("discord.js");
 
 
+const NSFWROLES = ["745385918546051222", "866061257923493918"];
+
 const Mayor18ID = '544718986806296594';
-const ApostadorID = '745385918546051222';
-const DegeneradoID = '866061257923493918';
 /**
 @param {ButtonInteraction} interaction
  */
-module.exports.AddRoles = async (interaction) => {
+module.exports = async (interaction) => {
 	// Enviemos un mensaje por ahora
 
-	const { guild, client, member } = interaction;
+  const { guild, member } = interaction;
 	const ButtonPressed = interaction.component;
 	const RoleID = ButtonPressed.customId.slice(5);
 	const RoleObject = guild.roles.cache.get(RoleID);
@@ -18,11 +18,11 @@ module.exports.AddRoles = async (interaction) => {
 
 	let operation;
 
-	console.log(`${interaction.member.displayName} presionó ${ButtonPressed.label}`);
+  console.log(`${interaction.member.user.tag} presionó ${ButtonPressed.label}`);
 
 	if (!RoleObject) return;
 
-	if ((RoleID === ApostadorID || RoleID === DegeneradoID) && !MemberIsOver18)
+  if (NSFWROLES.includes(RoleID) && !MemberIsOver18)
 		return interaction.reply({
 			content: 'Debes tener el rol **Mayor de 18** para poder asignarte este rol.',
 			ephemeral: true,
@@ -30,12 +30,11 @@ module.exports.AddRoles = async (interaction) => {
 
 
 	if (MemberIsOver18 && RoleID === Mayor18ID) {
-		await member.roles.remove([Mayor18ID, ApostadorID, DegeneradoID]);
+    await member.roles.remove([...NSFWROLES, Mayor18ID]);
 
 		return interaction.reply({
 			content: '**Se te han quitado todos los roles NSFW / +18**',
-			ephemeral: true,
-
+      ephemeral: true,
 		});
 	}
 
