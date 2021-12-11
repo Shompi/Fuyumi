@@ -100,7 +100,9 @@ module.exports = {
       const actionRow = new MessageActionRow()
         .addComponents([JoinButton, LeaveButton]);
 
-      const partyMessage = await interaction.channel.send({ content: lfgMessage, embeds: [partyEmbed], components: [actionRow] });
+      const partyMessage = await interaction.channel.send({ content: lfgMessage, embeds: [partyEmbed], components: [actionRow] }).catch(err => console.log(err));
+      if (!partyMessage)
+        return await interaction.editReply({ content: "Ocurrió un error interno, verifica que yo tenga permisos para enviar mensajes en este canal." });
 
       /** 
       * @param {MessageReaction} reaction the reaction being added
@@ -179,9 +181,11 @@ module.exports = {
               embeds: [partySuccessful], components: []
             });
 
-            await interaction.editReply({
-              content: 'La interacción ha finalizado exitosamente.'
+            await partyMessage.reply({
+              content: `¡${partyMembers.map(user => `<@${user.id}>`).join(", ")} su grupo está completo!`
             });
+
+            await interaction.reply("El grupo se ha completado con éxito, puedes quitar este mensaje.");
           }
         } catch (error) {
           console.log(error);
