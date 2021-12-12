@@ -21,7 +21,7 @@ module.exports = {
       .addChoice("Activados", "true")
       .addChoice("Desactivados", "false")
     ),
-  isGlobal: false,
+  isGlobal: true,
 
   /**
   * @param {CommandInteraction} interaction

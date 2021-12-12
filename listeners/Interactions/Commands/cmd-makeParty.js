@@ -44,7 +44,7 @@ module.exports = {
         .setRequired(false);
     }),
 
-  isGlobal: false,
+  isGlobal: true,
 
   /**
   * @param {CommandInteraction} interaction

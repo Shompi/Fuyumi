@@ -8,3 +8,4 @@ tests
 *.db
 GameImages/config.json
 twitchtokens.sqlite
+Deployment

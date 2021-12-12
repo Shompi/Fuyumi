@@ -32,7 +32,14 @@ module.exports = class MukiClient extends AkairoClient {
 		this.commandHandler.useListenerHandler(this.listenerHandler);
 		this.listenerHandler.loadAll();
 
-    // Comandos de interacción
+    // SlashCommands
     this.commands = new Collection();
+
+    // ContextMenus
+
+    // AutoComplete
+
+    // Buttons
+
 	}
 }
