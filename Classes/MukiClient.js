@@ -36,6 +36,7 @@ module.exports = class MukiClient extends AkairoClient {
     this.commands = new Collection();
 
     // ContextMenus
+    this.contextCommands = new Collection();
 
     // AutoComplete
 
