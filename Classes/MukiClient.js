@@ -23,6 +23,11 @@ module.exports = class MukiClient extends AkairoClient {
 			automateCategories: true,
 		});
 
+    this.configs.musicPlayer = {
+      volume: 0.3,
+      queue: []
+    }
+
 		this.commandHandler.loadAll();
 
 		this.listenerHandler = new ListenerHandler(this, {

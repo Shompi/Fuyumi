@@ -77,7 +77,7 @@ module.exports = {
 
       const lfgMessageTemp = interaction.options.getString('mensaje', false);
       const lfgMentionTemp = interaction.options.getRole('mencionar', false);
-
+      let lfgCanceled = false;
       const lfgMessage = `${lfgMentionTemp ? `${lfgMentionTemp} ${lfgMessageTemp ?? ""}` : `${lfgMessageTemp ?? ""}`} `;
 
       const partyEmbed = new MessageEmbed()
@@ -88,17 +88,22 @@ module.exports = {
         .setColor(interaction.member.displayColor);
 
       const JoinButton = new MessageButton()
-        .setCustomId('join')
+        .setCustomId('party-join')
         .setLabel('Unirse')
         .setStyle('PRIMARY')
 
       const LeaveButton = new MessageButton()
-        .setCustomId('leave')
+        .setCustomId('party-leave')
         .setLabel('Abandonar')
         .setStyle('SECONDARY')
 
+      const CancelButton = new MessageButton()
+        .setCustomId('party-cancel')
+        .setLabel('Cancelar')
+        .setStyle('DANGER')
+
       const actionRow = new MessageActionRow()
-        .addComponents([JoinButton, LeaveButton]);
+        .addComponents([JoinButton, LeaveButton, CancelButton]);
 
       const partyMessage = await interaction.channel.send({ content: lfgMessage, embeds: [partyEmbed], components: [actionRow] }).catch(err => console.log(err));
       if (!partyMessage)
@@ -118,7 +123,7 @@ module.exports = {
 
           switch (buttonInteraction.customId) {
 
-            case 'join':
+            case 'party-join':
               if (partyMembers.has(buttonInteraction.user.id)) {
                 return await buttonInteraction.reply({ ephemeral: true, content: "Ya estás en la party." })
               } else {
@@ -128,13 +133,21 @@ module.exports = {
               }
               break;
 
-            case 'leave':
+            case 'party-leave':
               if (partyMembers.delete(buttonInteraction.user.id)) {
                 await buttonInteraction.reply({ ephemeral: true, content: "Has abandonado el grupo." });
               } else {
                 return await buttonInteraction.reply({ ephemeral: true, content: "No estás en el grupo." });
               }
               break;
+            case 'party-cancel':
+              // Si el que presiona el botón es el mismo que inició la búsqueda de grupo
+              if (buttonInteraction.user.id === interaction.user.id) {
+                lfgCanceled = true;
+                return componentCollector.stop();
+              } else {
+                return await buttonInteraction.reply({ ephemeral: true, content: 'No puedes cancelar esta interacción.' });
+              }
           }
         }
 
@@ -150,6 +163,15 @@ module.exports = {
           await partyMessage.edit({ embeds: [newEmbed] });
         }
       }).on('end', async (collected) => {
+
+        if (lfgCanceled) {
+          const partyCanceled = new MessageEmbed()
+            .setColor('RED')
+            .setTitle(`${interaction.user.tag} ha cancelado la búsqueda de grupo.`);
+
+          await interaction.editReply({ content: 'La interacción ha sido cancelada.' });
+          return await partyMessage.edit({ embeds: [partyCanceled], components: [] });
+        }
 
         // Chequear si la cantidad de usuarios en partyMembers es igual a check.partySize
         try {
