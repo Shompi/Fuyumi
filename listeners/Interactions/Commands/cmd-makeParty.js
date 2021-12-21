@@ -207,7 +207,7 @@ module.exports = {
               content: `¡${partyMembers.map(user => `<@${user.id}>`).join(", ")} su grupo está completo!`
             });
 
-            await interaction.reply("El grupo se ha completado con éxito, puedes quitar este mensaje.");
+            await interaction.editReply("El grupo se ha completado con éxito, puedes quitar este mensaje.");
           }
         } catch (error) {
           console.log(error);

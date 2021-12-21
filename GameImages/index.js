@@ -18,7 +18,7 @@ const getAccessToken = async () => {
   */
 
   const token = await tokens.get('token');
-
+  console.log("TOKEN:", token);
   if (token) {
     // Chequear el tiempo de expiración
 
@@ -39,7 +39,7 @@ const getAccessToken = async () => {
   // Actualizamos la token en nuestra base de datos
   await tokens.set('token', { token: access_token, expires: (expires_in * 1000) + Date.now() });
 
-  return tokens.get('token').token;
+  return await tokens.get('token').token;
 }
 
 /**
