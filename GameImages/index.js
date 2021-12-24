@@ -8,7 +8,7 @@ const defaultCover = "https://puu.sh/F2ZUN/ea3856ca91.png";
 
 const axiosInstance = axios.create({
   baseURL: "https://api.igdb.com/v4",
-  timeout: 1500,
+  timeout: 3000,
 });
 
 const getAccessToken = async () => {
@@ -32,7 +32,9 @@ const getAccessToken = async () => {
   const response = await axios({
     method: 'POST',
     url: url
-  });
+  }).catch(() => null);
+
+  if (!response) return;
 
   const { access_token, expires_in } = response.data;
 
@@ -56,6 +58,8 @@ const getGameCoverByName = async (gamename) => {
   if (savedImage) return savedImage;
 
   const access_token = await getAccessToken();
+
+  if (!access_token) return;
 
   const response = await axiosInstance({
     url: '/covers',

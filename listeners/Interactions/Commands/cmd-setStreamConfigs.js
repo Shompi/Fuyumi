@@ -29,6 +29,8 @@ module.exports = {
   */
   async execute(interaction) {
 
+    if (!interaction.inGuild())
+      return await interaction.reply({ content: 'Este comando solo puede ser utilizado en un servidor.' });
 
     if (interaction.member.id !== interaction.guild.ownerId) {
       await interaction.reply({

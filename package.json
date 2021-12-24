@@ -5,7 +5,8 @@
 	"main": "Muki.js",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Shompi/Muki.git"
+		"url": "https://github.com/Shompi/Muki.git",
+		"directory": ""
 	},
 	"dependencies": {
 		"@discordjs/builders": "^0.8.2",
@@ -13,7 +14,7 @@
 		"@keyv/sqlite": "^2.0.2",
 		"axios": "^0.23.0",
 		"discord-akairo": "github:discord-akairo/discord-akairo",
-		"discord.js": "^13.2.0",
+		"discord.js": "^13.4.0",
 		"keyv": "^4.0.3"
 	},
 	"scripts": {

@@ -27,6 +27,7 @@ function validateArgs(interaction) {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('party')
+    .setDefaultPermission(true)
     .setDescription('¡Crea un grupo con los miembros que reaccionen!')
     .addIntegerOption(input => {
       return input.setName('faltan')
@@ -42,6 +43,15 @@ module.exports = {
       return role.setName('mencionar')
         .setDescription('Role que quieres mencionar en esta interacción')
         .setRequired(false);
+    })
+    .addIntegerOption(waitTime => {
+      return waitTime.setName('esperar')
+        .setDescription('Tiempo de espera para que el grupo se complete, en minutos.')
+        .addChoices([
+          ["8 Minutos", 8],
+          ["10 Minutos", 10],
+          ["15 Minutos", 14] // 14 por restricciones de discord
+        ])
     }),
 
   isGlobal: true,
@@ -51,7 +61,6 @@ module.exports = {
   * @return {Promise<string|MessageEmbed>}
   */
   async execute(interaction) {
-
 
     if (timeouts.has(interaction.user.id)) {
       return await interaction.reply({
@@ -109,13 +118,9 @@ module.exports = {
       if (!partyMessage)
         return await interaction.editReply({ content: "Ocurrió un error interno, verifica que yo tenga permisos para enviar mensajes en este canal." });
 
-      /** 
-      * @param {MessageReaction} reaction the reaction being added
-      * @param {User} user the user who added the reaction
-      */
 
-      //TODO: usar interaccion con botones en vez de usar una reacción.
-      const componentCollector = partyMessage.createMessageComponentCollector({ time: 1000 * 60 * 5 });
+      const waitTime = interaction.options.getInteger('esperar') ?? 5;
+      const componentCollector = partyMessage.createMessageComponentCollector({ time: waitTime * 1000 * 60 });
 
       componentCollector.on('collect', async (buttonInteraction) => {
 
@@ -179,7 +184,7 @@ module.exports = {
 
             const partyFail = new MessageEmbed(partyEmbed)
               .setTitle('El grupo no se ha completado en el tiempo dado.')
-              .setDescription('')
+              .setDescription(`${partyMembers.map(user => `<@${user.id}>`).join("\n")}`)
               .setColor('RED')
               .setFooter('');
 
