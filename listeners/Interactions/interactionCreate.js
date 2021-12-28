@@ -16,7 +16,6 @@ class InteractionEvent extends Listener {
 
 
     try {
-
       if (interaction.isCommand()) {
         const slashCommand = interaction.client.commands.get(interaction.commandName);
 
@@ -40,7 +39,12 @@ class InteractionEvent extends Listener {
 
     } catch (error) {
       console.error(error);
-      await interaction.reply({ content: "ocurrió un error con esta interacción", ephemeral: true });
+
+      if (interaction.isApplicationCommand() && interaction.deferred) {
+        await interaction.editReply({ content: "ocurrió un error con esta interacción" });
+      } else {
+        interaction.reply({ content: 'Ocurrió un error con esta interacción.', ephemeral: true });
+      }
     }
   }
 }

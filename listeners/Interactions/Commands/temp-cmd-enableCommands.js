@@ -30,9 +30,9 @@ module.exports = {
     if (!inputRole && !inputMember)
       return await interaction.reply({ content: 'Debes seleccionar al menos un User o Rol para autorizar.' });
 
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
 
-    if (!client.application?.owner)
+    if (!interaction.client.application?.owner)
       await interaction.client.application?.fetch();
 
 
@@ -72,25 +72,44 @@ module.exports = {
 
 
     const componentCollector = selectMenuMessage.createMessageComponentCollector({
-      filter,
       time: 15000 * 1000,
       componentType: 'SELECT_MENU',
     });
 
 
-    componentCollector.on('collect', (interaction) => {
+    componentCollector.on('collect', async (selectMenuInteraction) => {
+      await interaction.reply({ content: `Collected ${interaction.values.join(", ")}` });
       const selectedOptions = interaction.values;
 
       const fullPermissions = [];
 
       for (const commandId of selectedOptions) {
-        fullPermissions.push({
-          id: commandId,
-          permissions: [{
-
-          }]
-        })
+        if (inputRole) {
+          fullPermissions.push({
+            id: commandId,
+            permissions: [{
+              type: 'ROLE',
+              id: inputRole.id,
+              permission: true
+            }]
+          });
+        } else if (inputUser) {
+          fullPermissions.push({
+            id: commandId,
+            permissions: [{
+              type: 'USER',
+              id: inputMember.id,
+              permission: true,
+            }]
+          })
+        }
       }
+    });
+
+    componentCollector.on('end', () => {
+      interaction.editReply({
+        content: 'La interacción ha finalizado con éxito.'
+      });
     });
   }
 }

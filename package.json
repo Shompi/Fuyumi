@@ -13,6 +13,7 @@
 		"@discordjs/rest": "^0.1.0-canary.0",
 		"@keyv/sqlite": "^2.0.2",
 		"axios": "^0.23.0",
+		"date-format-parse": "^0.2.7",
 		"discord-akairo": "github:discord-akairo/discord-akairo",
 		"discord.js": "^13.4.0",
 		"keyv": "^4.0.3"
