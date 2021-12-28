@@ -1,8 +1,5 @@
 const { Listener } = require('discord-akairo');
 const { VoiceState, Activity, MessageEmbed, TextChannel } = require('discord.js');
-const MukiClient = require('../../Classes/MukiClient');
-const keyv = require('keyv');
-const LIVESTREAMS_TIMESTAMPS = new keyv('sqlite://database.sqlite', { namespace: 'livestreams' });
 const { getGameCoverByName } = require('../../GameImages/index');
 const Timeouts = new Set();
 

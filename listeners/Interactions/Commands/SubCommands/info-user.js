@@ -51,15 +51,15 @@ function parseDate(date) {
 function isSomething(member) {
 
   if (member.id === member.guild.ownerId)
-    return "Este miembro es dueño de este servidor."
+    return "Este miembro es dueño de este servidor"
 
   if (member.permissions.has('ADMINISTRATOR'))
-    return "Este miembro es Administrador de este servidor."
+    return "Este miembro es Administrador de este servidor"
 
   if (member.permissions.any(["KICK_MEMBERS", "BAN_MEMBERS", "MODERATE_MEMBERS"]))
-    return "Este miembro es Moderador de este servidor."
+    return "Este miembro es Moderador de este servidor"
 
-  return "";
+  return " ";
 }
 
 /**
