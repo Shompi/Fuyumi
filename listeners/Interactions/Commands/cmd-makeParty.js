@@ -28,7 +28,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('party')
     .setDefaultPermission(true)
-    .setDescription('¡Crea un grupo con los miembros que reaccionen!')
+    .setDescription('Inicia una busqueda de grupo para que los miembros puedan unirse')
     .addIntegerOption(input => {
       return input.setName('faltan')
         .setDescription('Cantidad de jugadores que faltan para que el grupo esté completo, sin contarte a tí')

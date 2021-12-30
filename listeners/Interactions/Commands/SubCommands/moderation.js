@@ -56,11 +56,13 @@ module.exports.Announce = async (interaction) => {
     mention: interaction.options.getMentionable('mencionar', false)
   }
 
-
   if (interaction.member instanceof GuildMember) {
 
     // @ts-ignore
     if (options.channel.isText() && interaction.guild.me.permissionsIn(options.channel).has("SEND_MESSAGES")) {
+
+      if (options.description.length >= 1750)
+        return await interaction.reply({ content: 'Lo siento, la cantidad de caracteres que has ingresado en la descripción excede el máximo establecido (1500+).', ephemeral: true })
 
       if (/^.*\.(jpg|gif|png|jpeg|webp)$/i.test(options.imageURL))
         options.imageURL = null;
