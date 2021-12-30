@@ -48,7 +48,7 @@ module.exports = {
       .setTitle(firstTwo[0].word)
       .addField('Definición', `${firstTwo.map(def => def.definition).join('\n')}`)
       .addField('Ejemplos', `${firstTwo.map(def => def.example).join("\n")}`)
-      .setFooter(`👍${firstTwo[0].thumbs_up} - 👎${firstTwo[0].thumbs_down}`)
+      .setFooter({ text: `👍${firstTwo[0].thumbs_up} - 👎${firstTwo[0].thumbs_down}` })
 
     return await interaction.editReply({
       embeds: [embed]

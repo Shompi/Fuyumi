@@ -78,7 +78,7 @@ const UserInfo = async (interaction) => {
     .setDescription(`Nombre en el servidor: ${member.displayName}\nMiembro desde: ${joinedAt}\nRoles: ${member.roles.cache.size}\nRol más alto: <@&${member.roles.highest.id}>`)
     .setThumbnail(member.user.displayAvatarURL({ size: 512, dynamic: true }))
     .setColor(member.displayColor ?? "BLUE")
-    .setFooter(isSomething(member));
+    .setFooter({ text: isSomething(member) });
 
   return await interaction.reply({
     embeds: [userInfoEmbed]

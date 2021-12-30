@@ -12,6 +12,8 @@ module.exports = async (interaction) => {
 
   const { guild, member } = interaction;
   const ButtonPressed = interaction.component;
+
+  // customId llega como role-123456789l0
   const RoleId = ButtonPressed.customId.slice(5);
   const RoleObject = guild.roles.cache.get(RoleId);
   const MemberIsOver18 = member.roles.cache.has(Mayor18Id);
@@ -46,7 +48,7 @@ module.exports = async (interaction) => {
     operation = await member.roles.add(RoleId).then(() => true);
   }
 
-  return interaction.reply({
+  return await interaction.reply({
     content: `Se te ${operation ? 'agregó' : 'quitó'} el rol **${RoleObject.name}**`,
     ephemeral: true,
   });

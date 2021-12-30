@@ -93,7 +93,7 @@ module.exports = {
         .setTitle(`¡${interaction.member.user.tag} está buscando compañeros de grupo!`)
         .setThumbnail(interaction.user.displayAvatarURL({ size: 512, dynamic: true }))
         .setDescription(`**Grupo:**\n${partyMembers.map(user => `<@${user.id}>`).join("\n")}`)
-        .setFooter(`¡Se necesitan ${check.partySize} jugadores más!`)
+        .setFooter({ text: `¡Se necesitan ${check.partySize} jugadores más!` })
         .setColor(interaction.member.displayColor);
 
       const JoinButton = new MessageButton()
@@ -163,7 +163,7 @@ module.exports = {
           // update embed
           const newEmbed = new MessageEmbed(partyEmbed)
             .setDescription(`**Grupo:**\n${partyMembers.map((user) => `<@${user.id}>`).join("\n")}`)
-            .setFooter(`¡Se necesitan ${(check.partySize + 1) - partyMembers.size} jugadores más!`);
+            .setFooter({ text: `¡Se necesitan ${(check.partySize + 1) - partyMembers.size} jugadores más!` });
 
           await partyMessage.edit({ embeds: [newEmbed] });
         }
@@ -186,7 +186,7 @@ module.exports = {
               .setTitle('El grupo no se ha completado en el tiempo dado.')
               .setDescription(`${partyMembers.map(user => `<@${user.id}>`).join("\n")}`)
               .setColor('RED')
-              .setFooter('');
+              .setFooter({ text: '' });
 
             await partyMessage.edit({
               embeds: [partyFail], components: []
@@ -202,7 +202,7 @@ module.exports = {
               .setTitle(`¡El grupo se ha completado!`)
               .setDescription(`${partyMembers.map(user => `<@${user.id}>`).join("\n")}`)
               .setColor('GREEN')
-              .setFooter('');
+              .setFooter({ text: '' });
 
             await partyMessage.edit({
               embeds: [partySuccessful], components: []

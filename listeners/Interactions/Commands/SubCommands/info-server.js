@@ -59,7 +59,7 @@ const ServerInfo = async (interaction) => {
     .setDescription(`El dueño actual del servidor es <@${interaction.guild.ownerId}>\nNúmero de roles: ${interaction.guild.roles.cache.size}\nCantidad de canales: ${interaction.guild.channels.cache.size} (${chCount.VOICE} voz | ${chCount.TEXT} texto | ${chCount.CATEGORY} categorias | ${chCount.STAGES} stages | ${chCount.NEWS} anuncios)\nCantidad de miembros actuales: ${memberList.size} (${humans} Humanos, ${bots} Bots)`)
     .setThumbnail(interaction.guild.iconURL({ size: 512, dynamic: true }))
     .setColor(interaction.member instanceof GuildMember ? interaction.member.displayColor : "BLUE")
-    .setFooter(`Servidor creado el`)
+    .setFooter({ text: `Servidor creado el` })
     .setTimestamp(interaction.guild.createdTimestamp);
 
   return await interaction.reply({

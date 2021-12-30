@@ -7,11 +7,17 @@ module.exports = {
     .setDescription('Lanza un dado y obten un número')
     .addIntegerOption(dados => {
       return dados.setName('dados')
-        .setDescription('Cantidad de dados que quieres lanzar (MAX: 10, DEF: 1)')
+        .setDescription('Cantidad de dados que quieres lanzar')
+        .setMinValue(1)
+        .setMaxValue(10)
+        .setRequired(false);
     })
     .addIntegerOption(input => {
       return input.setName('caras')
         .setDescription('Cantidad de caras del dado (MAX 100.000, DEF 6)')
+        .setMinValue(6)
+        .setMaxValue(100_000)
+        .setRequired(false)
     }),
   isGlobal: true,
 
@@ -22,18 +28,6 @@ module.exports = {
   async execute(interaction) {
     const caras = interaction.options.getInteger('caras', false) ?? 6;
     const dados = interaction.options.getInteger('dados', false) ?? 1;
-
-    if (caras > 100_000)
-      return await interaction.reply({
-        content: 'La cantidad de caras que ingresaste excede el limite (100.000).',
-        ephemeral: true
-      });
-
-    if (dados > 10)
-      return await interaction.reply({
-        content: 'La cantidad de dados que ingresaste excede el limite (10)',
-        ephemeral: true
-      });
 
     const rolls = rollDice(caras, dados);
 

@@ -18,7 +18,7 @@ const getAccessToken = async () => {
   */
 
   const token = await tokens.get('token');
-  console.log("TOKEN:", token);
+
   if (token) {
     // Chequear el tiempo de expiración
 
@@ -39,6 +39,7 @@ const getAccessToken = async () => {
   const { access_token, expires_in } = response.data;
 
   // Actualizamos la token en nuestra base de datos
+  console.log("Se actualizó la token de IGDB");
   await tokens.set('token', { token: access_token, expires: (expires_in * 1000) + Date.now() });
 
   return await tokens.get('token').token;
@@ -47,7 +48,7 @@ const getAccessToken = async () => {
 /**
  *
  * @param {String} gamename
- * @returns {Promise<String>}
+ * @returns {Promise<String>} url de la imagen del juego
  */
 const getGameCoverByName = async (gamename) => {
 
