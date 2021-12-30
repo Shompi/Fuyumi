@@ -61,7 +61,10 @@ class PresenceUpdateListener extends Listener {
         const gameImage = await getGameCoverByName(activity.state);
 
         return new MessageEmbed()
-          .setAuthor(`¡${member.displayName} ha comenzado a transmitir en ${activity.name}!`, null, activity.url)
+          .setAuthor({
+            name: `¡${member.displayName} ha comenzado a transmitir en ${activity.name}!`,
+            url: activity.url
+          })
           .setTitle(activity.details)
           .setDescription(`[-> Únete a la transmisión <-](${activity.url})`)
           .setColor(member.displayColor)

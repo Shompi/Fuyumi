@@ -5,7 +5,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('invite')
     .setDescription('Mi enlace de invitación para que me añadas a tu servidor!'),
-  isGlobal: false,
+  isGlobal: true,
 
   /**
    * 

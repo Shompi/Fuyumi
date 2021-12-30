@@ -1,13 +1,15 @@
-const { CommandInteraction, Permissions, GuildMember } = require('discord.js');
+const { CommandInteraction, Permissions, GuildMember, InteractionCollector } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { TimeoutMember } = require('./SubCommands/moderation');
+const { TimeoutMember, Announce } = require('./SubCommands/moderation');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('moderacion')
     .setDescription('Comandos de moderación')
-    .addSubcommand(command => {
-      return command.setName('timeout')
+
+    // GuildMember timeout command
+    .addSubcommand(timeout => {
+      return timeout.setName('timeout')
         .setDescription('Silencia al usuario no permitiendole interactuar ni conectar a canales de voz.')
         .addUserOption(inputUser => {
           return inputUser.setName('miembro')
@@ -17,12 +19,58 @@ module.exports = {
         .addIntegerOption(segundos => {
           return segundos.setName('segundos')
             .setDescription('Tiempo en segundos por el cual quieres silenciar a este miembro.')
-            .setMinValue(1)
+            .setMinValue(5)
             .setRequired(false)
         })
         .addStringOption(reason => {
           return reason.setName('razon')
             .setDescription('La razón por la que silenciarás a este miembro.')
+            .setRequired(false)
+        })
+    })
+
+    // Announcement command
+    .addSubcommand(announce => {
+      return announce.setName('anuncio')
+        .setDescription('Crea y envia un mensaje dentro de un embed a un canal de texto.')
+        .addChannelOption(channel => {
+          return channel.setName('canal')
+            .setDescription('Canal al que quieres enviar este anuncio')
+            .setRequired(true);
+        })
+        .addStringOption(description => {
+          return description.setName('descripcion')
+            .setDescription('Una detallada descripción de tu anuncio, hasta 1500 caracteres.')
+            .setRequired(true)
+        })
+        .addStringOption(titulo => {
+          return titulo.setName('titulo')
+            .setDescription('El titulo de este anuncio')
+            .setRequired(false)
+        })
+        .addStringOption(color => {
+          return color.setName('color')
+            .setDescription('El color que quieres que tenga el embed (barra lateral izquierda)')
+            .addChoices([
+              ["Amarillo", "YELLOW"],
+              ["Azul", "BLUE"],
+              ["Rojo", "RED"],
+              ["Verde", "GREEN"]
+            ])
+        })
+        .addStringOption(imagen => {
+          return imagen.setName('imagen')
+            .setDescription('Si quieres adjuntar una imagen con este anuncio, escribe la URL aqui')
+            .setRequired(false)
+        })
+        .addStringOption(footer => {
+          return footer.setName('pie')
+            .setDescription('El pié de página de este anuncio')
+            .setRequired(false)
+        })
+        .addMentionableOption(mencion => {
+          return mencion.setName('mencionar')
+            .setDescription('Rol o Usuario que quieres mencionar')
             .setRequired(false)
         })
     }),
@@ -33,6 +81,9 @@ module.exports = {
    */
   async execute(interaction) {
 
+
+    if (!interaction.inGuild()) return await interaction.reply({ content: 'No puedes usar esta interacción fuera de un servidor.' });
+
     // Check for moderation perms
     if (interaction.memberPermissions.any(['ADMINISTRATOR', 'KICK_MEMBERS', 'BAN_MEMBERS', 'MODERATE_MEMBERS'])) {
 
@@ -41,8 +92,9 @@ module.exports = {
       switch (commandName) {
         case 'timeout':
           return await TimeoutMember(interaction);
+        case 'anuncio':
+          return await Announce(interaction);
       }
-
 
     } else {
       await interaction.reply({ content: 'No tienes los suficientes permisos para usar este comando. Necesitas al menos uno de los siguientes permisos: [Administrador, Expulsar Miembros, Prohibir Miembros, Moderar Miembros]', ephemeral: true });

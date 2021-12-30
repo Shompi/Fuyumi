@@ -40,15 +40,15 @@ module.exports = {
         content: 'No encontré ningún término con lo que ingresaste.'
       });
 
-    const firstTwo = results.slice(0, 2);
+    const first = results[0]
 
     const embed = new MessageEmbed()
-      .setAuthor('Urban Dictionary')
+      .setAuthor({ name: 'Urban Dictionary' })
       .setColor(interaction?.member.displayColor ?? "BLUE")
-      .setTitle(firstTwo[0].word)
-      .addField('Definición', `${firstTwo.map(def => def.definition).join('\n')}`)
-      .addField('Ejemplos', `${firstTwo.map(def => def.example).join("\n")}`)
-      .setFooter({ text: `👍${firstTwo[0].thumbs_up} - 👎${firstTwo[0].thumbs_down}` })
+      .setTitle(first.word)
+      .addField('Definición', `${first.definition.replace(/\[|\]/g, "")}`)
+      .addField('Ejemplos', `${first.example}`)
+      .setFooter({ text: `👍${first.thumbs_up} - 👎${first.thumbs_down}` })
 
     return await interaction.editReply({
       embeds: [embed]
