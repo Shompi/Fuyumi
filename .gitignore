@@ -6,6 +6,6 @@ data
 tests
 .vscode
 *.db
-GameImages/config.json
+GameImages
 twitchtokens.sqlite
 Deployment

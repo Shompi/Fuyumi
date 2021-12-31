@@ -45,9 +45,9 @@ module.exports = {
     const embed = new MessageEmbed()
       .setAuthor({ name: 'Urban Dictionary' })
       .setColor(interaction?.member.displayColor ?? "BLUE")
-      .setTitle(first.word)
-      .addField('Definición', `${first.definition.replace(/\[|\]/g, "")}`)
-      .addField('Ejemplos', `${first.example}`)
+      .setTitle(`Palabra: ${first.word}`)
+      .setDescription(`**Definicion:**\n${first.definition.replace(/\[|\]/g, "")}`)
+      .addField('Ejemplo:', `${first.example}`)
       .setFooter({ text: `👍${first.thumbs_up} - 👎${first.thumbs_down}` })
 
     return await interaction.editReply({

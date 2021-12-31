@@ -55,11 +55,14 @@ module.exports.Announce = async (interaction) => {
     footer: interaction.options.getString('pie', false),
     mention: interaction.options.getMentionable('mencionar', false)
   }
+  // @ts-ignore
+  if (!options.channel.isText())
+    return await interaction.reply({ content: 'El canal que has ingresado no es un canal de texto, por favor ejecuta este comando nuevamente y asegúrate de usar un canal de texto.', ephemeral: true });
 
   if (interaction.member instanceof GuildMember) {
 
     // @ts-ignore
-    if (options.channel.isText() && interaction.guild.me.permissionsIn(options.channel).has("SEND_MESSAGES")) {
+    if (interaction.guild.me.permissionsIn(options.channel).has("SEND_MESSAGES")) {
 
       if (options.description.length >= 1750)
         return await interaction.reply({ content: 'Lo siento, la cantidad de caracteres que has ingresado en la descripción excede el máximo establecido (1500+).', ephemeral: true })
@@ -69,7 +72,7 @@ module.exports.Announce = async (interaction) => {
 
       const embed = new MessageEmbed()
         .setAuthor({
-          name: interaction.member.displayName ?? interaction.user.tag,
+          name: `Anuncio de ${interaction.member.displayName}`,
           iconURL: interaction.member.displayAvatarURL({ size: 64, dynamic: true }) ?? interaction.user.displayAvatarURL({ size: 64, dynamic: true }),
         })
         .setTitle(options.title ?? '')
@@ -80,12 +83,14 @@ module.exports.Announce = async (interaction) => {
         .setImage(options.imageURL)
 
       // @ts-ignore
-      const success = await options.channel.send({ embeds: [embed], content: `${options.mention}` }).catch(console.error);
+      const success = await options.channel.send({ embeds: [embed], content: options.mention ?? " " }).catch(console.error);
+
+
 
       if (!success)
         return await interaction.reply({ content: 'Ocurrió un error al intentar enviar el anuncio, revisa mis permisos dentro del canal y asegurate de que pueda enviar mensajes.', ephemeral: true });
 
-      return await interaction.reply({ content: 'El anunció fue enviado con éxito.' });
+      return await interaction.reply({ content: 'El anunció fue enviado con éxito.', ephemeral: true });
 
     }
   }
