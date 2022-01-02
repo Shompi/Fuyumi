@@ -1,7 +1,8 @@
 const { Listener } = require('discord-akairo');
 const MukiClient = require('../../Classes/MukiClient');
 const UpdateButtons = require('./utils/Buttons');
-
+const keyv = require('keyv');
+const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
 
 /**@type {NodeJS.Timeout[]} */
 const timers = [];
@@ -18,14 +19,17 @@ class ReadyListener extends Listener {
         clearTimeout(timer);
         clearInterval(timer);
         clearImmediate(timer);
+        timers.shift();
         console.log("Timers limpiados.");
       }
     }
 
     this.setActivity = () => {
-      timers.push(setInterval(() => {
-        this.client.user.setActivity({ name: '💙 Reviviendo... de a poco...', type: 'PLAYING' });
-      }, 10000));
+      timers.push(setInterval(async () => {
+        let activity = await lastPresence.get('0') ?? '💙 Reviviendo... de a poco...';
+        console.log("updated activity:", activity);
+        this.client.user.setActivity({ name: activity, type: 'PLAYING' });
+      }, 20000));
     }
   }
 

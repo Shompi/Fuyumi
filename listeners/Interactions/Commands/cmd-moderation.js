@@ -1,6 +1,8 @@
-const { CommandInteraction, Permissions, GuildMember, InteractionCollector } = require('discord.js');
+const { CommandInteraction } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { TimeoutMember, Announce } = require('./SubCommands/moderation');
+const { TimeoutMember } = require('./SubCommands/mod-timeout');
+const { Announce } = require('./SubCommands/mod-announce');
+const { ChannelType } = require('discord-api-types/v9');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -36,7 +38,8 @@ module.exports = {
         .addChannelOption(channel => {
           return channel.setName('canal')
             .setDescription('Canal al que quieres enviar este anuncio')
-            .setRequired(true);
+            .setRequired(true)
+            .addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews]);
         })
         .addStringOption(description => {
           return description.setName('descripcion')

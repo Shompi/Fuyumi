@@ -15,6 +15,7 @@
 		"axios": "^0.23.0",
 		"date-format-parse": "^0.2.7",
 		"discord-akairo": "github:discord-akairo/discord-akairo",
+		"discord-api-types": "^0.26.0",
 		"discord.js": "^13.5.0",
 		"keyv": "^4.0.3"
 	},
