@@ -94,7 +94,6 @@ class PresenceUpdateListener extends Listener {
       const STREAMED_ACTIVITY = getLivestreamInfo(presence);
 
       if (!STREAMED_ACTIVITY) return;
-      console.log(`USER ${presence.member.user.tag} has ACTIVITY ${STREAMED_ACTIVITY.details}`);
 
       if (!(await checkGuildConfigs(presence.guild.id))) return;
       if (!(await memberHasStreamerRole(presence.member))) return;
@@ -104,13 +103,11 @@ class PresenceUpdateListener extends Listener {
 
       if (!USER_TIMESTAMP) {
         // Si el usuario no está lo agregamos
-        console.log("USER WAS NOT ON DB");
         await LIVESTREAMS_TIMESTAMPS.set(presence.user.id, Date.now());
         USER_TIMESTAMP = await LIVESTREAMS_TIMESTAMPS.get(presence.user.id);
         NEW_USER = !NEW_USER;
       }
 
-      console.log(`NEW USER: ${NEW_USER}, TIMESTAMP: ${USER_TIMESTAMP}`);
 
       if (NEW_USER) {
 
@@ -121,7 +118,6 @@ class PresenceUpdateListener extends Listener {
         const TIMENOW = Date.now();
 
         const TIMEDIFF = TIMENOW - USER_TIMESTAMP;
-        console.log(`TIMENOW: ${TIMENOW}\nUSER_TIMESTAMP: ${USER_TIMESTAMP}\nTIMEDIFF: ${TIMEDIFF}\nTWOHOURS: ${HOURSLIMIT}]`);
         if (TIMEDIFF >= HOURSLIMIT) {
           sendLiveStream(presence);
           // Update timestamp

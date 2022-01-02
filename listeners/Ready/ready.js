@@ -27,7 +27,6 @@ class ReadyListener extends Listener {
     this.setActivity = () => {
       timers.push(setInterval(async () => {
         let activity = await lastPresence.get('0') ?? '💙 Reviviendo... de a poco...';
-        console.log("updated activity:", activity);
         this.client.user.setActivity({ name: activity, type: 'PLAYING' });
       }, 20000));
     }

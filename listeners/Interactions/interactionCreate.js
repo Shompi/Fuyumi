@@ -1,4 +1,3 @@
-console.log("interaction module loaded");
 const { Listener } = require('discord-akairo');
 const { Interaction } = require('discord.js');
 const ButtonAddRoles = require('./Buttons/roles');

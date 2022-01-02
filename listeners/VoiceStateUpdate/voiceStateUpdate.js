@@ -33,10 +33,6 @@ class InteractionEvent extends Listener {
 
       const thumbnailUrl = await getGameCoverByName(activity?.name ?? 'Actividad Desconocida');
 
-
-
-      console.log("THUMBNAIL:", thumbnailUrl);
-
       const liveEmbed = new MessageEmbed()
         .setTitle(`${newState.member.user.tag} ha comenzado a transmitir en ${newState.channel.name}!`)
         .setDescription(`**${activity?.name ?? ""} - ${activity?.state ?? ""}**`)

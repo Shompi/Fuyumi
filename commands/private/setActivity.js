@@ -14,10 +14,7 @@ class SetActivityCommand extends Command {
 
   async exec(message, { activity }) {
 
-    console.log("Nueva actividad:", activity);
-    console.log("Guardando actividad en base de datos...")
     await lastPresence.set('0', activity);
-    console.log("Actividad guardada.")
 
     return await message.reply({ content: `La actividad **${activity}** se ha guardado con éxito.` });
   }
