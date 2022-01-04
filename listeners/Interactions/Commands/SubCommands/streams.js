@@ -1,5 +1,4 @@
 const { CommandInteraction, TextChannel, Role } = require('discord.js');
-const { } = require('@discordjs/builders');
 const Keyv = require('keyv');
 
 const configsTemplate = {

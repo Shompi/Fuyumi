@@ -9,8 +9,7 @@ module.exports = {
     .setName('info')
     .setDescription('Comandos de información general')
     .addSubcommand(guildInfo => {
-      return guildInfo
-        .setName('server')
+      return guildInfo.setName('server')
         .setDescription('Información del servidor');
     })
     .addSubcommand(subcommand => {
@@ -19,6 +18,11 @@ module.exports = {
         .addUserOption(user => {
           return user.setName('usuario')
             .setDescription('El usuario del que quieres ver la info, default: Tú')
+            .setRequired(false)
+        })
+        .addStringOption(id => {
+          return id.setName('id')
+            .setDescription('La id del usuario de Discord')
             .setRequired(false)
         })
     })

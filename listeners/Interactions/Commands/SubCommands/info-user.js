@@ -1,5 +1,58 @@
-const { CommandInteraction, MessageEmbed, GuildMember } = require('discord.js');
+const { CommandInteraction, MessageEmbed, GuildMember, User } = require('discord.js');
 const { FormatDate } = require('../../../../Helpers/formatDate');
+
+/**
+ * 
+ * @param {CommandInteraction} interaction 
+ */
+const UserInfo = async (interaction) => {
+  const user = interaction.options.getMember('usuario', false) ?? interaction.options.getString('id', false) ?? interaction.user;
+
+  if (user instanceof GuildMember) {
+
+    return await interaction.reply({
+      embeds: [getMemberInfo(user)]
+    });
+
+  } else if (!isNaN(Number(user))) {
+
+    const fetchedUser = await interaction.client.users.fetch(user, { force: true });
+
+    return await interaction.reply({
+      embeds: [getUserInfo(fetchedUser)]
+    })
+  }
+}
+
+/**
+ * 
+ * @param {User} user 
+ */
+function getUserInfo(user) {
+  return new MessageEmbed()
+    .setTitle(user.tag)
+    .setThumbnail(user.displayAvatarURL({ size: 512, dynamic: true }))
+    .setDescription(`Cuenta creada: ${FormatDate(user.createdAt)}`)
+    .setColor('BLUE')
+}
+
+/**
+ * 
+ * @param {GuildMember} member 
+ * @returns 
+ */
+
+function getMemberInfo(member) {
+
+  const joinedAt = FormatDate(member.joinedAt);
+
+  return new MessageEmbed()
+    .setTitle(`Info de ${member.user.tag}`)
+    .setDescription(`Nombre en el servidor: ${member.displayName}\nMiembro desde: ${joinedAt}\nRoles: ${member.roles.cache.size}\nRol más alto: <@&${member.roles.highest.id}>`)
+    .setThumbnail(member.user.displayAvatarURL({ size: 512, dynamic: true }))
+    .setColor(member.displayColor ?? "BLUE")
+    .setFooter({ text: isSomething(member) });
+}
 
 /**
  * 
@@ -17,29 +70,6 @@ function isSomething(member) {
     return "Este miembro es Moderador de este servidor"
 
   return " ";
-}
-
-/**
- * 
- * @param {CommandInteraction} interaction 
- */
-const UserInfo = async (interaction) => {
-  const user = interaction.options.getUser('usuario') ?? interaction.user;
-
-  const member = await interaction.guild.members.fetch({ user: user });
-
-  const joinedAt = FormatDate(member.joinedAt);
-
-  const userInfoEmbed = new MessageEmbed()
-    .setTitle(`Info de ${member.user.tag}`)
-    .setDescription(`Nombre en el servidor: ${member.displayName}\nMiembro desde: ${joinedAt}\nRoles: ${member.roles.cache.size}\nRol más alto: <@&${member.roles.highest.id}>`)
-    .setThumbnail(member.user.displayAvatarURL({ size: 512, dynamic: true }))
-    .setColor(member.displayColor ?? "BLUE")
-    .setFooter({ text: isSomething(member) });
-
-  return await interaction.reply({
-    embeds: [userInfoEmbed]
-  });
 }
 
 module.exports = { UserInfo };

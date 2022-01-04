@@ -20,6 +20,10 @@ module.exports = {
   async execute(interaction) {
 
     const term = interaction.options.getString('termino', true);
+
+    if (term.length <= 2)
+      return await interaction.reply({ content: 'No me molestaré en buscar un término tan corto.' });
+
     await interaction.deferReply();
 
     /**
@@ -44,10 +48,10 @@ module.exports = {
 
     const embed = new MessageEmbed()
       .setAuthor({ name: 'Urban Dictionary' })
-      .setColor(interaction?.member.displayColor ?? "BLUE")
+      .setColor(interaction.member?.displayColor ?? "BLUE")
       .setTitle(`Palabra: ${first.word}`)
       .setDescription(`**Definicion:**\n${first.definition.replace(/\[|\]/g, "")}`)
-      .addField('Ejemplo:', `${first.example}`)
+      .addField('Ejemplo:', `${first.example.replace(/\[|\]/g, "")}`)
       .setFooter({ text: `👍${first.thumbs_up} - 👎${first.thumbs_down}` })
 
     return await interaction.editReply({

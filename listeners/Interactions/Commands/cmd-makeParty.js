@@ -97,7 +97,7 @@ module.exports = {
 
             case 'party-join':
               if (buttonInteraction.user.id === interaction.user.id)
-                return await buttonInteraction.reply({ content: 'No puedes unirte a tu propio grupo.' });
+                return await buttonInteraction.reply({ content: 'No puedes unirte a tu propio grupo.', ephemeral: true });
 
               if (partyMembers.has(buttonInteraction.user.id)) {
                 return await buttonInteraction.reply({ ephemeral: true, content: "Ya estás en el grupo." });
@@ -112,7 +112,7 @@ module.exports = {
 
             case 'party-leave':
               if (buttonInteraction.user.id === interaction.user.id)
-                return await buttonInteraction.reply({ content: 'No puedes abandonar a tu propio grupo.' });
+                return await buttonInteraction.reply({ content: 'No puedes abandonar a tu propio grupo.', ephemeral: true });
 
               if (partyMembers.delete(buttonInteraction.user.id)) {
                 spotsLeft = spotsLeft + 1;
@@ -141,7 +141,7 @@ module.exports = {
           // update embed
           const newEmbed = new MessageEmbed(partyEmbed)
             .setDescription(`**Grupo:**\n${partyMembers.map((user) => `<@${user.id}>`).join("\n")}`)
-            .setFooter({ text: `¡Se necesitan ${spotsLeft - partyMembers.size} jugadores más!` });
+            .setFooter({ text: `¡Se necesitan ${spotsLeft} jugadores más!` });
 
           await partyMessage.edit({ embeds: [newEmbed] });
         }
@@ -165,7 +165,7 @@ module.exports = {
                 .setTitle('El grupo no se ha completado en el tiempo dado.')
                 .setDescription(`${partyMembers.map(user => `<@${user.id}>`).join("\n")}\n**Faltaron**: ${spotsLeft} jugador/es más.`)
                 .setColor('RED')
-                .setFooter({ text: null });
+                .setFooter({ text: "" });
 
               await partyMessage.edit({
                 embeds: [partyFail], components: []
@@ -181,7 +181,7 @@ module.exports = {
                 .setTitle(`¡El grupo se ha completado!`)
                 .setDescription(`${interaction.user}\n${partyMembers.map(user => `${user}`).join("\n")}`)
                 .setColor('GREEN')
-                .setFooter({ text: null });
+                .setFooter({ text: "" });
 
               await partyMessage.edit({
                 embeds: [partySuccessful], components: []

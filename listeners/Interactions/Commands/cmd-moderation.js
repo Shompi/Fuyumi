@@ -63,7 +63,12 @@ module.exports = {
         })
         .addStringOption(imagen => {
           return imagen.setName('imagen')
-            .setDescription('Si quieres adjuntar una imagen con este anuncio, escribe la URL aqui')
+            .setDescription('Si quieres adjuntar una imagen en el embedido, escribe la URL aqui')
+            .setRequired(false)
+        })
+        .addStringOption(thumbnail => {
+          return thumbnail.setName('miniatura')
+            .setDescription('URL de la imagen miniatura del embed')
             .setRequired(false)
         })
         .addStringOption(footer => {
@@ -72,7 +77,17 @@ module.exports = {
             .setRequired(false)
         })
         .addMentionableOption(mencion => {
-          return mencion.setName('mencionar')
+          return mencion.setName('mencion1')
+            .setDescription('Rol o Usuario que quieres mencionar')
+            .setRequired(false)
+        })
+        .addMentionableOption(mencion => {
+          return mencion.setName('mencion2')
+            .setDescription('Rol o Usuario que quieres mencionar')
+            .setRequired(false)
+        })
+        .addMentionableOption(mencion => {
+          return mencion.setName('mencion3')
             .setDescription('Rol o Usuario que quieres mencionar')
             .setRequired(false)
         })

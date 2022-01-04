@@ -9,7 +9,7 @@ const { CommandInteraction, MessageEmbed, GuildMember } = require('discord.js');
 module.exports.Announce = async (interaction) => {
   // valid options for this command
   // Required: canal, descripcion
-  // Optional: titulo, color, imagen, pie, mencionar
+  // Optional: titulo, color, imagen, pie, mencion1, mencion2, mencion3, miniatura
 
   const options = {
     channel: interaction.options.getChannel('canal', true),
@@ -18,7 +18,10 @@ module.exports.Announce = async (interaction) => {
     color: interaction.options.getString('color', false),
     imageURL: interaction.options.getString('imagen', false),
     footer: interaction.options.getString('pie', false),
-    mention: interaction.options.getMentionable('mencionar', false)
+    mention1: interaction.options.getMentionable('mencion1', false) ?? " ",
+    mention2: interaction.options.getMentionable('mencion2', false) ?? " ",
+    mention3: interaction.options.getMentionable('mencion3', false) ?? " ",
+    thumbnailURL: interaction.options.getString('miniatura', false)
   }
   // @ts-ignore
   if (!options.channel.isText())
@@ -35,6 +38,9 @@ module.exports.Announce = async (interaction) => {
       if (/^.*\.(jpg|gif|png|jpeg|webp)$/i.test(options.imageURL))
         options.imageURL = null;
 
+      if (/^.*\.(jpg|gif|png|jpeg|webp)$/i.test(options.thumbnailURL))
+        options.thumbnailURL = null;
+
       const embed = new MessageEmbed()
         .setAuthor({
           name: `Anuncio de ${interaction.member.displayName}`,
@@ -48,9 +54,7 @@ module.exports.Announce = async (interaction) => {
         .setImage(options.imageURL)
 
       // @ts-ignore
-      const success = await options.channel.send({ embeds: [embed], content: options.mention ?? " " }).catch(console.error);
-
-
+      const success = await options.channel.send({ embeds: [embed], content: `${options.mention1} ${options.mention2} ${options.mention3}` }).catch(console.error);
 
       if (!success)
         return await interaction.reply({ content: 'Ocurrió un error al intentar enviar el anuncio, revisa mis permisos dentro del canal y asegurate de que pueda enviar mensajes.', ephemeral: true });
