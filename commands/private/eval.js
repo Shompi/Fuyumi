@@ -3,51 +3,53 @@ const { MessageEmbed } = require('discord.js');
 
 
 class EvalCommand extends Command {
-	constructor() {
-		super('eval', {
-			aliases: ['eval'],
-			args: [
-				{
-					id: 'code',
-					type: 'string',
-				}
-			]
-		});
-	}
+  constructor() {
+    super('eval', {
+      aliases: ['eval'],
+      args: [
+        {
+          id: 'code',
+          type: 'string',
+        },
+      ],
+      ownerOnly: true
+    });
+  }
 
-	async exec(message, { code }) {
+  async exec(message, { code }) {
 
-		if (this.client.ownerID !== "166263335220805634") return;
-		console.log('EVALED', code);
-		const resultEmbed = new MessageEmbed();
-		const timestamp = Date.now();
-		try {
-			let evaled = await eval(code);
+    if (!code || code.length === 0) return;
 
-			if (typeof evaled !== "string")
-				evaled = require("util").inspect(evaled);
+    const resultEmbed = new MessageEmbed();
+    const timestamp = Date.now();
 
-			resultEmbed.setTitle(`⏳ ${Date.now() - timestamp}ms`)
-				.setDescription(`\`\`\`js\n${clean(evaled)}\`\`\``);
+    try {
+      let evaled = await eval(code);
 
-			message.channel.send({ embeds: [resultEmbed] });
+      if (typeof evaled !== "string")
+        evaled = require("util").inspect(evaled);
 
-		} catch (err) {
+      resultEmbed.setTitle(`⏳ ${Date.now() - timestamp}ms`)
+        .setDescription(`\`\`\`js\n${clean(evaled)}\`\`\``);
 
-			resultEmbed.setTitle(`⏳ ${Date.now() - timestamp}ms`)
-				.setDescription(`\`\`\`js\n${clean(err)}\`\`\``);
+      await message.channel.send({ embeds: [resultEmbed] });
 
-			message.channel.send({ embeds: [resultEmbed] });
-		}
-	}
+    } catch (err) {
+
+      resultEmbed.setTitle(`⏳ ${Date.now() - timestamp}ms`)
+        .setDescription(`\`\`\`js\n${clean(err)}\`\`\``);
+
+      await message.channel.send({ embeds: [resultEmbed] });
+    }
+  }
 }
 
 
 const clean = text => {
-	if (typeof (text) === "string")
-		return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-	else
-		return text;
+  if (typeof (text) === "string")
+    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+  else
+    return text;
 }
 
 module.exports = EvalCommand;

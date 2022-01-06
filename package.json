@@ -17,7 +17,9 @@
 		"discord-akairo": "github:discord-akairo/discord-akairo",
 		"discord-api-types": "^0.26.0",
 		"discord.js": "^13.5.0",
-		"keyv": "^4.0.3"
+		"keyv": "^4.0.3",
+		"nhentai": "^3.0.0",
+		"node-hitomi": "^5.0.3"
 	},
 	"scripts": {
 		"test": "echo \"No se ha especificado ningun test.\" && exit 0",

@@ -23,6 +23,8 @@ module.exports = class MukiClient extends AkairoClient {
 			automateCategories: true,
 		});
 
+    this.getPrivateChannel = () => this.channels.cache.get("806268687333457920") ?? null;
+
 		this.commandHandler.loadAll();
 
 		this.listenerHandler = new ListenerHandler(this, {

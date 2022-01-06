@@ -21,7 +21,7 @@ class InteractionEvent extends Listener {
         if (!slashCommand) return;
 
         await slashCommand.execute(interaction);
-        interaction.client.emit('onCommand', ({ commandName: interaction.commandName, user: interaction.user }));
+        interaction.client.emit('onCommandUsed', ({ commandName: interaction.commandName, user: interaction.user, subcommand: interaction.options.getSubcommand(false) }));
 
       } else if (interaction.isButton()) {
 

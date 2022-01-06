@@ -23,10 +23,4 @@ for (const filename of contextMenuFiles) {
 console.log(`Se cargaron ${slashCommandsFiles.length} slash commands!`);
 console.log(`Se cargaron ${contextMenuFiles.length} comandos de Menú Contextual!`);
 
-
-client.addListener('onCommand', ({ commandName, user }) => {
-  console.log(`El usuario ${user.tag} usó el comando ${commandName}`);
-});
-
-
 client.login(require('./Keys/auth').stable);

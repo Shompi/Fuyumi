@@ -43,6 +43,17 @@ class ReadyListener extends Listener {
     this.setActivity();
 
     UpdateButtons(client);
+
+    // update command permission
+    /*     const guildCommands = await client.guilds.cache.get("537484725896478733").commands.fetch().catch(console.log);
+        const command = guildCommands.find(command => command.name === "test");
+        await command?.permissions.set({
+          permissions: [{
+            id: '166263335220805634',
+            type: 'USER',
+            permission: true
+          }]
+        }); */
   }
 }
 

@@ -156,6 +156,7 @@ module.exports = {
 
             await interaction.editReply({ content: 'La interacción ha sido cancelada.' });
             await partyMessage.edit({ embeds: [partyCanceled], components: [] });
+            return undefined;
           }
 
           try {

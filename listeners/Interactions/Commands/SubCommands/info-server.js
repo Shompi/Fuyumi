@@ -1,5 +1,13 @@
 //@ts-check
-const { CommandInteraction, MessageEmbed, GuildMember } = require('discord.js')
+const { CommandInteraction, MessageEmbed, GuildMember, Collection, Role } = require('discord.js');
+const { FormatDate } = require("../../../../Helpers/formatDate");
+
+const TIERS = {
+  NONE: "Sin nivel",
+  TIER_1: "Nivel 1",
+  TIER_2: "Nivel 2",
+  TIER_3: "Nivel 3"
+}
 
 /**
  * 
@@ -21,9 +29,8 @@ const ServerInfo = async (interaction) => {
     else
       humans += 1;
   }
-  const { channels } = interaction.guild;
+  const { guild: { channels }, guild, member } = interaction;
   channels.cache.first().type;
-
 
   const chCount = {
     TEXT: 0,
@@ -54,17 +61,59 @@ const ServerInfo = async (interaction) => {
     }
   }
 
+  const roles = sliceRoles(guild.roles.cache);
+  const chevronEmoji = interaction.client.emojis.cache.find(emoji => emoji.name === 'chevron_right') ?? "\>";
+
   const serverInfo = new MessageEmbed()
-    .setTitle(interaction.guild.name)
-    .setDescription(`El dueño actual del servidor es <@${interaction.guild.ownerId}>\nNúmero de roles: ${interaction.guild.roles.cache.size}\nCantidad de canales: ${interaction.guild.channels.cache.size} (${chCount.VOICE} voz | ${chCount.TEXT} texto | ${chCount.CATEGORY} categorias | ${chCount.STAGES} stages | ${chCount.NEWS} anuncios)\nCantidad de miembros actuales: ${memberList.size} (${humans} Humanos, ${bots} Bots)`)
-    .setThumbnail(interaction.guild.iconURL({ size: 512, dynamic: true }))
-    .setColor(interaction.member instanceof GuildMember ? interaction.member.displayColor : "BLUE")
-    .setFooter({ text: `Servidor creado el` })
-    .setTimestamp(interaction.guild.createdTimestamp);
+    .setAuthor({
+      name: `Información del servidor ${guild.name}`
+    })
+    .setDescription(
+      `**Información General**\n`
+      + `${chevronEmoji} **Dueño**: <@${guild.ownerId}> (${guild.ownerId})\n`
+      + `${chevronEmoji} **Id**: ${guild.id}\n`
+      + `${chevronEmoji} **Creación**: ${FormatDate(guild.createdAt)}\n`
+      + `\n`
+      + `**Estadísticas**\n`
+      + `${chevronEmoji} **Nivel del Servidor**: ${TIERS[guild.premiumTier]}\n`
+      + `${chevronEmoji} **N° Boosts**: ${guild.premiumSubscriptionCount}\n`
+      + `${chevronEmoji} **N° Roles**: ${guild.roles.cache.size}\n`
+      + `${chevronEmoji} **N° Canales**: ${guild.channels.cache.size} (${chCount.VOICE} Voz | ${chCount.TEXT} Texto | ${chCount.CATEGORY} Categorias | ${chCount.STAGES} Stages | ${chCount.NEWS} Anuncios)\n`
+      + `${chevronEmoji} **N° Miembros**: ${memberList.size} (${humans} Humanos, ${bots} Bots)\n`
+      + `\n`
+      + `**Roles [${guild.roles.cache.size}]**\n`
+      + `${roles}`)
+    .setThumbnail(guild.iconURL({ size: 512, dynamic: true }))
+    .setColor(member instanceof GuildMember ? member.displayColor : "BLUE")
+    .setTimestamp();
 
   return await interaction.reply({
     embeds: [serverInfo]
   });
+}
+
+/**
+ * 
+ * @param {Collection<string, Role>} roles
+ * @returns {string}
+ */
+function sliceRoles(roles) {
+  const roleArray = roles.toJSON();
+  const maxRolesToShow = 10;
+  if (roleArray.length > maxRolesToShow) {
+
+    for (let index = 0; index < roleArray.length; index++) {
+      roleArray.sort((a, b) => b.position - a.position);
+
+      const slice = roleArray.slice(0, maxRolesToShow);
+      // @ts-ignore
+      slice.push(`${roleArray.length - maxRolesToShow} roles más...`);
+
+      return slice.map(role => role.toString()).join(", ");
+    }
+  } else {
+    return roleArray.map(role => role.toString()).join(", ");
+  }
 }
 
 module.exports = { ServerInfo };
