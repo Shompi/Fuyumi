@@ -57,8 +57,15 @@ module.exports = {
             .addChoices([
               ["Amarillo", "YELLOW"],
               ["Azul", "BLUE"],
+              ["Blanco", "WHITE"],
+              ["Dorado", "GOLD"],
+              ["Fucsia", "FUCHSIA"],
+              ["Morado", "PURPLE"],
+              ["Naranja", "ORANGE"],
               ["Rojo", "RED"],
-              ["Verde", "GREEN"]
+              ["Verde", "GREEN"],
+              ["Verde Oscuro", "DARK_GREEN"],
+              ["Random", "RANDOM"],
             ])
         })
         .addStringOption(imagen => {

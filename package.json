@@ -1,40 +1,42 @@
 {
-	"name": "muki",
-	"version": "10.0.0",
-	"description": "multifunctional bot for Discord",
-	"main": "Muki.js",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Shompi/Muki.git",
-		"directory": ""
-	},
-	"dependencies": {
-		"@discordjs/builders": "^0.10.0",
-		"@discordjs/rest": "^0.1.0-canary.0",
-		"@keyv/sqlite": "^2.0.2",
-		"axios": "^0.23.0",
-		"date-format-parse": "^0.2.7",
-		"discord-akairo": "github:discord-akairo/discord-akairo",
-		"discord-api-types": "^0.26.0",
-		"discord.js": "^13.5.0",
-		"keyv": "^4.0.3",
-		"nhentai": "^3.0.0",
-		"node-hitomi": "^5.0.3"
-	},
-	"scripts": {
-		"test": "echo \"No se ha especificado ningun test.\" && exit 0",
-		"start": "node Muki.js",
-		"deploy": "node ./Deployment/deploy-commands.js"
-	},
-	"keywords": [
-		"bot",
-		"discord.js",
-		"javascript",
-		"node",
-		"weeb",
-		"images",
-		"moderation"
-	],
-	"author": "ShompiFlen",
-	"license": "MIT"
+  "name": "fuyumi",
+  "version": "2.0.0",
+  "description": "multifunctional bot for Discord",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shompi/Muki.git",
+    "directory": ""
+  },
+  "dependencies": {
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@keyv/sqlite": "^2.0.2",
+    "@vitalets/google-translate-api": "^7.0.0",
+    "axios": "^0.23.0",
+    "date-format-parse": "^0.2.7",
+    "discord-akairo": "github:discord-akairo/discord-akairo",
+    "discord-api-types": "^0.27.0",
+    "discord.js": "^13.6.0",
+    "keyv": "^4.0.3",
+    "mongoose": "^6.2.1",
+    "nhentai": "^3.0.0",
+    "node-hitomi": "^5.0.4"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "start": "node main.js",
+    "deploy": "node ./Deployment/deploy-commands.js"
+  },
+  "keywords": [
+    "bot",
+    "discord.js",
+    "javascript",
+    "node",
+    "weeb",
+    "images",
+    "moderation"
+  ],
+  "author": "ShompiFlen",
+  "license": "MIT"
 }

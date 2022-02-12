@@ -9,6 +9,15 @@ const TIERS = {
   TIER_3: "Nivel 3"
 }
 
+const VERIFICATIONLEVELS = {
+  // "NONE" | "LOW" | "MEDIUM" | "HIGH" | "VERY_HIGH"
+  NONE: "Sin verificación.",
+  LOW: "Bajo, los miembros deben tener un email verificado en sus cuentas de Discord.",
+  MEDIUM: "Medio, los miembros deben estar registrados en Discord por más de 5 minutos.",
+  HIGH: "Alto, los miembros deben tener un email verificado, estar registrado en Discord por más de 5 minutos y además ser miembro de este servidor por más de 10 minutos.",
+  VERY_HIGH: "Más alto, los miembros deben tener un email verificado, estar registrado por más de 5 minutos, ser miembro de este servidor por más de 10 minutos y además tener un número de celular verificado en sus cuentas de Discord."
+}
+
 /**
  * 
  * @param {CommandInteraction} interaction
@@ -39,7 +48,6 @@ const ServerInfo = async (interaction) => {
     CATEGORY: 0,
     STAGES: 0,
   }
-
 
   for (const [_id, channel] of channels.cache) {
     switch (channel.type) {
@@ -73,6 +81,7 @@ const ServerInfo = async (interaction) => {
       + `${chevronEmoji} **Dueño**: <@${guild.ownerId}> (${guild.ownerId})\n`
       + `${chevronEmoji} **Id**: ${guild.id}\n`
       + `${chevronEmoji} **Creación**: ${FormatDate(guild.createdAt)}\n`
+      + `${chevronEmoji} **Nivel de Verificación**: ${VERIFICATIONLEVELS[guild.verificationLevel]}\n`
       + `\n`
       + `**Estadísticas**\n`
       + `${chevronEmoji} **Nivel del Servidor**: ${TIERS[guild.premiumTier]}\n`

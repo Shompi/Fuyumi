@@ -13,15 +13,14 @@ class InteractionEvent extends Listener {
   /**@param {Interaction} interaction */
   async exec(interaction) {
 
-
     try {
       if (interaction.isCommand()) {
         const slashCommand = interaction.client.commands.get(interaction.commandName);
 
         if (!slashCommand) return;
 
-        await slashCommand.execute(interaction);
         interaction.client.emit('onCommandUsed', ({ commandName: interaction.commandName, user: interaction.user, subcommand: interaction.options.getSubcommand(false) }));
+        await slashCommand.execute(interaction);
 
       } else if (interaction.isButton()) {
 
@@ -40,10 +39,10 @@ class InteractionEvent extends Listener {
     } catch (error) {
       console.error(error);
 
-      if (interaction.isApplicationCommand() && interaction.deferred) {
-        await interaction.editReply({ content: "ocurrió un error con esta interacción" });
+      if (interaction.deferred) {
+        await interaction.editReply({ content: "ocurrió un error con esta interacción" }).catch(console.error);
       } else {
-        interaction.reply({ content: 'Ocurrió un error con esta interacción.', ephemeral: true });
+        await interaction.reply({ content: 'Ocurrió un error con esta interacción.', ephemeral: true }).catch(console.error);
       }
     }
   }

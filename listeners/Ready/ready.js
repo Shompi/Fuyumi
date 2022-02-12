@@ -3,6 +3,8 @@ const MukiClient = require('../../Classes/MukiClient');
 const UpdateButtons = require('./utils/Buttons');
 const keyv = require('keyv');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
+const { saveGuilds } = require('./utils/saveGuilds')
+
 
 /**@type {NodeJS.Timeout[]} */
 const timers = [];
@@ -15,13 +17,13 @@ class ReadyListener extends Listener {
     });
     this.hasTimers = true;
     this.clearTimers = () => {
-      for (const timer of timers) {
+      timers.forEach((timer) => {
         clearTimeout(timer);
         clearInterval(timer);
         clearImmediate(timer);
         timers.shift();
-        console.log("Timers limpiados.");
-      }
+      });
+      console.log("Timers limpiados.");
     }
 
     this.setActivity = () => {
@@ -36,24 +38,17 @@ class ReadyListener extends Listener {
     /*Code Here*/
     /**@type {MukiClient} */
     const client = this.client;
-    console.log(`Online en Discord como: ${client.user.tag}`);
+    console.log(`Online en Discord como: ${this.client.user.tag}`);
     console.log(`Bot listo: ${Date()}`);
 
 
     this.setActivity();
+    UpdateButtons(this.client);
 
-    UpdateButtons(client);
+    console.log("Saving guilds...");
+    await saveGuilds(client.guilds.cache);
 
-    // update command permission
-    /*     const guildCommands = await client.guilds.cache.get("537484725896478733").commands.fetch().catch(console.log);
-        const command = guildCommands.find(command => command.name === "test");
-        await command?.permissions.set({
-          permissions: [{
-            id: '166263335220805634',
-            type: 'USER',
-            permission: true
-          }]
-        }); */
+    console.log("Guilds saved!");
   }
 }
 

@@ -1,38 +1,40 @@
-const { Collection } = require('discord.js');
+const { Collection, Intents } = require('discord.js');
 const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akairo');
-module.exports = class MukiClient extends AkairoClient {
-	constructor() {
-		super({
-			// Akairo Client Options
-			ownerID: "166263335220805634",
-		}, {
-			// Discord.js Client Options
-			disableMentions: 'everyone',
-			intents: ['GUILDS', 'GUILD_BANS', 'GUILD_EMOJIS_AND_STICKERS',
-				'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_PRESENCES', 'DIRECT_MESSAGES',
-        'DIRECT_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES', 'GUILD_MESSAGE_REACTIONS'
-			],
-			partials: ['MESSAGE', 'REACTION', 'USER', 'CHANNEL', 'GUILD_MEMBER']
-		});
 
-		this.commandHandler = new CommandHandler(this, {
-			// Options for the command handler
-			defaultCooldown: 3,
+const { GUILDS, GUILD_BANS, GUILD_EMOJIS_AND_STICKERS, GUILD_MEMBERS,
+  GUILD_MESSAGES, GUILD_PRESENCES, DIRECT_MESSAGES, GUILD_VOICE_STATES } = Intents.FLAGS
+
+module.exports = class MukiClient extends AkairoClient {
+  constructor() {
+    super({
+      // Akairo Client Options
+      ownerID: "166263335220805634",
+    }, {
+      // Discord.js Client Options
+      disableMentions: 'everyone',
+      intents: [GUILDS, GUILD_BANS, GUILD_EMOJIS_AND_STICKERS, GUILD_MEMBERS,
+        GUILD_MESSAGES, GUILD_PRESENCES, DIRECT_MESSAGES, GUILD_VOICE_STATES],
+      partials: ['MESSAGE', 'REACTION', 'USER', 'CHANNEL', 'GUILD_MEMBER']
+    });
+
+    this.commandHandler = new CommandHandler(this, {
+      // Options for the command handler
+      defaultCooldown: 3,
       directory: './Commands/',
-			prefix: 'muki!',
-			automateCategories: true,
-		});
+      prefix: 'nn!',
+      automateCategories: true,
+    });
 
     this.getPrivateChannel = () => this.channels.cache.get("806268687333457920") ?? null;
 
-		this.commandHandler.loadAll();
+    this.commandHandler.loadAll();
 
-		this.listenerHandler = new ListenerHandler(this, {
+    this.listenerHandler = new ListenerHandler(this, {
       directory: './Listeners/'
-		});
+    });
 
-		this.commandHandler.useListenerHandler(this.listenerHandler);
-		this.listenerHandler.loadAll();
+    this.commandHandler.useListenerHandler(this.listenerHandler);
+    this.listenerHandler.loadAll();
 
     // SlashCommands
     this.commands = new Collection();
@@ -44,5 +46,5 @@ module.exports = class MukiClient extends AkairoClient {
 
     // Buttons
 
-	}
+  }
 }

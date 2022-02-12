@@ -43,7 +43,7 @@ module.exports = {
       return await interaction.editReply({ content: 'No encontré un Doujin con esta Id en nHentai u ocurrió un error con la búsqueda.' });
 
     const doujinEmbed = new MessageEmbed()
-      .setAuthor({ name: `Numeros nucleares: ${result.id}` })
+      .setAuthor({ name: `Numeros nucleares: ${result.id}`, iconURL: interaction.user.displayAvatarURL({ size: 64 }) })
       .setTitle(`${result.titles.pretty}`)
       .addField("Información General",
         `**Idioma**: ${result.tags.languages.map(tag => tag.name).join(", ")}\n`
@@ -52,7 +52,6 @@ module.exports = {
         + `** Personajes **: ${result.tags.characters.map(tag => tag.name).join(", ") || "-"}\n`
         + `** Parodia de **: ${result.tags.parodies.map(tag => tag.name).join(", ") || "-"}\n`)
       .addField("Etiquetas", `${result.tags.tags.map(tag => tag.name).join(", ")}`)
-      .setImage(result.pages[1].url)
       .setThumbnail(result.cover.url)
       .setColor("BLUE");
 

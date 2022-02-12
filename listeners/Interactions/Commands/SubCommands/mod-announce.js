@@ -13,7 +13,7 @@ module.exports.Announce = async (interaction) => {
 
   const options = {
     channel: interaction.options.getChannel('canal', true),
-    description: interaction.options.getString('descripcion', true),
+    description: interaction.options.getString('descripcion', true).replace("\\n", "\n"),
     title: interaction.options.getString('titulo', false),
     color: interaction.options.getString('color', false),
     imageURL: interaction.options.getString('imagen', false),
@@ -52,6 +52,7 @@ module.exports.Announce = async (interaction) => {
         .setColor(options.color ?? "BLUE")
         .setFooter({ text: options.footer ?? '' })
         .setImage(options.imageURL)
+        .setThumbnail(options.thumbnailURL)
 
       // @ts-ignore
       const success = await options.channel.send({ embeds: [embed], content: `${options.mention1} ${options.mention2} ${options.mention3}` }).catch(console.error);
