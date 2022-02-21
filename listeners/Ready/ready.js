@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const MukiClient = require('../../Classes/MukiClient');
+const Client = require('../../Classes/Client');
 const UpdateButtons = require('./utils/Buttons');
 const keyv = require('keyv');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
@@ -36,19 +36,15 @@ class ReadyListener extends Listener {
 
   async exec() {
     /*Code Here*/
-    /**@type {MukiClient} */
+    /**@type {Client} */
     const client = this.client;
     console.log(`Online en Discord como: ${this.client.user.tag}`);
     console.log(`Bot listo: ${Date()}`);
 
 
     this.setActivity();
-    UpdateButtons(this.client);
-
-    console.log("Saving guilds...");
-    await saveGuilds(client.guilds.cache);
-
-    console.log("Guilds saved!");
+    UpdateButtons(client);
+    await saveGuilds(client.guilds.cache)
   }
 }
 

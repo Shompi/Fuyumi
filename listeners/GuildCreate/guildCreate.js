@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const { Guild, TextChannel, MessageEmbed } = require('discord.js');
+const { Guild, TextChannel, MessageEmbed, Util } = require('discord.js');
 const { GuildModel } = require('../../Schemas/Guild.js');
 
 class GuildCreateListener extends Listener {
@@ -18,6 +18,7 @@ class GuildCreateListener extends Listener {
 
 
     addGuildToDB(guild);
+    const owner = await guild.fetchOwner();
 
     /** @type {TextChannel} */
     const channel = this.client.getPrivateChannel();
@@ -27,7 +28,11 @@ class GuildCreateListener extends Listener {
 
     else {
       return await channel.send({
-        embeds: [new MessageEmbed().setTitle(`Nueva guild: ${guild.name}`).setColor('BLUE').setDescription(`Miembros: ${guild.memberCount}\nId: ${guild.id}`)]
+        embeds: [new MessageEmbed()
+          .setTitle(`Nueva guild: ${guild.name}`)
+          .setColor(Util.resolveColor('BLUE'))
+          .setDescription(`Miembros: ${guild.memberCount}\nId: ${guild.id}\nOwner: ${owner.tag} ${owner.id}`)
+          .setThumbnail(guild.iconURL())]
       });
     }
   }

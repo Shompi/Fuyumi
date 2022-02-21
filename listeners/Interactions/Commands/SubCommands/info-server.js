@@ -25,80 +25,83 @@ const VERIFICATIONLEVELS = {
 const ServerInfo = async (interaction) => {
   const memberList = await interaction.guild.members.fetch().catch(console.error);
 
-  if (!memberList)
-    return interaction.reply({
-      content: 'No se recibió la lista completa de miembros, por favor intenta usar este comando nuevamente.', ephemeral: true
-    });
+  if (interaction.inCachedGuild()) {
 
-  let humans = 0;
-  let bots = 0;
-  for (const [_id, member] of memberList) {
-    if (member.user.bot)
-      bots += 1;
-    else
-      humans += 1;
-  }
-  const { guild: { channels }, guild, member } = interaction;
-  channels.cache.first().type;
+    if (!memberList)
+      return interaction.reply({
+        content: 'No se recibió la lista completa de miembros, por favor intenta usar este comando nuevamente.', ephemeral: true
+      });
 
-  const chCount = {
-    TEXT: 0,
-    VOICE: 0,
-    NEWS: 0,
-    CATEGORY: 0,
-    STAGES: 0,
-  }
-
-  for (const [_id, channel] of channels.cache) {
-    switch (channel.type) {
-      case 'GUILD_CATEGORY':
-        chCount.CATEGORY++;
-        break;
-      case 'GUILD_NEWS':
-        chCount.NEWS++;
-        break;
-      case 'GUILD_TEXT':
-        chCount.TEXT++;
-        break;
-      case 'GUILD_STAGE_VOICE':
-        chCount.STAGES++;
-        break;
-      case 'GUILD_VOICE':
-        chCount.VOICE++;
-        break;
+    let humans = 0;
+    let bots = 0;
+    for (const [_id, member] of memberList) {
+      if (member.user.bot)
+        bots += 1;
+      else
+        humans += 1;
     }
+    const { guild: { channels }, guild, member } = interaction;
+    channels.cache.first().type;
+
+    const chCount = {
+      TEXT: 0,
+      VOICE: 0,
+      NEWS: 0,
+      CATEGORY: 0,
+      STAGES: 0,
+    }
+
+    for (const [_id, channel] of channels.cache) {
+      switch (channel.type) {
+        case 'GUILD_CATEGORY':
+          chCount.CATEGORY++;
+          break;
+        case 'GUILD_NEWS':
+          chCount.NEWS++;
+          break;
+        case 'GUILD_TEXT':
+          chCount.TEXT++;
+          break;
+        case 'GUILD_STAGE_VOICE':
+          chCount.STAGES++;
+          break;
+        case 'GUILD_VOICE':
+          chCount.VOICE++;
+          break;
+      }
+    }
+
+    const roles = sliceRoles(guild.roles.cache);
+    const chevronEmoji = interaction.client.emojis.cache.find(emoji => emoji.name === 'chevron_right') ?? "\>";
+
+    const serverInfo = new MessageEmbed()
+      .setAuthor({
+        name: `Información del servidor ${guild.name}`
+      })
+      .setDescription(
+        `**Información General**\n`
+        + `${chevronEmoji} **Dueño**: <@${guild.ownerId}> (${guild.ownerId})\n`
+        + `${chevronEmoji} **Id**: ${guild.id}\n`
+        + `${chevronEmoji} **Creación**: ${FormatDate(guild.createdAt)}\n`
+        + `${chevronEmoji} **Nivel de Verificación**: ${VERIFICATIONLEVELS[guild.verificationLevel]}\n`
+        + `\n`
+        + `**Estadísticas**\n`
+        + `${chevronEmoji} **Nivel del Servidor**: ${TIERS[guild.premiumTier]}\n`
+        + `${chevronEmoji} **N° Boosts**: ${guild.premiumSubscriptionCount}\n`
+        + `${chevronEmoji} **N° Roles**: ${guild.roles.cache.size}\n`
+        + `${chevronEmoji} **N° Canales**: ${guild.channels.cache.size} (${chCount.VOICE} Voz | ${chCount.TEXT} Texto | ${chCount.CATEGORY} Categorias | ${chCount.STAGES} Stages | ${chCount.NEWS} Anuncios)\n`
+        + `${chevronEmoji} **N° Miembros**: ${memberList.size} (${humans} Humanos, ${bots} Bots)\n`
+        + `\n`
+        + `**Roles [${guild.roles.cache.size}]**\n`
+        + `${roles}`)
+      .setThumbnail(guild.iconURL({ size: 512, dynamic: true }))
+      .setColor(member.displayColor)
+      .setTimestamp();
+
+    return await interaction.reply({
+      embeds: [serverInfo]
+    });
   }
-
-  const roles = sliceRoles(guild.roles.cache);
-  const chevronEmoji = interaction.client.emojis.cache.find(emoji => emoji.name === 'chevron_right') ?? "\>";
-
-  const serverInfo = new MessageEmbed()
-    .setAuthor({
-      name: `Información del servidor ${guild.name}`
-    })
-    .setDescription(
-      `**Información General**\n`
-      + `${chevronEmoji} **Dueño**: <@${guild.ownerId}> (${guild.ownerId})\n`
-      + `${chevronEmoji} **Id**: ${guild.id}\n`
-      + `${chevronEmoji} **Creación**: ${FormatDate(guild.createdAt)}\n`
-      + `${chevronEmoji} **Nivel de Verificación**: ${VERIFICATIONLEVELS[guild.verificationLevel]}\n`
-      + `\n`
-      + `**Estadísticas**\n`
-      + `${chevronEmoji} **Nivel del Servidor**: ${TIERS[guild.premiumTier]}\n`
-      + `${chevronEmoji} **N° Boosts**: ${guild.premiumSubscriptionCount}\n`
-      + `${chevronEmoji} **N° Roles**: ${guild.roles.cache.size}\n`
-      + `${chevronEmoji} **N° Canales**: ${guild.channels.cache.size} (${chCount.VOICE} Voz | ${chCount.TEXT} Texto | ${chCount.CATEGORY} Categorias | ${chCount.STAGES} Stages | ${chCount.NEWS} Anuncios)\n`
-      + `${chevronEmoji} **N° Miembros**: ${memberList.size} (${humans} Humanos, ${bots} Bots)\n`
-      + `\n`
-      + `**Roles [${guild.roles.cache.size}]**\n`
-      + `${roles}`)
-    .setThumbnail(guild.iconURL({ size: 512, dynamic: true }))
-    .setColor(member instanceof GuildMember ? member.displayColor : "BLUE")
-    .setTimestamp();
-
-  return await interaction.reply({
-    embeds: [serverInfo]
-  });
 }
 
 /**

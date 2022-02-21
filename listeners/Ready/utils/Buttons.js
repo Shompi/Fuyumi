@@ -1,99 +1,71 @@
-const MukiClient = require("../../../Classes/MukiClient");
-const { TextChannel, MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
+const { TextChannel, MessageButton, MessageActionRow, MessageEmbed, Util } = require('discord.js');
 
-/**@param {MukiClient} client */
+/**
+ * 
+ * @param {Object} param0
+ * @param {string} param0.roleId La id del rol al que este botón pertenece
+ * @param {import("discord.js").MessageButtonStyleResolvable} param0.style El estilo de este botón
+ * @param {string} param0.label La etiqueta de este botón
+ */
+function createButton({ roleId, style, label }) {
+  return new MessageButton()
+    .setCustomId(`role-${roleId}`)
+    .setStyle(style)
+    .setLabel(label);
+}
+
+/**@param {import("../../../Classes/Client")} client */
 module.exports = async (client) => {
 
   /**@type {TextChannel} */
   const RolesChannel = client.channels.cache.get("865360481940930560");
 
   // Roles de Juegos
-  const AmongusButton = new MessageButton()
-    .setCustomId('role-750237826443903077')
-    .setStyle('SUCCESS')
-    .setLabel('Amongus');
 
-  const ApexLegendsButton = new MessageButton()
-    .setCustomId('role-865729353215246357')
-    .setStyle('SUCCESS')
-    .setLabel('Apex Legends');
+  /* SUCCESS ROW */
+  const AmongusButton = createButton({ style: 'SUCCESS', roleId: "750237826443903077", label: "Amongus" });
 
-  const CSGOButton = new MessageButton()
-    .setCustomId('role-699832400510976061')
-    .setStyle('SUCCESS')
-    .setLabel('Counter-Strike: GO');
+  const ApexLegendsButton = createButton({ style: 'SUCCESS', roleId: "865729353215246357", label: "Apex Legends" });
 
-  const DayZButton = new MessageButton()
-    .setCustomId('role-879217872147185714')
-    .setStyle('SUCCESS')
-    .setLabel("Day Z");
+  const CSGOButton = createButton({ style: 'SUCCESS', roleId: "699832400510976061", label: "Counter-Strike: GO" });
 
-  const EscapeFromTarkovButton = new MessageButton()
-    .setCustomId('role-676967872807043072')
-    .setStyle('SUCCESS')
-    .setLabel('Escape from Tarkov');
-  //**
+  const DayZButton = createButton({ style: 'SUCCESS', roleId: "879217872147185714", label: "Day Z" });
 
-  const FortniteButton = new MessageButton()
-    .setCustomId('role-627237678248886292')
-    .setStyle('PRIMARY')
-    .setLabel('Fortnite');
+  const EscapeFromTarkovButton = createButton({ style: 'SUCCESS', roleId: "676967872807043072", label: "Escape from Tarkov" });
 
-  const GenshinImpactButton = new MessageButton()
-    .setCustomId('role-810412477116448769')
-    .setStyle('PRIMARY')
-    .setLabel('Genshin Impact');
+  /* PRIMARY ROW */
 
-  const GTAVButton = new MessageButton()
-    .setCustomId('role-867227218422005781')
-    .setStyle('PRIMARY')
-    .setLabel('GTA V');
+  const FIFAButton = createButton({ style: 'PRIMARY', roleId: "945050513236434945", label: "FIFA" });
 
-  const LeagueButton = new MessageButton()
-    .setCustomId('role-865393189628149760')
-    .setStyle('PRIMARY')
-    .setLabel('League of Legends');
+  const FortniteButton = createButton({ style: 'PRIMARY', roleId: "627237678248886292", label: "Fortnite" });
 
-  const MinecraftButton = new MessageButton()
-    .setCustomId('role-865394122897227797')
-    .setStyle('PRIMARY')
-    .setLabel('Minecraft');
-  //**
+  const GenshinImpactButton = createButton({ style: 'PRIMARY', roleId: "810412477116448769", label: "Genshin Impact" });
 
-  const RocketLeagueButton = new MessageButton()
-    .setCustomId('role-585905903912615949')
-    .setStyle('SUCCESS')
-    .setLabel('Rocket League');
+  const GTAVButton = createButton({ style: 'PRIMARY', roleId: "867227218422005781", label: "GTA V" });
 
-  const RustButton = new MessageButton()
-    .setCustomId('role-639634253369442324')
-    .setStyle('SUCCESS')
-    .setLabel('Rust');
+  const LeagueButton = createButton({ style: 'PRIMARY', roleId: "865393189628149760", label: "League of Legends" });
 
-  const ScumButton = new MessageButton()
-    .setCustomId('role-879217852337520640')
-    .setStyle('SUCCESS')
-    .setLabel('SCUM');
+  /* SUCCESS ROW */
 
-  const SeaOfThievesButton = new MessageButton()
-    .setCustomId('role-854968345974669313')
-    .setStyle('SUCCESS')
-    .setLabel('Sea of Thieves');
+  const LostArkButton = createButton({ style: 'SUCCESS', roleId: "945054638263128084", label: "Lost Ark" });
 
-  const ValorantButton = new MessageButton()
-    .setCustomId('role-707341893544968324')
-    .setStyle('SUCCESS')
-    .setLabel('Valorant');
+  const MinecraftButton = createButton({ style: 'SUCCESS', roleId: "865394122897227797", label: "Minecraft" });
 
-  const WarzoneButton = new MessageButton()
-    .setCustomId('role-700166161295474728')
-    .setStyle('PRIMARY')
-    .setLabel('COD: Warzone');
+  const RocketLeagueButton = createButton({ style: 'SUCCESS', roleId: "585905903912615949", label: "Rocket League" });
 
-  const WarThunderButton = new MessageButton()
-    .setCustomId('role-865423770264928296')
-    .setStyle('PRIMARY')
-    .setLabel('War Thunder');
+  const RustButton = createButton({ style: 'SUCCESS', roleId: "639634253369442324", label: "Rust" });
+
+  const ScumButton = createButton({ style: 'SUCCESS', roleId: "879217852337520640", label: "SCUM" });
+
+
+  /* PRIMARY ROW */
+  const SeaOfThievesButton = createButton({ style: 'PRIMARY', roleId: "854968345974669313", label: "Sea of Thieves" });
+
+  const ValorantButton = createButton({ style: 'PRIMARY', roleId: "707341893544968324", label: "Valorant" });
+
+  const WarzoneButton = createButton({ style: 'PRIMARY', roleId: "700166161295474728", label: "COD: Warzone" });
+
+  const WarThunderButton = createButton({ style: 'PRIMARY', roleId: "865423770264928296", label: "War Thunder" });
 
   const row1 = new MessageActionRow()
     .addComponents([
@@ -106,31 +78,34 @@ module.exports = async (client) => {
 
   const row2 = new MessageActionRow()
     .addComponents([
+      FIFAButton,
       FortniteButton,
       GenshinImpactButton,
       GTAVButton,
       LeagueButton,
-      MinecraftButton,
     ]);
 
   const row3 = new MessageActionRow()
     .addComponents([
+      LostArkButton,
+      MinecraftButton,
       RocketLeagueButton,
       RustButton,
       ScumButton,
-      SeaOfThievesButton,
-      ValorantButton,
     ]);
 
   const row4 = new MessageActionRow()
     .addComponents([
+      SeaOfThievesButton,
+      ValorantButton,
       WarzoneButton,
       WarThunderButton,
     ])
 
   const JuegosEmbed = new MessageEmbed()
-    .setColor('BLUE')
-    .setTitle('Roles de Juegos');
+    .setColor(Util.resolveColor("BLUE"))
+    .setTitle('Roles de Juegos')
+    .setDescription('¿Quieres el rol de un juego que no está en la lista? ¡Puedes pedirlo en el canal general!');
 
   await RolesChannel.messages.fetch('865370324044742656')
     .then(message => {
@@ -143,20 +118,11 @@ module.exports = async (client) => {
 
 
   // Roles NSFW
-  const AdultButton = new MessageButton()
-    .setLabel('Mayor de 18')
-    .setStyle('DANGER')
-    .setCustomId('role-544718986806296594');
+  const AdultButton = createButton({ style: 'DANGER', roleId: "544718986806296594", label: "Mayor de 18" });
 
-  const ApostadorButton = new MessageButton()
-    .setLabel('Apostador Compulsivo')
-    .setStyle('DANGER')
-    .setCustomId('role-745385918546051222');
+  const ApostadorButton = createButton({ style: 'DANGER', roleId: "745385918546051222", label: "Apostador Compulsivo" });
 
-  const DegeneradoButton = new MessageButton()
-    .setLabel('Degenerado')
-    .setStyle('DANGER')
-    .setCustomId('role-866061257923493918')
+  const DegeneradoButton = createButton({ style: 'DANGER', roleId: "866061257923493918", label: "Degenerado" });
 
   const AdultRow1 = new MessageActionRow()
     .addComponents([
@@ -168,7 +134,7 @@ module.exports = async (client) => {
   const NSFWRolesEmbed = new MessageEmbed()
     .setTitle('Roles +18')
     .setDescription('Si te quitas el rol **Mayor de 18** automáticamente se te quitarán todos los demás roles de esta categoria.')
-    .setColor('RED');
+    .setColor(Util.resolveColor('RED'));
 
   await RolesChannel.messages.fetch("866060332594233365").then(message => {
     message.edit({
@@ -177,33 +143,20 @@ module.exports = async (client) => {
     });
   });
 
-
   // Roles Misceláneos
 
-  const EstudianteButton = new MessageButton()
-    .setCustomId('role-576195996728426526')
-    .setStyle('PRIMARY')
-    .setLabel('Estudiante');
+  const EstudianteButton = createButton({ style: 'PRIMARY', roleId: "576195996728426526", label: "Estudiante" });
 
-  const JovenProgramadorButton = new MessageButton()
-    .setCustomId('role-690009340681388115')
-    .setStyle('PRIMARY')
-    .setLabel('Programador');
+  const JovenProgramadorButton = createButton({ style: 'PRIMARY', roleId: "690009340681388115", label: "Programador" });
 
-  const SimpButton = new MessageButton()
-    .setCustomId('role-752006971527266374')
-    .setStyle('PRIMARY')
-    .setLabel('SIMP');
+  const SimpButton = createButton({ style: 'PRIMARY', roleId: "752006971527266374", label: "SIMP" });
 
-  const WeebButton = new MessageButton()
-    .setCustomId('role-644251281204183070')
-    .setStyle('PRIMARY')
-    .setLabel('Weeb / Otaku');
+  const WeebButton = createButton({ style: 'PRIMARY', roleId: "644251281204183070", label: "Weeb / Otaku" });
 
   const MiscEmbed = new MessageEmbed()
     .setTitle('Roles Misceláneos')
     .setDescription('No todos los roles te darán acceso a un canal nuevo, algunos son solamente para el look.')
-    .setColor('YELLOW');
+    .setColor(Util.resolveColor('YELLOW'));
 
   const MiscRow1 = new MessageActionRow()
     .addComponents([
@@ -223,14 +176,11 @@ module.exports = async (client) => {
   // Streamer panel
   const StreamerEmbed = new MessageEmbed()
     .setTitle('Streamer Role')
-    .setColor('PURPLE')
+    .setColor(Util.resolveColor("PURPLE"))
     .setDescription('¿Eres Streamer?, ¿Quieres que tus transmisiones aparezcan en el canal <#600159867239661578>?\nEntonces asignate este rol!');
 
 
-  const StreamerButton = new MessageButton()
-    .setCustomId('role-912096189443350548')
-    .setLabel('Streamer')
-    .setStyle('PRIMARY')
+  const StreamerButton = createButton({ style: 'PRIMARY', roleId: "912096189443350548", label: "Streamer" });
 
   const StreamerRow1 = new MessageActionRow()
     .addComponents([

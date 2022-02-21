@@ -52,7 +52,7 @@ module.exports = {
       }
     } else {
       // Probar otras cosas aqui
-      await interaction.reply("Yes");
+      await interaction.reply("asdasd");
     }
   }
 }

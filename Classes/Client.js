@@ -4,7 +4,7 @@ const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akair
 const { GUILDS, GUILD_BANS, GUILD_EMOJIS_AND_STICKERS, GUILD_MEMBERS,
   GUILD_MESSAGES, GUILD_PRESENCES, DIRECT_MESSAGES, GUILD_VOICE_STATES } = Intents.FLAGS
 
-module.exports = class MukiClient extends AkairoClient {
+module.exports = class Client extends AkairoClient {
   constructor() {
     super({
       // Akairo Client Options
@@ -36,11 +36,8 @@ module.exports = class MukiClient extends AkairoClient {
     this.commandHandler.useListenerHandler(this.listenerHandler);
     this.listenerHandler.loadAll();
 
-    // SlashCommands
+    // SlashCommands and Context Menu Commands
     this.commands = new Collection();
-
-    // ContextMenus
-    this.contextCommands = new Collection();
 
     // AutoComplete
 

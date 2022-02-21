@@ -1,21 +1,22 @@
 const { Guild, Collection } = require('discord.js');
-const { GuildModel } = require('../../../Schemas/Guild.js')
+const { establishConnection } = require('../../../Schemas/Guild.js')
 /**
  * 
- * @param {Collection<string, Guild} guilds 
+ * @param {Collection<String, Guild>} guilds 
  */
 module.exports.saveGuilds = async (guilds) => {
-
   try {
+    const GuildModel = await establishConnection();
+
     for (const [id, guild] of guilds) {
       const isOnDb = await GuildModel.findOne({ id: guild.id })
 
       if (isOnDb) {
-        console.log(`Guild ${guild.name} is already on db.`);
+        console.log(`La guild ${guild.name} ya estaba en la base de datos.`);
         continue;
       }
 
-      console.log(`Adding ${guild.name} to the database...`);
+      console.log(`Añadiendo ${guild.name} a la base de datos...`);
       await GuildModel.create({
         id,
         name: guild.name,
@@ -31,14 +32,14 @@ module.exports.saveGuilds = async (guilds) => {
         console.log(err);
       });
 
-      console.log(`${guild.name} has been added to the database!`);
+      console.log(`¡${guild.name} ha sido añadida a la base de datos!`);
     }
-
     const count = await GuildModel.find()
-
-    console.log(`The database has ${count.length} entries!`)
+    console.log(`La base de datos tiene ${count.length} entradas!`)
   } catch (err) {
-    console.log(err);
+    console.log("Ocurrió un error en la base de datos");
+    console.log("Razón:", err.reason.type);
+    console.log("Intenando nuevamente...");
+    this.saveGuilds(guilds);
   }
-
 }

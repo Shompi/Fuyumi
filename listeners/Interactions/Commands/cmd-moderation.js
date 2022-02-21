@@ -5,6 +5,8 @@ const { Announce } = require('./SubCommands/mod-announce');
 const { ChannelType } = require('discord-api-types/v9');
 
 module.exports = {
+  hasSubcommands: true,
+  subcommands: ["mod-timeout.js", "mod-announce.js"],
   data: new SlashCommandBuilder()
     .setName('moderacion')
     .setDescription('Comandos de moderación')

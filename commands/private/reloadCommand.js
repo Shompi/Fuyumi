@@ -1,23 +1,24 @@
 const { Command } = require('discord-akairo');
+const { Message } = require('discord.js');
 
 class ReloadCommand extends Command {
-	constructor() {
-		super('reload', {
-			aliases: ['reload', 'reloadcmd'],
-			ownerOnly: true,
-			args: [{
-				id: 'comando',
-				type: 'command',
-			}]
-		});
-	}
+  constructor() {
+    super('reload', {
+      aliases: ['reload', 'reloadcmd'],
+      ownerOnly: true,
+      args: [{
+        id: 'comando',
+        type: "string",
+      }]
+    });
+  }
 
-	async exec(message, { comando }) {
-		if (!comando) return message.reply("No se reconoció el comando.");
 
-		comando?.reload();
-		return message.reply(`El comando ${comando.id} fué recargado.`);
-	}
+  /** @param {Message} message */
+  async exec(message, { comando }) {
+
+    message.client.emit("commandReload", { commandName: comando, channelId: message.channel.id });
+  }
 }
 
 module.exports = ReloadCommand;

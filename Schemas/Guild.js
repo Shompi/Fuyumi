@@ -1,19 +1,25 @@
 const { Schema, createConnection } = require('mongoose');
 
-const connection = createConnection('mongodb://localhost/guilds')
+async function establishConnection() {
+  console.log("Estableciendo conexión a mongodb/guilds...");
+  const connection = await createConnection('mongodb://localhost/guilds').asPromise();
+  console.log("Conexión establecida!");
 
-const GuildSchema = new Schema({
-  id: String,
-  name: String,
-  iconURL: String,
-  memberCount: Number,
-  channelCount: Number,
-  owner: {
-    tag: String,
-    avatarURL: String
-  }
-});
+  console.log("Creando schema para guilds...");
+  const GuildSchema = new Schema({
+    id: String,
+    name: String,
+    iconURL: String,
+    memberCount: Number,
+    channelCount: Number,
+    owner: {
+      tag: String,
+      avatarURL: String
+    }
+  });
 
-const GuildModel = connection.model('Guild', GuildSchema);
+  console.log("Creando modelo para guilds...");
+  return connection.model('Guild', GuildSchema);
+}
 
-module.exports = { GuildModel };
+module.exports = { establishConnection };

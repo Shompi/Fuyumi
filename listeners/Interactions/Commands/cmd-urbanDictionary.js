@@ -1,6 +1,6 @@
 const axios = require('axios').default;
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { CommandInteraction, MessageEmbed } = require('discord.js');
+const { CommandInteraction, MessageEmbed, Util } = require('discord.js');
 const APIRoute = "https://api.urbandictionary.com/v0/define?term=";
 const Translate = require('@vitalets/google-translate-api');
 
@@ -58,7 +58,7 @@ module.exports = {
 
     const embed = new MessageEmbed()
       .setAuthor({ name: 'Urban Dictionary' })
-      .setColor(interaction.member?.displayColor ?? "BLUE")
+      .setColor(interaction.member?.displayColor ?? Util.resolveColor("BLUE"))
       .setTitle(`Palabra: ${first.word}`)
       .setDescription(`**Definicion:**\n${translatedDefinition.text ?? cleanDefinition}\n\n`
         + `**Ejemplo**\n${first.example.replace(/\[|\]/g, "")}`)

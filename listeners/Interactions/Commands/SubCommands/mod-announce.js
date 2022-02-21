@@ -1,6 +1,6 @@
 // @ts-check
 
-const { CommandInteraction, MessageEmbed, GuildMember } = require('discord.js');
+const { CommandInteraction, MessageEmbed, GuildMember, Util } = require('discord.js');
 
 /**
  * Command used to create and send announcements to any text channel 
@@ -49,7 +49,7 @@ module.exports.Announce = async (interaction) => {
         .setTitle(options.title ?? '')
         .setDescription(options.description)
         // @ts-ignore
-        .setColor(options.color ?? "BLUE")
+        .setColor(Util.resolveColor(options.color))
         .setFooter({ text: options.footer ?? '' })
         .setImage(options.imageURL)
         .setThumbnail(options.thumbnailURL)

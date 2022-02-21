@@ -1,4 +1,4 @@
-const { CommandInteraction, MessageEmbed, GuildMember, User } = require('discord.js');
+const { CommandInteraction, MessageEmbed, GuildMember, User, Util } = require('discord.js');
 const { FormatDate } = require('../../../../Helpers/formatDate');
 
 /**
@@ -33,7 +33,7 @@ function getUserInfo(user) {
     .setTitle(user.tag)
     .setThumbnail(user.displayAvatarURL({ size: 512, dynamic: true }))
     .setDescription(`Cuenta creada: ${FormatDate(user.createdAt)}`)
-    .setColor('BLUE')
+    .setColor(Util.resolveColor('BLUE'))
 }
 
 /**
@@ -50,7 +50,7 @@ function getMemberInfo(member) {
     .setTitle(`Info de ${member.user.tag}`)
     .setDescription(`Nombre en el servidor: ${member.displayName}\nMiembro desde: ${joinedAt}\nRoles: ${member.roles.cache.size}\nRol más alto: <@&${member.roles.highest.id}>`)
     .setThumbnail(member.user.displayAvatarURL({ size: 512, dynamic: true }))
-    .setColor(member.displayColor ?? "BLUE")
+    .setColor(member.displayColor ?? Util.resolveColor("BLUE"))
     .setFooter({ text: isSomething(member) });
 }
 

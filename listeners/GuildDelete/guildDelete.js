@@ -1,6 +1,6 @@
 const { Listener } = require('discord-akairo');
 const { Guild, TextChannel, MessageEmbed, Util } = require('discord.js');
-const { GuildModel } = require('../../Schemas/Guild.js');
+const { establishConnection } = require('../../Schemas/Guild.js');
 
 class GuildDeleteListener extends Listener {
   constructor() {
@@ -39,10 +39,12 @@ class GuildDeleteListener extends Listener {
 /** @param {Guild} guild */
 async function removeGuildFromDB(guild) {
 
+  const GuildModel = await establishConnection();
+
   const isOnDB = await GuildModel.findOne({ id: guild.id });
 
   if (isOnDB) {
-    console.log(`Eliminado guild ${guild.name} ${guild.id} por abandono...`);
+    console.log(`Eliminando guild ${guild.name} ${guild.id} por abandono...`);
     await GuildModel.deleteOne({ id: guild.id });
     console.log(`La guild ${guild.name} ha sido eliminada de la base de datos.`);
   }

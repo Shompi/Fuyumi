@@ -1,4 +1,4 @@
-const { CommandInteraction, MessageEmbed, InteractionCollector } = require('discord.js');
+const { CommandInteraction, MessageEmbed, InteractionCollector, Util } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
@@ -22,7 +22,7 @@ module.exports = {
     const inviteEmbed = new MessageEmbed()
       .setAuthor({ name: interaction.client.user.tag, iconURL: interaction.client.user.displayAvatarURL({ size: 128, dynamic: true }) })
       .setDescription(`[-> **¡Aqui tienes mi enlace de invitación!** <-](${invite})`)
-      .setColor('BLUE')
+      .setColor(Util.resolveColor('BLUE'))
 
     return await interaction.reply({ embeds: [inviteEmbed] })
   }

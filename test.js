@@ -1,3 +1,3 @@
-const { GuildModel } = require('./Schemas/Guild')
+const { Util } = require('discord.js');
 
-GuildModel.deleteMany({}).then(() => { return null });
+console.log(Util.resolveColor('RED'));

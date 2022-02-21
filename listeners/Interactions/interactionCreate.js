@@ -29,7 +29,7 @@ class InteractionEvent extends Listener {
         }
 
       } else if (interaction.isContextMenu()) {
-        const contextCommand = interaction.client.contextCommands.get(interaction.commandName);
+        const contextCommand = interaction.client.commands.get(interaction.commandName);
 
         if (!contextCommand) return;
 

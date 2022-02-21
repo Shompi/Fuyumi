@@ -1,6 +1,6 @@
 // @ts-check
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { CommandInteraction, MessageEmbed, MessageActionRow, MessageButton } = require('discord.js')
+const { CommandInteraction, MessageEmbed, MessageActionRow, MessageButton, Util } = require('discord.js')
 const ApiConstructor = require('nhentai');
 const nHentai = new ApiConstructor.API();
 
@@ -53,7 +53,7 @@ module.exports = {
         + `** Parodia de **: ${result.tags.parodies.map(tag => tag.name).join(", ") || "-"}\n`)
       .addField("Etiquetas", `${result.tags.tags.map(tag => tag.name).join(", ")}`)
       .setThumbnail(result.cover.url)
-      .setColor("BLUE");
+      .setColor(Util.resolveColor("BLUE"));
 
     const row = new MessageActionRow()
       .addComponents(

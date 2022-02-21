@@ -26,14 +26,17 @@ module.exports = {
    * @param {CommandInteraction} interaction 
    */
   async execute(interaction) {
+
     const caras = interaction.options.getInteger('caras', false) ?? 6;
     const dados = interaction.options.getInteger('dados', false) ?? 1;
+    const memberAvatar = interaction.inCachedGuild() ? await interaction.member.fetch().then(member => member.displayAvatarURL({ size: 64 })) : null;
 
     const rolls = rollDice(caras, dados);
 
     const embed = new MessageEmbed()
-      .setTitle(`${interaction.member.displayName} has conseguido:`)
-      .setDescription(`${rolls.map(number => `🎲- ${number}`).join("\n")}\nTotal: ${rolls.reduce((acc, value) => { return acc + value }, 0)}`)
+      .setTitle(`${interaction.member.displayName} ha lanzado ${dados} dado/s`)
+      .setDescription(`${rolls.map(number => `🎲 -> ${number}`).join("\n")}`)
+      .setFooter({ text: `Total: ${rolls.reduce((acc, value) => { return acc + value }, 0)}`, iconURL: memberAvatar })
       .setColor(interaction.member.displayColor);
 
     return await interaction.reply({

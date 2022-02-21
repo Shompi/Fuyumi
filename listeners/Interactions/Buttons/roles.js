@@ -9,47 +9,48 @@ const Mayor18Id = '544718986806296594';
  */
 module.exports = async (interaction) => {
   // Enviemos un mensaje por ahora
+  if (interaction.inCachedGuild()) {
+    const { guild, member } = interaction;
+    const ButtonPressed = interaction.component;
 
-  const { guild, member } = interaction;
-  const ButtonPressed = interaction.component;
+    // customId llega como role-123456789l0
+    const RoleId = ButtonPressed.customId.slice(5);
+    const RoleObject = guild.roles.cache.get(RoleId);
+    const MemberIsOver18 = member.roles.cache.has(Mayor18Id);
 
-  // customId llega como role-123456789l0
-  const RoleId = ButtonPressed.customId.slice(5);
-  const RoleObject = guild.roles.cache.get(RoleId);
-  const MemberIsOver18 = member.roles.cache.has(Mayor18Id);
+    let operation;
 
-  let operation;
+    console.log(`${interaction.member.user.tag} presionó ${ButtonPressed.label}`);
 
-  console.log(`${interaction.member.user.tag} presionó ${ButtonPressed.label}`);
+    if (!RoleObject) return;
 
-  if (!RoleObject) return;
+    if (NSFWROLES.includes(RoleId) && !MemberIsOver18)
+      return interaction.reply({
+        content: 'Debes tener el rol **Mayor de 18** para poder asignarte este rol.',
+        ephemeral: true,
+      });
 
-  if (NSFWROLES.includes(RoleId) && !MemberIsOver18)
-    return interaction.reply({
-      content: 'Debes tener el rol **Mayor de 18** para poder asignarte este rol.',
+
+    if (MemberIsOver18 && RoleId === Mayor18Id) {
+      await member.roles.remove([...NSFWROLES, Mayor18Id]);
+
+      return interaction.reply({
+        content: '**Se te han quitado todos los roles NSFW / +18**',
+        ephemeral: true,
+      });
+    }
+
+
+    if (member.roles.cache.has(RoleId)) {
+      operation = await member.roles.remove(RoleId).then(() => false);
+    }
+    else {
+      operation = await member.roles.add(RoleId).then(() => true);
+    }
+
+    return await interaction.reply({
+      content: `Se te **${operation ? 'agregó' : 'quitó'}** el rol **${RoleObject.name}**`,
       ephemeral: true,
     });
-
-
-  if (MemberIsOver18 && RoleId === Mayor18Id) {
-    await member.roles.remove([...NSFWROLES, Mayor18Id]);
-
-    return interaction.reply({
-      content: '**Se te han quitado todos los roles NSFW / +18**',
-      ephemeral: true,
-    });
   }
-
-
-  if (member.roles.cache.has(RoleId)) {
-    operation = await member.roles.remove(RoleId).then(() => false);
-  }
-  else {
-    operation = await member.roles.add(RoleId).then(() => true);
-  }
-
-  return await interaction.reply({
-    content: `Se te ${operation ? 'agregó' : 'quitó'} el rol **${RoleObject.name}**`,
-    ephemeral: true,
-  });
 }

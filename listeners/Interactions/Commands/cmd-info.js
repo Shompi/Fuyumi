@@ -5,6 +5,8 @@ const { UserInfo } = require('./SubCommands/info-user');
 const { RoleInfo } = require('./SubCommands/info-role');
 
 module.exports = {
+  hasSubcommands: true,
+  subcommands: ["info-server.js", "info-user.js", "info-role.js"],
   data: new SlashCommandBuilder()
     .setName('info')
     .setDescription('Comandos de información general')

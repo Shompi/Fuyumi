@@ -1,6 +1,5 @@
 // @ts-check
-
-const { CommandInteraction, MessageEmbed, User, Collection, MessageButton, MessageActionRow, GuildMember } = require("discord.js");
+const { CommandInteraction, MessageEmbed, User, Collection, MessageButton, MessageActionRow, GuildMember, Util } = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 /**@type {Collection<string, {t_expires: number, user:User}>} */
@@ -151,7 +150,7 @@ module.exports = {
 
           if (lfgCanceled) {
             const partyCanceled = new MessageEmbed()
-              .setColor('RED')
+              .setColor(Util.resolveColor('RED'))
               .setTitle(`${interaction.user.tag} ha cancelado la búsqueda de grupo.`);
 
             await interaction.editReply({ content: 'La interacción ha sido cancelada.' });
@@ -165,7 +164,7 @@ module.exports = {
               const partyFail = new MessageEmbed(partyEmbed)
                 .setTitle('El grupo no se ha completado en el tiempo dado.')
                 .setDescription(`${partyMembers.map(user => `<@${user.id}>`).join("\n")}\n**Faltaron**: ${spotsLeft} jugador/es más.`)
-                .setColor('RED')
+                .setColor(Util.resolveColor('RED'))
                 .setFooter({ text: "" });
 
               await partyMessage.edit({
@@ -181,7 +180,7 @@ module.exports = {
               const partySuccessful = new MessageEmbed(partyEmbed)
                 .setTitle(`¡El grupo se ha completado!`)
                 .setDescription(`${interaction.user}\n${partyMembers.map(user => `${user}`).join("\n")}`)
-                .setColor('GREEN')
+                .setColor(Util.resolveColor('GREEN'))
                 .setFooter({ text: "" });
 
               await partyMessage.edit({
