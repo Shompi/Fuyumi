@@ -1,6 +1,5 @@
 const { CommandInteraction } = require('discord.js');
-const { establishConnection } = require('../../../../Schemas/Birthdays');
-const { Document } = require('mongoose');
+const { Document, Model } = require('mongoose');
 
 /**
  * 
@@ -14,7 +13,8 @@ module.exports.BirthdayEdit = async (interaction) => {
   const day = interaction.options.getInteger('dia');
 
   try {
-    const BirthdayModel = await establishConnection();
+    /** @type {Model} */
+    const BirthdayModel = interaction.client.models.BirthdayModel;
 
     /** @type {Document} */
     const document = await BirthdayModel.findOne({ userId: interaction.user.id });

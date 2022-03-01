@@ -1,6 +1,5 @@
 const { CommandInteraction } = require('discord.js');
-const { establishConnection } = require('../../../../Schemas/Birthdays');
-
+const { Model } = require('mongoose');
 /**
  * 
  * @param {CommandInteraction} interaction 
@@ -12,7 +11,9 @@ module.exports.BirthdaySet = async (interaction) => {
   await interaction.deferReply({ ephemeral: true });
 
   try {
-    const BirthdayModel = await establishConnection();
+
+    /** @type {Model} */
+    const BirthdayModel = interaction.client.models.BirthdayModel;
 
     if (await BirthdayModel.exists({ userId: interaction.user.id })) {
       return await interaction.editReply({ content: 'Tu cumpleaños ya está ingresado, si deseas editarlo, usa el comando **/birthday editar**' });

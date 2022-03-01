@@ -10,3 +10,4 @@ tests
 GameImages
 twitchtokens.sqlite
 Deployment
+*.env

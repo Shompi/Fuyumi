@@ -1,6 +1,6 @@
 const { Schema, createConnection } = require('mongoose');
 
-async function establishConnection() {
+async function getGuildModel() {
   console.log("Estableciendo conexión a mongodb/guilds...");
   const connection = await createConnection('mongodb://localhost/guilds').asPromise();
   console.log("Conexión establecida!");
@@ -22,4 +22,4 @@ async function establishConnection() {
   return connection.model('Guild', GuildSchema);
 }
 
-module.exports = { establishConnection };
+module.exports = { getGuildModel };

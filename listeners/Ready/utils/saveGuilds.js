@@ -1,12 +1,12 @@
 const { Guild, Collection } = require('discord.js');
-const { establishConnection } = require('../../../Schemas/Guild.js')
+const { Model } = require('mongoose');
 /**
  * 
  * @param {Collection<String, Guild>} guilds 
+ * @param {Model} GuildModel
  */
-module.exports.saveGuilds = async (guilds) => {
+module.exports.saveGuilds = async (guilds, GuildModel) => {
   try {
-    const GuildModel = await establishConnection();
 
     for (const [id, guild] of guilds) {
       const isOnDb = await GuildModel.findOne({ id: guild.id })
@@ -38,7 +38,7 @@ module.exports.saveGuilds = async (guilds) => {
     console.log(`La base de datos tiene ${count.length} entradas!`)
   } catch (err) {
     console.log("Ocurrió un error en la base de datos");
-    console.log("Razón:", err.reason.type);
+    console.log("Razón:", err);
     console.log("Intenando nuevamente...");
     this.saveGuilds(guilds);
   }

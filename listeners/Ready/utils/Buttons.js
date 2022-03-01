@@ -100,7 +100,7 @@ module.exports = async (client) => {
       ValorantButton,
       WarzoneButton,
       WarThunderButton,
-    ])
+    ]);
 
   const JuegosEmbed = new MessageEmbed()
     .setColor(Util.resolveColor("BLUE"))
@@ -112,7 +112,7 @@ module.exports = async (client) => {
       message.edit({
         components: [row1, row2, row3, row4],
         embeds: [JuegosEmbed],
-      })
+      });
     });
 
 
@@ -129,7 +129,7 @@ module.exports = async (client) => {
       AdultButton,
       ApostadorButton,
       DegeneradoButton,
-    ])
+    ]);
 
   const NSFWRolesEmbed = new MessageEmbed()
     .setTitle('Roles +18')

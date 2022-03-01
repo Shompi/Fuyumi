@@ -1,6 +1,5 @@
 const { Listener } = require('discord-akairo');
 const { Guild, TextChannel, MessageEmbed, Util } = require('discord.js');
-const { establishConnection } = require('../../Schemas/Guild.js');
 
 class GuildUpdateListener extends Listener {
   constructor() {
@@ -23,7 +22,7 @@ class GuildUpdateListener extends Listener {
 /** @param {Guild} guild */
 async function updateGuildOnDB(guild) {
 
-  const GuildModel = await establishConnection();
+  const { GuildModel } = guild.client.models;
 
   console.log(`Actualizando guild ${guild.name} ${guild.id}...`);
   await GuildModel.findOneAndUpdate(

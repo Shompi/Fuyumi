@@ -1,6 +1,5 @@
 const { Listener } = require('discord-akairo');
 const { Guild, TextChannel, MessageEmbed, Util } = require('discord.js');
-const { GuildModel } = require('../../Schemas/Guild.js');
 
 class GuildCreateListener extends Listener {
   constructor() {
@@ -31,7 +30,7 @@ class GuildCreateListener extends Listener {
         embeds: [new MessageEmbed()
           .setTitle(`Nueva guild: ${guild.name}`)
           .setColor(Util.resolveColor('BLUE'))
-          .setDescription(`Miembros: ${guild.memberCount}\nId: ${guild.id}\nOwner: ${owner.tag} ${owner.id}`)
+          .setDescription(`Miembros: ${guild.memberCount}\nId: ${guild.id}\nOwner: ${owner.user.tag} ${owner.id}`)
           .setThumbnail(guild.iconURL())]
       });
     }
@@ -40,6 +39,7 @@ class GuildCreateListener extends Listener {
 
 /** @param {Guild} guild */
 async function addGuildToDB(guild) {
+  const { GuildModel } = guild.client.models;
 
   const isOnDB = await GuildModel.findOne({ id: guild.id });
 

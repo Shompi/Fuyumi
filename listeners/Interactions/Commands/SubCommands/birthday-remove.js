@@ -1,6 +1,5 @@
 const { CommandInteraction } = require('discord.js');
-const { establishConnection } = require('../../../../Schemas/Birthdays');
-
+const { Model } = require('mongoose');
 /**
  * @param {CommandInteraction} interaction
  */
@@ -9,8 +8,8 @@ module.exports.BirthdayRemove = async (interaction) => {
   await interaction.deferReply({ ephemeral: true });
 
   try {
-
-    const BirthdayModel = await establishConnection();
+    /** @type {Model} */
+    const BirthdayModel = interaction.client.models.BirthdayModel;
 
     await BirthdayModel.deleteOne({ userId: interaction.user.id });
 

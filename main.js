@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Client = require('./Classes/Client');
 const fs = require('fs');
 const client = new Client();
@@ -54,4 +55,4 @@ client.on('commandReload', ({ commandName, channelId }) => {
   return client.channels.cache.get(channelId).send({ content: 'No se encontró ningún comando con ese nombre.' });
 });
 
-client.login(require('./Keys/auth').stable);
+client.login(process.env.BOT_TOKEN);

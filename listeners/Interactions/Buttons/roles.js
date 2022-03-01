@@ -5,7 +5,7 @@ const NSFWROLES = ["745385918546051222", "866061257923493918"];
 
 const Mayor18Id = '544718986806296594';
 /**
-@param {ButtonInteraction} interaction
+ * @param {ButtonInteraction} interaction
  */
 module.exports = async (interaction) => {
   // Enviemos un mensaje por ahora
@@ -25,7 +25,7 @@ module.exports = async (interaction) => {
     if (!RoleObject) return;
 
     if (NSFWROLES.includes(RoleId) && !MemberIsOver18)
-      return interaction.reply({
+      return await interaction.reply({
         content: 'Debes tener el rol **Mayor de 18** para poder asignarte este rol.',
         ephemeral: true,
       });
@@ -34,7 +34,7 @@ module.exports = async (interaction) => {
     if (MemberIsOver18 && RoleId === Mayor18Id) {
       await member.roles.remove([...NSFWROLES, Mayor18Id]);
 
-      return interaction.reply({
+      return await interaction.reply({
         content: '**Se te han quitado todos los roles NSFW / +18**',
         ephemeral: true,
       });

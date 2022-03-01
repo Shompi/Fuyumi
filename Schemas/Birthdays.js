@@ -1,6 +1,6 @@
 const { Schema, createConnection } = require('mongoose');
 
-async function establishConnection() {
+async function getBirthdayModel() {
   console.log("Estableciendo conexión a mongodb/birthdays...");
   const connection = await createConnection('mongodb://localhost/birthdays').asPromise();
 
@@ -29,4 +29,4 @@ async function establishConnection() {
   return connection.model('Birthday', BirthdaySchema);
 }
 
-module.exports = { establishConnection };
+module.exports = { getBirthdayModel }

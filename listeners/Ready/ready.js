@@ -1,9 +1,14 @@
-const { Listener } = require('discord-akairo');
-const Client = require('../../Classes/Client');
-const UpdateButtons = require('./utils/Buttons');
 const keyv = require('keyv');
+const { Listener } = require('discord-akairo');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
-const { saveGuilds } = require('./utils/saveGuilds')
+const { saveGuilds } = require('./utils/saveGuilds');
+const { Client } = require('discord.js');
+
+// Models
+const { getGuildModel } = require('../../Schemas/Guild');
+const { getBirthdayModel } = require('../../Schemas/Birthdays');
+
+// const UpdateButtons = require('./utils/Buttons');
 
 
 /**@type {NodeJS.Timeout[]} */
@@ -34,17 +39,23 @@ class ReadyListener extends Listener {
     }
   }
 
-  async exec() {
+  /** @param {Client} client */
+  async exec(client) {
     /*Code Here*/
-    /**@type {Client} */
-    const client = this.client;
-    console.log(`Online en Discord como: ${this.client.user.tag}`);
+    console.log(`Online en Discord como: ${client.user.tag}`);
     console.log(`Bot listo: ${Date()}`);
 
+    client.models = {
+      GuildModel: await getGuildModel(),
+      BirthdayModel: await getBirthdayModel()
+    }
 
     this.setActivity();
-    UpdateButtons(client);
-    await saveGuilds(client.guilds.cache)
+    // console.log("Actualizando botones de roles...");
+    // await UpdateButtons(client);
+
+    console.log("Guardando guilds...");
+    await saveGuilds(client.guilds.cache, client.models.GuildModel);
   }
 }
 

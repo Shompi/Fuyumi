@@ -1,6 +1,5 @@
 const { Listener } = require('discord-akairo');
 const { Guild, TextChannel, MessageEmbed, Util } = require('discord.js');
-const { establishConnection } = require('../../Schemas/Guild.js');
 
 class GuildDeleteListener extends Listener {
   constructor() {
@@ -39,7 +38,7 @@ class GuildDeleteListener extends Listener {
 /** @param {Guild} guild */
 async function removeGuildFromDB(guild) {
 
-  const GuildModel = await establishConnection();
+  const { GuildModel } = guild.client.models;
 
   const isOnDB = await GuildModel.findOne({ id: guild.id });
 

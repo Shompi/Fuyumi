@@ -52,7 +52,26 @@ module.exports = {
       }
     } else {
       // Probar otras cosas aqui
-      await interaction.reply("asdasd");
+      const time1 = Date.now();
+      await interaction.reply({ content: 'OK!' });
+      const time2 = Date.now();
+
+      const pingEmbed = new MessageEmbed()
+        .setTitle(`¡Test ok!`)
+        .addField('WS Ping', `${interaction.client.ws.ping}ms`, true)
+        .addField('Ping de respuesta', `${time2 - time1}ms`, true)
+        //
+        .addField('Guilds', `${interaction.client.guilds.cache.size}`.padStart(3, '0'))
+        .addField('Usuarios en cache', `${interaction.client.users.cache.size}`, true)
+        //
+        .addField('Canales en cache', `${interaction.client.channels.cache.size}`, true)
+        .addField('Discord.js', `${require('discord.js').version}`)
+        //
+        .addField('OS', process.platform, true)
+        .addField('Memoria alocada', `${process.memoryUsage().heapTotal} Bytes`, true)
+        .setColor(Util.resolveColor('BLUE'));
+
+      return await interaction.editReply({ embeds: [pingEmbed] });
     }
   }
 }
