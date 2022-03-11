@@ -1,9 +1,10 @@
 const { ContextMenuCommandBuilder } = require('@discordjs/builders');
 const { ContextMenuInteraction, MessageEmbed, Util } = require('discord.js');
+const { ApplicationCommandType } = require('discord-api-types/v9')
 module.exports = {
   data: new ContextMenuCommandBuilder()
     .setName('Avatar')
-    .setType(2)
+    .setType(ApplicationCommandType.User)
     .setDefaultPermission(true),
   isGlobal: true,
   /**

@@ -24,7 +24,7 @@ class InteractionEvent extends Listener {
 
         if (!slashCommand) return;
 
-        interaction.client.emit('onCommandUsed', ({ commandName: interaction.commandName, user: interaction.user, subcommand: interaction.options.getSubcommand(false) }));
+        interaction.client.emit('commandUsed', ({ commandName: interaction.commandName, user: interaction.user, subcommand: interaction.options.getSubcommand(false) }));
         await slashCommand.execute(interaction);
 
       }

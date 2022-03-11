@@ -55,4 +55,5 @@ client.on('commandReload', ({ commandName, channelId }) => {
   return client.channels.cache.get(channelId).send({ content: 'No se encontró ningún comando con ese nombre.' });
 });
 
+
 client.login(process.env.BOT_TOKEN);

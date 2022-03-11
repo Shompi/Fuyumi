@@ -1,12 +1,13 @@
 const { CommandInteraction } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { TimeoutMember } = require('./SubCommands/mod-timeout');
+const { Poll } = require('./SubCommands/mod-poll');
 const { Announce } = require('./SubCommands/mod-announce');
 const { ChannelType } = require('discord-api-types/v9');
 
 module.exports = {
   hasSubcommands: true,
-  subcommands: ["mod-timeout.js", "mod-announce.js"],
+  subcommands: ["mod-timeout.js", "mod-announce.js", "mod-poll.js"],
   data: new SlashCommandBuilder()
     .setName('moderacion')
     .setDescription('Comandos de moderación')
@@ -100,7 +101,20 @@ module.exports = {
             .setDescription('Rol o Usuario que quieres mencionar')
             .setRequired(false)
         })
-    }),
+    })
+
+    // Poll Command
+    .addSubcommand(input => input.setName('encuesta')
+      .setDescription('Comando para realizar encuestas en un canal.')
+      .addStringOption(title => title.setName('titulo').setDescription('El título de ésta encuesta'))
+      .addStringOption(description => description.setName('descripcion').setDescription('La descripción de esta encuesta'))
+      .addChannelOption(channel => channel.setName('canal').setDescription('El canal en donde quieres enviar la encuesta. (def: El canal donde usas el comando)').addChannelType(ChannelType.GuildText))
+      .addStringOption(option1 => option1.setName('opcion_1').setDescription("Opcion de la encuesta"))
+      .addStringOption(option2 => option2.setName('opcion_2').setDescription("Opcion de la encuesta"))
+      .addStringOption(option3 => option3.setName('opcion_3').setDescription("Opcion de la encuesta"))
+      .addStringOption(option4 => option4.setName('opcion_4').setDescription("Opcion de la encuesta"))
+      .addStringOption(option5 => option5.setName('opcion_5').setDescription("Opcion de la encuesta"))
+      .addIntegerOption(tiempo => tiempo.setName('duracion').setDescription('La duración de esta encuesta en minutos. (def: 5 minutos)'))),
   isGlobal: true,
   /**
    * 
@@ -121,6 +135,8 @@ module.exports = {
           return await TimeoutMember(interaction);
         case 'anuncio':
           return await Announce(interaction);
+        case 'encuesta':
+          return await Poll(interaction);
       }
 
     } else {

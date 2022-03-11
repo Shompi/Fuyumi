@@ -24,3 +24,5 @@ restClient.put(Routes.applicationCommandPermissions(require('./Deployment/config
   console.log(response)
   console.log("---------------------")
 })
+
+Routes.applicationGuildCommands(applicationId, guildId)

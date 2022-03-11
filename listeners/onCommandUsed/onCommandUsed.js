@@ -2,11 +2,11 @@ const { Listener } = require('discord-akairo');
 const { User } = require('discord.js');
 
 
-class onCommandUsed extends Listener {
+class CommandUsed extends Listener {
   constructor() {
-    super('onCommandUsed', {
+    super('commandUsed', {
       emitter: 'client',
-      event: 'onCommandUsed'
+      event: 'commandUsed'
     });
   }
 
@@ -19,4 +19,4 @@ class onCommandUsed extends Listener {
   }
 }
 
-module.exports = onCommandUsed;
+module.exports = CommandUsed;
