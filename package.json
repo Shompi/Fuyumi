@@ -22,7 +22,8 @@
     "keyv": "^4.0.3",
     "mongoose": "^6.2.2",
     "nhentai": "^3.0.0",
-    "node-hitomi": "^5.0.4"
+    "node-hitomi": "^5.0.4",
+    "uwuifier": "^4.0.4"
   },
   "scripts": {
     "test": "node test.js",

@@ -37,10 +37,10 @@ class InteractionEvent extends Listener {
         if (interaction.customId === 'showroles') {
           const member = await interaction.member.fetch();
 
-          const roles = member.roles.cache.sort((a, b) => a.position - b.position).map(role => role.toString());
+          const roles = member.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
 
           const rolesEmbed = new MessageEmbed()
-            .setTitle(`Estos son tus roles ${member.displayName}`)
+            .setTitle(`Estos son tus roles ${member.displayName} (Desde el más alto al mas bajo)`)
             .setDescription(roles.join(" - "))
             .setFooter({ text: `Tienes un total de ${roles.length} roles`, iconURL: member.displayAvatarURL() })
             .setColor(member.displayColor);

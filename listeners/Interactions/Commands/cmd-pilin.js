@@ -8,7 +8,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('pilin')
     .setDescription('Revela al mundo el tamaño de tu pilín'),
-  isGlobal: false,
+  isGlobal: true,
 
   /**
    * 
@@ -33,7 +33,7 @@ module.exports = {
       cooldowns.delete(interaction.member.id)
     }, COOLDOWNTIMEMS);
 
-    const medida = Math.floor(Math.random() * 31) || 1000
+    const medida = Math.floor(Math.random() * 51) || 1000
 
     const embed = new MessageEmbed()
       .setAuthor({ iconURL: interaction.member.displayAvatarURL({ size: 64 }), name: interaction.member.displayName })

@@ -47,11 +47,11 @@ module.exports = {
     if (timeouts.has(interaction.user.id)) {
       return await interaction.reply({
         ephemeral: true,
-        content: `Debes esperar ${Math.round((timeouts.get(interaction.user.id).t_expires - Date.now()) / 1000)} segundos más.`
+        content: `Debes esperar ${Math.round((timeouts.get(interaction.user.id).t_expires - Date.now()) / 1000)} segundos más antes de utilizar este comando de nuevo.`
       });
     }
 
-    if (interaction.inGuild() && interaction.member instanceof GuildMember) {
+    if (interaction.inCachedGuild()) {
 
       timeouts.set(interaction.user.id, { t_expires: Date.now() + (1000 * 60 * 5), user: interaction.user });
       setTimeout(() => timeouts.delete(interaction.user.id), 1000 * 60 * 5);
@@ -60,15 +60,13 @@ module.exports = {
 
       /** @type {Collection<string, User>} */
       const partyMembers = new Collection();
+      partyMembers.set(interaction.user.id, interaction.user);
 
       let spotsLeft = interaction.options.getInteger('faltan', true);
 
-      // partyMembers.set(interaction.user.id, interaction.user);
-
-      const lfgMessage = interaction.options.getString('mensaje', false);
+      const lfgMessage = interaction.options.getString('mensaje', false) ?? "";
 
       let lfgCanceled = false;
-
 
       const partyEmbed = new MessageEmbed()
         .setTitle(`¡${interaction.member.user.tag} está buscando compañeros de grupo!`)
@@ -83,7 +81,6 @@ module.exports = {
 
       if (!partyMessage)
         return await interaction.editReply({ content: "Ocurrió un error al intentar enviar el mensaje, verifica que yo tenga permisos para enviar mensajes en este canal." });
-
 
       const waitTime = interaction.options.getInteger('esperar') ?? 5;
       const componentCollector = partyMessage.createMessageComponentCollector({ time: waitTime * 1000 * 60 });
