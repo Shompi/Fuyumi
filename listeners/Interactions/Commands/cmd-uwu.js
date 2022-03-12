@@ -1,5 +1,6 @@
-const { CommandInteraction, MessageEmbed, Util } = require('discord.js');
+const { CommandInteraction, WebhookClient } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+
 const Uwuifier = require('uwuifier');
 const uwuifier = new Uwuifier({
   spaces: {
@@ -11,6 +12,7 @@ const uwuifier = new Uwuifier({
   exclamations: 1
 });
 
+const webhook = new WebhookClient({ id: process.env.UWU_HOOK_ID, token: process.env.UWU_HOOK_TOKEN });
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -30,13 +32,13 @@ module.exports = {
       return await interaction.reply({ ephemeral: true, content: 'El texto que has ingresado es muy corto, por favor ingresa textos de al menos 10 caracteres.' });
 
     const finalText = uwuifier.uwuifyWords(text);
-    const uwuEmbed = new MessageEmbed()
-      .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ size: 64, dynamic: true }) })
-      .setDescription(finalText)
-      .setColor(Util.resolveColor("DEFAULT"))
 
-    return await interaction.reply({
-      embeds: [uwuEmbed]
-    });
+    await webhook.send({
+      username: interaction.user.username,
+      avatarURL: interaction.user.displayAvatarURL({ size: 512, dynamic: true }),
+      content: finalText,
+    })
+
+    return await interaction.reply({ content: 'Tu mensaje ha sido enviado!', ephemeral: true });
   }
 }

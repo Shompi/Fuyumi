@@ -1,13 +1,15 @@
+#Folders
 node_modules
 Logs
-Musica
 Keys
 data
 tests
 .vscode
+Deployment
+
+#Environment variables
+*.env
+
+#Databases
 *.db
 *.sqlite
-GameImages
-twitchtokens.sqlite
-Deployment
-*.env
