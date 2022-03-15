@@ -1,6 +1,7 @@
 const { Command } = require('discord-akairo');
 const keyv = require('keyv');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' })
+const { } = require('discord.js');
 
 class SetActivityCommand extends Command {
   constructor() {

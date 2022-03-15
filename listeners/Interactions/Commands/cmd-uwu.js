@@ -6,9 +6,9 @@ const uwuifier = new Uwuifier({
   spaces: {
     faces: 0.0,
     actions: 0.0,
-    stutters: 0.1
+    stutters: 0.4
   },
-  words: 0.7,
+  words: 0.85,
   exclamations: 1
 });
 

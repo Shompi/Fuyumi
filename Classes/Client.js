@@ -15,11 +15,6 @@ module.exports = class Client extends AkairoClient {
       intents: [GUILDS, GUILD_BANS, GUILD_EMOJIS_AND_STICKERS, GUILD_MEMBERS,
         GUILD_MESSAGES, GUILD_PRESENCES, DIRECT_MESSAGES, GUILD_VOICE_STATES],
       partials: ['MESSAGE', 'REACTION', 'USER', 'CHANNEL', 'GUILD_MEMBER'],
-      ws: {
-        properties: {
-          $browser: "Discord iOS"
-        }
-      }
     });
 
     this.commandHandler = new CommandHandler(this, {

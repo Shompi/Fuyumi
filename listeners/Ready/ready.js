@@ -2,7 +2,7 @@ const keyv = require('keyv');
 const { Listener } = require('discord-akairo');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
 const { saveGuilds } = require('./utils/saveGuilds');
-const { Client } = require('discord.js');
+const { Client, Activity } = require('discord.js');
 
 // Models
 const { getGuildModel } = require('../../Schemas/Guild');
@@ -33,8 +33,9 @@ class ReadyListener extends Listener {
 
     this.setActivity = () => {
       timers.push(setInterval(async () => {
-        let activity = await lastPresence.get('0') ?? '💙 Reviviendo... de a poco...';
-        this.client.user.setActivity({ name: activity, type: 'PLAYING' });
+        /** @type {Activity} */
+        let activity = await lastPresence.get('0') ?? { name: '💙 Reviviendo... de a poco...', type: 'PLAYING' };
+        this.client.user.setActivity(activity);
       }, 20000));
     }
   }
