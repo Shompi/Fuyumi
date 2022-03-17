@@ -1,7 +1,6 @@
 //@ts-check
 const { CommandInteraction, MessageEmbed, Util, Formatters } = require("discord.js");
 
-
 /**
  * @param {CommandInteraction} interaction 
  */
@@ -47,19 +46,25 @@ module.exports.Test = async (interaction) => {
     await interaction.reply({ content: 'OK!' });
     const time2 = Date.now();
 
+    /** @type {import("discord.js").EmbedFieldData[]} */
+    const fields = [
+      { name: "WS Ping", value: `${interaction.client.ws.ping}ms`, inline: true },
+      { name: "Ping de respuesta", value: `${time2 - time1}ms`, inline: true },
+      //
+      { name: "Guilds", value: `${interaction.client.guilds.cache.size}`, inline: false },
+      { name: "Usuarios en cache", value: `${interaction.client.users.cache.size}`, inline: true },
+      //
+      { name: "Canales en cache", value: `${interaction.client.channels.cache.size}`, inline: true },
+      { name: "Discord.js", value: `${require('discord.js').version}`, inline: false },
+      //
+      { name: "OS", value: process.platform, inline: true },
+      { name: "Memoria reservada", value: `${process.memoryUsage().heapTotal} Bytes`, inline: true },
+
+    ];
+
     const pingEmbed = new MessageEmbed()
       .setTitle(`¡Test ok!`)
-      .addField('WS Ping', `${interaction.client.ws.ping}ms`, true)
-      .addField('Ping de respuesta', `${time2 - time1}ms`, true)
-      //
-      .addField('Guilds', `${interaction.client.guilds.cache.size}`.padStart(3, '0'))
-      .addField('Usuarios en cache', `${interaction.client.users.cache.size}`, true)
-      //
-      .addField('Canales en cache', `${interaction.client.channels.cache.size}`, true)
-      .addField('Discord.js', `${require('discord.js').version}`)
-      //
-      .addField('OS', process.platform, true)
-      .addField('Memoria alocada', `${process.memoryUsage().heapTotal} Bytes`, true)
+      .addFields(fields)
       .setColor(Util.resolveColor('BLUE'));
 
     return await interaction.editReply({ embeds: [pingEmbed] });

@@ -42,7 +42,9 @@ module.exports.Poll = async (interaction) => {
       .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL({ size: 128 }) })
       .setTitle(args.title)
       .setDescription(`${args.description}\nLa encuesta terminará <t:${Math.round((Date.now() + args.duration) / 1000)}:R>`)
-      .addField('Opciones', formatOptions(args.options))
+      .addFields({
+        name: "Opciones", value: formatOptions(args.options)
+      })
       .setColor(Util.resolveColor("BLUE"));
 
     const pollMessage = await args.channel.send({

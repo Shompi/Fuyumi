@@ -64,8 +64,11 @@ async function FifaTeam(interaction) {
   const teamEmbed = new MessageEmbed()
     .setAuthor({ name: "Exiliados FC", iconURL: teamImageURL, url: teamWebURL })
     .setColor(Util.resolveColor("BLUE"))
-    .addField("Información de la Temporada Actual", currentSeasonInfo)
-    .addField("Información General", generalInfo)
+    .addFields({
+      name: "Información de la Temporada Actual", value: currentSeasonInfo
+    }, {
+      name: "Información General", value: generalInfo
+    })
     .setThumbnail(divisionImage);
 
   return await interaction.editReply({ embeds: [teamEmbed] });

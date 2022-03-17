@@ -45,13 +45,16 @@ module.exports = {
     const doujinEmbed = new MessageEmbed()
       .setAuthor({ name: `Numeros nucleares: ${result.id}`, iconURL: interaction.user.displayAvatarURL({ size: 64 }) })
       .setTitle(`${result.titles.pretty}`)
-      .addField("Información General",
-        `**Idioma**: ${result.tags.languages.map(tag => tag.name).join(", ")}\n`
-        + `** Artista / s **: ${result.tags.artists.map(tag => tag.name).join(", ") || "-"}\n`
-        + `** Categorias **: ${result.tags.categories.map(tag => tag.name).join(", ") || "-"}\n`
-        + `** Personajes **: ${result.tags.characters.map(tag => tag.name).join(", ") || "-"}\n`
-        + `** Parodia de **: ${result.tags.parodies.map(tag => tag.name).join(", ") || "-"}\n`)
-      .addField("Etiquetas", `${result.tags.tags.map(tag => tag.name).join(", ")}`)
+      .addFields({
+        name: "Información General", value: `**Idioma**: ${result.tags.languages.map(tag => tag.name).join(", ")}\n`
+          + `** Artista / s **: ${result.tags.artists.map(tag => tag.name).join(", ") || "-"}\n`
+          + `** Categorias **: ${result.tags.categories.map(tag => tag.name).join(", ") || "-"}\n`
+          + `** Personajes **: ${result.tags.characters.map(tag => tag.name).join(", ") || "-"}\n`
+          + `** Parodia de **: ${result.tags.parodies.map(tag => tag.name).join(", ") || "-"}\n`
+      },
+        {
+          name: "Etiquetas", value: result.tags.tags.map(tag => tag.name).join(", ")
+        })
       .setThumbnail(result.cover.url)
       .setColor(Util.resolveColor("BLUE"));
 
