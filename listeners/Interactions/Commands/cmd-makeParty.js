@@ -69,7 +69,7 @@ module.exports = {
       let lfgCanceled = false;
 
       const partyEmbed = new MessageEmbed()
-        .setTitle(`¡${interaction.member.user.tag} está buscando compañeros de grupo!`)
+        .setTitle(`¡${interaction.member.user.username} está buscando compañeros de grupo!`)
         .setThumbnail(interaction.user.displayAvatarURL({ size: 512, dynamic: true }))
         .setDescription(`**Grupo:**\n${partyMembers.map(user => `<@${user.id}>`).join("\n")}`)
         .setFooter({ text: `¡Se necesitan ${spotsLeft} jugadores más!` })
@@ -148,7 +148,7 @@ module.exports = {
           if (lfgCanceled) {
             const partyCanceled = new MessageEmbed()
               .setColor(Util.resolveColor('RED'))
-              .setTitle(`${interaction.user.tag} ha cancelado la búsqueda de grupo.`);
+              .setTitle(`${interaction.user.username} ha cancelado la búsqueda de grupo.`);
 
             await interaction.editReply({ content: 'La interacción ha sido cancelada.' });
             await partyMessage.edit({ embeds: [partyCanceled], components: [] });
@@ -192,7 +192,7 @@ module.exports = {
             }
           } catch (error) {
             console.log(error);
-            await interaction.editReply({ content: 'ocurrió un error con la interacción.' });
+            await interaction.editReply({ content: 'ocurrió un error con la interacción.' }).catch((e) => console.log("Something happened...", e));
           }
         });
 
