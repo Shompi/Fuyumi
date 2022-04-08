@@ -57,6 +57,10 @@ class ReadyListener extends Listener {
 
     console.log("Guardando guilds...");
     await saveGuilds(client.guilds.cache, client.models.GuildModel);
+
+    await client.channels.cache.get("541007291718172683").send({
+      content: `¡🟢Estoy online!\nRecuerda que puedes asignarte roles en <#865360481940930560>`
+    });
   }
 }
 
