@@ -2,6 +2,18 @@
 const { CommandInteraction, MessageEmbed, Util, Formatters } = require("discord.js");
 
 /**
+ * 
+ * @param {string} text 
+ * @returns {string}
+ */
+const clean = text => {
+  if (typeof (text) === "string")
+    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+  else
+    return text;
+}
+
+/**
  * @param {CommandInteraction} interaction 
  */
 module.exports.Test = async (interaction) => {
@@ -69,24 +81,4 @@ module.exports.Test = async (interaction) => {
 
     return await interaction.editReply({ embeds: [pingEmbed] });
   }
-}
-
-
-
-
-
-
-
-
-
-/**
- * 
- * @param {string} text 
- * @returns {string}
- */
-const clean = text => {
-  if (typeof (text) === "string")
-    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-  else
-    return text;
 }
