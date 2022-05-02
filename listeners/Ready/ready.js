@@ -2,7 +2,7 @@ const keyv = require('keyv');
 const { Listener } = require('discord-akairo');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
 const { saveGuilds } = require('./utils/saveGuilds');
-const { Client, Activity } = require('discord.js');
+const { Client, Activity, MessageActionRow, MessageButton } = require('discord.js');
 
 // Models
 const { getGuildModel } = require('../../Schemas/Guild');

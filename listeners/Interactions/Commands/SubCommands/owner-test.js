@@ -47,7 +47,7 @@ module.exports.Test = async (interaction) => {
 
       console.log(err);
       resultEmbed.setTitle(`⏳ ${Date.now() - timestamp}ms`)
-        .setDescription(`\`\`\`js\n${clean(err).slice(0, 500) + "...\nRevisa la consola para más información."}\`\`\``)
+        .setDescription('Ocurrió un error en la ejecución de este comando.')
         .setColor(Util.resolveColor('RED'));
 
       await interaction.reply({ embeds: [inputEmbed, resultEmbed] });
