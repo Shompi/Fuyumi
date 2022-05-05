@@ -80,6 +80,11 @@ module.exports = {
   */
   async execute(interaction) {
 
+    return await interaction.reply({
+      content: "Este comando está desabilitado temporalmente.",
+      ephemeral: true
+    });
+
     switch (interaction.options.getSubcommand()) {
       case 'set':
         await BirthdaySet(interaction);
