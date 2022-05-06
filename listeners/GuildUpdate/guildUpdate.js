@@ -15,7 +15,7 @@ class GuildUpdateListener extends Listener {
    * @param {Guild} newGuild 
    */
   async exec(oldGuild, newGuild) {
-    updateGuildOnDB(newGuild);
+    // updateGuildOnDB(newGuild);
   }
 }
 

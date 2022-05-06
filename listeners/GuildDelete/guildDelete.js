@@ -16,7 +16,7 @@ class GuildDeleteListener extends Listener {
   async exec(guild) {
 
 
-    removeGuildFromDB(guild);
+    // removeGuildFromDB(guild);
 
     /** @type {TextChannel} */
     const channel = this.client.getPrivateChannel();

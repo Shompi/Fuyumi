@@ -16,7 +16,7 @@ class GuildCreateListener extends Listener {
   async exec(guild) {
 
 
-    addGuildToDB(guild);
+    // addGuildToDB(guild);
     const owner = await guild.fetchOwner();
 
     /** @type {TextChannel} */
