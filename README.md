@@ -10,11 +10,11 @@ _My first JavaScript proyect, a Discord bot, the one that gave me so much knowle
 
 ### What is this repository for? ###
 
-_To maintain version control over NoName's development, plus it is easier for me to maintain, improve and update her code, also to accept suggestions, resolve issues, etc._
+_To maintain version control over Fuyumi's development, plus it is easier for me to maintain, improve and update her code, also to accept suggestions, resolve issues, etc._
 
 ### Where can I read the documentation? ###
 
-_NoName itself doesn't have a documentation (besides the one showing the commands inside Discord.) but Im leaving the documentation for some of the packages that NoName is most dependent:_
+_Fuyumi itself doesn't have a documentation (besides the one showing the commands inside Discord.) but Im leaving the documentation for some of the packages that Fuyumi is most dependent:_
 
 * [Discord.js v13.6.0](https://discord.js.org/)
 * [node.js v16+](https://nodejs.org/)
