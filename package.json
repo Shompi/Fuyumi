@@ -9,7 +9,7 @@
     "directory": ""
   },
   "dependencies": {
-    "@discordjs/builders": "^0.12.0",
+    "@discordjs/builders": "^0.13.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@keyv/sqlite": "^2.0.2",
     "@vitalets/google-translate-api": "^7.0.0",
@@ -23,6 +23,7 @@
     "mongoose": "^6.2.2",
     "nhentai": "^3.0.0",
     "node-hitomi": "^5.0.4",
+    "sharp": "^0.30.4",
     "uwuifier": "^4.0.4"
   },
   "scripts": {

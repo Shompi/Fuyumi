@@ -4,12 +4,12 @@ Logs
 Keys
 data
 tests
+Tests
 .vscode
 Deployment
 
 #Environment variables
 *.env
 
-#Databases
-*.db
-*.sqlite
+*token.*
+*tokens.*
