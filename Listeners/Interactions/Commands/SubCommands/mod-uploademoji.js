@@ -11,6 +11,7 @@ module.exports.UploadEmoji = async (interaction) => {
   if (!interaction.inCachedGuild()) return await interaction.reply('No puedes usar este comando fuera de un servidor.');
 
   const attachment = interaction.options.getAttachment('imagen', false);
+
   const emojiName = interaction.options.getString('nombre');
   let image = null;
 

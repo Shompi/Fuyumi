@@ -3,8 +3,6 @@ node_modules
 Logs
 Keys
 data
-tests
-Tests
 .vscode
 Deployment
 
@@ -13,3 +11,9 @@ Deployment
 
 *token.*
 *tokens.*
+
+#Image files
+*.jpg
+*.jpeg
+*.png
+*.gif
