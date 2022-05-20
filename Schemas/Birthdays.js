@@ -2,7 +2,7 @@ const { Schema, createConnection } = require('mongoose');
 
 async function getBirthdayModel() {
   console.log("Estableciendo conexión a mongodb/birthdays...");
-  const connection = await createConnection('mongodb://localhost/birthdays').asPromise();
+  const connection = await createConnection('mongodb://192.168.0.8/birthdays').asPromise();
 
   console.log("Conexión establecida!");
 

@@ -20,8 +20,8 @@ module.exports = class Client extends AkairoClient {
     this.commandHandler = new CommandHandler(this, {
       // Options for the command handler
       defaultCooldown: 3,
-      directory: './Commands/',
-      prefix: 'nn!',
+      directory: './commands/',
+      prefix: 'f!',
       automateCategories: true,
     });
 
@@ -30,7 +30,7 @@ module.exports = class Client extends AkairoClient {
     this.commandHandler.loadAll();
 
     this.listenerHandler = new ListenerHandler(this, {
-      directory: './Listeners/'
+      directory: './listeners/'
     });
 
     this.commandHandler.useListenerHandler(this.listenerHandler);

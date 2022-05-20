@@ -2,7 +2,7 @@ const { Schema, createConnection } = require('mongoose');
 
 async function getGuildModel() {
   console.log("Estableciendo conexión a mongodb/guilds...");
-  const connection = await createConnection('mongodb://localhost/guilds').asPromise();
+  const connection = await createConnection('mongodb://192.168.0.8/guilds').asPromise();
   console.log("Conexión establecida!");
 
   console.log("Creando schema para guilds...");
