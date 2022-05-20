@@ -30,11 +30,11 @@ module.exports = {
     .addIntegerOption(waitTime => {
       return waitTime.setName('esperar')
         .setDescription('Tiempo de espera para que el grupo se complete, en minutos.')
-        .addChoices([
-          ["8 Minutos", 8],
-          ["10 Minutos", 10],
-          ["15 Minutos", 14] // 14 por restricciones de discord
-        ])
+        .addChoices(
+          { name: "8 Minutos", value: 8 },
+          { name: "10 Minutos", value: 10 },
+          { name: "15 Minutos", value: 14 }
+        )
     }),
 
   isGlobal: true,

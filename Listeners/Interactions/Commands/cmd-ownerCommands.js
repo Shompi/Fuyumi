@@ -19,11 +19,11 @@ module.exports = {
       .addStringOption(nombre => nombre.setName('nombre').setDescription('Nombre de la actividad').setRequired(true))
       .addStringOption(type => type.setName('tipo')
         .setDescription('El tipo de actividad')
-        .addChoices([
-          ["Playing", "PLAYING"],
-          ["Watching", "WATCHING"],
-          ["Listening", "LISTENING"]
-        ])))
+        .addChoices(
+          { name: "Playing", value: "PLAYING" },
+          { name: "Watching", value: "WATCHING" },
+          { name: "Listening", value: "LISTENING" },
+        )))
     // Host command
     .addSubcommand(host => host.setName('host').setDescription('Hostea a un usuario que esté transmitiendo en Twitch / Youtube')
       .addUserOption(user => user.setName('usuario').setDescription('El usuario que está en vivo'))

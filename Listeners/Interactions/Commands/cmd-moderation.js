@@ -45,7 +45,7 @@ module.exports = {
           return channel.setName('canal')
             .setDescription('Canal al que quieres enviar este anuncio')
             .setRequired(true)
-            .addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews]);
+            .addChannelTypes(ChannelType.GuildText, ChannelType.GuildNews);
         })
         .addStringOption(description => {
           return description.setName('descripcion')
@@ -60,19 +60,19 @@ module.exports = {
         .addStringOption(color => {
           return color.setName('color')
             .setDescription('El color que quieres que tenga el embed (barra lateral izquierda)')
-            .addChoices([
-              ["Amarillo", "YELLOW"],
-              ["Azul", "BLUE"],
-              ["Blanco", "WHITE"],
-              ["Dorado", "GOLD"],
-              ["Fucsia", "FUCHSIA"],
-              ["Morado", "PURPLE"],
-              ["Naranja", "ORANGE"],
-              ["Rojo", "RED"],
-              ["Verde", "GREEN"],
-              ["Verde Oscuro", "DARK_GREEN"],
-              ["Random", "RANDOM"],
-            ])
+            .addChoices(
+              { name: "Amarillo", value: "YELLOW" },
+              { name: "Azul", value: "BLUE" },
+              { name: "Blanco", value: "WHITE" },
+              { name: "Dorado", value: "GOLD" },
+              { name: "Fucsia", value: "FUCHSIA" },
+              { name: "Morado", value: "PURPLE" },
+              { name: "Naranja", value: "ORANGE" },
+              { name: "Rojo", value: "RED" },
+              { name: "Verde", value: "GREEN" },
+              { name: "Verde Oscuro", value: "DARK_GREEN" },
+              { name: "Random", value: "RANDOM" },
+            )
         })
         .addStringOption(imagen => {
           return imagen.setName('imagen')
@@ -111,7 +111,7 @@ module.exports = {
       .setDescription('Comando para realizar encuestas en un canal.')
       .addStringOption(title => title.setName('titulo').setDescription('El título de ésta encuesta'))
       .addStringOption(description => description.setName('descripcion').setDescription('La descripción de esta encuesta'))
-      .addChannelOption(channel => channel.setName('canal').setDescription('El canal en donde quieres enviar la encuesta. (def: El canal donde usas el comando)').addChannelType(ChannelType.GuildText))
+      .addChannelOption(channel => channel.setName('canal').setDescription('El canal en donde quieres enviar la encuesta. (def: El canal donde usas el comando)').addChannelTypes(ChannelType.GuildText))
       .addStringOption(option1 => option1.setName('opcion_1').setDescription("Opcion de la encuesta"))
       .addStringOption(option2 => option2.setName('opcion_2').setDescription("Opcion de la encuesta"))
       .addStringOption(option3 => option3.setName('opcion_3').setDescription("Opcion de la encuesta"))
