@@ -4,7 +4,6 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { TimeoutMember } = require('./SubCommands/mod-timeout');
 const { Poll } = require('./SubCommands/mod-poll');
 const { Announce } = require('./SubCommands/mod-announce');
-const { UploadEmoji, UploadEmojiByURL } = require('./SubCommands/mod-uploademoji');
 
 const { ChannelType } = require('discord-api-types/v9');
 
@@ -117,20 +116,7 @@ module.exports = {
       .addStringOption(option3 => option3.setName('opcion_3').setDescription("Opcion de la encuesta"))
       .addStringOption(option4 => option4.setName('opcion_4').setDescription("Opcion de la encuesta"))
       .addStringOption(option5 => option5.setName('opcion_5').setDescription("Opcion de la encuesta"))
-      .addIntegerOption(tiempo => tiempo.setName('duracion').setDescription('La duración de esta encuesta en minutos. (def: 5 minutos)')))
-
-    // Upload emoji command
-    .addSubcommand(subcommand =>
-      subcommand.setName('subir_emoji')
-        .setDescription('Sube un emoji al servidor con una imagen local que puedes subir')
-        .addStringOption(nombre => nombre.setName('nombre').setDescription('El nombre para el emoji').setRequired(true))
-        .addAttachmentOption(attachment => attachment.setName('imagen').setDescription('La imágen del emoji que quieres subir').setRequired(true))
-    )
-    .addSubcommand(subcommand =>
-      subcommand.setName('subir_emoji_url')
-        .setDescription('Sube un emoji al servidor con la url de una imagen')
-        .addStringOption(name => name.setName('nombre').setDescription('Nombre del emoji').setRequired(true))
-        .addStringOption(url => url.setName('imagen_url').setDescription('La URL online de la imagen del emoji'))),
+      .addIntegerOption(tiempo => tiempo.setName('duracion').setDescription('La duración de esta encuesta en minutos. (def: 5 minutos)'))),
   isGlobal: true,
   /**
    * 
@@ -153,12 +139,6 @@ module.exports = {
           return await Announce(interaction);
         case 'encuesta':
           return await Poll(interaction);
-        case 'subir_emoji':
-          if (!interaction.guild.me.permissions.has('MANAGE_EMOJIS_AND_STICKERS')) return await interaction.reply({ content: 'No tengo permisos para administrar emojis en este servidor. Necesito ese permiso para poder ejecutar este comando.', ephemeral: true })
-          return await UploadEmoji(interaction);
-        case 'subir_emoji_url':
-          if (!interaction.guild.me.permissions.has('MANAGE_EMOJIS_AND_STICKERS')) return await interaction.reply({ content: 'No tengo permisos para administrar emojis en este servidor. Necesito ese permiso para poder ejecutar este comando.', ephemeral: true })
-          return await UploadEmojiByURL(interaction);
       }
 
     } else {
