@@ -12,7 +12,7 @@ module.exports.ImageResize = async (interaction) => {
     height: interaction.options.getInteger('altura', false),
     width: interaction.options.getInteger('largo', false),
     format: interaction.options.getString('formato', false) ?? 'png',
-    url: interaction.options.getAttachment('imagen', false)?.url ?? interaction.options.getString('url', false),
+    url: interaction.options.getAttachment('archivo', false)?.url ?? interaction.options.getString('url', false),
     quality: interaction.options.getInteger('calidad', false)
   }
 
