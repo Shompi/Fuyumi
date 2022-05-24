@@ -2,7 +2,7 @@ const { Collection, Intents } = require('discord.js');
 const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akairo');
 
 const { GUILDS, GUILD_BANS, GUILD_EMOJIS_AND_STICKERS, GUILD_MEMBERS,
-  GUILD_MESSAGES, GUILD_PRESENCES, DIRECT_MESSAGES, GUILD_VOICE_STATES } = Intents.FLAGS
+  GUILD_MESSAGES, GUILD_PRESENCES, DIRECT_MESSAGES, GUILD_VOICE_STATES, } = Intents.FLAGS
 
 module.exports = class Client extends AkairoClient {
   constructor() {
@@ -13,8 +13,9 @@ module.exports = class Client extends AkairoClient {
       // Discord.js Client Options
       disableMentions: 'everyone',
       intents: [GUILDS, GUILD_BANS, GUILD_EMOJIS_AND_STICKERS, GUILD_MEMBERS,
-        GUILD_MESSAGES, GUILD_PRESENCES, DIRECT_MESSAGES, GUILD_VOICE_STATES],
+        GUILD_MESSAGES, GUILD_PRESENCES, DIRECT_MESSAGES, GUILD_VOICE_STATES,],
       partials: ['MESSAGE', 'REACTION', 'USER', 'CHANNEL', 'GUILD_MEMBER'],
+
     });
 
     this.commandHandler = new CommandHandler(this, {

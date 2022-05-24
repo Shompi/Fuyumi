@@ -1,6 +1,7 @@
 const { CommandInteraction, MessageAttachment, MessageEmbed, Util } = require('discord.js');
 const fetch = require('node-fetch').default;
 const Sharp = require('sharp');
+const urlRegexp = new RegExp(/[.](jpg|jpeg|png|gif|webp)$/gm);
 
 /**
  * 
@@ -21,6 +22,10 @@ module.exports.ImageResize = async (interaction) => {
     return await interaction.reply({
       content: 'Debes añadir al menos un archivo **.jpg, .jpeg, .png, .webp o .gif** o una URL válida de una imagen.',
       ephemeral: true
+    })
+  if (!urlRegexp.test(options.url))
+    return await interaction.reply({
+      content: 'La url o el archivo que has ingresado no es una imagen.\nAsegurate que la url apunte directamente a una imagen online, o que el archivo que subas sea un archivo válido.'
     })
 
   await interaction.deferReply({ ephemeral: true })
@@ -60,6 +65,7 @@ module.exports.ImageResize = async (interaction) => {
       + `\n**Formato**: **${oldMetadata.format}** -> **${newMetadata.format}**`)
     .setColor(Util.resolveColor('BLUE'))
     .setImage(`attachment://${options.name}.${options.format}`)
+    .setFooter({ text: "Las imágenes procesadas no son guardadas localmente.", iconURL: interaction.client.user.displayAvatarURL({ size: 128 }) })
     .setTimestamp();
 
   return await interaction.editReply({

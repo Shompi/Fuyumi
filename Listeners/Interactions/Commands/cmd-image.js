@@ -38,7 +38,7 @@ module.exports = {
               { name: 'GIF', value: 'gif' }
             )
         )
-        .addIntegerOption(quality => quality.setName('calidad').setDescription('Calidad de la compresión (1 - 100)').setMinValue(1).setMaxValue(100))
+        .addIntegerOption(quality => quality.setName('calidad').setDescription('Calidad de la compresión (JPEG, PNG o WEBP) (1 - 100)').setMinValue(1).setMaxValue(100))
     )
   ,
   isGlobal: false,
