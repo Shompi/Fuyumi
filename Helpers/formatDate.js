@@ -4,7 +4,7 @@ const { format } = require('date-format-parse');
 * @param {Date} date
 */
 module.exports.FormatDate = (date) => {
-  return format(date, "DD-MM-YYYY", {
+  return format(date, "DD-MM-YYYY HH:mm:ss", {
     locale: {
       months: [
         'Enero',

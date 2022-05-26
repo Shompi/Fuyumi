@@ -32,7 +32,7 @@ function getUserInfo(user) {
   return new MessageEmbed()
     .setTitle(user.tag)
     .setThumbnail(user.displayAvatarURL({ size: 512, dynamic: true }))
-    .setDescription(`Cuenta creada: ${FormatDate(user.createdAt)}`)
+    .setDescription(`Creación de la cuenta: ${FormatDate(user.createdAt)}\nColor personalizado: ${user.accentColor} (${user.hexAccentColor})\n¿Bot?: ${user.bot ? "Si" : "No"}`)
     .setColor(Util.resolveColor('BLUE'))
 }
 
