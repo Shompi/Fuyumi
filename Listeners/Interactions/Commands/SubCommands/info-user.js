@@ -6,7 +6,7 @@ const { FormatDate } = require('../../../../Helpers/formatDate');
  * @param {CommandInteraction} interaction 
  */
 const UserInfo = async (interaction) => {
-  const user = interaction.options.getMember('usuario', false) ?? interaction.options.getString('id', false) ?? interaction.user;
+  const user = interaction.options.getMember('usuario', false) ?? interaction.options.getString('id', false) ?? interaction.member ?? interaction.user;
 
   if (user instanceof GuildMember) {
 
