@@ -16,7 +16,7 @@ _To maintain version control over Fuyumi's development, plus it is easier for me
 
 _Fuyumi itself doesn't have a documentation (besides the one showing the commands inside Discord.) but Im leaving the documentation for some of the packages that Fuyumi is most dependent:_
 
-* [Discord.js v13.6.0](https://discord.js.org/)
+* [Discord.js v13.7.0](https://discord.js.org/)
 * [node.js v16+](https://nodejs.org/)
 * [Keyv](https://enmap.evie.dev/)
 * Mongoose MongoDB

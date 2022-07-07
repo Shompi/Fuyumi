@@ -1,9 +1,16 @@
 "use strict";
-const { MessageButton, CommandInteraction, MessageEmbed, Util, Collection, TextChannel, MessageActionRow } = require('discord.js');
+const { MessageButton,
+  CommandInteraction,
+  MessageEmbed,
+  Util,
+  Collection,
+  TextChannel,
+  MessageActionRow,
+  Formatters } = require('discord.js');
 
 /** @param {[{name: string, voters: number}]} options */
 function createButtonsFromArray(options) {
-  return options.map((option, index) => new MessageButton().setLabel(`VOTAR - ${index + 1}`).setStyle("PRIMARY").setCustomId(`poll-option-${index}`));
+  return options.map((_, index) => new MessageButton().setLabel(`VOTAR - ${index + 1}`).setStyle("PRIMARY").setCustomId(`poll-option-${index}`));
 }
 
 /** @param {[{name: string, voters: number}]} options */
@@ -30,7 +37,8 @@ module.exports.Poll = async (interaction) => {
       title: interaction.options.getString('titulo') ?? "",
       description: interaction.options.getString('descripcion') ?? "",
       options: Object.values(optionsObject).filter(option => option !== null).map(option => ({ name: option, voters: 0 })),
-      duration: interaction.options.getInteger('duracion') * 1000 * 60 ?? 1000 * 60 * 5, // defaults to 5 minutes.
+      // Duration defaults to 5 minutes
+      duration: interaction.options.getInteger('duracion') ?? 5,
       /** @type {TextChannel} */
       channel: interaction.options.getChannel('canal') ?? interaction.channel,
     }
@@ -38,10 +46,12 @@ module.exports.Poll = async (interaction) => {
     if (!args.channel.permissionsFor(interaction.guild.me).has("SEND_MESSAGES"))
       return await interaction.editReply({ content: 'No tengo permisos para enviar mensajes en ese canal. Asegúrate de darme los permisos necesarios y usa este comando nuevamente.' });
 
+    const relativeTime = Formatters.time(Math.round((Date.now() + (args.duration * 1000 * 60)) / 1000), "R");
+
     const pollEmbed = new MessageEmbed()
       .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL({ size: 128 }) })
       .setTitle(args.title)
-      .setDescription(`${args.description}\nLa encuesta terminará <t:${Math.round((Date.now() + args.duration) / 1000)}:R>`)
+      .setDescription(`${args.description}\nLa encuesta terminará en ${relativeTime}`)
       .addFields({
         name: "Opciones", value: formatOptions(args.options)
       })
@@ -58,7 +68,7 @@ module.exports.Poll = async (interaction) => {
 
     pollMessage.createMessageComponentCollector({
       componentType: 'BUTTON',
-      time: args.duration,
+      time: args.duration * 1000 * 60,
     })
       .on('collect', async bInteraction => {
 
@@ -75,7 +85,7 @@ module.exports.Poll = async (interaction) => {
         // Actualizar mensaje
         const updatedEmbed = new MessageEmbed()
           .setTitle(`¡La votación ha finalizado!`)
-          .setDescription(`**Resultados**\n\n${args.options.sort((opA, opB) => opB.voters - opA.voters).map((op, i) => `**${i + 1}°** - ${op.name} -> **${op.voters} votos.**`).join("\n")}`)
+          .setDescription(`**Resultados**\n\n${args.options.sort((opA, opB) => opB.voters - opA.voters).map((op, i) => `**${i + 1}°** - ${op.name} -> **${op.voters} votos.**`).join("\n")}\nEncuesta terminada: ${relativeTime}}`)
           .setColor(Util.resolveColor('GREEN'));
 
         await pollMessage.edit({ content: '¡La votación ha finalizado!', embeds: [updatedEmbed], components: [] });
