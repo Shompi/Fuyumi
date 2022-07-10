@@ -1,15 +1,17 @@
 const { CommandInteraction } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { ChannelType } = require('discord-api-types/v9');
 
+/* Comandos */
 const { TimeoutMember } = require('./SubCommands/mod-timeout');
 const { Poll } = require('./SubCommands/mod-poll');
 const { Announce } = require('./SubCommands/mod-announce');
+const { ChangeVoiceRegion } = require('./SubCommands/mod-voiceRegion');
 
-const { ChannelType } = require('discord-api-types/v9');
 
 module.exports = {
   hasSubcommands: true,
-  subcommands: ["mod-timeout.js", "mod-announce.js", "mod-poll.js"],
+  subcommands: ["mod-timeout.js", "mod-announce.js", "mod-poll.js", "mod-voiceRegion.js"],
   data: new SlashCommandBuilder()
     .setName('moderacion')
     .setDescription('Comandos de moderación')
@@ -116,7 +118,22 @@ module.exports = {
       .addStringOption(option3 => option3.setName('opcion_3').setDescription("Opcion de la encuesta"))
       .addStringOption(option4 => option4.setName('opcion_4').setDescription("Opcion de la encuesta"))
       .addStringOption(option5 => option5.setName('opcion_5').setDescription("Opcion de la encuesta"))
-      .addIntegerOption(tiempo => tiempo.setName('duracion').setDescription('La duración de esta encuesta en minutos. (def: 5 minutos)'))),
+      .addIntegerOption(tiempo => tiempo.setName('duracion').setDescription('La duración de esta encuesta en minutos. (def: 5 minutos)')))
+
+    // Voice Region command
+    .addSubcommand(command => command.setName("region-de-voz").setDescription("Cambia la región de voz del canal en el que estás")
+      .addStringOption(region => region.setName('region').setDescription("La región a la que quieres cambiar el canal")
+        .setRequired(false)
+        .addChoices(
+          { name: "Brazil", value: "brazil" },
+          { name: "Japón", value: "japan" },
+          { name: "Estados Unidos Central", value: "us-central" },
+          { name: "Estados Unidos Este", value: "us-east" },
+          { name: "Estados Unidos Oeste", value: "us-west" },
+          { name: "Automático", value: "auto" }
+        )
+      )
+    ),
   isGlobal: true,
   /**
    * 
@@ -139,6 +156,8 @@ module.exports = {
           return await Announce(interaction);
         case 'encuesta':
           return await Poll(interaction);
+        case 'region-de-voz':
+          return await ChangeVoiceRegion(interaction);
       }
 
     } else {

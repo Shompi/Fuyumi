@@ -1,11 +1,11 @@
 #Folders
 node_modules
-GameImages
 Logs
 Keys
 data
 .vscode
 Deployment
+GameImages
 
 #Environment variables
 *.env
