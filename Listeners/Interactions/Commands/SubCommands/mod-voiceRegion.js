@@ -47,6 +47,6 @@ module.exports.ChangeVoiceRegion = async (interaction) => {
   }
 
   return await interaction.reply({
-    embeds: [new MessageEmbed().setColor(Util.resolveColor("BLUE")).setDescription(`Se ha cambiado la region del voz del canal ${voiceChannel.name} a ${inputRegion}`)]
+    embeds: [new MessageEmbed().setColor(Util.resolveColor("BLUE")).setDescription(`Se ha cambiado la region de voz del canal **${voiceChannel.name}** a **${inputRegion}**`)]
   });
 }
