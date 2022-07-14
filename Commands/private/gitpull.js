@@ -1,8 +1,7 @@
-const { MessageEmbed, Message, Util, Formatters } = require('discord.js');
+const { MessageEmbed, Message, Util } = require('discord.js');
 const { Command } = require('discord-akairo');
-const { spawn } = require('child_process');
-const GITPATH = "C:/Program Files/Git/git-cmd.exe"; // Asumiendo que el path siempre será el mismo.
-const ARGS = ["git pull && exit"]
+const { promisify } = require('node:util')
+const exec = promisify(require('node:child_process').exec);
 
 class GitPullCommand extends Command {
   constructor() {
@@ -14,31 +13,22 @@ class GitPullCommand extends Command {
   }
   /**
   @param {Message} message */
-  exec(message, args) {
-    const cmd = spawn(GITPATH, ARGS);
-    let log = "";
+  async exec(message, args) {
 
-    cmd.stdout.on("data", (data) => {
-      console.log(`stdout ${data}`);
-      log += data.toString();
-    });
+    const lastMessage = await message.reply({ content: "🔃 pulling updates..." })
 
-    cmd.stderr.on('data', (data) => {
-      console.error(`stderr: ${data}`);
-      log += data.toString();
-      cmd.kill();
-    });
+    const { stderr, stdout } = await exec('git pull')
 
-    cmd.on('close', async (code) => {
-      console.log(`child process exited with code ${code}`);
-      log += `${code}`;
-      const logEmbed = new MessageEmbed()
-        .setTitle("LOG")
-        .setDescription(Formatters.codeBlock(log.slice(0, 3500)))
-        .setColor(Util.resolveColor('BLUE'));
+    console.log(stdout);
+    const embed = new MessageEmbed()
+      .setDescription(stderr || stdout)
+      .setColor(Util.resolveColor("BLUE"))
+      .setTimestamp()
 
-      await message.channel.send({ embeds: [logEmbed], content: 'OK' });
-    });
+    return lastMessage.edit({
+      embeds: [embed]
+    })
+
   }
 }
 
