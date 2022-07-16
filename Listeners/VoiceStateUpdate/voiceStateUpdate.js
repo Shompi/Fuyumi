@@ -18,6 +18,8 @@ class InteractionEvent extends Listener {
   * 
   */
   async exec(oldState, newState) {
+
+    return; // Disabling this for now, may come back later.
     if (newState.guild.id !== "537484725896478733" || Timeouts.has(newState.member.id)) return;
 
     if (oldState.streaming) return;

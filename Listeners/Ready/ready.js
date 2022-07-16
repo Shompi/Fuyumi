@@ -58,7 +58,9 @@ class ReadyListener extends Listener {
     //console.log("Guardando guilds...");
     // await saveGuilds(client.guilds.cache, client.models.GuildModel);
 
-    console.log("Startup complete!")
+    console.log("Startup complete!");
+
+    client.emit("deployServer", client);
   }
 }
 
