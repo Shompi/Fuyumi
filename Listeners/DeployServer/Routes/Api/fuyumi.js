@@ -4,7 +4,7 @@ const { IncomingMessage, ServerResponse } = require('http')
  * @param {IncomingMessage} request 
  * @param {ServerResponse} response 
  */
-module.exports.Fuyumi = async (request, response) => {
+module.exports.Fuyumi = async (request, response, client) => {
 
   response.writeHead(200);
 

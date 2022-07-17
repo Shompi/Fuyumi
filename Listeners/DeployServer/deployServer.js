@@ -25,7 +25,7 @@ class DeployServer extends Listener {
       console.log("Received a request on route:" + request.url);
 
       if (request.url === '/api/fuyumi') {
-        return await Fuyumi(request, response);
+        return await Fuyumi(request, response, client);
       } else {
         return response.writeHead(404).end('El recurso que has solicitado no existe.');
       }
