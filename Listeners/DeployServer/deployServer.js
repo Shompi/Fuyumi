@@ -1,5 +1,6 @@
 const { Listener } = require('discord-akairo');
 const http = require('node:http');
+const { Fuyumi } = require('./Routes/Api/Fuyumi');
 class DeployServer extends Listener {
   constructor() {
     super('deployServer', {
@@ -20,31 +21,16 @@ class DeployServer extends Listener {
 
     console.log("Stats api listening on port 2289");
 
-    server.on('request', (request, response) => {
-
+    server.on('request', async (request, response) => {
       console.log("Received a request on route:" + request.url);
 
-      response.writeHead(200);
+      if (request.url === '/api/fuyumi') {
+        return await Fuyumi(request, response);
+      } else {
+        return response.writeHead(404).end('El recurso que has solicitado no existe.');
+      }
 
-      response.write(JSON.stringify({
-        avatarURL: client.user.displayAvatarURL({ size: 1024 }),
-        username: client.user.username,
-        tag: client.user.tag,
-        guildsCount: client.guilds.cache.size,
-        usersOnCache: client.users.cache.size,
-        uptime: client.uptime,
-        ownerTag: "ShompiFlen#3338",
-      }));
-
-      response.end();
     });
-  }
-}
-
-class YandereResponse {
-  constructor() {
-    this.tags = null;
-    this.url = null;
   }
 }
 
