@@ -25,17 +25,26 @@ class DeployServer extends Listener {
       console.log("Received a request on route:" + request.url);
 
       response.writeHead(200);
-      response.writehead
+
       response.write(JSON.stringify({
+        avatarURL: client.user.displayAvatarURL({ size: 1024 }),
         username: client.user.username,
         tag: client.user.tag,
         guildsCount: client.guilds.cache.size,
         usersOnCache: client.users.cache.size,
-        uptime: client.uptime
+        uptime: client.uptime,
+        ownerTag: "ShompiFlen#3338",
       }));
 
       response.end();
     });
+  }
+}
+
+class YandereResponse {
+  constructor() {
+    this.tags = null;
+    this.url = null;
   }
 }
 
