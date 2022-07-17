@@ -1,6 +1,6 @@
 const { Listener } = require('discord-akairo');
 const http = require('node:http');
-const { Fuyumi } = require('./Routes/Api/Fuyumi');
+const { Fuyumi } = require('./Routes/Api/fuyumi');
 class DeployServer extends Listener {
   constructor() {
     super('deployServer', {
