@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const { Guild, TextChannel, MessageEmbed, Util } = require('discord.js');
+const { Guild, TextChannel, EmbedBuilder, Colors } = require('discord.js');
 
 class GuildCreateListener extends Listener {
   constructor() {
@@ -14,9 +14,6 @@ class GuildCreateListener extends Listener {
    * @param {Guild} guild 
    */
   async exec(guild) {
-
-
-    // addGuildToDB(guild);
     const owner = await guild.fetchOwner();
 
     /** @type {TextChannel} */
@@ -27,40 +24,14 @@ class GuildCreateListener extends Listener {
 
     else {
       return await channel.send({
-        embeds: [new MessageEmbed()
+        embeds: [new EmbedBuilder()
           .setTitle(`Nueva guild: ${guild.name}`)
-          .setColor(Util.resolveColor('BLUE'))
+          .setColor(Colors.Blue)
           .setDescription(`Miembros: ${guild.memberCount}\nId: ${guild.id}\nOwner: ${owner.user.tag} ${owner.id}`)
           .setThumbnail(guild.iconURL())]
       });
     }
   }
-}
-
-/** @param {Guild} guild */
-async function addGuildToDB(guild) {
-  const { GuildModel } = guild.client.models;
-
-  const isOnDB = await GuildModel.findOne({ id: guild.id });
-
-  if (isOnDB)
-    return console.log(`${guild.client.user.username} entró a la guild ${guild.name} ${guild.id} pero esta guild ya estaba en la base de datos.`);
-
-  else {
-    await GuildModel.create({
-      id: guild.id,
-      name: guild.name,
-      iconURL: guild.iconURL(),
-      memberCount: guild.memberCount,
-      channelCount: guild.channels.cache.size,
-      owner: {
-        tag: guild.client.users.cache.get(guild.ownerId).username ?? '- -',
-        avatarURL: guild.client.users.cache.get(guild.ownerId).displayAvatarURL()
-      }
-    });
-  }
-
-  console.log(`La guild ${guild.name} ${guild.id} ha sido agregada a la base de datos!`);
 }
 
 module.exports = GuildCreateListener;

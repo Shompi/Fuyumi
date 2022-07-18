@@ -1,26 +1,26 @@
-const { ContextMenuCommandBuilder } = require('@discordjs/builders');
-const { ContextMenuInteraction, MessageEmbed, Util } = require('discord.js');
-const { ApplicationCommandType } = require('discord-api-types/v9')
+//@ts-check
+const { ContextMenuCommandBuilder, EmbedBuilder, ApplicationCommandType, ContextMenuCommandInteraction, Colors, } = require('discord.js');
+
+
 module.exports = {
   data: new ContextMenuCommandBuilder()
     .setName('Avatar')
-    .setType(ApplicationCommandType.User)
-    .setDefaultPermission(true),
+    .setType(ApplicationCommandType.User),
   isGlobal: true,
   /**
    * 
-   * @param {ContextMenuInteraction} interaction 
+   * @param {ContextMenuCommandInteraction} interaction 
    */
   async execute(interaction) {
 
     const target = interaction.targetId;
 
-    const targetUser = await interaction.client.users.fetch(target, { cache: true });
+    const targetUser = await interaction.client.users.fetch(target);
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle(`Avatar de ${targetUser.tag}`)
-      .setImage(targetUser.displayAvatarURL({ size: 2048, dynamic: true }))
-      .setColor(interaction.member?.displayColor ?? Util.resolveColor('BLUE'));
+      .setImage(targetUser.displayAvatarURL({ size: 2048 }))
+      .setColor(interaction.inCachedGuild() ? interaction.member.displayColor : Colors.Blue);
 
     return await interaction.reply({
       embeds: [embed],

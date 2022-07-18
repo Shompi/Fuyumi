@@ -1,4 +1,4 @@
-const { MessageEmbed, Message, Util } = require('discord.js');
+const { EmbedBuilder, Message, Colors } = require('discord.js');
 const { Command } = require('discord-akairo');
 const { promisify } = require('node:util')
 const exec = promisify(require('node:child_process').exec);
@@ -20,9 +20,9 @@ class GitPullCommand extends Command {
     const { stderr, stdout } = await exec('git pull')
 
     console.log(stdout);
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setDescription(stderr || stdout)
-      .setColor(Util.resolveColor("BLUE"))
+      .setColor(Colors.Blue)
       .setTimestamp()
 
     return lastMessage.edit({

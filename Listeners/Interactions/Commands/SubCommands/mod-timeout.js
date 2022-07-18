@@ -1,24 +1,22 @@
 //@ts-check
-const { CommandInteraction, GuildMember } = require("discord.js");
+const { ChatInputCommandInteraction, GuildMember } = require("discord.js");
 
 /**
- * 
- * @param {CommandInteraction} interaction 
- * @returns 
+ * @param {ChatInputCommandInteraction<'cached'>} interaction 
  */
 
 module.exports.TimeoutMember = async (interaction) => {
-  if (!interaction.guild.me.permissions.has('MODERATE_MEMBERS')) {
+  if (!interaction.guild.members.me?.permissions.has('ModerateMembers')) {
     return await interaction.reply({ content: 'No puedo ejecutar este comando por que me falta el permiso de "MODERAR_MIEMBROS"', ephemeral: true });
   }
 
-  const timeoutSeconds = interaction.options.getInteger('segundos') * 1000 ?? 60_000;
+  const timeoutSeconds = (interaction.options.getInteger('segundos', false) ?? 60) * 1000;
   const target = interaction.options.getMember('miembro');
   const timeoutReason = interaction.options.getString('razon') ?? "No se especificó una razón.";
 
   if (target instanceof GuildMember) { // gonna have to take care of the other cases later
 
-    if (target.permissions.has('ADMINISTRATOR'))
+    if (target.permissions.has('Administrator'))
       return await interaction.reply({ content: 'No puedes silenciar a este miembro por que tiene permisos de Administrador.', ephemeral: true });
 
     const muted = await target.timeout(timeoutSeconds, timeoutReason).catch(console.error);

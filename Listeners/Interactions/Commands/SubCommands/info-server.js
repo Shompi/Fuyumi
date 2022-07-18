@@ -1,5 +1,5 @@
 //@ts-check
-const { CommandInteraction, MessageEmbed, GuildMember, Collection, Role } = require('discord.js');
+const { ChatInputCommandInteraction, EmbedBuilder, Collection, Role, ChannelType } = require('discord.js');
 const { FormatDate } = require("../../../../Helpers/formatDate");
 
 const TIERS = {
@@ -20,12 +20,12 @@ const VERIFICATIONLEVELS = {
 
 /**
  * 
- * @param {CommandInteraction} interaction
+ * @param {ChatInputCommandInteraction} interaction
  */
 const ServerInfo = async (interaction) => {
-  const memberList = await interaction.guild.members.fetch().catch(console.error);
 
   if (interaction.inCachedGuild()) {
+    const memberList = await interaction.guild.members.fetch().catch(console.error);
 
     if (!memberList)
       return interaction.reply({
@@ -40,8 +40,8 @@ const ServerInfo = async (interaction) => {
       else
         humans += 1;
     }
+
     const { guild: { channels }, guild, member } = interaction;
-    channels.cache.first().type;
 
     const chCount = {
       TEXT: 0,
@@ -53,19 +53,24 @@ const ServerInfo = async (interaction) => {
 
     for (const [_id, channel] of channels.cache) {
       switch (channel.type) {
-        case 'GUILD_CATEGORY':
+
+        case ChannelType.GuildCategory:
           chCount.CATEGORY++;
           break;
-        case 'GUILD_NEWS':
+
+        case ChannelType.GuildNews:
           chCount.NEWS++;
           break;
-        case 'GUILD_TEXT':
+
+        case ChannelType.GuildText:
           chCount.TEXT++;
           break;
-        case 'GUILD_STAGE_VOICE':
+
+        case ChannelType.GuildStageVoice:
           chCount.STAGES++;
           break;
-        case 'GUILD_VOICE':
+
+        case ChannelType.GuildVoice:
           chCount.VOICE++;
           break;
       }
@@ -74,7 +79,7 @@ const ServerInfo = async (interaction) => {
     const roles = sliceRoles(guild.roles.cache);
     const chevronEmoji = interaction.client.emojis.cache.find(emoji => emoji.name === 'chevron_right') ?? "\>";
 
-    const serverInfo = new MessageEmbed()
+    const serverInfo = new EmbedBuilder()
       .setAuthor({
         name: `Información del servidor ${guild.name}`
       })
@@ -94,7 +99,7 @@ const ServerInfo = async (interaction) => {
         + `\n`
         + `**Roles [${guild.roles.cache.size}]**\n`
         + `${roles}`)
-      .setThumbnail(guild.iconURL({ size: 512, dynamic: true }))
+      .setThumbnail(guild.iconURL({ size: 512 }))
       .setColor(member.displayColor)
       .setTimestamp();
 
@@ -126,6 +131,8 @@ function sliceRoles(roles) {
   } else {
     return roleArray.map(role => role.toString()).join(", ");
   }
+
+  return '';
 }
 
 module.exports = { ServerInfo };

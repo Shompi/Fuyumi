@@ -1,11 +1,12 @@
-const { CommandInteraction, MessageAttachment, MessageEmbed, Util } = require('discord.js');
+//@ts-check
+const { ChatInputCommandInteraction, AttachmentBuilder, EmbedBuilder, Colors } = require('discord.js');
 const fetch = require('node-fetch').default;
 const Sharp = require('sharp');
 const urlRegexp = new RegExp(/[.](jpg|jpeg|png|gif|webp)$/gm);
 
 /**
  * 
- * @param {CommandInteraction} interaction 
+ * @param {ChatInputCommandInteraction} interaction 
  */
 module.exports.ImageResize = async (interaction) => {
 
@@ -38,9 +39,12 @@ module.exports.ImageResize = async (interaction) => {
     });
 
   const oldMetadata = await getImageMetadata(imageBuffer);
+
+  // @ts-ignore
   options.format = interaction.options.getString('format', false) ?? oldMetadata.format;
 
   const output = Sharp(imageBuffer)
+    // @ts-ignore
     .resize({ height: options.height, width: options.width });
 
   if (options.format === 'jpeg')
@@ -54,16 +58,16 @@ module.exports.ImageResize = async (interaction) => {
 
   const outputBuffer = await output.toBuffer();
 
-  const outputAttachment = new MessageAttachment(outputBuffer, `${options.name}.${options.format}` ?? `OUTPUT.${options.format}`);
+  const outputAttachment = new AttachmentBuilder(outputBuffer).setName("OUTPUT." + options.format);
 
   const newMetadata = await getImageMetadata(outputBuffer);
 
-  const statisticsEmbed = new MessageEmbed()
+  const statisticsEmbed = new EmbedBuilder()
     .setTitle('Estadísticas de la conversión')
     .setDescription(`**Peso (KB)**: **${oldMetadata.size / 1000}** -> **${newMetadata.size / 1000}**, **(${calculatePercentage(oldMetadata.size, newMetadata.size)})**`
       + `\n**Dimensiones LargoxAncho (px)**: **${oldMetadata.width}x${oldMetadata.height}** -> **${newMetadata.width}x${newMetadata.height}**`
       + `\n**Formato**: **${oldMetadata.format}** -> **${newMetadata.format}**`)
-    .setColor(Util.resolveColor('BLUE'))
+    .setColor(Colors.Blue)
     .setImage(`attachment://${options.name}.${options.format}`)
     .setFooter({ text: "Las imágenes procesadas no son guardadas localmente.", iconURL: interaction.client.user.displayAvatarURL({ size: 128 }) })
     .setTimestamp();
@@ -86,14 +90,14 @@ async function getImageMetadata(buffer) {
  */
 function calculatePercentage(oldSize, newSize) {
 
-  const base = 100;
   const firstOperation = oldSize / newSize;
   const secondOperation = 1 / firstOperation;
   const thirdOperation = secondOperation * 100;
   const result = 100 - thirdOperation;
 
   if (result <= 0)
-    return `${Math.abs(thirdOperation).toFixed(2) - 100}% más peso`
+
+    return `${(Math.abs(thirdOperation) - 100).toFixed(2)}% más peso`
   else
     return `${Math.abs(result).toFixed(2)}% menos peso`
 }

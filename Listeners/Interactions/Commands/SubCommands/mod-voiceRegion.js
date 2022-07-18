@@ -1,9 +1,10 @@
-const { CommandInteraction, MessageEmbed, Util } = require('discord.js');
+//@ts-check
+const { ChatInputCommandInteraction, EmbedBuilder, Colors } = require('discord.js');
 
 
 /**
  * 
- * @param {CommandInteraction} interaction 
+ * @param {ChatInputCommandInteraction} interaction 
  */
 module.exports.ChangeVoiceRegion = async (interaction) => {
 
@@ -22,10 +23,7 @@ module.exports.ChangeVoiceRegion = async (interaction) => {
     ephemeral: true
   });
 
-
   const inputRegion = interaction.options.getString('region', false);
-
-
 
   try {
 
@@ -43,10 +41,9 @@ module.exports.ChangeVoiceRegion = async (interaction) => {
       content: 'Ocurrió un error al intentar cambiar la región del canal de voz.',
       ephemeral: true
     });
-
   }
 
   return await interaction.reply({
-    embeds: [new MessageEmbed().setColor(Util.resolveColor("BLUE")).setDescription(`Se ha cambiado la region de voz del canal **${voiceChannel.name}** a **${inputRegion}**`)]
+    embeds: [new EmbedBuilder().setColor(Colors.Blue).setDescription(`Se ha cambiado la region de voz del canal **${voiceChannel.name}** a **${inputRegion}**`)]
   });
 }

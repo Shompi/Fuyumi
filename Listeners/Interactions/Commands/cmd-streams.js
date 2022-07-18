@@ -1,11 +1,12 @@
-const { CommandInteraction, MessageEmbed, InteractionCollector } = require("discord.js");
+//@ts-check
+const { ChatInputCommandInteraction, ChannelType } = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { setStreamChannel, setEnabled, setStreamerRole } = require("./SubCommands/streams");
 
 const Keyv = require('keyv');
 
 /**
- * @type {Keyv<{channelId: string, roleId: string, enabled: Boolean}>}
+ * @type {Keyv<{channelId: string?, roleId: string?, enabled: Boolean}>}
  */
 const StreamsConfigPerGuild = new Keyv('sqlite://StreamsConfigs.sqlite', { namespace: 'streamsConfig' });
 
@@ -21,6 +22,7 @@ module.exports = {
           return channel.setName('canal')
             .setDescription('Canal de texto en el que quieres que las transmisiones se envien')
             .setRequired(true)
+            .addChannelTypes(ChannelType.GuildText);
         })
     })
     .addSubcommand(toggleCommand => {
@@ -44,40 +46,31 @@ module.exports = {
   isGlobal: true,
 
   /**
-  * @param {CommandInteraction} interaction
-  * @return {Promise<string|MessageEmbed>}
+  * @param {ChatInputCommandInteraction} interaction
+  *
   */
   async execute(interaction) {
-    if (!interaction.inGuild())
+    if (!interaction.inCachedGuild())
       return await interaction.reply({ content: 'Este comando solo puede ser utilizado en un servidor.' });
 
     if (interaction.member.partial)
       await interaction.member.fetch();
 
-    if (!interaction.member.permissions.has('ADMINISTRATOR')) {
+    if (!interaction.member.permissions.has('Administrator')) {
       return await interaction.reply({
         content: "Solo miembros con el permiso de `Administrador` pueden usar este comando.",
         ephemeral: true
       });
     }
 
-    const configs = await StreamsConfigPerGuild.get(interaction.guildId);
-
-    if (!configs)
-      await StreamsConfigPerGuild.set(interaction.guildId, { channelId: null, enabled: false, roleId: null });
+    let configs = await StreamsConfigPerGuild.get(interaction.guildId) ?? ({ channelId: null, roleId: null, enabled: false });
 
     const commandName = interaction.options.getSubcommand();
+    const channel = interaction.options.getChannel('canal', false);
 
     switch (commandName) {
       case 'canal':
-
-        // Type checking
-        const channel = interaction.options.getChannel('canal', true);
-
-        if (channel.type !== 'GUILD_TEXT')
-          return await interaction.reply({ content: 'Solo puedes asignar canales de texto con este comando. Por favor usa el comando nuevamente e ingresa un canal de texto.', ephemeral: true });
-
-        else return await setStreamChannel({ interaction, channel, configs });
+        return await setStreamChannel({ interaction, channel, configs });
 
 
       case 'habilitar':

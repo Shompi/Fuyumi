@@ -1,12 +1,14 @@
-const { CommandInteraction, MessageEmbed, GuildMember, User, Util } = require('discord.js');
+//@ts-check
+const { ChatInputCommandInteraction, EmbedBuilder, GuildMember, User, Colors } = require('discord.js');
 const { FormatDate } = require('../../../../Helpers/formatDate');
 
 /**
  * 
- * @param {CommandInteraction} interaction 
+ * @param {ChatInputCommandInteraction} interaction 
  */
 const UserInfo = async (interaction) => {
-  const user = interaction.options.getMember('usuario', false) ?? interaction.options.getString('id', false) ?? interaction.member ?? interaction.user;
+
+  const user = interaction.options.getMember('usuario') ?? interaction.options.getString('id', false) ?? interaction.user;
 
   if (user instanceof GuildMember) {
 
@@ -22,6 +24,7 @@ const UserInfo = async (interaction) => {
       embeds: [getUserInfo(fetchedUser)]
     })
   }
+
 }
 
 /**
@@ -29,11 +32,11 @@ const UserInfo = async (interaction) => {
  * @param {User} user 
  */
 function getUserInfo(user) {
-  return new MessageEmbed()
+  return new EmbedBuilder()
     .setTitle(user.tag)
-    .setThumbnail(user.displayAvatarURL({ size: 512, dynamic: true }))
+    .setThumbnail(user.displayAvatarURL({ size: 512 }))
     .setDescription(`Creación de la cuenta: ${FormatDate(user.createdAt)}\nColor personalizado: ${user.accentColor} (${user.hexAccentColor})\n¿Bot?: ${user.bot ? "Si" : "No"}`)
-    .setColor(Util.resolveColor('BLUE'))
+    .setColor(Colors.Blue)
 }
 
 /**
@@ -46,11 +49,11 @@ function getMemberInfo(member) {
 
   const joinedAt = FormatDate(member.joinedAt);
 
-  return new MessageEmbed()
+  return new EmbedBuilder()
     .setTitle(`Info de ${member.user.tag}`)
     .setDescription(`Nombre en el servidor: ${member.displayName}\nMiembro desde: ${joinedAt}\nRoles: ${member.roles.cache.size}\nRol más alto: <@&${member.roles.highest.id}>`)
-    .setThumbnail(member.user.displayAvatarURL({ size: 512, dynamic: true }))
-    .setColor(member.displayColor ?? Util.resolveColor("BLUE"))
+    .setThumbnail(member.user.displayAvatarURL({ size: 512 }))
+    .setColor(member.displayColor ?? Colors.Blue)
     .setFooter({ text: isSomething(member) });
 }
 
@@ -63,10 +66,10 @@ function isSomething(member) {
   if (member.id === member.guild.ownerId)
     return "Este miembro es dueño de este servidor"
 
-  if (member.permissions.has('ADMINISTRATOR'))
+  if (member.permissions.has("Administrator"))
     return "Este miembro es Administrador de este servidor"
 
-  if (member.permissions.any(["KICK_MEMBERS", "BAN_MEMBERS", "MODERATE_MEMBERS"]))
+  if (member.permissions.any(["KickMembers", "BanMembers", "ModerateMembers"]))
     return "Este miembro es Moderador de este servidor"
 
   return " ";

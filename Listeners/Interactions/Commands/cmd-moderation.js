@@ -145,7 +145,7 @@ module.exports = {
     if (!interaction.inGuild()) return await interaction.reply({ content: 'No puedes usar esta interacción fuera de un servidor.' });
 
     // Check for moderation perms
-    if (interaction.memberPermissions.any(['ADMINISTRATOR', 'KICK_MEMBERS', 'BAN_MEMBERS', 'MODERATE_MEMBERS'])) {
+    if (interaction.memberPermissions.any(['Administrator', 'KickMembers', 'BanMembers', 'ModerateMembers'])) {
 
       const commandName = interaction.options.getSubcommand();
 

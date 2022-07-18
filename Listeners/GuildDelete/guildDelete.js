@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const { Guild, TextChannel, MessageEmbed, Util } = require('discord.js');
+const { Guild, TextChannel, EmbedBuilder, Colors } = require('discord.js');
 
 class GuildDeleteListener extends Listener {
   constructor() {
@@ -15,9 +15,6 @@ class GuildDeleteListener extends Listener {
    */
   async exec(guild) {
 
-
-    // removeGuildFromDB(guild);
-
     /** @type {TextChannel} */
     const channel = this.client.getPrivateChannel();
 
@@ -26,29 +23,13 @@ class GuildDeleteListener extends Listener {
 
     else {
       return await channel.send({
-        embeds: [new MessageEmbed()
+        embeds: [new EmbedBuilder()
           .setTitle(`Guild Abandonada: ${guild.name}`)
-          .setColor(Util.resolveColor('RED'))
+          .setColor(Colors.Red)
           .setDescription(`Miembros: ${guild.memberCount}\nId: ${guild.id}`)]
       });
     }
   }
-}
-
-/** @param {Guild} guild */
-async function removeGuildFromDB(guild) {
-
-  const { GuildModel } = guild.client.models;
-
-  const isOnDB = await GuildModel.findOne({ id: guild.id });
-
-  if (isOnDB) {
-    console.log(`Eliminando guild ${guild.name} ${guild.id} por abandono...`);
-    await GuildModel.deleteOne({ id: guild.id });
-    console.log(`La guild ${guild.name} ha sido eliminada de la base de datos.`);
-  }
-
-  console.log(`La guild ${guild.name} ha sido abandonada.`);
 }
 
 module.exports = GuildDeleteListener;

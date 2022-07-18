@@ -1,5 +1,5 @@
 const { Command } = require('discord-akairo');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 
 class EvalCommand extends Command {
@@ -20,7 +20,7 @@ class EvalCommand extends Command {
 
     if (!code || code.length === 0) return;
 
-    const resultEmbed = new MessageEmbed();
+    const resultEmbed = new EmbedBuilder();
     const timestamp = Date.now();
 
     try {

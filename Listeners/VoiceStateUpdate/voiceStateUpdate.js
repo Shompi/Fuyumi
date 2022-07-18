@@ -1,5 +1,6 @@
+//@ts-check
 const { Listener } = require('discord-akairo');
-const { VoiceState, Activity, MessageEmbed, TextChannel } = require('discord.js');
+const { VoiceState, Activity, EmbedBuilder, TextChannel } = require('discord.js');
 const { getGameCoverByName } = require('../../GameImages/index');
 const Timeouts = new Set();
 
@@ -35,7 +36,7 @@ class InteractionEvent extends Listener {
 
       const thumbnailUrl = await getGameCoverByName(activity?.name ?? 'Actividad Desconocida');
 
-      const liveEmbed = new MessageEmbed()
+      const liveEmbed = new EmbedBuilder()
         .setTitle(`${newState.member.user.tag} ha comenzado a transmitir en ${newState.channel.name}!`)
         .setDescription(`**${activity?.name ?? ""} - ${activity?.state ?? ""}**`)
         .setThumbnail(newState.member.displayAvatarURL({ size: 512, dynamic: true }))

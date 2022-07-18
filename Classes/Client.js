@@ -1,8 +1,10 @@
-const { Collection, Intents } = require('discord.js');
+const { Collection, GatewayIntentBits, Partials } = require('discord.js');
 const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akairo');
 
-const { GUILDS, GUILD_BANS, GUILD_EMOJIS_AND_STICKERS, GUILD_MEMBERS,
-  GUILD_MESSAGES, GUILD_PRESENCES, DIRECT_MESSAGES, GUILD_VOICE_STATES, } = Intents.FLAGS
+const { Guilds, GuildBans, GuildEmojisAndStickers, GuildMembers,
+  GuildMessages, GuildPresences, DirectMessages, GuildVoiceStates, } = GatewayIntentBits;
+
+const enabledPartials = [Partials.Message, Partials.Reaction, Partials.Channel, Partials.User, Partials.GuildMember];
 
 module.exports = class Client extends AkairoClient {
   constructor() {
@@ -12,9 +14,9 @@ module.exports = class Client extends AkairoClient {
     }, {
       // Discord.js Client Options
       disableMentions: 'everyone',
-      intents: [GUILDS, GUILD_BANS, GUILD_EMOJIS_AND_STICKERS, GUILD_MEMBERS,
-        GUILD_MESSAGES, GUILD_PRESENCES, DIRECT_MESSAGES, GUILD_VOICE_STATES,],
-      partials: ['MESSAGE', 'REACTION', 'USER', 'CHANNEL', 'GUILD_MEMBER'],
+      intents: [Guilds, GuildBans, GuildEmojisAndStickers, GuildMembers,
+        GuildMessages, GuildPresences, DirectMessages, GuildVoiceStates,],
+      partials: enabledPartials,
 
     });
 

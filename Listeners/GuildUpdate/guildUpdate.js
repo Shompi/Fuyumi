@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const { Guild, TextChannel, MessageEmbed, Util } = require('discord.js');
+const { Guild } = require('discord.js');
 
 class GuildUpdateListener extends Listener {
   constructor() {
@@ -15,33 +15,8 @@ class GuildUpdateListener extends Listener {
    * @param {Guild} newGuild 
    */
   async exec(oldGuild, newGuild) {
-    // updateGuildOnDB(newGuild);
+
   }
-}
-
-/** @param {Guild} guild */
-async function updateGuildOnDB(guild) {
-
-  const { GuildModel } = guild.client.models;
-
-  console.log(`Actualizando guild ${guild.name} ${guild.id}...`);
-  await GuildModel.findOneAndUpdate(
-    { id: guild.id },
-    {
-      id: guild.id,
-      name: guild.name,
-      iconURL: guild.iconURL(),
-      memberCount: guild.memberCount,
-      channelCount: guild.channels.cache.size,
-      owner: {
-        tag: guild.client.users.cache.get(guild.ownerId).username ?? "- -",
-        avatarURL: guild.client.users.cache.get(guild.ownerId).displayAvatarURL()
-      }
-    },
-    {
-      upsert: true
-    });
-  console.log(`La guild ${guild.name} ha sido actualizada.`);
 }
 
 module.exports = GuildUpdateListener;

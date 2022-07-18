@@ -1,24 +1,27 @@
-"use strict";
-const { MessageButton,
-  CommandInteraction,
-  MessageEmbed,
-  Util,
+//@ts-check
+const { ButtonBuilder,
+  EmbedBuilder,
+  ChatInputCommandInteraction,
   Collection,
   TextChannel,
-  MessageActionRow,
-  Formatters } = require('discord.js');
+  ActionRowBuilder,
+  Formatters,
+  ButtonStyle,
+  Colors,
+  ComponentType,
+  ButtonInteraction } = require('discord.js');
 
-/** @param {[{name: string, voters: number}]} options */
+/** @param {[{name: string?, voters: number}]} options */
 function createButtonsFromArray(options) {
-  return options.map((_, index) => new MessageButton().setLabel(`VOTAR - ${index + 1}`).setStyle("PRIMARY").setCustomId(`poll-option-${index}`));
+  return options.map((_, index) => new ButtonBuilder().setLabel(`VOTAR - ${index + 1}`).setStyle(ButtonStyle.Primary).setCustomId(`poll-option-${index}`));
 }
 
-/** @param {[{name: string, voters: number}]} options */
+/** @param {[{name: string?, voters: number}]} options */
 function formatOptions(options) {
   return options.map((option, index) => `**${index + 1}** - ${option.name}`).join("\n");
 }
 
-/** @param {CommandInteraction} interaction */
+/** @param {ChatInputCommandInteraction} interaction */
 module.exports.Poll = async (interaction) => {
   // Your code...
   await interaction.deferReply({ ephemeral: true });
@@ -39,38 +42,38 @@ module.exports.Poll = async (interaction) => {
       options: Object.values(optionsObject).filter(option => option !== null).map(option => ({ name: option, voters: 0 })),
       // Duration defaults to 5 minutes
       duration: interaction.options.getInteger('duracion') ?? 5,
-      /** @type {TextChannel} */
-      channel: interaction.options.getChannel('canal') ?? interaction.channel,
+      channel: interaction.options.getChannel('canal', true),
     }
 
-    if (!args.channel.permissionsFor(interaction.guild.me).has("SEND_MESSAGES"))
+    if (!args.channel.permissionsFor(interaction.guild.members.me).has("SendMessages"))
       return await interaction.editReply({ content: 'No tengo permisos para enviar mensajes en ese canal. Asegúrate de darme los permisos necesarios y usa este comando nuevamente.' });
 
     const relativeTime = Formatters.time(Math.round((Date.now() + (args.duration * 1000 * 60)) / 1000), "R");
 
-    const pollEmbed = new MessageEmbed()
+    const pollEmbed = new EmbedBuilder()
       .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.displayAvatarURL({ size: 128 }) })
       .setTitle(args.title)
       .setDescription(`${args.description}\nLa encuesta terminará en ${relativeTime}`)
       .addFields({
         name: "Opciones", value: formatOptions(args.options)
       })
-      .setColor(Util.resolveColor("BLUE"));
+      .setColor(Colors.Blue);
 
+    // @ts-ignore
     const pollMessage = await args.channel.send({
       content: `¡${interaction.user} ha iniciado una votación!`,
       embeds: [pollEmbed],
-      components: [new MessageActionRow().addComponents(createButtonsFromArray(args.options))]
+      components: [new ActionRowBuilder().addComponents(createButtonsFromArray(args.options))]
     });
 
     /** @type {Collection<string, {option: number}>} */
     const usersWhoVoted = new Collection();
 
     pollMessage.createMessageComponentCollector({
-      componentType: 'BUTTON',
+      componentType: ComponentType.Button,
       time: args.duration * 1000 * 60,
     })
-      .on('collect', async bInteraction => {
+      .on('collect', async (/**@type {ButtonInteraction} */ bInteraction) => {
 
         if (usersWhoVoted.has(bInteraction.user.id))
           return await bInteraction.reply({ content: `No puedes volver a votar en esta encuesta.\nHas votado por la opción **${usersWhoVoted.get(bInteraction.user.id).option + 1}**`, ephemeral: true });
@@ -80,13 +83,13 @@ module.exports.Poll = async (interaction) => {
         args.options[userVoteNumber].voters++;
         return await bInteraction.reply({ content: '¡Se ha registrado tu voto exitósamente!', ephemeral: true });
       })
-      .on('end', async (collected, reason) => {
+      .on('end', async (_collected, _reason) => {
 
         // Actualizar mensaje
-        const updatedEmbed = new MessageEmbed()
+        const updatedEmbed = new EmbedBuilder()
           .setTitle(`¡La votación ha finalizado!`)
           .setDescription(`**Resultados**\n\n${args.options.sort((opA, opB) => opB.voters - opA.voters).map((op, i) => `**${i + 1}°** - ${op.name} -> **${op.voters} votos.**`).join("\n")}\nEncuesta terminada: ${relativeTime}}`)
-          .setColor(Util.resolveColor('GREEN'));
+          .setColor(Colors.Green);
 
         await pollMessage.edit({ content: '¡La votación ha finalizado!', embeds: [updatedEmbed], components: [] });
       });

@@ -1,4 +1,5 @@
-const { Presence, Activity, MessageEmbed, TextChannel, GuildMember } = require('discord.js');
+//@ts-check
+const { Presence, Activity, EmbedBuilder, TextChannel, GuildMember } = require('discord.js');
 const { Listener } = require('discord-akairo');
 const keyv = require('keyv');
 const LIVESTREAMS_TIMESTAMPS = new keyv('sqlite://database.sqlite', { namespace: 'livestreams' });
@@ -24,9 +25,7 @@ class PresenceUpdateListener extends Listener {
 
     this.checkTwitchStream = async (presence, _old) => {
 
-      /**
-      * @param {GuildMember} member
-      */
+      /**@param {string} guildId*/
       const checkGuildConfigs = async (guildId) => {
 
         /**
@@ -58,9 +57,10 @@ class PresenceUpdateListener extends Listener {
       */
       const createEmbed = async (activity, member) => {
 
+        // @ts-ignore
         const gameImage = await getGameCoverByName(activity.state);
 
-        return new MessageEmbed()
+        return new EmbedBuilder()
           .setAuthor({
             name: `¡${member.displayName} ha comenzado a transmitir en ${activity.name}!`,
             url: activity.url
@@ -68,7 +68,7 @@ class PresenceUpdateListener extends Listener {
           .setTitle(activity.details)
           .setDescription(`[-> Únete a la transmisión <-](${activity.url})`)
           .setColor(member.displayColor)
-          .setThumbnail(member.user.displayAvatarURL({ size: 512, dynamic: true }))
+          .setThumbnail(member.user.displayAvatarURL({ size: 512 }))
           .setImage(gameImage);
       }
 
@@ -134,7 +134,7 @@ class PresenceUpdateListener extends Listener {
     /*Code Here*/
 
     /* Esto solo funcionará para exiliados */
-    if (now.guild.id === '537484725896478733') {
+    if (now.guild?.id === '537484725896478733') {
       this.checkTwitchStream(now, old);
     }
   }

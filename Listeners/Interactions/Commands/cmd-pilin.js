@@ -1,4 +1,5 @@
-const { CommandInteraction, MessageEmbed } = require('discord.js')
+//@ts-check
+const { ChatInputCommandInteraction, EmbedBuilder } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
 /** @type {Map<String, {timestamp: number}>} */
@@ -12,34 +13,38 @@ module.exports = {
 
   /**
    * 
-   * @param {CommandInteraction} interaction
+   * @param {ChatInputCommandInteraction} interaction
    */
   async execute(interaction) {
 
-    if (cooldowns.has(interaction.member.id)) {
-      const timestamp = cooldowns.get(interaction.member.id).timestamp;
+    if (interaction.inCachedGuild()) {
+      if (cooldowns.has(interaction.member.id)) {
+        //@ts-ignore
+        const timestamp = cooldowns.get(interaction.member.id).timestamp;
 
-      const timeNow = Date.now();
+        const timeNow = Date.now();
 
-      const timeleft = Math.floor((timestamp - timeNow) / 1000);
+        const timeleft = Math.floor((timestamp - timeNow) / 1000);
 
-      return await interaction.reply({ ephemeral: true, content: `Debes esperar **${timeleft}** segundos antes de usar este comando nuevamente.` });
+        return await interaction.reply({ ephemeral: true, content: `Debes esperar **${timeleft}** segundos antes de usar este comando nuevamente.` });
+      }
+
+      // Añadir al miembro a la lista de cooldowns
+      cooldowns.set(interaction.member.id, { timestamp: Date.now() + COOLDOWNTIMEMS });
+
+      setTimeout(() => {
+        cooldowns.delete(interaction.member.id)
+      }, COOLDOWNTIMEMS);
+
+      const medida = Math.floor(Math.random() * 51) || 1000
+
+      //@ts-check
+      const embed = new EmbedBuilder()
+        .setAuthor({ iconURL: interaction.member.displayAvatarURL({ size: 64 }), name: interaction.member.displayName })
+        .setDescription(`**¡La 🍌 de ${interaction.member} mide ${medida}cm!**`)
+        .setColor(interaction.member.displayColor);
+
+      return await interaction.reply({ embeds: [embed] });
     }
-
-    // Añadir al miembro a la lista de cooldowns
-    cooldowns.set(interaction.member.id, { timestamp: Date.now() + COOLDOWNTIMEMS });
-
-    setTimeout(() => {
-      cooldowns.delete(interaction.member.id)
-    }, COOLDOWNTIMEMS);
-
-    const medida = Math.floor(Math.random() * 51) || 1000
-
-    const embed = new MessageEmbed()
-      .setAuthor({ iconURL: interaction.member.displayAvatarURL({ size: 64 }), name: interaction.member.displayName })
-      .setDescription(`**¡La 🍌 de ${interaction.member} mide ${medida}cm!**`)
-      .setColor(interaction.member.displayColor);
-
-    return await interaction.reply({ embeds: [embed] });
   }
 }

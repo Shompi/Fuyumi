@@ -1,4 +1,4 @@
-const { CommandInteraction, MessageEmbed } = require('discord.js');
+const { CommandInteraction } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { ServerInfo } = require('./SubCommands/info-server');
 const { UserInfo } = require('./SubCommands/info-user');

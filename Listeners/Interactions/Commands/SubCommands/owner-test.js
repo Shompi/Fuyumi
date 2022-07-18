@@ -1,5 +1,5 @@
 //@ts-check
-const { CommandInteraction, MessageEmbed, Util, Formatters } = require("discord.js");
+const { ChatInputCommandInteraction, EmbedBuilder, Colors, Formatters } = require("discord.js");
 
 /**
  * 
@@ -14,7 +14,7 @@ const clean = text => {
 }
 
 /**
- * @param {CommandInteraction} interaction 
+ * @param {ChatInputCommandInteraction} interaction 
  */
 module.exports.Test = async (interaction) => {
 
@@ -22,13 +22,13 @@ module.exports.Test = async (interaction) => {
 
   if (evalText) {
 
-    const inputEmbed = new MessageEmbed()
+    const inputEmbed = new EmbedBuilder()
       .setTitle('\> Input')
       .setDescription(Formatters.codeBlock('js', evalText))
-      .setColor(Util.resolveColor('BLUE'))
+      .setColor(Colors.Blue)
       .setTimestamp();
 
-    const resultEmbed = new MessageEmbed();
+    const resultEmbed = new EmbedBuilder();
     const timestamp = Date.now();
 
     try {
@@ -39,7 +39,7 @@ module.exports.Test = async (interaction) => {
 
       resultEmbed.setTitle(`⏳ ${Date.now() - timestamp}ms`)
         .setDescription(`\`\`\`js\n${clean(evaled).slice(0, 500)}\`\`\``)
-        .setColor(Util.resolveColor('GREEN'))
+        .setColor(Colors.Green)
 
       await interaction.reply({ embeds: [inputEmbed, resultEmbed] });
 
@@ -48,7 +48,7 @@ module.exports.Test = async (interaction) => {
       console.log(err);
       resultEmbed.setTitle(`⏳ ${Date.now() - timestamp}ms`)
         .setDescription('Ocurrió un error en la ejecución de este comando.')
-        .setColor(Util.resolveColor('RED'));
+        .setColor(Colors.Red);
 
       await interaction.reply({ embeds: [inputEmbed, resultEmbed] });
     }
@@ -58,26 +58,20 @@ module.exports.Test = async (interaction) => {
     await interaction.reply({ content: 'OK!' });
     const time2 = Date.now();
 
-    /** @type {import("discord.js").EmbedFieldData[]} */
-    const fields = [
-      { name: "WS Ping", value: `${interaction.client.ws.ping}ms`, inline: true },
-      { name: "Ping de respuesta", value: `${time2 - time1}ms`, inline: true },
-      //
-      { name: "Guilds", value: `${interaction.client.guilds.cache.size}`, inline: false },
-      { name: "Usuarios en cache", value: `${interaction.client.users.cache.size}`, inline: true },
-      //
-      { name: "Canales en cache", value: `${interaction.client.channels.cache.size}`, inline: true },
-      { name: "Discord.js", value: `${require('discord.js').version}`, inline: false },
-      //
-      { name: "OS", value: process.platform, inline: true },
-      { name: "Memoria reservada", value: `${process.memoryUsage().heapTotal} Bytes`, inline: true },
-
-    ];
-
-    const pingEmbed = new MessageEmbed()
+    const pingEmbed = new EmbedBuilder()
       .setTitle(`¡Test ok!`)
-      .addFields(fields)
-      .setColor(Util.resolveColor('BLUE'));
+      .addFields({ name: "WS Ping", value: `${interaction.client.ws.ping}ms`, inline: true },
+        { name: "Ping de respuesta", value: `${time2 - time1}ms`, inline: true },
+        //
+        { name: "Guilds", value: `${interaction.client.guilds.cache.size}`, inline: false },
+        { name: "Usuarios en cache", value: `${interaction.client.users.cache.size}`, inline: true },
+        //
+        { name: "Canales en cache", value: `${interaction.client.channels.cache.size}`, inline: true },
+        { name: "Discord.js", value: `${require('discord.js').version}`, inline: false },
+        //
+        { name: "OS", value: process.platform, inline: true },
+        { name: "Memoria reservada", value: `${process.memoryUsage().heapTotal} Bytes`, inline: true })
+      .setColor(Colors.Blue);
 
     return await interaction.editReply({ embeds: [pingEmbed] });
   }

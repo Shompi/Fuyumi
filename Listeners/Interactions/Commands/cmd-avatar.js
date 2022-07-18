@@ -1,4 +1,4 @@
-const { CommandInteraction, MessageEmbed, Util } = require('discord.js');
+const { CommandInteraction, EmbedBuilder, Colors } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,8 +19,8 @@ module.exports = {
 
     return await interaction.reply({
       ephemeral: true,
-      embeds: [new MessageEmbed()
-        .setColor(Util.resolveColor("BLUE"))
+      embeds: [new EmbedBuilder()
+        .setColor(Colors.Blue)
         .setTitle(`Avatar de ${user.tag}`)
         .setImage(user.displayAvatarURL({ size: 512, dynamic: true }))
       ]

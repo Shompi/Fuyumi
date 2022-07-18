@@ -1,27 +1,21 @@
-const { CommandInteraction, TextChannel, Role } = require('discord.js');
+//@ts-check
+const { ChatInputCommandInteraction, TextChannel, Role } = require('discord.js');
 const Keyv = require('keyv');
 
-const configsTemplate = {
-  channelId: "",
-  roleId: "",
-  enabled: false,
-}
-
 /**
- * @type {Keyv<configsTemplate>}
+ * @type {Keyv<{channelId: string?, roleId: string?, enabled: Boolean}>}
  */
 const StreamsConfigPerGuild = new Keyv('sqlite://StreamsConfigs.sqlite', { namespace: 'streamsConfig' });
 
 
 /**
- * @param {{ interaction: CommandInteraction, channel: TextChannel, configs: configsTemplate}}
+ * @param {{ interaction: ChatInputCommandInteraction<'cached'>, channel: TextChannel, configs: {channelId: string?, roleId: string?, enabled: Boolean}}}
  */
 module.exports.setStreamChannel = async ({ interaction, channel, configs }) => {
 
 
-  if (!channel.permissionsFor(interaction.guild.me).has('SEND_MESSAGES'))
+  if (!channel.permissionsFor(interaction.guild.members.me).has("SendMessages"))
     return await interaction.reply({ content: 'No tengo permisos para enviar mensajes en ese canal, asegúrate de darme los permisos correspondientes antes de asignar un canal para las transmisiones.', ephemeral: true });
-
 
   configs.channelId = channel.id;
   await StreamsConfigPerGuild.set(interaction.guildId, configs);
@@ -31,7 +25,7 @@ module.exports.setStreamChannel = async ({ interaction, channel, configs }) => {
 
 /**
  * 
- * @param {{interaction:CommandInteraction, role: Role, configs: configsTemplate}} param0 
+ * @param {{interaction:ChatInputCommandInteraction<'cached'>, role: Role, configs: {channelId: string?, roleId: string?, enabled: Boolean}}} param0 
  */
 module.exports.setStreamerRole = async ({ interaction, role, configs }) => {
   configs.roleId = role.id;
@@ -43,7 +37,7 @@ module.exports.setStreamerRole = async ({ interaction, role, configs }) => {
 
 /**
  * 
- * @param {{interaction:CommandInteraction, enabled: Boolean, configs: configsTemplate}} param0 
+ * @param {{interaction:ChatInputCommandInteraction<'cached'>, enabled: Boolean, configs: {channelId: string?, roleId: string?, enabled: Boolean}}} param0 
  */
 module.exports.setEnabled = async ({ interaction, enabled, configs }) => {
   if (enabled) {

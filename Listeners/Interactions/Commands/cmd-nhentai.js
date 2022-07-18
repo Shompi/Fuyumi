@@ -1,6 +1,6 @@
 // @ts-check
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { CommandInteraction, MessageEmbed, MessageActionRow, MessageButton, Util } = require('discord.js')
+const { ChatInputCommandInteraction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ChannelType, Colors, ButtonStyle } = require('discord.js')
 const ApiConstructor = require('nhentai');
 const nHentai = new ApiConstructor.API();
 
@@ -17,15 +17,13 @@ module.exports = {
   isGlobal: true,
   /**
    * 
-   * @param {CommandInteraction} interaction 
+   * @param {ChatInputCommandInteraction} interaction 
    */
   async execute(interaction) {
 
-    const { channel } = interaction;
+    if (interaction.inCachedGuild() && interaction.channel?.type === ChannelType.GuildText) {
 
-    if (interaction.inGuild() && channel.isText()) {
-      // @ts-ignore
-      if (!channel.nsfw)
+      if (!interaction.channel.nsfw)
         return await interaction.reply({ content: 'No puedes usar este comando fuera de canales **NSFW**.', ephemeral: true })
     }
 
@@ -42,7 +40,7 @@ module.exports = {
     if (!result)
       return await interaction.editReply({ content: 'No encontré un Doujin con esta Id en nHentai u ocurrió un error con la búsqueda.' });
 
-    const doujinEmbed = new MessageEmbed()
+    const doujinEmbed = new EmbedBuilder()
       .setAuthor({ name: `Numeros nucleares: ${result.id}`, iconURL: interaction.user.displayAvatarURL({ size: 64 }) })
       .setTitle(`${result.titles.pretty}`)
       .addFields({
@@ -56,12 +54,12 @@ module.exports = {
           name: "Etiquetas", value: result.tags.tags.map(tag => tag.name).join(", ")
         })
       .setThumbnail(result.cover.url)
-      .setColor(Util.resolveColor("BLUE"));
+      .setColor(Colors.Blue);
 
-    const row = new MessageActionRow()
+    const row = new ActionRowBuilder()
       .addComponents(
-        new MessageButton()
-          .setStyle("LINK")
+        new ButtonBuilder()
+          .setStyle(ButtonStyle.Link)
           .setLabel("Ver en la página")
           .setURL(result.url)
       );

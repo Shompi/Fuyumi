@@ -1,5 +1,5 @@
 // @ts-check
-const { CommandInteraction, MessageEmbed, User, Collection, MessageButton, MessageActionRow, GuildMember, Util } = require("discord.js");
+const { ChatInputCommandInteraction, EmbedBuilder, User, Collection, ButtonBuilder, ActionRowBuilder, Colors, ButtonStyle } = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 /**@type {Collection<string, {t_expires: number, user:User}>} */
@@ -40,7 +40,7 @@ module.exports = {
   isGlobal: true,
 
   /**
-  * @param {CommandInteraction} interaction
+  * @param {ChatInputCommandInteraction} interaction
   */
   async execute(interaction) {
 
@@ -68,16 +68,16 @@ module.exports = {
 
       let lfgCanceled = false;
 
-      const partyEmbed = new MessageEmbed()
+      const partyEmbed = new EmbedBuilder()
         .setTitle(`¡${interaction.member.user.username} está buscando compañeros de grupo!`)
-        .setThumbnail(interaction.user.displayAvatarURL({ size: 512, dynamic: true }))
+        .setThumbnail(interaction.user.displayAvatarURL({ size: 512 }))
         .setDescription(`**Grupo:**\n${partyMembers.map(user => `<@${user.id}>`).join("\n")}`)
         .setFooter({ text: `¡Se necesitan ${spotsLeft} jugadores más!` })
         .setColor(interaction.member.displayColor);
 
       const actionRow = createActionRow();
 
-      const partyMessage = await interaction.channel.send({ content: lfgMessage, embeds: [partyEmbed], components: [actionRow] }).catch(err => console.log(err));
+      const partyMessage = await interaction.channel?.send({ content: lfgMessage, embeds: [partyEmbed], components: [actionRow] }).catch(err => console.log(err));
 
       if (!partyMessage)
         return await interaction.editReply({ content: "Ocurrió un error al intentar enviar el mensaje, verifica que yo tenga permisos para enviar mensajes en este canal." });
@@ -92,11 +92,11 @@ module.exports = {
           switch (buttonInteraction.customId) {
 
             case 'party-join':
-              if (buttonInteraction.user.id === interaction.user.id)
-                return await buttonInteraction.reply({ content: 'No puedes unirte a tu propio grupo.', ephemeral: true });
+              if (buttonInteraction.user.id === interaction.user.id) {
+                await buttonInteraction.reply({ content: 'No puedes unirte a tu propio grupo.', ephemeral: true });
 
-              if (partyMembers.has(buttonInteraction.user.id)) {
-                return await buttonInteraction.reply({ ephemeral: true, content: "Ya estás en el grupo." });
+              } else if (partyMembers.has(buttonInteraction.user.id)) {
+                await buttonInteraction.reply({ ephemeral: true, content: "Ya estás en el grupo." });
 
               } else {
                 // Agregar al usuario a la party
@@ -104,18 +104,21 @@ module.exports = {
                 spotsLeft = spotsLeft - 1;
                 await buttonInteraction.reply({ ephemeral: true, content: "¡Has sido agregado a la party!" });
               }
+
               break;
 
             case 'party-leave':
               if (buttonInteraction.user.id === interaction.user.id)
-                return await buttonInteraction.reply({ content: 'No puedes abandonar a tu propio grupo.', ephemeral: true });
+                await buttonInteraction.reply({ content: 'No puedes abandonar a tu propio grupo.', ephemeral: true });
 
-              if (partyMembers.delete(buttonInteraction.user.id)) {
+              else if (partyMembers.delete(buttonInteraction.user.id)) {
                 spotsLeft = spotsLeft + 1;
                 await buttonInteraction.reply({ ephemeral: true, content: "Has abandonado el grupo." });
+
               } else {
-                return await buttonInteraction.reply({ ephemeral: true, content: "No estás en el grupo." });
+                await buttonInteraction.reply({ ephemeral: true, content: "No estás en el grupo." });
               }
+
               break;
 
             case 'party-cancel':
@@ -123,9 +126,9 @@ module.exports = {
               // Si el que presiona el botón es el mismo que inició la búsqueda de grupo
               if (buttonInteraction.user.id === interaction.user.id) {
                 lfgCanceled = true;
-                return componentCollector.stop();
+                componentCollector.stop();
               } else {
-                return await buttonInteraction.reply({ ephemeral: true, content: 'No puedes cancelar esta interacción.' });
+                await buttonInteraction.reply({ ephemeral: true, content: 'No puedes cancelar esta interacción.' });
               }
           }
         }
@@ -135,7 +138,7 @@ module.exports = {
         } else {
 
           // update embed
-          const newEmbed = new MessageEmbed(partyEmbed)
+          const newEmbed = EmbedBuilder.from(partyEmbed)
             .setDescription(`**Grupo:**\n${partyMembers.map((user) => `<@${user.id}>`).join("\n")}`)
             .setFooter({ text: `¡Se necesitan ${spotsLeft} jugadores más!` });
 
@@ -146,8 +149,8 @@ module.exports = {
         .on('end', async () => {
 
           if (lfgCanceled) {
-            const partyCanceled = new MessageEmbed()
-              .setColor(Util.resolveColor('RED'))
+            const partyCanceled = new EmbedBuilder()
+              .setColor(Colors.Red)
               .setTitle(`${interaction.user.username} ha cancelado la búsqueda de grupo.`);
 
             await interaction.editReply({ content: 'La interacción ha sido cancelada.' });
@@ -158,10 +161,10 @@ module.exports = {
           try {
             if (spotsLeft > 0) {
 
-              const partyFail = new MessageEmbed(partyEmbed)
+              const partyFail = EmbedBuilder.from(partyEmbed)
                 .setTitle('El grupo no se ha completado en el tiempo dado.')
                 .setDescription(`${partyMembers.map(user => `<@${user.id}>`).join("\n")}\n**Faltaron**: ${spotsLeft} jugador/es más.`)
-                .setColor(Util.resolveColor('RED'))
+                .setColor(Colors.Red)
                 .setFooter({ text: "" });
 
               await partyMessage.edit({
@@ -174,10 +177,10 @@ module.exports = {
 
             } else {
 
-              const partySuccessful = new MessageEmbed(partyEmbed)
+              const partySuccessful = EmbedBuilder.from(partyEmbed)
                 .setTitle(`¡El grupo se ha completado!`)
                 .setDescription(`${interaction.user}\n${partyMembers.map(user => `${user}`).join("\n")}`)
-                .setColor(Util.resolveColor('GREEN'))
+                .setColor(Colors.Green)
                 .setFooter({ text: "" });
 
               await partyMessage.edit({
@@ -204,20 +207,20 @@ module.exports = {
 
 function createActionRow() {
 
-  const JoinButton = new MessageButton()
+  const JoinButton = new ButtonBuilder()
     .setCustomId('party-join')
     .setLabel('Unirse')
-    .setStyle('PRIMARY')
+    .setStyle(ButtonStyle.Primary)
 
-  const LeaveButton = new MessageButton()
+  const LeaveButton = new ButtonBuilder()
     .setCustomId('party-leave')
     .setLabel('Abandonar')
-    .setStyle('SECONDARY')
+    .setStyle(ButtonStyle.Secondary)
 
-  const CancelButton = new MessageButton()
+  const CancelButton = new ButtonBuilder()
     .setCustomId('party-cancel')
     .setLabel('Cancelar')
-    .setStyle('DANGER')
+    .setStyle(ButtonStyle.Danger)
 
-  return new MessageActionRow().addComponents([JoinButton, LeaveButton, CancelButton]);
+  return new ActionRowBuilder().addComponents([JoinButton, LeaveButton, CancelButton]);
 }

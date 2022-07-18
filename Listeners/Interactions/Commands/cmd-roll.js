@@ -1,4 +1,5 @@
-const { CommandInteraction, MessageEmbed } = require('discord.js');
+//@ts-check
+const { ChatInputCommandInteraction, EmbedBuilder, Colors } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
@@ -23,21 +24,21 @@ module.exports = {
 
   /**
    * 
-   * @param {CommandInteraction} interaction 
+   * @param {ChatInputCommandInteraction} interaction 
    */
   async execute(interaction) {
 
     const caras = interaction.options.getInteger('caras', false) ?? 6;
     const dados = interaction.options.getInteger('dados', false) ?? 1;
-    const memberAvatar = interaction.inCachedGuild() ? await interaction.member.fetch().then(member => member.displayAvatarURL({ size: 64 })) : null;
+    const memberAvatar = interaction.user.displayAvatarURL({ size: 64 });
 
     const rolls = rollDice(caras, dados);
 
-    const embed = new MessageEmbed()
-      .setTitle(`${interaction.member.displayName} ha lanzado ${dados} dado/s`)
+    const embed = new EmbedBuilder()
+      .setTitle(`${interaction.user.tag} ha lanzado ${dados} dado/s`)
       .setDescription(`${rolls.map(number => `🎲 -> ${number}`).join("\n")}`)
       .setFooter({ text: `Total: ${rolls.reduce((acc, value) => { return acc + value }, 0)}`, iconURL: memberAvatar })
-      .setColor(interaction.member.displayColor);
+      .setColor(Colors.Blue);
 
     return await interaction.reply({
       embeds: [embed],
@@ -45,6 +46,12 @@ module.exports = {
   }
 }
 
+/**
+ * 
+ * @param {number} caras 
+ * @param {number} dados 
+ * @returns 
+ */
 function rollDice(caras, dados) {
   const rolls = [];
   for (let i = 0; i < dados; i++) {
