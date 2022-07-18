@@ -16,7 +16,19 @@ _To maintain version control over Fuyumi's development, plus it is easier for me
 
 _Fuyumi itself doesn't have a documentation (besides the one showing the commands inside Discord.) but Im leaving the documentation for some of the packages that Fuyumi is most dependent:_
 
-* [Discord.js v13.7.0](https://discord.js.org/)
+### Packages and modules used in this project ###
+
+* [discord.js v14.0.1](https://discord.js.org/)
+* [discord-akairo](https://discord-akairo.github.io/#/)
+* [discord-api-types](https://discord-api-types.dev/)
+* [discordjs/rest](https://www.npmjs.com/package/@discordjs/rest)
+* ----------------------------------------------------------------
+* [Axios](https://axios-http.com/docs/intro)
+* [date-format-parse](https://github.com/mengxiong10/date-format-parse)
+* [dotenv](https://github.com/motdotla/dotenv)
+* [Keyv](https://www.npmjs.com/package/keyv)
+* [nhentai](https://diamondminer88.github.io/nhentai/index.html)
+* [mongoose](https://mongoosejs.com/)
 * [node.js v16+](https://nodejs.org/)
-* [Keyv](https://enmap.evie.dev/)
-* Mongoose MongoDB
+* [node-hitomi](https://github.com/h2owater425/node-hitomi)
+* [Sharp](https://sharp.pixelplumbing.com/) for image processing
