@@ -1,12 +1,7 @@
 const keyv = require('keyv');
 const { Listener } = require('discord-akairo');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
-// const { saveGuilds } = require('./utils/saveGuilds');
 const { Client, Activity, ActivityType } = require('discord.js');
-
-// Models
-// const { getGuildModel } = require('../../Schemas/Guild');
-// const { getBirthdayModel } = require('../../Schemas/Birthdays');
 
 // const UpdateButtons = require('./utils/Buttons');
 
