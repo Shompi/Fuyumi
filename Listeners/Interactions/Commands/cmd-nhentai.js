@@ -1,6 +1,5 @@
 // @ts-check
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { ChatInputCommandInteraction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ChannelType, Colors, ButtonStyle } = require('discord.js')
+const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ChannelType, Colors, ButtonStyle } = require('discord.js')
 const ApiConstructor = require('nhentai');
 const nHentai = new ApiConstructor.API();
 

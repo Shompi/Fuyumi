@@ -1,6 +1,5 @@
 const axios = require('axios').default;
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { CommandInteraction, MessageEmbed, Util } = require('discord.js');
+const { CommandInteraction, MessageEmbed, Util, SlashCommandBuilder } = require('discord.js');
 const APIRoute = "https://api.urbandictionary.com/v0/define?term=";
 const Translate = require('@vitalets/google-translate-api');
 

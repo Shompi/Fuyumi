@@ -1,6 +1,5 @@
 //@ts-check
-const { ChatInputCommandInteraction, EmbedBuilder, Colors } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { ChatInputCommandInteraction, EmbedBuilder, Colors, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()

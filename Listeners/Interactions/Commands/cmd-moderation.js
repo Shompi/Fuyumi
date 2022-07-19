@@ -1,6 +1,4 @@
-const { CommandInteraction } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { ChannelType } = require('discord-api-types/v9');
+const { CommandInteraction, SlashCommandBuilder, ChannelType } = require('discord.js');
 
 /* Comandos */
 const { TimeoutMember } = require('./SubCommands/mod-timeout');

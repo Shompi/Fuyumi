@@ -1,6 +1,5 @@
 // @ts-check
-const { ChatInputCommandInteraction, EmbedBuilder, User, Collection, ButtonBuilder, ActionRowBuilder, Colors, ButtonStyle } = require("discord.js");
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder, User, Collection, ButtonBuilder, ActionRowBuilder, Colors, ButtonStyle } = require("discord.js");
 
 /**@type {Collection<string, {t_expires: number, user:User}>} */
 const timeouts = new Collection();

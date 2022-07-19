@@ -1,6 +1,5 @@
 //@ts-check
-const { ChatInputCommandInteraction, ChannelType } = require("discord.js");
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { ChatInputCommandInteraction, ChannelType, SlashCommandBuilder } = require("discord.js");
 const { setStreamChannel, setEnabled, setStreamerRole } = require("./SubCommands/streams");
 
 const Keyv = require('keyv');

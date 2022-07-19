@@ -1,6 +1,5 @@
 //@ts-check
-const { ChatInputCommandInteraction, EmbedBuilder } = require('discord.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
+const { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } = require('discord.js')
 
 /** @type {Map<String, {timestamp: number}>} */
 const cooldowns = new Map();

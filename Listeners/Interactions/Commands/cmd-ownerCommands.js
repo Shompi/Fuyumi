@@ -1,5 +1,4 @@
-const { CommandInteraction } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { CommandInteraction, SlashCommandBuilder } = require('discord.js');
 const { Test } = require('./SubCommands/owner-test');
 const { Activity } = require('./SubCommands/owner-activity');
 const { Host } = require('./SubCommands/owner-host');
