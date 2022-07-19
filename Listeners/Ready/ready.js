@@ -1,7 +1,8 @@
+//@ts-check
 const keyv = require('keyv');
 const { Listener } = require('discord-akairo');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
-const { Client, Activity, ActivityType } = require('discord.js');
+const { Client, Activity, ActivityType, AuditLogOptionsType, AuditLogEvent } = require('discord.js');
 
 // const UpdateButtons = require('./utils/Buttons');
 
