@@ -1,4 +1,4 @@
-const { CommandInteraction, SlashCommandBuilder, ChannelType } = require('discord.js');
+const { ChatInputCommandInteraction, SlashCommandBuilder, ChannelType } = require('discord.js');
 
 /* Comandos */
 const { TimeoutMember } = require('./SubCommands/mod-timeout');
@@ -135,7 +135,7 @@ module.exports = {
   isGlobal: true,
   /**
    * 
-   * @param {CommandInteraction} interaction 
+   * @param {ChatInputCommandInteraction} interaction 
    */
   async execute(interaction) {
 

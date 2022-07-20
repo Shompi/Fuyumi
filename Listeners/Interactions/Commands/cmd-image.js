@@ -1,4 +1,4 @@
-const { CommandInteraction, SlashCommandBuilder } = require('discord.js');
+const { ChatInputCommandInteraction, SlashCommandBuilder } = require('discord.js');
 const { ImageResize } = require('./SubCommands/image-resize');
 // Subcommands
 
@@ -42,7 +42,7 @@ module.exports = {
   ,
   isGlobal: false,
   /**
-  * @param {CommandInteraction} interaction
+  * @param {ChatInputCommandInteraction} interaction
   */
   async execute(interaction) {
 

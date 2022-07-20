@@ -1,4 +1,4 @@
-const { CommandInteraction, EmbedBuilder, Colors, SlashCommandBuilder } = require('discord.js');
+const { ChatInputCommandInteraction, EmbedBuilder, Colors, SlashCommandBuilder } = require('discord.js');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('avatar')
@@ -6,7 +6,7 @@ module.exports = {
     .addUserOption(user => user.setName('user').setDescription('El usuario del cual quieres obtener el avatar').setRequired(false)),
   isGlobal: false,
   /**
-  * @param {CommandInteraction} interaction
+  * @param {ChatInputCommandInteraction} interaction
   */
   async execute(interaction) {
     // Your code...

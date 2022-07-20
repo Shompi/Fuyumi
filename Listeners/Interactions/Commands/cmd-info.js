@@ -1,4 +1,4 @@
-const { CommandInteraction, SlashCommandBuilder } = require('discord.js');
+const { ChatInputCommandInteraction, SlashCommandBuilder } = require('discord.js');
 const { ServerInfo } = require('./SubCommands/info-server');
 const { UserInfo } = require('./SubCommands/info-user');
 const { RoleInfo } = require('./SubCommands/info-role');
@@ -40,7 +40,7 @@ module.exports = {
 
   /**
    * 
-   * @param {CommandInteraction} interaction 
+   * @param {ChatInputCommandInteraction} interaction 
    */
   async execute(interaction) {
     const commandName = interaction.options.getSubcommand();

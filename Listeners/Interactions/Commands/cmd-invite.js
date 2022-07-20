@@ -1,4 +1,4 @@
-const { CommandInteraction, EmbedBuilder, Colors, SlashCommandBuilder } = require('discord.js');
+const { ChatInputCommandInteraction, EmbedBuilder, Colors, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,7 +8,7 @@ module.exports = {
 
   /**
    * 
-   * @param {CommandInteraction} interaction 
+   * @param {ChatInputCommandInteraction} interaction 
    */
   async execute(interaction) {
     const invite = interaction.client.generateInvite({

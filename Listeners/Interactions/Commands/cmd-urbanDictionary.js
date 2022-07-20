@@ -1,5 +1,5 @@
 const axios = require('axios').default;
-const { CommandInteraction, MessageEmbed, Util, SlashCommandBuilder } = require('discord.js');
+const { ChatInputCommandInteraction, MessageEmbed, Util, SlashCommandBuilder } = require('discord.js');
 const APIRoute = "https://api.urbandictionary.com/v0/define?term=";
 const Translate = require('@vitalets/google-translate-api');
 
@@ -15,7 +15,7 @@ module.exports = {
   isGlobal: true,
   /**
    * 
-   * @param {CommandInteraction} interaction 
+   * @param {ChatInputCommandInteraction} interaction 
    */
   async execute(interaction) {
 

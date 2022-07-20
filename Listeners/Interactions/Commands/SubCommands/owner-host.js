@@ -1,9 +1,9 @@
-const { CommandInteraction, Activity } = require("discord.js");
+const { ChatInputCommandInteraction, Activity } = require("discord.js");
 const keyv = require('keyv');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
 
 /**
- * @param {CommandInteraction} interaction 
+ * @param {ChatInputCommandInteraction} interaction 
  */
 module.exports.Host = async (interaction) => {
 

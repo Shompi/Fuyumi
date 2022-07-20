@@ -1,6 +1,5 @@
 {
   "name": "fuyumi",
-  "type": "module",
   "version": "2.0.0",
   "description": "multifunctional bot for Discord",
   "main": "main.js",
