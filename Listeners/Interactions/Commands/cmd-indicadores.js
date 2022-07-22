@@ -26,9 +26,9 @@ module.exports = {
       .setAuthor({ name: 'Indicadores de hoy', iconURL: interaction.client.user.displayAvatarURL({ size: 64 }) })
       .setColor('Blue')
       .setDescription(
-        `**${dolar.nombre}**\t->\t${dolar.valor} ${monedaCLP}` +
-        `**${dolar_intercambio.nombre}**\t->\t${dolar_intercambio.valor} ${monedaCLP}` +
-        `**${euro.nombre}**\t->\t${euro.valor} ${monedaCLP}` +
+        `**${dolar.nombre}**\t->\t${dolar.valor} ${monedaCLP}\n` +
+        `**${dolar_intercambio.nombre}**\t->\t${dolar_intercambio.valor} ${monedaCLP}\n` +
+        `**${euro.nombre}**\t->\t${euro.valor} ${monedaCLP}\n` +
         `**${bitcoin.nombre}**\t->\t${bitcoin.valor}\* USD`
       )
       .setTimestamp()
