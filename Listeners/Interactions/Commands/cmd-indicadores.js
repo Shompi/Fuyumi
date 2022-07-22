@@ -7,7 +7,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('indicadores')
     .setDescription('Muestra información de distintas monedas convertidas a CLP'),
-  isGlobal: false,
+  isGlobal: true,
   /**
   * @param {ChatInputCommandInteraction} interaction
   */
