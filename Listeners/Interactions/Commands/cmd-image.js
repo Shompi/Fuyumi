@@ -1,5 +1,5 @@
 const { ChatInputCommandInteraction, SlashCommandBuilder } = require('discord.js');
-const { ImageResize } = require('./SubCommands/image-resize');
+const { ImageResize } = require('./SubCommands/image-resize.js');
 // Subcommands
 
 module.exports = {

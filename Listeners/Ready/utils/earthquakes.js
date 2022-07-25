@@ -1,6 +1,6 @@
 const { Client, EmbedBuilder, Colors, TextChannel } = require('discord.js')
+const axios = require('axios').default
 
-const fetch = require('fetch').default
 const APIURL = "https://api.gael.cloud/general/public/sismos"
 let oldEartquake = null
 
@@ -38,9 +38,11 @@ async function getEarthquakes() {
   /**
    * @type {[{Fecha: string, Profundidad: string, Magnitud: string, RefGeografica: string, FechaUpdate:string}]} Lista de temblores
    */
-  const list = await fetch(APIURL).then(response => response.json())
+  const list = await axios.get(APIURL, { responseType: 'json' }).then(response => response.data)
 
   const lastEarthquake = list[0]
+
+  console.log(lastEarthquake);
 
   if (lastEarthquake.Fecha === oldEartquake?.Fecha) return null
 

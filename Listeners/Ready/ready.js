@@ -36,9 +36,10 @@ class ReadyListener extends Listener {
     }
 
     this.earthquakeMonitor = () => {
+      console.log("Monitoring earthquakes...");
       timers.push(setInterval(async () => {
         EarthquakeMonitor(this.client)
-      }, 60000))
+      }, 1000 * 60 * 3))
     }
   }
 
@@ -49,6 +50,7 @@ class ReadyListener extends Listener {
     console.log(`Bot listo: ${Date()}`);
 
     this.setActivity();
+    this.earthquakeMonitor();
     console.log("Startup complete!");
     client.emit("deployServer", client);
   }

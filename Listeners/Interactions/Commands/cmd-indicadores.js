@@ -1,5 +1,5 @@
 const { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const { default: fetch } = require('node-fetch');
+const axios = require('axios').default
 
 const monedaCLP = "CLP"
 
@@ -14,7 +14,7 @@ module.exports = {
   async execute(interaction) {
     // Your code...
 
-    const info = await fetch("https://mindicador.cl/api").then(response => response.json()).catch(err => console.error(err));
+    const info = await axios.get("https://mindicador.cl/api", { responseType: 'json' }).then(response => response.data).catch(err => console.error(err));
 
     if (!info) {
       return await interaction.reply("Ha ocurrido un error con este comando...");

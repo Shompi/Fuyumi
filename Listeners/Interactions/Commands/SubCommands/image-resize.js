@@ -1,6 +1,6 @@
 //@ts-check
+const axios = require('axios').default
 const { ChatInputCommandInteraction, AttachmentBuilder, EmbedBuilder, Colors } = require('discord.js');
-const fetch = require('node-fetch').default;
 const Sharp = require('sharp');
 const urlRegexp = new RegExp(/[.](jpg|jpeg|png|gif|webp)$/gm);
 
@@ -31,8 +31,10 @@ module.exports.ImageResize = async (interaction) => {
 
   await interaction.deferReply({ ephemeral: true })
 
-  const imageBuffer = await fetch(options.url).then(response => response.buffer()).catch(err => console.log(err));
 
+  const imageArrayBuffer = await axios.get(options.url, { responseType: 'arraybuffer' }).then(response => response.data).catch(err => console.log(err));
+
+  const imageBuffer = Buffer.from(imageArrayBuffer, 'binary')
   if (!imageBuffer)
     return await interaction.editReply({
       content: 'Ocurrió un error al intentar conseguir la imagen. Inténtalo más tarde.'
