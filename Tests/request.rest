@@ -1,1 +1,1 @@
-https://yande.re/post.json?limit=10
+https://api.gael.cloud/general/public/sismos

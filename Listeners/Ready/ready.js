@@ -3,11 +3,10 @@ const keyv = require('keyv');
 const { Listener } = require('discord-akairo');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
 const { Client, Activity, ActivityType } = require('discord.js');
+const { EarthquakeMonitor } = require('./utils/earthquakes');
 
-// const UpdateButtons = require('./utils/Buttons');
 
-
-/**@type {[NodeJS.Timeout]} */
+/**@type {NodeJS.Timeout[]} */
 const timers = [];
 
 class ReadyListener extends Listener {
@@ -22,7 +21,6 @@ class ReadyListener extends Listener {
         clearTimeout(timer);
         clearInterval(timer);
         // @ts-ignore
-        clearImmediate(timer);
         timers.shift();
       });
       console.log("Timers limpiados.");
@@ -34,7 +32,13 @@ class ReadyListener extends Listener {
         let activity = await lastPresence.get('0') ?? { name: '💙 Reviviendo... de a poco...', type: ActivityType.Playing };
         // @ts-ignore
         this.client.user?.setActivity(activity);
-      }, 20000));
+      }, 60000));
+    }
+
+    this.earthquakeMonitor = () => {
+      timers.push(setInterval(async () => {
+        EarthquakeMonitor(this.client)
+      }, 60000))
     }
   }
 
