@@ -1,4 +1,4 @@
-const axios = require('axios').default;
+const { request } = require('undici');
 const { ChatInputCommandInteraction, MessageEmbed, Util, SlashCommandBuilder } = require('discord.js');
 const APIRoute = "https://api.urbandictionary.com/v0/define?term=";
 const Translate = require('@vitalets/google-translate-api');
@@ -37,7 +37,7 @@ module.exports = {
        example: string,
      }]}
      */
-    const results = await axios.get(APIRoute + term).then((response) => response.data.list);
+    const { list: results } = await request(APIRoute + term).then((response) => response.body.json());
 
     if (results.length === 0)
       return await interaction.editReply({

@@ -12,7 +12,6 @@
     "@discordjs/rest": "^1.0.0",
     "@keyv/sqlite": "^3.5.3",
     "@vitalets/google-translate-api": "^7.0.0",
-    "axios": "^0.23.0",
     "date-format-parse": "^0.2.7",
     "discord-akairo": "github:discord-akairo/discord-akairo",
     "discord.js": "^14.0.2",
@@ -21,7 +20,8 @@
     "mongoose": "^6.4.4",
     "nhentai": "^3.0.0",
     "node-hitomi": "^5.0.6",
-    "sharp": "^0.30.7"
+    "sharp": "^0.30.7",
+    "undici": "^5.8.0"
   },
   "scripts": {
     "test": "node test.js",

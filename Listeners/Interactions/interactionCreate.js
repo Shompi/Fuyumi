@@ -1,11 +1,6 @@
-const { default: axios } = require('axios');
 const { Listener } = require('discord-akairo');
 const { Interaction, EmbedBuilder, InteractionType } = require('discord.js');
 const ButtonAddRoles = require('./Buttons/roles');
-
-/** @type {[{name: string, gamesPlayed: string, goals: string, assists: string, manOfTheMatch: string, ratingAve: string, favoritePosition: string}] | null} */
-
-let fifaRooster = null;
 
 class InteractionEvent extends Listener {
   constructor() {
@@ -58,18 +53,6 @@ class InteractionEvent extends Listener {
 
         await contextCommand.execute(interaction);
       }
-      // Autocomplete interactions
-      else if (interaction.type === InteractionType.ApplicationCommandAutocomplete) {
-        if (interaction.commandName === 'fifa' && interaction.options.getSubcommand() === 'jugador') {
-          if (!fifaRooster) {
-            fifaRooster = await axios.get('https://proclubs.ea.com/api/fifa/members/career/stats?platform=pc&clubId=559503').then(response => response.data.members);
-          } else {
-            const focusedValue = interaction.options.getFocused();
-            return await interaction.respond(fifaRooster.filter(player => player.name.toLowerCase().includes(focusedValue.toLowerCase())).map(member => ({ name: member.name, value: member.name })));
-          }
-        }
-      }
-
     } catch (error) {
       console.error(error);
     }

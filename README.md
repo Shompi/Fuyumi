@@ -18,12 +18,10 @@ _Fuyumi itself doesn't have a documentation (besides the one showing the command
 
 ### Packages and modules used in this project ###
 
-* [discord.js v14.0.1](https://discord.js.org/)
+* [discord.js v14.0.3](https://discord.js.org/)
 * [discord-akairo](https://discord-akairo.github.io/#/)
-* [discord-api-types](https://discord-api-types.dev/)
 * [discordjs/rest](https://www.npmjs.com/package/@discordjs/rest)
 * ----------------------------------------------------------------
-* [Axios](https://axios-http.com/docs/intro)
 * [date-format-parse](https://github.com/mengxiong10/date-format-parse)
 * [dotenv](https://github.com/motdotla/dotenv)
 * [Keyv](https://www.npmjs.com/package/keyv)
@@ -32,3 +30,4 @@ _Fuyumi itself doesn't have a documentation (besides the one showing the command
 * [node.js v16+](https://nodejs.org/)
 * [node-hitomi](https://github.com/h2owater425/node-hitomi)
 * [Sharp](https://sharp.pixelplumbing.com/) for image processing
+* [Undici](https://github.com/nodejs/undici)
