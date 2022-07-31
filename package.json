@@ -14,7 +14,7 @@
     "@vitalets/google-translate-api": "^7.0.0",
     "date-format-parse": "^0.2.7",
     "discord-akairo": "github:discord-akairo/discord-akairo",
-    "discord.js": "^14.0.2",
+    "discord.js": "^14.1.2",
     "dotenv": "^16.0.1",
     "keyv": "^4.3.3",
     "mongoose": "^6.4.4",
