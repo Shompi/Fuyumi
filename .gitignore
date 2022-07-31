@@ -5,7 +5,7 @@ Keys
 data
 .vscode
 Deployment
-GameImages
+GameImages/config.json
 
 #Environment variables
 *.env
