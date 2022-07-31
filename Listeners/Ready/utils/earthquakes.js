@@ -42,8 +42,6 @@ async function getEarthquakes() {
 
   const lastEarthquake = list[0]
 
-  console.log(lastEarthquake);
-
   if (lastEarthquake.Fecha === oldEartquake?.Fecha) return null
 
   oldEartquake = lastEarthquake;
