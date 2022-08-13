@@ -21,3 +21,5 @@ GameImages/config.json
 
 *.ts
 *sqlite
+
+Tests
