@@ -7,7 +7,7 @@ const timeouts = new Collection();
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('party')
-    .setDefaultPermission(true)
+    .setDMPermission(false)
     .setDescription('Inicia una busqueda de grupo para que los miembros puedan unirse')
     .addIntegerOption(input => {
       return input.setName('faltan')

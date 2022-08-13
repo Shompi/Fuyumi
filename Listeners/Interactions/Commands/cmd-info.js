@@ -11,7 +11,7 @@ module.exports = {
     .setDescription('Comandos de información general')
     .addSubcommand(guildInfo => {
       return guildInfo.setName('server')
-        .setDescription('Información del servidor');
+        .setDescription('Información del servidor')
     })
     .addSubcommand(subcommand => {
       return subcommand.setName('user')

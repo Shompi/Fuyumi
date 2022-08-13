@@ -18,7 +18,7 @@ class InteractionEvent extends Listener {
       if (interaction.isChatInputCommand()) {
         const slashCommand = interaction.client.commands.get(interaction.commandName);
 
-        if (!slashCommand) return;
+        if (!slashCommand) return await interaction.reply({ content: 'Este comando no está implementado.', ephemeral: true });
 
         interaction.client.emit('commandUsed', ({ commandName: interaction.commandName, user: interaction.user, subcommand: interaction.options.getSubcommand(false) }));
         await slashCommand.execute(interaction);

@@ -13,6 +13,7 @@ const StreamsConfigPerGuild = new Keyv('sqlite://StreamsConfigs.sqlite', { names
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('streams')
+    .setDMPermission(false)
     .setDescription('Configuraciones para transmisiones en el servidor')
     .addSubcommand(setChannelCommand => {
       return setChannelCommand.setName('canal')

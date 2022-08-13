@@ -106,6 +106,8 @@ const ServerInfo = async (interaction) => {
     return await interaction.reply({
       embeds: [serverInfo]
     });
+  } else {
+    return await interaction.reply({ content: 'Este comando no puede ser usado en mensajes directos.' })
   }
 }
 

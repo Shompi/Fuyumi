@@ -1,5 +1,5 @@
 //@ts-check
-const { Presence, Activity, EmbedBuilder, TextChannel, GuildMember } = require('discord.js');
+const { Presence, Activity, EmbedBuilder, GuildMember, ActivityType } = require('discord.js');
 const { Listener } = require('discord-akairo');
 const keyv = require('keyv');
 const LIVESTREAMS_TIMESTAMPS = new keyv('sqlite://database.sqlite', { namespace: 'livestreams' });
@@ -49,7 +49,7 @@ class PresenceUpdateListener extends Listener {
       /**
       * @param {Presence} presence
       */
-      const getLivestreamInfo = (presence) => presence.activities.find(activity => activity.type === 'STREAMING');
+      const getLivestreamInfo = (presence) => presence.activities.find(activity => activity.type === ActivityType.Streaming);
 
       /**
       * @param {Activity} activity
@@ -63,7 +63,7 @@ class PresenceUpdateListener extends Listener {
         return new EmbedBuilder()
           .setAuthor({
             name: `¡${member.displayName} ha comenzado a transmitir en ${activity.name}!`,
-            url: activity.url
+            url: activity.url ?? undefined
           })
           .setTitle(activity.details)
           .setDescription(`[-> Únete a la transmisión <-](${activity.url})`)
@@ -77,16 +77,17 @@ class PresenceUpdateListener extends Listener {
       */
       const sendLiveStream = async (presence) => {
 
-        const streamChannelId = await StreamsConfigPerGuild.get(presence.guild.id).then(configs => configs ? configs.channelId : "0000");
+        const streamChannelId = await StreamsConfigPerGuild.get(presence.guild?.id ?? "0000").then(configs => configs ? configs.channelId : "0000");
 
-        /**
-        * @type {TextChannel}
-        */
+
+        if (!streamChannelId) return;
+
         const STREAM_CHANNEL = presence.client.channels.cache.get(streamChannelId);
-
-        STREAM_CHANNEL.send({
-          embeds: [await createEmbed(STREAMED_ACTIVITY, presence.member)]
-        });
+        if (STREAM_CHANNEL?.isTextBased()) {
+          STREAM_CHANNEL.send({
+            embeds: [await createEmbed(STREAMED_ACTIVITY, presence.member)]
+          });
+        }
       }
       //************ */
 

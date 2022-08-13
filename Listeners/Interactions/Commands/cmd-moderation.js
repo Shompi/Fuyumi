@@ -13,6 +13,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('moderacion')
     .setDescription('Comandos de moderación')
+    .setDMPermission(false)
 
     // GuildMember timeout command
     .addSubcommand(timeout => {

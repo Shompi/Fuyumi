@@ -1,4 +1,4 @@
-const { Guild } = require('discord.js')
+const { Guild, Routes } = require('discord.js')
 
 
 /**
