@@ -18,7 +18,7 @@ _Fuyumi itself doesn't have a documentation (besides the one showing the command
 
 ### Packages and modules used in this project ###
 
-* [discord.js v14.0.3](https://discord.js.org/)
+* [discord.js v14.2.0](https://discord.js.org/)
 * [discord-akairo](https://discord-akairo.github.io/#/)
 * [discordjs/rest](https://www.npmjs.com/package/@discordjs/rest)
 * ----------------------------------------------------------------
