@@ -39,7 +39,7 @@ class ReadyListener extends Listener {
       console.log("Monitoring earthquakes...");
       timers.push(setInterval(async () => {
         EarthquakeMonitor(this.client)
-      }, 1000 * 60 * 3))
+      }, 1000 * 60 * 5))
     }
   }
 
