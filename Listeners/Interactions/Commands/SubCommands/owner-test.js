@@ -1,5 +1,5 @@
 //@ts-check
-const { ChatInputCommandInteraction, EmbedBuilder, Colors, Formatters } = require("discord.js");
+const { ChatInputCommandInteraction, EmbedBuilder, Colors, codeBlock } = require("discord.js");
 
 /**
  * 
@@ -24,7 +24,7 @@ module.exports.Test = async (interaction) => {
 
     const inputEmbed = new EmbedBuilder()
       .setTitle('\> Input')
-      .setDescription(Formatters.codeBlock('js', evalText))
+      .setDescription(codeBlock('js', evalText))
       .setColor(Colors.Blue)
       .setTimestamp();
 
