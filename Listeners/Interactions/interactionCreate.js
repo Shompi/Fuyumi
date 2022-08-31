@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const { Interaction, EmbedBuilder, InteractionType } = require('discord.js');
+const { Interaction, EmbedBuilder } = require('discord.js');
 const ButtonAddRoles = require('./Buttons/roles');
 
 class InteractionEvent extends Listener {

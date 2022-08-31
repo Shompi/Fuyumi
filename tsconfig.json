@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "target": "ES2022",
+    "target": "ESNext",
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowUnreachableCode": false,
   },
   "exclude": [
     "node_modules"
+  ],
+  "include": [
+    "./InteractionCommands/*"
   ]
 }

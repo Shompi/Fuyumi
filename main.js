@@ -4,10 +4,12 @@ const fs = require('fs');
 const client = new Client();
 
 /** Cargar los slash commands */
-const applicationCommandsFiles = fs.readdirSync('./Listeners/Interactions/Commands').filter(file => file.endsWith('.js'));
+const applicationCommandsFiles = fs.readdirSync('./InteractionCommands').filter(file => file.endsWith('.js'));
+
 
 for (const filename of applicationCommandsFiles) {
-  const command = require(`./Listeners/Interactions/Commands/${filename}`);
+
+  const command = require(`./InteractionCommands/${filename}`);
 
   client.commands.set(command.data.name, command);
 }
@@ -15,12 +17,12 @@ for (const filename of applicationCommandsFiles) {
 console.log(`Se cargaron ${applicationCommandsFiles.length} slash commands!`);
 client.on('commandReload', ({ commandName, channelId }) => {
 
-  const slashCommandsFiles = fs.readdirSync('./Listeners/Interactions/Commands').filter(file => file.endsWith('.js'));
+  const slashCommandsFiles = fs.readdirSync('./InteractionCommands').filter(file => file.endsWith('.js'));
 
   for (const filename of slashCommandsFiles) {
 
     // Leer el archivo para poder encontrar el comando por su nombre
-    const command = require(`./Listeners/Interactions/Commands/${filename}`);
+    const command = require(`./InteractionCommands/${filename}`);
 
     if (command.data.name === commandName) {
 
@@ -42,7 +44,7 @@ client.on('commandReload', ({ commandName, channelId }) => {
       delete require.cache[commandPath];
 
       // Cargamos el archivo nuevamente
-      const freshCommand = require(`./Listeners/Interactions/Commands/${filename}`);
+      const freshCommand = require(`./InteractionCommands/${filename}`);
 
       // Agregamos el comando a la colección de comandos
       client.commands.set(command.data.name, freshCommand);
