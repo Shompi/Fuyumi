@@ -19,7 +19,6 @@
     "keyv": "^4.3.3",
     "mongoose": "^6.5.2",
     "nhentai": "^3.0.0",
-    "node-hitomi": "^5.0.6",
     "sharp": "^0.30.7",
     "undici": "^5.8.0"
   },

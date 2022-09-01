@@ -5,18 +5,18 @@ exports.ServerInfo = void 0;
 const discord_js_1 = require("discord.js");
 const formatDate_1 = require("../Helpers/formatDate");
 const TIERS = {
-    NONE: "Sin nivel",
-    TIER_1: "Nivel 1",
-    TIER_2: "Nivel 2",
-    TIER_3: "Nivel 3"
+    0: "Sin nivel",
+    1: "Nivel 1",
+    2: "Nivel 2",
+    3: "Nivel 3"
 };
 const VERIFICATIONLEVELS = {
     // "NONE" | "LOW" | "MEDIUM" | "HIGH" | "VERY_HIGH"
-    NONE: "Sin verificación.",
-    LOW: "Bajo, los miembros deben tener un email verificado en sus cuentas de Discord.",
-    MEDIUM: "Medio, los miembros deben estar registrados en Discord por más de 5 minutos.",
-    HIGH: "Alto, los miembros deben tener un email verificado, estar registrado en Discord por más de 5 minutos y además ser miembro de este servidor por más de 10 minutos.",
-    VERY_HIGH: "Más alto, los miembros deben tener un email verificado, estar registrado por más de 5 minutos, ser miembro de este servidor por más de 10 minutos y además tener un número de celular verificado en sus cuentas de Discord."
+    0: "Sin verificación.",
+    1: "Bajo, los miembros deben tener un email verificado en sus cuentas de Discord.",
+    2: "Medio, los miembros deben estar registrados en Discord por más de 5 minutos.",
+    3: "Alto, los miembros deben tener un email verificado, estar registrado en Discord por más de 5 minutos y además ser miembro de este servidor por más de 10 minutos.",
+    4: "Más alto, los miembros deben tener un email verificado, estar registrado por más de 5 minutos, ser miembro de este servidor por más de 10 minutos y además tener un número de celular verificado en sus cuentas de Discord."
 };
 const ServerInfo = async (interaction) => {
     if (interaction.inCachedGuild()) {
