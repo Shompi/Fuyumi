@@ -6,7 +6,7 @@ const { Guilds, GuildBans, GuildEmojisAndStickers, GuildMembers,
 
 const enabledPartials = [Partials.Message, Partials.Reaction, Partials.Channel, Partials.User, Partials.GuildMember];
 
-module.exports = class Client extends AkairoClient {
+module.exports = class FuyumiClient extends AkairoClient {
   constructor() {
     super({
       // Akairo Client Options

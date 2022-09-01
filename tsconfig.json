@@ -7,12 +7,12 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "allowUnreachableCode": false,
-    "watch": true
   },
   "exclude": [
     "node_modules"
   ],
   "include": [
-    "./InteractionCommands/*"
+    "./InteractionCommands/*",
+    "./Listeners/*/*"
   ]
 }
