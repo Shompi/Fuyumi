@@ -15,6 +15,8 @@ for (const filename of applicationCommandsFiles) {
 }
 
 console.log(`Se cargaron ${applicationCommandsFiles.length} slash commands!`);
+
+
 client.on('commandReload', ({ commandName, channelId }) => {
 
   const slashCommandsFiles = fs.readdirSync('./InteractionCommands').filter(file => file.endsWith('.js'));

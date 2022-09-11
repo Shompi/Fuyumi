@@ -40,6 +40,8 @@ async function getEarthquakes() {
    */
   const list = await request(APIURL).then(response => response.body.json())
 
+  if (!list || list.length === 0) return;
+
   const lastEarthquake = list[0]
 
   if (lastEarthquake.Fecha === oldEartquake?.Fecha) return null

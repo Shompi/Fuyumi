@@ -18,7 +18,7 @@ class GuildMemberRemoveListener extends discord_akairo_1.Listener {
             .setColor("Random")
             .setThumbnail(userInformation.displayAvatarURL({ size: 256 }))
             .setTimestamp();
-        client.getPrivateChannel().send({
+        client.privateChannel?.send({
             embeds: [embed]
         });
     }

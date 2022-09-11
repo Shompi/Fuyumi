@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ServerInfo = void 0;
-//@ts-check
 const discord_js_1 = require("discord.js");
 const formatDate_1 = require("../Helpers/formatDate");
 const TIERS = {
@@ -61,7 +60,7 @@ const ServerInfo = async (interaction) => {
             }
         }
         const roles = sliceRoles(guild.roles.cache);
-        const chevronEmoji = interaction.client.emojis.cache.find(emoji => emoji.name === 'chevron_right') ?? "\>";
+        const chevronEmoji = interaction.client.developmentGuild?.emojis.cache.get("1016829421056966707") ?? "\>";
         const serverInfo = new discord_js_1.EmbedBuilder()
             .setAuthor({
             name: `Información del servidor ${guild.name}`
@@ -99,10 +98,8 @@ function sliceRoles(roles) {
     if (roleArray.length > maxRolesToShow) {
         for (let index = 0; index < roleArray.length; index++) {
             roleArray.sort((a, b) => b.position - a.position);
-            const slice = roleArray.slice(0, maxRolesToShow);
-            // @ts-ignore
-            slice.push(`${roleArray.length - maxRolesToShow} roles más...`);
-            return slice.map(role => role.toString()).join(", ");
+            const slice = roleArray.slice(0, maxRolesToShow).map(role => role.toString());
+            return slice.join(", ") + `, ${roleArray.length - maxRolesToShow} roles más...`;
         }
     }
     else {

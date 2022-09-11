@@ -1,10 +1,10 @@
-const { Collection, GatewayIntentBits, Partials } = require('discord.js');
-const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akairo');
+const { Collection, GatewayIntentBits, Partials } = require('discord.js')
+const { AkairoClient, CommandHandler, ListenerHandler } = require('discord-akairo')
 
 const { Guilds, GuildBans, GuildEmojisAndStickers, GuildMembers,
-  GuildMessages, GuildPresences, DirectMessages, GuildVoiceStates, } = GatewayIntentBits;
+  GuildMessages, GuildPresences, DirectMessages, GuildVoiceStates, } = GatewayIntentBits
 
-const enabledPartials = [Partials.Message, Partials.Reaction, Partials.Channel, Partials.User, Partials.GuildMember];
+const enabledPartials = [Partials.Message, Partials.Reaction, Partials.Channel, Partials.User, Partials.GuildMember]
 
 module.exports = class FuyumiClient extends AkairoClient {
   constructor() {
@@ -18,33 +18,45 @@ module.exports = class FuyumiClient extends AkairoClient {
         GuildMessages, GuildPresences, DirectMessages, GuildVoiceStates,],
       partials: enabledPartials,
 
-    });
+    })
 
     this.commandHandler = new CommandHandler(this, {
       // Options for the command handler
       defaultCooldown: 3,
-      directory: './Commands/',
+      directory: './MessageCommands/',
       prefix: 'f!',
       automateCategories: true,
-    });
+      extensions: new Set().add('.js'),
+      blockBots: true,
+    })
 
-    this.getPrivateChannel = () => this.channels.cache.get("806268687333457920") ?? null;
-
-    this.commandHandler.loadAll();
+    this.commandHandler.loadAll()
 
     this.listenerHandler = new ListenerHandler(this, {
-      directory: './Listeners/'
-    });
+      directory: './Listeners/',
+      extensions: new Set().add('.js')
+    })
 
-    this.commandHandler.useListenerHandler(this.listenerHandler);
-    this.listenerHandler.loadAll();
+    this.commandHandler.useListenerHandler(this.listenerHandler)
+    this.listenerHandler.loadAll()
 
     // SlashCommands and Context Menu Commands
-    this.commands = new Collection();
+    this.commands = new Collection()
 
-    // AutoComplete
+    // Events
 
-    // Buttons
+    this.commandHandler.on('load', (command, isReload) => {
+      console.log("Message Command loaded => ", command.id, isReload)
+    })
 
+  }
+
+  // getters
+  get privateChannel() {
+    return this.channels.cache.get("806268687333457920") ?? null
+  }
+
+  get developmentGuild() {
+    return this.channels.cache.get('941843371062861855') ?? null
   }
 }

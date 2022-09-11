@@ -1,5 +1,6 @@
 {
   "databases": {
-    "guild_auto_roles": "sqlite://./guild_roles.sqlite"
+    "guild_auto_roles": "sqlite://./guild_roles.sqlite",
+    "last_presence": "sqlite://./presence.sqlite"
   }
 }

@@ -10,7 +10,7 @@ class TestCommand extends Command {
 	}
 
 	exec(message, args) {
-		return message.channel.send('OK!');
+    return message.channel.send('Recargado!');
 	}
 }
 

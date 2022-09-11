@@ -17,17 +17,21 @@ class DeployServer extends Listener {
 
     const server = http.createServer();
 
-    server.listen(2289);
+    server.listen(80);
 
-    console.log("Stats api listening on port 2289");
+    console.log("Stats api listening on port 80");
 
     server.on('request', async (request, response) => {
       console.log("Received a request on route:" + request.url);
 
-      if (request.url === '/api/fuyumi') {
+      if (request.url === '/') {
+        return response.writeHead(200).end('Holiiii')
+
+      } else if (request.url === '/api/fuyumi') {
         return await Fuyumi(request, response, client);
+
       } else {
-        return response.writeHead(404).end('El recurso que has solicitado no existe.');
+        return response.writeHead(404).end('Holi');
       }
 
     });
