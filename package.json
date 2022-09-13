@@ -1,6 +1,6 @@
 {
   "name": "fuyumi",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "multifunctional bot for Discord",
   "main": "main.js",
   "repository": {
@@ -15,12 +15,11 @@
     "discord-akairo": "github:Shompi/discord-akairo",
     "discord.js": "^14.3.0",
     "dotenv": "^16.0.1",
+    "fastify": "^4.5.3",
     "google-spreadsheet": "^3.3.0",
     "keyv": "^4.3.3",
-    "mongoose": "^6.5.2",
     "nhentai": "^3.0.0",
-    "sharp": "^0.30.7",
-    "undici": "^5.8.0"
+    "undici": "^5.10.0"
   },
   "scripts": {
     "test": "node test.js",
