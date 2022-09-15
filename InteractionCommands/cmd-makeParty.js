@@ -72,45 +72,43 @@ module.exports = {
             if (!partyMessage)
                 return await interaction.editReply({ content: "Ocurrió un error al intentar enviar el mensaje, verifica que yo tenga permisos para enviar mensajes en este canal." });
             const waitTime = interaction.options.getInteger('esperar') ?? 5;
-            const componentCollector = partyMessage.createMessageComponentCollector({ time: waitTime * 1000 * 60 });
+            const componentCollector = partyMessage.createMessageComponentCollector({ time: waitTime * 1000 * 60, componentType: discord_js_1.ComponentType.Button });
             componentCollector.on('collect', async (buttonInteraction) => {
-                if (buttonInteraction.isButton()) {
-                    switch (buttonInteraction.customId) {
-                        case 'party-join':
-                            if (buttonInteraction.user.id === interaction.user.id) {
-                                await buttonInteraction.reply({ content: 'No puedes unirte a tu propio grupo.', ephemeral: true });
-                            }
-                            else if (partyMembers.has(buttonInteraction.user.id)) {
-                                await buttonInteraction.reply({ ephemeral: true, content: "Ya estás en el grupo." });
-                            }
-                            else {
-                                // Agregar al usuario a la party
-                                partyMembers.set(buttonInteraction.user.id, buttonInteraction.user);
-                                spotsLeft = spotsLeft - 1;
-                                await buttonInteraction.reply({ ephemeral: true, content: "¡Has sido agregado a la party!" });
-                            }
-                            break;
-                        case 'party-leave':
-                            if (buttonInteraction.user.id === interaction.user.id)
-                                await buttonInteraction.reply({ content: 'No puedes abandonar a tu propio grupo.', ephemeral: true });
-                            else if (partyMembers.delete(buttonInteraction.user.id)) {
-                                spotsLeft = spotsLeft + 1;
-                                await buttonInteraction.reply({ ephemeral: true, content: "Has abandonado el grupo." });
-                            }
-                            else {
-                                await buttonInteraction.reply({ ephemeral: true, content: "No estás en el grupo." });
-                            }
-                            break;
-                        case 'party-cancel':
-                            // Si el que presiona el botón es el mismo que inició la búsqueda de grupo
-                            if (buttonInteraction.user.id === interaction.user.id) {
-                                lfgCanceled = true;
-                                componentCollector.stop();
-                            }
-                            else {
-                                await buttonInteraction.reply({ ephemeral: true, content: 'No puedes cancelar esta interacción.' });
-                            }
-                    }
+                switch (buttonInteraction.customId) {
+                    case 'party-join':
+                        if (buttonInteraction.user.id === interaction.user.id) {
+                            await buttonInteraction.reply({ content: 'No puedes unirte a tu propio grupo.', ephemeral: true });
+                        }
+                        else if (partyMembers.has(buttonInteraction.user.id)) {
+                            await buttonInteraction.reply({ ephemeral: true, content: "Ya estás en el grupo." });
+                        }
+                        else {
+                            // Agregar al usuario a la party
+                            partyMembers.set(buttonInteraction.user.id, buttonInteraction.user);
+                            spotsLeft = spotsLeft - 1;
+                            await buttonInteraction.reply({ ephemeral: true, content: "¡Has sido agregado a la party!" });
+                        }
+                        break;
+                    case 'party-leave':
+                        if (buttonInteraction.user.id === interaction.user.id)
+                            await buttonInteraction.reply({ content: 'No puedes abandonar a tu propio grupo.', ephemeral: true });
+                        else if (partyMembers.delete(buttonInteraction.user.id)) {
+                            spotsLeft = spotsLeft + 1;
+                            await buttonInteraction.reply({ ephemeral: true, content: "Has abandonado el grupo." });
+                        }
+                        else {
+                            await buttonInteraction.reply({ ephemeral: true, content: "No estás en el grupo." });
+                        }
+                        break;
+                    case 'party-cancel':
+                        // Si el que presiona el botón es el mismo que inició la búsqueda de grupo
+                        if (buttonInteraction.user.id === interaction.user.id) {
+                            lfgCanceled = true;
+                            componentCollector.stop();
+                        }
+                        else {
+                            await buttonInteraction.reply({ ephemeral: true, content: 'No puedes cancelar esta interacción.' });
+                        }
                 }
                 if (spotsLeft === 0) {
                     componentCollector.stop();
@@ -135,11 +133,10 @@ module.exports = {
                 }
                 try {
                     if (spotsLeft > 0) {
-                        const partyFail = discord_js_1.EmbedBuilder.from(partyEmbed)
+                        const partyFail = new discord_js_1.EmbedBuilder()
                             .setTitle('El grupo no se ha completado en el tiempo dado.')
                             .setDescription(`${partyMembers.map(user => `<@${user.id}>`).join("\n")}\n**Faltaron**: ${spotsLeft} jugador/es más.`)
-                            .setColor(discord_js_1.Colors.Red)
-                            .setFooter({ text: "" });
+                            .setColor(discord_js_1.Colors.Red);
                         await partyMessage.edit({
                             embeds: [partyFail], components: []
                         });
@@ -148,11 +145,10 @@ module.exports = {
                         });
                     }
                     else {
-                        const partySuccessful = discord_js_1.EmbedBuilder.from(partyEmbed)
+                        const partySuccessful = new discord_js_1.EmbedBuilder()
                             .setTitle(`¡El grupo se ha completado!`)
                             .setDescription(`${interaction.user}\n${partyMembers.map(user => `${user}`).join("\n")}`)
-                            .setColor(discord_js_1.Colors.Green)
-                            .setFooter({ text: "" });
+                            .setColor(discord_js_1.Colors.Green);
                         await partyMessage.edit({
                             embeds: [partySuccessful], components: []
                         });
