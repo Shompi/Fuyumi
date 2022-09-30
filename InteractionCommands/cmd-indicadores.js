@@ -13,14 +13,13 @@ module.exports = {
         if (!info) {
             return await interaction.reply("Ha ocurrido un error con este comando...");
         }
-        const { dolar, dolar_intercambio, euro, bitcoin } = info;
+        const { dolar, euro, bitcoin } = info;
         const embed = new discord_js_1.EmbedBuilder()
             .setAuthor({ name: 'Indicadores de hoy', iconURL: interaction.client.user.displayAvatarURL({ size: 64 }) })
             .setColor('Blue')
             .setDescription(`**${dolar.nombre}**\t -> \t${dolar.valor} ${monedaCLP}\n` +
-            `**${dolar_intercambio.nombre}**\t -> \t${dolar_intercambio.valor} ${monedaCLP}\n` +
             `**${euro.nombre}**\t -> \t${euro.valor} ${monedaCLP}\n` +
-            `**${bitcoin.nombre}**\t -> \t${bitcoin.valor} USD \*`)
+            `**${bitcoin.nombre}\***\t -> \t${bitcoin.valor} USD`)
             .setTimestamp()
             .setFooter({ text: "* Estos valores podrian tener un desfase de hasta 2 dias." });
         return await interaction.reply({ embeds: [embed] });
