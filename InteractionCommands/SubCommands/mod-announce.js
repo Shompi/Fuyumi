@@ -34,11 +34,11 @@ const Announce = async (interaction) => {
                 name: `Anuncio de ${interaction.member.displayName}`,
                 iconURL: interaction.member.displayAvatarURL({ size: 64 }) ?? interaction.user.displayAvatarURL({ size: 64 }),
             })
-                .setTitle(options.title ?? '')
+                .setTitle(options.title ?? null)
                 .setDescription(options.description)
                 // @ts-ignore
                 .setColor(Util.resolveColor(options.color))
-                .setFooter({ text: options.footer ?? '' })
+                .setFooter(options.footer ? { text: options.footer } : null)
                 .setImage(options.imageURL)
                 .setThumbnail(options.thumbnailURL);
             // @ts-ignore
