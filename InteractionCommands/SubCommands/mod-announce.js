@@ -10,7 +10,7 @@ const Announce = async (interaction) => {
     if (interaction.inCachedGuild()) {
         const options = {
             channel: interaction.options.getChannel('canal', true),
-            description: interaction.options.getString('descripcion', true).replace("\\n", "\n"),
+            description: interaction.options.getString('descripcion').replace("\\n", "\n"),
             title: interaction.options.getString('titulo', false),
             color: interaction.options.getString('color', false),
             imageURL: interaction.options.getString('imagen', false),
@@ -37,7 +37,7 @@ const Announce = async (interaction) => {
                 .setTitle(options.title ?? null)
                 .setDescription(options.description)
                 // @ts-ignore
-                .setColor(Util.resolveColor(options.color))
+                .setColor(options.color ?? "Blue")
                 .setFooter(options.footer ? { text: options.footer } : null)
                 .setImage(options.imageURL)
                 .setThumbnail(options.thumbnailURL);

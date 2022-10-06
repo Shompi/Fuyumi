@@ -56,7 +56,7 @@ module.exports = {
             .addStringOption(color => {
             return color.setName('color')
                 .setDescription('El color que quieres que tenga el embed (barra lateral izquierda)')
-                .addChoices({ name: "Amarillo", value: "YELLOW" }, { name: "Azul", value: "BLUE" }, { name: "Blanco", value: "WHITE" }, { name: "Dorado", value: "GOLD" }, { name: "Fucsia", value: "FUCHSIA" }, { name: "Morado", value: "PURPLE" }, { name: "Naranja", value: "ORANGE" }, { name: "Rojo", value: "RED" }, { name: "Verde", value: "GREEN" }, { name: "Verde Oscuro", value: "DARK_GREEN" }, { name: "Random", value: "RANDOM" });
+                .addChoices({ name: "Amarillo", value: "Yellow" }, { name: "Azul", value: "Blue" }, { name: "Blanco", value: "White" }, { name: "Dorado", value: "Gold" }, { name: "Fucsia", value: "Fuchsia" }, { name: "Morado", value: "Purple" }, { name: "Naranja", value: "Orange" }, { name: "Rojo", value: "Red" }, { name: "Verde", value: "Green" }, { name: "Verde Oscuro", value: "DarkGreen" }, { name: "Random", value: "Random" });
         })
             .addStringOption(imagen => {
             return imagen.setName('imagen')
