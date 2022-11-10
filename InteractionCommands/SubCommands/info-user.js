@@ -11,8 +11,14 @@ const UserInfo = async (interaction) => {
             embeds: [getMemberInfo(user)]
         });
     }
+    else if (user instanceof discord_js_1.User) {
+        const fetchedUser = await interaction.client.users.fetch(user.id, { force: true });
+        return await interaction.reply({
+            embeds: [getUserInfo(fetchedUser)]
+        });
+    }
     else {
-        const fetchedUser = await interaction.client.users.fetch(user.toString(), { force: true });
+        const fetchedUser = await interaction.client.users.fetch(user, { force: true });
         return await interaction.reply({
             embeds: [getUserInfo(fetchedUser)]
         });
