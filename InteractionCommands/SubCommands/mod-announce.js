@@ -50,3 +50,4 @@ const Announce = async (interaction) => {
     }
 };
 exports.Announce = Announce;
+//# sourceMappingURL=mod-announce.js.map

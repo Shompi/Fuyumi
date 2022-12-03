@@ -44,3 +44,4 @@ function FormatDate(date) {
     });
 }
 exports.FormatDate = FormatDate;
+//# sourceMappingURL=formatDate.js.map

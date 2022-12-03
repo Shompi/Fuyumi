@@ -11,6 +11,7 @@
   "dependencies": {
     "@keyv/sqlite": "^3.6.3",
     "@types/google-spreadsheet": "^3.3.0",
+    "@types/node": "^18.11.10",
     "date-format-parse": "^0.2.7",
     "discord-akairo": "github:Shompi/discord-akairo",
     "discord.js": "^14.7.1",

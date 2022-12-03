@@ -25,3 +25,4 @@ module.exports = {
         return await interaction.reply({ embeds: [embed] });
     }
 };
+//# sourceMappingURL=cmd-indicadores.js.map

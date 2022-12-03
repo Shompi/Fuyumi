@@ -52,3 +52,4 @@ module.exports = {
         }
     }
 };
+//# sourceMappingURL=cmd-info.js.map

@@ -26,3 +26,4 @@ async function TimeoutMember(interaction) {
     }
 }
 exports.TimeoutMember = TimeoutMember;
+//# sourceMappingURL=mod-timeout.js.map

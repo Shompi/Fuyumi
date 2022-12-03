@@ -24,3 +24,4 @@ class GuildMemberRemoveListener extends discord_akairo_1.Listener {
     }
 }
 exports.GuildMemberRemoveListener = GuildMemberRemoveListener;
+//# sourceMappingURL=guildMemberRemove.js.map

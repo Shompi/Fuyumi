@@ -8,7 +8,8 @@
     "noFallthroughCasesInSwitch": true,
     "allowUnreachableCode": false,
     "watch": true,
-		"moduleResolution": "Node"
+		"moduleResolution": "Node",
+		"sourceMap": true
   },
   "exclude": [
     "node_modules",

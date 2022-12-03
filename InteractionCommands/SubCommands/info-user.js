@@ -17,7 +17,7 @@ const UserInfo = async (interaction) => {
             embeds: [getUserInfo(fetchedUser)]
         });
     }
-    else {
+    else if (typeof user === "string") {
         const fetchedUser = await interaction.client.users.fetch(user, { force: true });
         return await interaction.reply({
             embeds: [getUserInfo(fetchedUser)]
@@ -55,3 +55,4 @@ function isSomething(member) {
         return "Este miembro es Moderador de este servidor";
     return " ";
 }
+//# sourceMappingURL=info-user.js.map

@@ -23,3 +23,4 @@ module.exports = class ReloadCommand extends discord_akairo_1.Command {
         }
     }
 };
+//# sourceMappingURL=reloadCommand.js.map

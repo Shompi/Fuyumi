@@ -69,3 +69,4 @@ const Poll = async (interaction) => {
     await interaction.editReply({ content: `¡Tu encuesta ha sido enviada exitosamente en el canal ${args.channel}!` });
 };
 exports.Poll = Poll;
+//# sourceMappingURL=mod-poll.js.map
