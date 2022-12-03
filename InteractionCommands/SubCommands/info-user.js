@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserInfo = void 0;
-//@ts-check
 const discord_js_1 = require("discord.js");
 const formatDate_1 = require("../Helpers/formatDate");
 const UserInfo = async (interaction) => {
@@ -29,14 +28,9 @@ function getUserInfo(user) {
     return new discord_js_1.EmbedBuilder()
         .setTitle(user.tag)
         .setThumbnail(user.displayAvatarURL({ size: 512 }))
-        .setDescription(`Creación de la cuenta: ${(0, formatDate_1.FormatDate)(user.createdAt)}\nColor personalizado: ${user.accentColor} (${user.hexAccentColor})\n¿Bot?: ${user.bot ? "Si" : "No"}`)
+        .setDescription(`**Creación de la cuenta**: ${(0, formatDate_1.FormatDate)(user.createdAt)}\n**Color personalizado**: ${user.accentColor} (${user.hexAccentColor})\n**¿Bot?**: ${user.bot ? "Si" : "No"}`)
         .setColor(discord_js_1.Colors.Blue);
 }
-/**
- *
- * @param {GuildMember} member
- * @returns
- */
 function getMemberInfo(member) {
     const joinedAt = (0, formatDate_1.FormatDate)(member.joinedAt);
     return new discord_js_1.EmbedBuilder()
