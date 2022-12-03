@@ -14,17 +14,20 @@ module.exports = class SetActivityCommand extends discord_akairo_1.Command {
             description: 'Comando para cambiarle el nombre de la actividad al bot',
             ownerOnly: true,
             args: [
+                { type: "string", id: "type" },
                 { type: "string", id: "activity" },
-                { type: "string", id: "type" }
-            ]
+            ],
+            editable: true
         });
     }
-    async exec(message, { activity, type }) {
+    async exec(message, { type, activity }) {
+        if (!type || !activity)
+            return await message.reply(`Faltaron argumentos para usar este comando: Tipo: ${type} - Actividad: ${activity}`);
         this.client.user.setActivity({
             name: activity,
             type: discord_js_1.ActivityType[type]
         });
         await lastPresence.set('0', { name: activity, type: discord_js_1.ActivityType[type] });
-        return await message.reply({ content: `La actividad **${type}${activity}** se ha guardado con éxito.` });
+        return await message.reply({ content: `La actividad **${type} ${activity}** se ha guardado con éxito.` });
     }
 };

@@ -7,10 +7,14 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "allowUnreachableCode": false,
-    "watch": true
+    "watch": true,
+		"moduleResolution": "Node"
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+		"Classes",
+		"Configs",
+		"GameImages"
   ],
   "include": [
     "./InteractionCommands/*",
