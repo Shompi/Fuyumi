@@ -169,4 +169,3 @@ module.exports = {
         }
     }
 };
-//# sourceMappingURL=cmd-makeParty.js.map

@@ -42,4 +42,3 @@ module.exports = {
         });
     }
 };
-//# sourceMappingURL=cmd-roll.js.map

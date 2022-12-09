@@ -24,4 +24,3 @@ const RoleInfo = async (interaction) => {
     }
 };
 exports.RoleInfo = RoleInfo;
-//# sourceMappingURL=info-role.js.map

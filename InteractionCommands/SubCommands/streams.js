@@ -37,4 +37,3 @@ const setEnabled = async ({ interaction, enabled, configs }) => {
     }
 };
 exports.setEnabled = setEnabled;
-//# sourceMappingURL=streams.js.map

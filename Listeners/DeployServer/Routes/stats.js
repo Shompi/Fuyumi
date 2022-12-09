@@ -25,4 +25,3 @@ const StatsRequestHandler = async (_r, reply, client) => {
     });
 };
 exports.StatsRequestHandler = StatsRequestHandler;
-//# sourceMappingURL=stats.js.map

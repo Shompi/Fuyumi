@@ -49,4 +49,3 @@ function isSomething(member) {
         return "Este miembro es Moderador de este servidor";
     return " ";
 }
-//# sourceMappingURL=info-user.js.map

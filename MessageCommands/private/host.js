@@ -32,4 +32,3 @@ module.exports = class HostCommand extends discord_akairo_1.Command {
         return;
     }
 };
-//# sourceMappingURL=host.js.map

@@ -21,4 +21,3 @@ module.exports = {
         });
     }
 };
-//# sourceMappingURL=cmd-avatar.js.map

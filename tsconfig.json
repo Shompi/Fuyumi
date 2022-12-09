@@ -9,7 +9,6 @@
     "allowUnreachableCode": false,
     "watch": true,
 		"moduleResolution": "Node",
-		"sourceMap": true
   },
   "exclude": [
     "node_modules",
@@ -18,7 +17,7 @@
 		"GameImages"
   ],
   "include": [
-    "./InteractionCommands/*",
+    "./InteractionCommands",
     "./Listeners/*/*",
     "./MessageCommands/*/*",
   ]

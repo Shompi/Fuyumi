@@ -31,4 +31,3 @@ module.exports = class SetActivityCommand extends discord_akairo_1.Command {
         return await message.reply({ content: `La actividad **${type} ${activity}** se ha guardado con éxito.` });
     }
 };
-//# sourceMappingURL=setActivity.js.map

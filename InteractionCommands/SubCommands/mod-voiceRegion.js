@@ -35,4 +35,3 @@ const ChangeVoiceRegion = async (interaction) => {
     });
 };
 exports.ChangeVoiceRegion = ChangeVoiceRegion;
-//# sourceMappingURL=mod-voiceRegion.js.map

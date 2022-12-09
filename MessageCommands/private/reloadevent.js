@@ -29,4 +29,3 @@ module.exports = class ReloadEventCommand extends discord_akairo_1.Command {
         return await message.channel.send(`El evento ${evento.id} fue reiniciado.`);
     }
 };
-//# sourceMappingURL=reloadevent.js.map

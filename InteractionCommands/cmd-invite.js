@@ -19,4 +19,3 @@ module.exports = {
         return await interaction.reply({ embeds: [inviteEmbed] });
     }
 };
-//# sourceMappingURL=cmd-invite.js.map

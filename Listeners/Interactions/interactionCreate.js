@@ -21,7 +21,7 @@ class InteractionEvent extends Listener {
         if (!slashCommand) return await interaction.reply({ content: 'Este comando no está implementado.', ephemeral: true });
 
         interaction.client.emit('commandUsed', ({ commandName: interaction.commandName, user: interaction.user, subcommand: interaction.options.getSubcommand(false) }));
-        await slashCommand.execute(interaction);
+        return await slashCommand.execute(interaction);
 
       }
       // Button interaction
@@ -51,8 +51,12 @@ class InteractionEvent extends Listener {
 
         if (!contextCommand) return;
 
-        await contextCommand.execute(interaction);
+        return await contextCommand.execute(interaction);
       }
+
+			else if (interaction.isAutocomplete()) {
+				return await interaction.client.commands.get(interaction.commandName)?.autocomplete(interaction);
+			}
     } catch (error) {
       console.error(error);
     }

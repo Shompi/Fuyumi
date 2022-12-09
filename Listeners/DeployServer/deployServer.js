@@ -32,4 +32,3 @@ module.exports = class DeployServer extends discord_akairo_1.Listener {
         console.log("Server initiated!", SUCCESS);
     }
 };
-//# sourceMappingURL=deployServer.js.map
