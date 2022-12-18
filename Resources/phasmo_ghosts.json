@@ -45,7 +45,7 @@
   },
   {
     "id": "mare",
-    "name": "Mare",
+    "name": "Pesadilla",
     "evidences": ["Spirit Box", "Orbes Espectrales", "Escritura Fantasma"],
     "hunt": 60,
     "url": "https://phasmophobia.fandom.com/wiki/Mare",
@@ -93,7 +93,7 @@
     "evidences": ["Spirit Box", "Orbes Espectrales", "Temperaturas Heladas"],
     "hunt": 60,
     "url": "https://phasmophobia.fandom.com/wiki/Onryo",
-    "about": "Puede comenzar un ataque en cualquier momento si apaga una vela, luego de haber apagado ya al menos 3 **(50%, +25% por cada jugador muerto)**. Apaga las velas con más frecuencias que otros tipos de fantasma. Si el fantasma está cerca de una vela encendida, éste no podrá iniciar un [ataque](https://phasmophobia.fandom.com/wiki/Hunt) **(4m)**."
+    "about": "Puede comenzar un ataque en cualquier momento si apaga velas por tercera vez.\nApaga las velas con más frecuencia que otros fantasmas\n Si el Onryo intenta iniciar un ataque dentro de un **radio de 4 metros** de una vela encendida**, éste **apagará** la vela en vez de atacar, actuando la vela como un crucifijo.\nSi hay una vela encendida y un crucifijo en el suelo y el Onryo intenta iniciar un ataque, el fantasma apagará la vela en vez de quemar el crucifijo.\n\n**Nota:** Puede haber una espera de hasta 6 segundos entre que el Onryo apaga la tercera vela y se inicia el ataque."
   },
   {
     "id": "phantom",
