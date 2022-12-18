@@ -35,7 +35,7 @@ function getMemberInfo(member) {
     const joinedAt = (0, formatDate_1.FormatDate)(member.joinedAt);
     return new discord_js_1.EmbedBuilder()
         .setTitle(`Info de ${member.user.tag}`)
-        .setDescription(`Nombre en el servidor: ${member.displayName}\nMiembro desde: ${joinedAt}\nRoles: ${member.roles.cache.size}\nRol más alto: <@&${member.roles.highest.id}>`)
+        .setDescription(`**Nombre en el servidor**: ${member.displayName}\n**Miembro desde**: ${joinedAt}\n**Roles**: ${member.roles.cache.size}\n**Rol más alto**: <@&${member.roles.highest.id}>\n**¿Bot?**: ${member.user.bot ? "Si" : "No"}`)
         .setThumbnail(member.user.displayAvatarURL({ size: 512 }))
         .setColor(member.displayColor ?? discord_js_1.Colors.Blue)
         .setFooter({ text: isSomething(member) });
