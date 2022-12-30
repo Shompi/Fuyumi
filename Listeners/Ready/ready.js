@@ -3,8 +3,6 @@ const keyv = require('keyv');
 const { Listener } = require('discord-akairo');
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' });
 const { Client, Activity, ActivityType } = require('discord.js');
-const { EarthquakeMonitor } = require('./utils/earthquakes');
-
 
 /**@type {NodeJS.Timeout[]} */
 const timers = [];
@@ -34,13 +32,6 @@ class ReadyListener extends Listener {
         this.client.user?.setActivity(activity);
       }, 60000));
     }
-
-    this.earthquakeMonitor = () => {
-      console.log("Monitoring earthquakes...");
-      timers.push(setInterval(async () => {
-        EarthquakeMonitor(this.client)
-      }, 1000 * 60 * 5))
-    }
   }
 
   /** @param {Client} client */
@@ -50,7 +41,6 @@ class ReadyListener extends Listener {
     console.log(`Bot listo: ${Date()}`);
 
     this.setActivity();
-    this.earthquakeMonitor();
     console.log("Startup complete!");
     client.emit("deployServer", client);
   }
