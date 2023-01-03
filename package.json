@@ -9,24 +9,25 @@
     "directory": ""
   },
   "dependencies": {
-    "@keyv/sqlite": "^3.6.3",
+    "@keyv/sqlite": "^3.6.4",
     "@types/google-spreadsheet": "^3.3.0",
-    "@types/node": "^18.11.10",
+    "@types/node": "^18.11.18",
     "date-format-parse": "^0.2.7",
     "discord-akairo": "github:Shompi/discord-akairo",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
-    "fastify": "^4.10.2",
+    "fastify": "^4.11.0",
     "google-spreadsheet": "^3.3.0",
     "keyv": "^4.5.2",
     "nhentai": "^3.0.0",
-    "undici": "^5.10.0"
+    "tioanime": "^1.0.4",
+    "undici": "^5.14.0"
   },
   "scripts": {
     "test": "node test.js",
     "start": "node main.js",
     "deploy": "node ./Deployment/deploy-commands.js",
-		"build-commands": "tsc"
+    "build-commands": "tsc"
   },
   "keywords": [
     "bot",

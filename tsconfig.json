@@ -19,6 +19,7 @@
   ],
   "include": [
     "./InteractionCommands",
-		"./Listeners"
+		"./Listeners",
+		"./MessageCommands"
   ],
 }
