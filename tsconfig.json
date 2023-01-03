@@ -4,22 +4,16 @@
     "target": "ESNext",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "allowUnreachableCode": false,
     "watch": false,
 		"moduleResolution": "Node",
 		"outDir": "./js"
   },
-  "exclude": [
-    "node_modules",
-		"Classes",
-		"Configs",
-		"GameImages"
-  ],
   "include": [
     "./InteractionCommands",
 		"./Listeners",
-		"./MessageCommands"
+		"./MessageCommands/**/*"
   ],
 }

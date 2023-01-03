@@ -18,8 +18,6 @@ GameImages/config.json
 *.jpeg
 *.png
 *.gif
-
-*.ts
 *sqlite
 
 Tests
