@@ -25,7 +25,8 @@
   "scripts": {
     "test": "node test.js",
     "start": "node main.js",
-    "deploy": "node ./Deployment/deploy-commands.js"
+    "deploy": "node ./Deployment/deploy-commands.js",
+		"build-commands": "tsc"
   },
   "keywords": [
     "bot",

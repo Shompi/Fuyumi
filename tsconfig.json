@@ -7,8 +7,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "allowUnreachableCode": false,
-    "watch": true,
+    "watch": false,
 		"moduleResolution": "Node",
+		"outDir": "./js"
   },
   "exclude": [
     "node_modules",
@@ -18,7 +19,6 @@
   ],
   "include": [
     "./InteractionCommands",
-    "./Listeners/*/*",
-    "./MessageCommands/*/*",
-  ]
+		"./Listeners"
+  ],
 }
