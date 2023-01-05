@@ -20,7 +20,5 @@ GameImages/config.json
 *.gif
 *sqlite
 
-Tests
-*.map
-
+tests
 js

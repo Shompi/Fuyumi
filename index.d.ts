@@ -153,36 +153,91 @@ declare namespace Fuyumi {
 	}
 }
 
-declare module 'tioanime' {
+declare namespace MyAnimeList {
 
-	interface SearchResult {
-		id: string
-		title: string
-		poster: string
+	interface Data {
+		node: {
+			id: number
+			title: string
+			main_picture: {
+				medium: string
+				large: string
+			}
+		}
 	}
 
-	interface Episode {
-		id: string
-		poster: string
-		episode: number
-		date: string
+	type GetAnimeListOptions = {
+		q: string
+		limit?: 4 | number,
+		offset?: 0 | number,
+		fields?: string
+	}
+	interface GetAnimeListResponse {
+		data: Data[]
+		paging: {
+			next: string
+		}
 	}
 
-	interface AnimeInfoResult {
-		id: string
-		malId: string
+
+	type GetAnimeDetailsOptions = {
+		anime_id: number,
+		fields?: string
+	}
+
+	interface Genre {
+		id: number
+		name: string
+	}
+
+	interface GetAnimeDetailsResponse {
+		id: number
 		title: string
-		poster: string
-		banner: string
+		main_picture: {
+			medium: string
+			large: string
+		}
+		alternative_titles: {
+			synonyms: string[]
+			en: string
+			ja: string
+		}
+		start_date: string
+		end_date: string
 		synopsis: string
-		debut: string
-		type: string
-		genres: string[]
-		nextEpisode?: string
-		episodes: Episode[]
+		mean: number
+		rank: number
+		popularity: number
+		num_list_users: number
+		num_scoring_users: number
+		nsfw: string
+		created_at: string
+		updated_at: string
+		media_type: string
+		status: string
+		genres: Genre[]
+		num_episodes: number
+		start_season: {
+			year: number
+			season: string
+		}
+		broadcast: {
+			day_of_the_week: string
+			start_time: string
+		}
+		/** Basado en: manga */
+		source: string
+		average_episode_duration: number
+		/** PG 13 */
+		rating: string
+		pictures: {
+			medium: string
+			large: string
+		}[]
+		background: string
+		studios: {
+			id: number
+			name: string
+		}[]
 	}
-
-	function search(query: string): Promise<SearchResult[]>
-	function getAnimeInfo(query: string): Promise<AnimeInfoResult[]>
-
 }
