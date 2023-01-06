@@ -179,18 +179,18 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction, AnimeId: number)
 		.addFields(
 			{
 				name: "Status",
-				value: status,
+				value: status ?? "-",
 				inline: true
 			},
 			{
 				name: "Rating",
-				value: rating,
+				value: rating ?? "-",
 				inline: true
 			}
 		)
 
 	return await i.editReply({
-		content: '',
+		content: null,
 		embeds: [DetailsEmbed],
 		components: []
 	})

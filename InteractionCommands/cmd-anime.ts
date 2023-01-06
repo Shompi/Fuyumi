@@ -27,7 +27,7 @@ export = {
 						.setDescription('La url de la imágen')
 				)
 		),
-	isGlobal: false,
+	isGlobal: true,
 	async execute(i: ChatInputCommandInteraction) {
 
 		switch (i.options.getSubcommand()) {

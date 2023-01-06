@@ -136,20 +136,20 @@ declare namespace Phasmophobia {
 	interface Ghost {
 		id: string
 		name: string
-		evidences: string[]
-		falseEvidences?: string[]
+		evidences: Array<string>
+		falseEvidences?: Array<string>
 		hunt?: number
 		url: string
 		about: string
 	}
 
-	type Ghosts = Ghost[]
+	type Ghosts = Array<Ghost>
 }
 
 declare namespace Fuyumi {
-	interface CustomEvent extends Listener {
-		hasTimers: boolean
-		clearTimers(): void
+	class CustomEvent extends Listener {
+		hasTimers?: boolean
+		clearTimers?: () => void
 	}
 }
 
@@ -173,7 +173,7 @@ declare namespace MyAnimeList {
 		fields?: string
 	}
 	interface GetAnimeListResponse {
-		data: Data[]
+		data: Array<Data>
 		paging: {
 			next: string
 		}
@@ -198,7 +198,7 @@ declare namespace MyAnimeList {
 			large: string
 		}
 		alternative_titles: {
-			synonyms: string[]
+			synonyms: Array<string>
 			en: string
 			ja: string
 		}
@@ -215,7 +215,7 @@ declare namespace MyAnimeList {
 		updated_at: string
 		media_type: string
 		status: string
-		genres: Genre[]
+		genres: Array<Genre>
 		num_episodes: number
 		start_season: {
 			year: number
@@ -230,14 +230,14 @@ declare namespace MyAnimeList {
 		average_episode_duration: number
 		/** PG 13 */
 		rating: string
-		pictures: {
+		pictures: Array<{
 			medium: string
 			large: string
-		}[]
+		}>
 		background: string
-		studios: {
+		studios: Array<{
 			id: number
 			name: string
-		}[]
+		}>
 	}
 }
