@@ -2,7 +2,7 @@ import { Command } from 'discord-akairo'
 import { Message } from 'discord.js'
 import { Fuyumi } from '../../index'
 
-export class ReloadEventCommand extends Command {
+export default class ReloadEventCommand extends Command {
 	constructor() {
 		super('revt', {
 			aliases: ['revt', 'reloadevent', 'eventreload'],

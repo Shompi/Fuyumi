@@ -26,7 +26,7 @@ module.exports = class FuyumiClient extends AkairoClient {
 			directory: './MessageCommands/',
 			prefix: 'f!',
 			automateCategories: true,
-			extensions: ['.js', '.ts'],
+			extensions: new Set([".js", ".ts"]),
 			blockBots: true,
 		})
 
@@ -34,7 +34,7 @@ module.exports = class FuyumiClient extends AkairoClient {
 
 		this.listenerHandler = new ListenerHandler(this, {
 			directory: './Listeners/',
-			extensions: ['.js', '.ts']
+			extensions: new Set([".js", ".ts"]),
 		})
 
 		this.commandHandler.useListenerHandler(this.listenerHandler)

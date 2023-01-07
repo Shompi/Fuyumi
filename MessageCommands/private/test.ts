@@ -1,7 +1,9 @@
 import { Command } from 'discord-akairo';
 import { Message } from 'discord.js';
 
-export class TestCommand extends Command {
+console.log("MESSAGE COMMAND: test - loaded");
+
+export default class TestCommand extends Command {
 	constructor() {
 		super('test', {
 			aliases: ['test'],

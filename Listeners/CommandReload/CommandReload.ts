@@ -15,9 +15,11 @@ class CommandUsed extends Listener {
 		const LogChannel = client.channels.cache.get(channelId) as TextChannel;
 
 		for (const filename of slashCommandsFiles) {
-
 			// Leer el archivo para poder encontrar el comando por su nombre
 			const command = await import(`../../InteractionCommands/${filename}`);
+
+			console.log(`${commandName} - ${command.data.name}`);
+
 
 			if (command.data.name === commandName) {
 

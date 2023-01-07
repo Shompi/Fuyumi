@@ -2,8 +2,7 @@ import { Command } from 'discord-akairo';
 import keyv from 'keyv';
 const lastPresence = new keyv("sqlite://presence.sqlite", { namespace: 'presence' })
 import { Message, ActivityType } from 'discord.js';
-
-module.exports = class SetActivityCommand extends Command {
+export default class SetActivityCommand extends Command {
 	constructor() {
 		super('activity', {
 			aliases: ['activity', 'setactivity'],

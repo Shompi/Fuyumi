@@ -1,16 +1,15 @@
 import { Command } from 'discord-akairo'
 import { Message } from 'discord.js'
-import { Fuyumi } from '../../index'
 
-export class ReloadEventCommand extends Command {
+export default class ReloadCommand extends Command {
 	constructor() {
 		super('reload', {
-			aliases: [],
+			aliases: ['reload'],
 			description: 'Recarga un commando.',
 			ownerOnly: true,
 			args: [
 				{
-					id: 'reload',
+					id: 'command',
 					type: 'string',
 					prompt: {
 						start: 'Ingresa el nombre del comando que quieres recargar:',
@@ -24,8 +23,6 @@ export class ReloadEventCommand extends Command {
 
 	async exec(message: Message, { command }: { command: string }) {
 
-
-
-		return this.client.emit('commandReload', { commandName: command, channelId: message.channel.id, client: message.client })
+		return message.client.emit('commandReload', { commandName: command, channelId: message.channel.id, client: message.client })
 	}
 }
