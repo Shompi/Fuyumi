@@ -1,4 +1,4 @@
-import { ContextMenuCommandBuilder, EmbedBuilder, ApplicationCommandType, ContextMenuCommandInteraction, Colors } from 'discord.js';
+import { ContextMenuCommandBuilder, EmbedBuilder, ApplicationCommandType, Colors, type UserContextMenuCommandInteraction } from 'discord.js';
 
 
 export = {
@@ -7,7 +7,7 @@ export = {
     .setType(ApplicationCommandType.User),
   isGlobal: true,
 
-  async execute(interaction: ContextMenuCommandInteraction) {
+  async execute(interaction: UserContextMenuCommandInteraction) {
 
     const target = interaction.targetId;
 
