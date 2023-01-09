@@ -190,6 +190,11 @@ declare namespace MyAnimeList {
 		name: string
 	}
 
+	type NSFW = "white" | "gray" | "black" | null
+	type AiringStatus = "finished_airing" | "currently_airing" | "not_yet_aired"
+	type MediaType = "unknown" | "tv" | "ova" | "movie" | "special" | "ona" | "music"
+	type SourceType = "other" | "original" | "manga" | "4_koma_manga" | "web_manga" | "digital_manga" | "novel" | "light_novel" | "visual_novel" | "game" | "card_game" | "book" | "picture_book" | "radio" | "music" | null
+	type Rating = "g" | "pg" | "pg_13" | "r" | "r+" | "rx" | null
 	interface GetAnimeDetailsResponse {
 		id: number
 		title: string
@@ -210,11 +215,11 @@ declare namespace MyAnimeList {
 		popularity: number
 		num_list_users: number
 		num_scoring_users: number
-		nsfw: string
+		nsfw: NSFW
 		created_at: string
 		updated_at: string
-		media_type: string
-		status: string
+		media_type: MediaType
+		status: AiringStatus
 		genres: Array<Genre>
 		num_episodes: number
 		start_season: {
@@ -226,10 +231,9 @@ declare namespace MyAnimeList {
 			start_time: string
 		}
 		/** Basado en: manga */
-		source: string
+		source: SourceType
 		average_episode_duration: number
-		/** PG 13 */
-		rating: string
+		rating: Rating
 		pictures: Array<{
 			medium: string
 			large: string

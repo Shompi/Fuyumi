@@ -83,17 +83,8 @@ export async function BuscarAnime(i: ChatInputCommandInteraction) {
 
 }
 
-async function GetAnimeList(options: MyAnimeList.GetAnimeListOptions): Promise<MyAnimeList.GetAnimeListResponse> {
 
-	const URL = GetAnimeListEndpoint + `anime?q=${options.q}&limit=${4}`
-
-	return await request(URL, {
-		headers: {
-			"X-MAL-CLIENT-ID": process.env.MAL_CLIENT_ID
-		}
-	}).then(response => response.body.json()) as MyAnimeList.GetAnimeListResponse
-}
-
+// Utility Functions
 function CreateButtonsRow(Animes: MyAnimeList.GetAnimeListResponse) {
 
 	return new ActionRowBuilder<ButtonBuilder>()
@@ -105,6 +96,43 @@ function CreateButtonsRow(Animes: MyAnimeList.GetAnimeListResponse) {
 					.setStyle(ButtonStyle.Primary)
 			})
 		)
+}
+
+function GetAnimeRating(rating: MyAnimeList.Rating): string {
+	if (!rating) return null
+
+	const Ratings = {
+		g: "Para toda audiencia",
+		pg: "Necesita supervisión\nde un adulto",
+		pg_13: "PG-13",
+		r: "R-17",
+		"r+": "Profanidades y Nudismo",
+		rx: "Hentai"
+	}
+
+	return Ratings[rating]
+}
+
+function GetAnimeAiringStatus(status: MyAnimeList.AiringStatus) {
+	switch (status) {
+		case 'currently_airing':
+			return "En Emisión"
+		case 'finished_airing':
+			return "Finalizado"
+		case 'not_yet_aired':
+			return "Aún no emitido"
+	}
+}
+
+async function GetAnimeList(options: MyAnimeList.GetAnimeListOptions): Promise<MyAnimeList.GetAnimeListResponse> {
+
+	const URL = GetAnimeListEndpoint + `anime?q=${options.q}&limit=${4}`
+
+	return await request(URL, {
+		headers: {
+			"X-MAL-CLIENT-ID": process.env.MAL_CLIENT_ID
+		}
+	}).then(response => response.body.json()) as MyAnimeList.GetAnimeListResponse
 }
 
 async function SendAnimeDetails(i: ChatInputCommandInteraction, AnimeId: number) {
@@ -121,7 +149,7 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction, AnimeId: number)
 		//"popularity",
 		//"num_list_users",
 		//"num_scoring_users",
-		//"nsfw",
+		"nsfw",
 		//"created_at",
 		//"updated_at",
 		"media_type",
@@ -156,16 +184,16 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction, AnimeId: number)
 		status,
 		broadcast,
 		rating,
-		synopsis
+		synopsis,
+		nsfw
 	} = await request(URL, {
 		headers: {
 			"X-MAL-CLIENT-ID": process.env.MAL_CLIENT_ID
 		}
 	}).then(response => response.body.json()) as MyAnimeList.GetAnimeDetailsResponse
 
-
 	const DetailsEmbed = new EmbedBuilder()
-		.setTitle(`${title} - ⭐${mean?.toFixed(2)}`)
+		.setTitle(`${title} - ⭐${mean?.toFixed(2) ?? "0.0"}`)
 		.setColor(Colors.Blurple)
 		.setDescription(`${synopsis}\n\n**Genres:** ${genres.map(genre => genre.name).join(", ")}`)
 		.setFooter({
@@ -179,12 +207,12 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction, AnimeId: number)
 		.addFields(
 			{
 				name: "Status",
-				value: status ?? "-",
+				value: GetAnimeAiringStatus(status) ?? "-",
 				inline: true
 			},
 			{
 				name: "Rating",
-				value: rating ?? "-",
+				value: GetAnimeRating(rating) ?? "-",
 				inline: true
 			}
 		)
@@ -194,5 +222,4 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction, AnimeId: number)
 		embeds: [DetailsEmbed],
 		components: []
 	})
-
 }
