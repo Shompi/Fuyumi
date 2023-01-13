@@ -15,7 +15,7 @@ export = {
 		/** Check if the message has attachments first */
 		if (Attachments.size === 0)
 			return await interaction.reply({
-				content: 'Este mensaje no tienen ningún archivo de imagen.',
+				content: 'Este mensaje no tiene ningún archivo de imagen.',
 				ephemeral: true
 			})
 
