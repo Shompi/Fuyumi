@@ -12,6 +12,8 @@
     "@keyv/sqlite": "^3.6.4",
     "@types/google-spreadsheet": "^3.3.0",
     "@types/node": "^18.11.18",
+    "cheerio": "^1.0.0-rc.12",
+    "cloudscraper": "^4.6.0",
     "date-format-parse": "^0.2.7",
     "discord-akairo": "github:Shompi/discord-akairo",
     "discord.js": "^14.7.1",

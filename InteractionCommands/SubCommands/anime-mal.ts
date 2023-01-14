@@ -6,7 +6,7 @@ const WebPageURL = "https://myanimelist.net/"
 const GetAnimeListEndpoint = "https://api.myanimelist.net/v2/"
 const GetAnimeDetailsEndpoint = "https://api.myanimelist.net/v2/anime/"
 
-export async function BuscarAnime(i: ChatInputCommandInteraction) {
+export async function SearchMyAnimeList(i: ChatInputCommandInteraction) {
 
 	try {
 		const InitialReply = await i.deferReply()
