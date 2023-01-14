@@ -55,7 +55,7 @@ function CreateSelectMenu(animes: PartialAnimeData[]): ActionRowBuilder<StringSe
 						new StringSelectMenuOptionBuilder()
 							.setLabel(anime.title)
 							.setValue(anime.title)
-							.setDescription(anime.type.toUpperCase() || null)
+							.setDescription(anime.type.toUpperCase() || "ANIME")
 					)
 				)
 		)
