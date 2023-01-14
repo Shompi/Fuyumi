@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, Colors, ComponentType, EmbedBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Colors, Component, ComponentType, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder } from "discord.js";
 import { request } from "undici"
 import { MyAnimeList } from "../../index";
 
@@ -30,22 +30,21 @@ export async function SearchMyAnimeList(i: ChatInputCommandInteraction) {
 			return await SendAnimeDetails(i, Animes.data[0].node.id)
 		}
 
+		let ActionRow: ActionRowBuilder<ButtonBuilder> | ActionRowBuilder<StringSelectMenuBuilder>
+
 		if (Animes.data.length > 5) {
-			Animes.data = Animes.data.slice(0, 5)
+			ActionRow = CreateSelectMenuRow(Animes)
+		} else {
+			ActionRow = CreateButtonsRow(Animes)
 		}
-
-
-
-		const ButtonsRow = CreateButtonsRow(Animes)
 
 		await i.editReply({
 			content: 'Selecciona uno de los animés que encontré:',
-			components: [ButtonsRow]
+			components: [ActionRow]
 		})
 
 
 		const PressedButton = await InitialReply.awaitMessageComponent({
-			componentType: ComponentType.Button,
 			filter: (async PressedButton => {
 
 				if (PressedButton.user.id !== i.user.id) {
@@ -60,14 +59,14 @@ export async function SearchMyAnimeList(i: ChatInputCommandInteraction) {
 			}),
 			dispose: true,
 			time: 60000,
-		})
+		}) as ButtonInteraction | StringSelectMenuInteraction
 
 		await PressedButton.update({
 			content: 'Obteniendo información del animé...',
 			components: []
 		})
 
-		const SelectedAnimeId = PressedButton.customId
+		const SelectedAnimeId = PressedButton.componentType === ComponentType.Button ? PressedButton.customId : PressedButton.values[0]
 
 		return await SendAnimeDetails(i, parseInt(SelectedAnimeId))
 
@@ -85,6 +84,26 @@ export async function SearchMyAnimeList(i: ChatInputCommandInteraction) {
 
 
 // Utility Functions
+function CreateSelectMenuRow(Animes: MyAnimeList.GetAnimeListResponse): ActionRowBuilder<StringSelectMenuBuilder> {
+
+	if (Animes.data.length > 25)
+		Animes.data = Animes.data.slice(0, 25)
+
+	return new ActionRowBuilder<StringSelectMenuBuilder>()
+		.setComponents(
+			new StringSelectMenuBuilder()
+				.setCustomId('anime-select-menu')
+				.setPlaceholder('Selecciona una animé de la lista...')
+				.setOptions(
+					Animes.data.map(anime =>
+						new StringSelectMenuOptionBuilder()
+							.setLabel(anime.node.title)
+							.setValue(anime.node.id.toString())
+					)
+				)
+		)
+}
+
 function CreateButtonsRow(Animes: MyAnimeList.GetAnimeListResponse) {
 
 	return new ActionRowBuilder<ButtonBuilder>()
@@ -126,7 +145,7 @@ function GetAnimeAiringStatus(status: MyAnimeList.AiringStatus) {
 
 async function GetAnimeList(options: MyAnimeList.GetAnimeListOptions): Promise<MyAnimeList.GetAnimeListResponse> {
 
-	const URL = GetAnimeListEndpoint + `anime?q=${options.q}&limit=${4}`
+	const URL = GetAnimeListEndpoint + `anime?q=${options.q}&limit=${25}`
 
 	return await request(URL, {
 		headers: {
