@@ -102,7 +102,6 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction | StringSelectMen
 		.setComponents(
 			new ButtonBuilder()
 				.setLabel("Ir a la página")
-				.setEmoji("🔗")
 				.setStyle(ButtonStyle.Link)
 				.setURL(url)
 		)
