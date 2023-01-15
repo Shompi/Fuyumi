@@ -1,4 +1,4 @@
-import { ActionRowBuilder, type ChatInputCommandInteraction, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ComponentType, EmbedBuilder, StringSelectMenuInteraction, InteractionType, ButtonBuilder, ButtonStyle } from "discord.js";
+import { ActionRowBuilder, type ChatInputCommandInteraction, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ComponentType, EmbedBuilder, StringSelectMenuInteraction, InteractionType, ButtonBuilder, ButtonStyle, Collection } from "discord.js";
 import { searchAnime, getAnimeInfo, PartialAnimeData, AnimeData } from "../Helpers/animeflv"
 
 export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
@@ -13,7 +13,7 @@ export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 	}
 
 	if (AnimeSearchResults.length === 1) {
-		const AnimeDetails = await getAnimeInfo(AnimeSearchResults[0].title)
+		const AnimeDetails = await getAnimeInfo(AnimeSearchResults[0].id)
 		return await SendAnimeDetails(i, AnimeDetails)
 	}
 
@@ -45,16 +45,22 @@ function CreateSelectMenu(animes: PartialAnimeData[]): ActionRowBuilder<StringSe
 	if (animes.length > 25)
 		animes = animes.slice(0, 25)
 
+	const AnimesCollection = new Collection<string, PartialAnimeData>()
+
+	for (const Anime of animes) {
+		AnimesCollection.set(Anime.id, Anime)
+	}
+
 	return new ActionRowBuilder<StringSelectMenuBuilder>()
 		.setComponents(
 			new StringSelectMenuBuilder()
 				.setCustomId('anime-select-menu')
 				.setPlaceholder('Selecciona una animé de la lista...')
 				.setOptions(
-					animes.map(anime =>
+					AnimesCollection.map(anime =>
 						new StringSelectMenuOptionBuilder()
 							.setLabel(anime.title)
-							.setValue(anime.title)
+							.setValue(anime.id)
 							.setDescription(anime.type.toUpperCase() || "ANIME")
 					)
 				)

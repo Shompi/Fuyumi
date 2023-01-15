@@ -47,11 +47,13 @@ let options: ScraperOptions = {
 }
 
 export async function searchAnime(query: string): Promise<PartialAnimeData[]> {
-	options.uri = 'https://www3.animeflv.net/browse?q=' + query.toLowerCase().replace(/ /g, "+")
+
+	options.uri = 'https://www3.animeflv.net/browse?q=' + query.toLowerCase().replace(/\s+/g, "+")
 
 	/**
 		@todo Aún no se estan controlando los 404, se debería chequear por 404 luego de un request y devolver un valor adecuado.
 	 */
+
 	const searchData = await cloudscraper(options)
 
 	const $ = load(searchData)
@@ -59,28 +61,26 @@ export async function searchAnime(query: string): Promise<PartialAnimeData[]> {
 	let search: PartialAnimeData[] = []
 	if ($('body > div.Wrapper > div > div > main > ul > li').length > 0) {
 		$('body > div.Wrapper > div > div > main > ul > li').each((i, el) => {
-			let temp = {
+			let temp: PartialAnimeData = {
 				title: $(el).find('h3').text(),
 				cover: $(el).find('figure > img').attr('src'),
 				synopsis: $(el).find('div.Description > p').eq(1).text(),
 				id: $(el).find('a').attr('href').replace("/anime/", ""),
 				type: $(el).find('a > div > span.Type').text(),
-				url: 'https://www3.animeflv.net/anime/' + $(el).find('a').attr('href')
+				url: 'https://www3.animeflv.net' + $(el).find('a').attr('href')
 			}
 
 			search.push(temp);
 		});
 	};
+
 	return search;
 }
 
-export async function getAnimeInfo(anime: string): Promise<AnimeData> {
+export async function getAnimeInfo(animeId: string): Promise<AnimeData> {
 
-	let animeSearch = await searchAnime(anime);
+	options.uri = 'https://www3.animeflv.net/anime/' + animeId
 
-	if (animeSearch.length == 0) return null;
-
-	options.uri = 'https://www3.animeflv.net/anime/' + animeSearch[0].id;
 	const animeData = await cloudscraper(options);
 	const $ = load(animeData);
 
@@ -94,10 +94,13 @@ export async function getAnimeInfo(anime: string): Promise<AnimeData> {
 		synopsis: $('body > div.Wrapper > div > div > div.Container > div > main > section:nth-child(1) > div.Description > p').text(),
 		genres: $('body > div.Wrapper > div > div > div.Container > div > main > section:nth-child(1) > nav > a').text().split(/(?=[A-Z])/),
 		episodes: JSON.parse($('script').eq(15).text().match(/episodes = (\[\[.*\].*])/)[1]).length,
-		url: 'https://www3.animeflv.net/anime/' + animeSearch[0].id
+		url: options.uri
 	};
 	$('body > div.Wrapper > div > div > div.Ficha.fchlt > div.Container > div:nth-child(3) > span').each((i, el) => {
 		animeInfo.alternative_titles.push($(el).text());
 	})
+
+	console.log(animeInfo);
+
 	return animeInfo;
 }
