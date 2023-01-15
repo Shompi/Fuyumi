@@ -63,10 +63,10 @@ function CreateSelectMenu(animes: PartialAnimeData[]): ActionRowBuilder<StringSe
 
 async function SendAnimeDetails(i: ChatInputCommandInteraction | StringSelectMenuInteraction, details: AnimeData) {
 
-	const { cover, episodes, genres, status, synopsis, title, url, alternative_title } = details;
+	const { cover, episodes, genres, status, synopsis, title, url, alternative_titles, rating } = details;
 
 	const DetailsEmbed = new EmbedBuilder()
-		.setTitle(title)
+		.setTitle(`${title} - ⭐${rating}`)
 		.setDescription(`${synopsis}\n\n**Géneros:** ${genres.join(", ")}`)
 		.setAuthor({
 			name: `Busqueda de ${i.user.username}`,
@@ -74,7 +74,6 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction | StringSelectMen
 			url: url
 		})
 		.setColor("Random")
-		.setFooter({ text: alternative_title || null })
 		.setThumbnail(cover)
 		.addFields([
 			{
@@ -88,6 +87,10 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction | StringSelectMen
 				inline: true
 			}
 		])
+
+	if (alternative_titles.length > 0) {
+		DetailsEmbed.setFooter({ text: alternative_titles.join(", ") })
+	}
 
 	const UrlButtonRow = new ActionRowBuilder<ButtonBuilder>()
 		.setComponents(
