@@ -21,14 +21,14 @@
     "fastify": "^4.11.0",
     "google-spreadsheet": "^3.3.0",
     "keyv": "^4.5.2",
-    "nhentai": "^3.0.0",
     "trace.moe.ts": "^1.3.10-patch1",
     "undici": "^5.14.0"
   },
   "scripts": {
-    "start": "ts-node main.ts",
+    "start": "ts-node ./src/index.ts",
     "deploy": "node ./Deployment/deploy-commands.js",
-    "build-commands": "tsc"
+    "build-commands": "tsc",
+    "lint": "npx eslint ./src"
   },
   "keywords": [
     "bot",
@@ -43,7 +43,9 @@
   "license": "MIT",
   "devDependencies": {
     "@types/sharp": "^0.30.5",
-    "tslint": "^6.1.3",
-    "typescript": "^4.8.2"
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.48.1",
+    "eslint": "^8.32.0",
+    "typescript": "^4.9.4"
   }
 }

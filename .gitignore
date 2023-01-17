@@ -1,15 +1,14 @@
 #Folders
 node_modules
 Logs
-Keys
-data
 .vscode
 Deployment
-GameImages/config.json
+db
+js
+tests
 
 #Environment variables
 *.env
-
 *token.*
 *tokens.*
 
@@ -20,5 +19,3 @@ GameImages/config.json
 *.gif
 *sqlite
 
-tests
-js
