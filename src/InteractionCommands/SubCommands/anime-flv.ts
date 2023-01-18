@@ -1,6 +1,5 @@
 import { ActionRowBuilder, type ChatInputCommandInteraction, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ComponentType, EmbedBuilder, StringSelectMenuInteraction, InteractionType, ButtonBuilder, ButtonStyle, Collection } from "discord.js";
-import { searchAnime, getAnimeInfo, PartialAnimeData, AnimeData } from "../Helpers/animeflv"
-
+import { AnimeData, getAnimeInfo, searchAnime, SearchAnimeData, } from "animeflv-api-ts"
 export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 
 	const InitialReply = await i.deferReply()
@@ -14,6 +13,8 @@ export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 
 	if (AnimeSearchResults.length === 1) {
 		const AnimeDetails = await getAnimeInfo(AnimeSearchResults[0].id)
+		if (!AnimeDetails) return await i.editReply('No encontré ningun animé con esa id.')
+
 		return await SendAnimeDetails(i, AnimeDetails)
 	}
 
@@ -37,15 +38,18 @@ export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 	const SelectedAnime = SelectMenuInteraction.values[0]
 
 	const AnimeDetails = await getAnimeInfo(SelectedAnime)
+
+	if (!AnimeDetails) return await i.editReply({ content: 'Ocurrió un error al intentar obtener la información del animé.', components: [], embeds: [] })
+
 	return await SendAnimeDetails(SelectMenuInteraction, AnimeDetails)
 }
 
-function CreateSelectMenu(animes: PartialAnimeData[]): ActionRowBuilder<StringSelectMenuBuilder> {
+function CreateSelectMenu(animes: SearchAnimeData[]): ActionRowBuilder<StringSelectMenuBuilder> {
 
 	if (animes.length > 25)
 		animes = animes.slice(0, 25)
 
-	const AnimesCollection = new Collection<string, PartialAnimeData>()
+	const AnimesCollection = new Collection<string, SearchAnimeData>()
 
 	for (const Anime of animes) {
 		AnimesCollection.set(Anime.id, Anime)
