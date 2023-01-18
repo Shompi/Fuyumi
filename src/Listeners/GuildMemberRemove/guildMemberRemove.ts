@@ -11,9 +11,12 @@ export default class GuildMemberRemoveListener extends Listener {
 	}
 
 	async exec(member: GuildMember) {
-		const { id } = member;
 		const client = member.client as Fuyumi.Client
 
+		if (member.guild.id !== client.exiliados.id)
+			return;
+
+		const { id } = member;
 		const userInformation = await client.users.fetch(id);
 
 		const embed = new EmbedBuilder()
@@ -22,7 +25,7 @@ export default class GuildMemberRemoveListener extends Listener {
 			.setThumbnail(userInformation.displayAvatarURL({ size: 256 }))
 			.setTimestamp()
 
-		await client.privateChannel.send({
+		await client.testChannel.send({
 			embeds: [embed]
 		})
 	}

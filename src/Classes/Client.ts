@@ -1,4 +1,4 @@
-import { Collection, GatewayIntentBits, Partials } from 'discord.js'
+import { Collection, GatewayIntentBits, Guild, Partials } from 'discord.js'
 import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo'
 import { Fuyumi } from '../types'
 
@@ -56,11 +56,15 @@ export class FuyumiClient extends AkairoClient {
 	}
 
 	// getters
-	get privateChannel() {
+	get testChannel() {
 		return this.channels.cache.get("806268687333457920") ?? null
 	}
 
-	get developmentGuild() {
+	get development() {
 		return this.guilds.cache.get('941843371062861855') ?? null
+	}
+
+	get exiliados() {
+		return this.guilds.cache.get("537484725896478733") ?? null
 	}
 }

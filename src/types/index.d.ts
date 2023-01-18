@@ -1,5 +1,5 @@
 import { AkairoClient, CommandHandler, Listener, ListenerHandler } from "discord-akairo"
-import { AutocompleteInteraction, Collection, CommandInteraction, SlashCommandBuilder, TextChannel } from "discord.js"
+import { AutocompleteInteraction, Collection, CommandInteraction, Guild, GuildTextBasedChannel, SlashCommandBuilder, TextChannel } from "discord.js"
 
 declare namespace Mindicador {
 	interface Uf {
@@ -143,8 +143,12 @@ declare namespace Fuyumi {
 	}
 
 	interface Client extends AkairoClient {
-		get privateChannel(): TextChannel
-		get developmentGuild(): Guild
+		/** The test channel from Exiliados */
+		get testChannel(): GuildTextBasedChannel
+		/** Fuyumi's private development guild */
+		get development(): Guild
+		/** Exiliados Guild */
+		get exiliados(): Guild
 		commands: Collection<string, SlashCommand>
 		listenerHandler: ListenerHandler
 		commandHandler: CommandHandler
