@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder, ChannelType } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder, ChannelType, PermissionFlagsBits } from 'discord.js';
 
 /* Comandos */
 import { TimeoutMember } from './SubCommands/mod-timeout';
@@ -14,6 +14,7 @@ export = {
 		.setName('moderacion')
 		.setDescription('Comandos de moderación')
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers | PermissionFlagsBits.KickMembers)
 
 		// GuildMember timeout command
 		.addSubcommand(timeout => {
