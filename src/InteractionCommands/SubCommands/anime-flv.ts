@@ -1,5 +1,5 @@
 import { ActionRowBuilder, type ChatInputCommandInteraction, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ComponentType, EmbedBuilder, StringSelectMenuInteraction, InteractionType, ButtonBuilder, ButtonStyle, Collection } from "discord.js";
-import { AnimeData, getAnimeInfo, searchAnime, SearchAnimeData, } from "animeflv-api-ts"
+import { AnimeData, getAnimeInfo, searchAnime, SearchAnimeData, } from "animeflv-api"
 export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 
 	const InitialReply = await i.deferReply()
@@ -7,12 +7,12 @@ export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 
 	const AnimeSearchResults = await searchAnime(AnimeName)
 
-	if (!AnimeSearchResults || AnimeSearchResults.length === 0) {
+	if (!AnimeSearchResults || AnimeSearchResults.data.length === 0) {
 		return await i.editReply({ content: 'No encontré ningún anime con ese nombre, intenta la búsqueda de nuevo con un nombre distinto.' })
 	}
 
-	if (AnimeSearchResults.length === 1) {
-		const AnimeDetails = await getAnimeInfo(AnimeSearchResults[0].id)
+	if (AnimeSearchResults.data.length === 1) {
+		const AnimeDetails = await getAnimeInfo(AnimeSearchResults.data[0].id)
 		if (!AnimeDetails) return await i.editReply('No encontré ningun animé con esa id.')
 
 		return await SendAnimeDetails(i, AnimeDetails)
@@ -20,7 +20,7 @@ export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 
 	await i.editReply({
 		content: 'Selecciona uno de los animes que encontré!',
-		components: [CreateSelectMenu(AnimeSearchResults)]
+		components: [CreateSelectMenu(AnimeSearchResults.data)]
 	})
 
 	const SelectMenuInteraction = await InitialReply.awaitMessageComponent({
