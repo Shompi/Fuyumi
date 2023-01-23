@@ -1,5 +1,5 @@
 import { AkairoClient, CommandHandler, Listener, ListenerHandler } from "discord-akairo"
-import { AutocompleteInteraction, Collection, CommandInteraction, Guild, GuildTextBasedChannel, SlashCommandBuilder, TextChannel } from "discord.js"
+import { AutocompleteInteraction, Collection, CommandInteraction, Guild, GuildTextBasedChannel, SlashCommandBuilder } from "discord.js"
 
 declare namespace Mindicador {
 	interface Uf {

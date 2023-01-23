@@ -12,7 +12,7 @@
     "@keyv/sqlite": "^3.6.4",
     "@types/google-spreadsheet": "^3.3.0",
     "@types/node": "^18.11.18",
-    "animeflv-api": "^1.0.2",
+    "animeflv-api": "^1.0.3",
     "date-format-parse": "^0.2.7",
     "discord-akairo": "github:Shompi/discord-akairo",
     "discord.js": "^14.7.1",
@@ -25,6 +25,7 @@
   },
   "scripts": {
     "start": "ts-node ./src/index.ts",
+    "start-js": "node ./js/index.js",
     "deploy": "node ./Deployment/deploy-commands.js",
     "build-commands": "tsc",
     "lint": "npx eslint ./src"

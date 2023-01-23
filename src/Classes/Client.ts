@@ -1,4 +1,4 @@
-import { Collection, GatewayIntentBits, Guild, Partials } from 'discord.js'
+import { Collection, GatewayIntentBits, Partials } from 'discord.js'
 import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo'
 import { Fuyumi } from '../types'
 
@@ -27,7 +27,7 @@ export class FuyumiClient extends AkairoClient {
 		this.commandHandler = new CommandHandler(this, {
 			// Options for the command handler
 			defaultCooldown: 3,
-			directory: './src/MessageCommands/',
+			directory: 'js/MessageCommands/',
 			prefix: 'f!',
 			automateCategories: true,
 			extensions: new Set([".js", ".ts"]),
@@ -37,7 +37,7 @@ export class FuyumiClient extends AkairoClient {
 		this.commandHandler.loadAll()
 
 		this.listenerHandler = new ListenerHandler(this, {
-			directory: './src/Listeners/',
+			directory: 'js/Listeners/',
 			extensions: new Set([".js", ".ts"]),
 		})
 

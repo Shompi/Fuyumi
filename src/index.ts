@@ -2,13 +2,15 @@ import dotenv from "dotenv"
 dotenv.config()
 
 import { FuyumiClient } from './Classes/Client';
-import fs from 'fs';
+import { readdirSync } from 'fs';
 import { Fuyumi } from "./types";
 const client = new FuyumiClient();
 
+console.log(__dirname);
+
 /** Cargar los slash commands */
 void (async () => {
-	const applicationCommandsFiles = fs.readdirSync('./src/InteractionCommands').filter(file => file.endsWith('.ts'));
+	const applicationCommandsFiles = readdirSync(__dirname + '/InteractionCommands').filter(file => file.endsWith('.ts') || file.endsWith('.js'));
 
 
 	for (const filename of applicationCommandsFiles) {

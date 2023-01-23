@@ -79,7 +79,7 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction | StringSelectMen
 		.setTitle(`${title} - ⭐${rating}`)
 		.setDescription(`${synopsis}\n\n**Géneros:** ${genres.join(", ")}`)
 		.setAuthor({
-			name: `Busqueda de ${i.user.username}`,
+			name: `Búsqueda de ${i.user.username}`,
 			iconURL: i.user.displayAvatarURL({ size: 128 }),
 			url: url
 		})
