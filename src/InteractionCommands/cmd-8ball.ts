@@ -43,7 +43,7 @@ export = {
 
 				const AnswerEmbed = EmbedBuilder.from(IsThinkingEmbed)
 					.setColor("Blurple")
-					.setTitle(PossibleAnswers[Math.floor(Math.random() * PossibleAnswers.length)])
+					.setTitle(`R: ${PossibleAnswers[Math.floor(Math.random() * PossibleAnswers.length)]}`)
 
 				await i.editReply({
 					embeds: [AnswerEmbed]
