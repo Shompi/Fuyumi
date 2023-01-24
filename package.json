@@ -24,10 +24,9 @@
     "undici": "^5.14.0"
   },
   "scripts": {
-    "start": "ts-node ./src/index.ts",
-    "start-js": "node ./js/index.js",
+    "start": "tsc && node ./js/index.js",
     "deploy": "node ./Deployment/deploy-commands.js",
-    "build-commands": "tsc",
+    "build": "tsc",
     "lint": "npx eslint ./src"
   },
   "keywords": [
