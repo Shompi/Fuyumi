@@ -1,5 +1,5 @@
 import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Colors, GuildTextBasedChannel } from 'discord.js';
-import { Fuyumi } from '../../../types';
+import { Fuyumi } from '@myTypes/index';
 
 /**
  * 

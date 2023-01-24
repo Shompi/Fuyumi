@@ -3,7 +3,7 @@ import keyv from 'keyv'
 import { Listener } from 'discord-akairo'
 const lastPresence = new keyv("sqlite://db/presence.sqlite", { namespace: 'presence' })
 import { type Activity, ActivityType } from 'discord.js'
-import { Fuyumi } from '../../types'
+import { Fuyumi } from '@myTypes/index'
 
 const timers: unknown[] = []
 

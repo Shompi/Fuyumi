@@ -1,7 +1,7 @@
 import { Listener } from 'discord-akairo';
 import { TextChannel } from 'discord.js';
 import fs from "node:fs"
-import { Fuyumi } from '../../types';
+import { Fuyumi } from '@myTypes/index';
 
 export default class CommandUsed extends Listener {
 	constructor() {

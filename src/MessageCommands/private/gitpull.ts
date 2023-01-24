@@ -1,7 +1,6 @@
 import { EmbedBuilder, Message, Colors } from 'discord.js';
 import { Command } from 'discord-akairo';
 import { promisify } from 'node:util';
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-var-requires
 import { exec } from "node:child_process"
 
 export default class GitPullCommand extends Command {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { ChatInputCommandInteraction, EmbedBuilder, Collection, Role, ChannelType, Snowflake, Emoji } from 'discord.js';
-import { Fuyumi } from '../../types';
+import { Fuyumi } from '@myTypes/index';
 import { FormatDate } from "../Helpers/formatDate";
 
 const TIERS = {

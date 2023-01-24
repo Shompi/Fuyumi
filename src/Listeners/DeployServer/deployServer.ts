@@ -1,7 +1,7 @@
 import { Listener } from 'discord-akairo'
 import { StatsRequestHandler } from "./Routes/stats"
 import Fastify from "fastify"
-import { Fuyumi } from '../../types'
+import { Fuyumi } from '@myTypes/index'
 
 let deployed = false
 const SERVER = Fastify()

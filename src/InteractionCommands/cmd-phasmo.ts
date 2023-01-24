@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises"
 import { AutocompleteInteraction, ChatInputCommandInteraction, Options, SlashCommandBuilder } from "discord.js"
 import { SearchGhost } from "./SubCommands/phasmo-ghost"
-import { Phasmophobia } from "../types"
+import { Phasmophobia } from "@myTypes/index"
 
 export = {
 	hasSubcommands: false,

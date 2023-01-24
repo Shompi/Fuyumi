@@ -1,6 +1,6 @@
 import { Command } from 'discord-akairo'
 import { Message } from 'discord.js'
-import { Fuyumi } from '../../types'
+import { Fuyumi } from '@myTypes/index'
 
 export default class ReloadEventCommand extends Command {
 	constructor() {

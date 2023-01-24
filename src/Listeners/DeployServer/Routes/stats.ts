@@ -5,7 +5,7 @@ import type {
 	FastifyRequest,
 	FastifyReply
 } from "fastify"
-import type { Fuyumi } from "../../../types"
+import type { Fuyumi } from "@myTypes/index"
 
 export const StatsRequestHandler = async (_r: FastifyRequest, reply: FastifyReply, client: Fuyumi.Client) => {
 	await reply.code(200)

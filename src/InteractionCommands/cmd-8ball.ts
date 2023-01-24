@@ -1,5 +1,5 @@
 import { Colors, EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import { Fuyumi } from "../types";
+import { Fuyumi } from "@myTypes/index";
 
 const PossibleAnswers = [
 	"Si.", "No.", "Tal vez.", "Quizás.", "Probablemente.",
@@ -23,7 +23,7 @@ export = {
 				.setDescription('Escribe tu pregunta')
 				.setRequired(true)
 		),
-		isGlobal: true,
+	isGlobal: true,
 	async execute(i) {
 
 		if (i.isChatInputCommand()) {
@@ -35,6 +35,7 @@ export = {
 				.setTitle(`La bola 8 está pensando...`)
 				.setDescription(`**Pregunta**:\n¿${i.options.getString("pregunta", true)}?`)
 				.setColor(Colors.White)
+				.setFooter({ text: "🎱" })
 
 			await i.reply({ embeds: [IsThinkingEmbed] })
 

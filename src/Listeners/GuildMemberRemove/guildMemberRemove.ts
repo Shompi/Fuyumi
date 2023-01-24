@@ -1,6 +1,6 @@
 import { Listener } from "discord-akairo"
 import { EmbedBuilder, GuildMember } from "discord.js"
-import { Fuyumi } from "../../types";
+import { Fuyumi } from "@myTypes/index";
 
 export default class GuildMemberRemoveListener extends Listener {
 	constructor() {

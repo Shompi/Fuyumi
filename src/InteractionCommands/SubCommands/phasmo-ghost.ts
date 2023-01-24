@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, Colors, EmbedBuilder } from "discord.js";
 import { readFile } from "node:fs/promises";
-import { Phasmophobia } from "../../types";
+import { Phasmophobia } from "@myTypes/index";
 
 export async function SearchGhost(id: string, interaction: ChatInputCommandInteraction) {
 

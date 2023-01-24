@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
-import { Mindicador } from '../types';
+import { Mindicador } from '@myTypes/index';
 
 import { request } from 'undici';
 const monedaCLP = "CLP"

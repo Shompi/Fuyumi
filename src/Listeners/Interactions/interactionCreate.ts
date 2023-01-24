@@ -1,6 +1,6 @@
 import { Listener } from 'discord-akairo'
 import { EmbedBuilder, BaseInteraction } from 'discord.js'
-import { Fuyumi } from '../../types'
+import { Fuyumi } from '@myTypes/index'
 import { ButtonAddRoles } from './Buttons/roles'
 
 export default class InteractionEvent extends Listener {

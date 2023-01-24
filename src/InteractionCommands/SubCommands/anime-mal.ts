@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Colors, Component, ComponentType, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder } from "discord.js";
 import { request } from "undici"
-import { MyAnimeList } from "../../types";
+import { MyAnimeList } from "@myTypes/index";
 
 const WebPageURL = "https://myanimelist.net/"
 const GetAnimeListEndpoint = "https://api.myanimelist.net/v2/"
