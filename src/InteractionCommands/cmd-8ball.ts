@@ -23,6 +23,7 @@ export = {
 				.setDescription('Escribe tu pregunta')
 				.setRequired(true)
 		),
+		isGlobal: true,
 	async execute(i) {
 
 		if (i.isChatInputCommand()) {

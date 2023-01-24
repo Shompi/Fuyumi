@@ -139,7 +139,8 @@ declare namespace Fuyumi {
 	interface SlashCommand {
 		data: SlashCommandBuilder
 		execute: (i: CommandInteraction) => Promise<unknown>
-		autocomplete?: (i: AutocompleteInteraction) => Promise<unknown>
+		autocomplete?: (i: AutocompleteInteraction) => Promise<unknown>,
+		isGlobal?: boolean
 	}
 
 	interface Client extends AkairoClient {
