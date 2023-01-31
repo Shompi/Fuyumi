@@ -53,4 +53,4 @@ export = {
 			}, 5_000);
 		}
 	},
-} as Fuyumi.SlashCommand
+} as Fuyumi.SlashCommandTemplate

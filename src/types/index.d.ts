@@ -1,5 +1,5 @@
 import { AkairoClient, CommandHandler, Listener, ListenerHandler } from "discord-akairo"
-import { AutocompleteInteraction, Collection, CommandInteraction, Guild, GuildTextBasedChannel, SlashCommandBuilder } from "discord.js"
+import { AutocompleteInteraction, ChatInputCommandInteraction, Collection, CommandInteraction, Events, Guild, GuildTextBasedChannel, SlashCommandBuilder } from "discord.js"
 
 declare namespace Mindicador {
 	interface Uf {
@@ -130,17 +130,20 @@ declare namespace Phasmophobia {
 }
 
 declare namespace Fuyumi {
-	class CustomEvent extends Listener {
+	interface EventTemplate extends Listener {
+		name: keyof typeof Events
 		hasTimers?: boolean
-		clearTimers(): unknown
+		clearTimers?: () => unknown
 	}
 
+	type ReadyEventTemplate = Required<EventTemplate>
 
-	interface SlashCommand {
+
+	interface SlashCommandTemplate {
 		data: SlashCommandBuilder
+		isGlobal: boolean
 		execute: (i: CommandInteraction) => Promise<unknown>
-		autocomplete?: (i: AutocompleteInteraction) => Promise<unknown>,
-		isGlobal?: boolean
+		autocomplete?: (i: AutocompleteInteraction) => Promise<unknown>
 	}
 
 	interface Client extends AkairoClient {
@@ -150,7 +153,7 @@ declare namespace Fuyumi {
 		get development(): Guild
 		/** Exiliados Guild */
 		get exiliados(): Guild
-		commands: Collection<string, SlashCommand>
+		commands: Collection<string, SlashCommandTemplate>
 		listenerHandler: ListenerHandler
 		commandHandler: CommandHandler
 	}

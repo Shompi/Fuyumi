@@ -22,14 +22,15 @@ export default class ReloadEventCommand extends Command {
 		})
 	}
 
-	async exec(message: Message, { evento }: { evento: Fuyumi.CustomEvent }) {
+	async exec(message: Message, { evento }: { evento: Fuyumi.ReadyEventTemplate }) {
 
 
 		if (!evento)
 			return await message.channel.send("No encontré un módulo de evento con ese nombre.")
 
-		if (evento.hasTimers)
+		if (evento.hasTimers) {
 			evento.clearTimers()
+		}
 
 		evento.reload()
 

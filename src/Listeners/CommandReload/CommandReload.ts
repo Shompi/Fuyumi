@@ -17,7 +17,7 @@ export default class CommandUsed extends Listener {
 
 		for (const filename of slashCommandsFiles) {
 			// Leer el archivo para poder encontrar el comando por su nombre
-			const command = await import(`../../InteractionCommands/${filename}`) as Fuyumi.SlashCommand
+			const command = await import(`../../InteractionCommands/${filename}`) as Fuyumi.SlashCommandTemplate
 
 			console.log(`${commandName} - ${command.data.name}`);
 
@@ -27,7 +27,7 @@ export default class CommandUsed extends Listener {
 				// Borramos el comando de la colección
 				client.commands.delete(commandName);
 
-				const reloadedCommand = await import(`../../InteractionCommands/${filename}`) as Fuyumi.SlashCommand
+				const reloadedCommand = await import(`../../InteractionCommands/${filename}`) as Fuyumi.SlashCommandTemplate
 
 				// Agregamos el comando a la colección de comandos
 				client.commands.set(command.data.name, reloadedCommand);

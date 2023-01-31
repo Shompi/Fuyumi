@@ -15,7 +15,7 @@ const enabledPartials = [Partials.Message, Partials.Reaction, Partials.Channel, 
 export class FuyumiClient extends AkairoClient {
 	commandHandler: CommandHandler
 	listenerHandler: ListenerHandler
-	commands: Collection<string, Fuyumi.SlashCommand>
+	commands: Collection<string, Fuyumi.SlashCommandTemplate>
 
 	constructor() {
 		super({
@@ -84,7 +84,7 @@ void (async () => {
 
 	for (const filename of applicationCommandsFiles) {
 
-		const command = (await import(`./InteractionCommands/${filename}`)) as Fuyumi.SlashCommand
+		const command = (await import(`./InteractionCommands/${filename}`)) as Fuyumi.SlashCommandTemplate
 
 		client.commands.set(command.data.name, command);
 	}
