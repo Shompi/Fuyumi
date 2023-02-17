@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Colors, Component, ComponentType, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Colors, ComponentType, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder } from "discord.js";
 import { request } from "undici"
 import { MyAnimeList } from "@myTypes/index";
 
@@ -149,7 +149,7 @@ async function GetAnimeList(options: MyAnimeList.GetAnimeListOptions): Promise<M
 
 	return await request(URL, {
 		headers: {
-			"X-MAL-CLIENT-ID": process.env.MAL_CLIENT_ID
+			"X-MAL-CLIENT-ID": process.env.MAL_CLIENT_ID!
 		}
 	}).then(response => response.body.json()) as MyAnimeList.GetAnimeListResponse
 }
@@ -204,7 +204,7 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction, AnimeId: number)
 		synopsis,
 	} = await request(URL, {
 		headers: {
-			"X-MAL-CLIENT-ID": process.env.MAL_CLIENT_ID
+			"X-MAL-CLIENT-ID": process.env.MAL_CLIENT_ID!
 		}
 	}).then(response => response.body.json()) as MyAnimeList.GetAnimeDetailsResponse
 
