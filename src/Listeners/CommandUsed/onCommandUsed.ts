@@ -20,6 +20,6 @@ export default class CommandUsed extends Listener {
 	 * @param {{commandName: string, user: User, subcommand: string}} info 
 	 */
 	exec(info: Info) {
-		console.log(`Usuario ${info.user.tag} usó el comando ${info.commandName}. - ${info.subcommand}`);
+		console.log(`Usuario ${info.user.username} usó el comando ${info.commandName}. - ${info.subcommand}`);
 	}
 }

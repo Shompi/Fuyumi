@@ -26,7 +26,7 @@ export const UserInfo = async (interaction: ChatInputCommandInteraction) => {
 
 function getUserInfo(user: User) {
 	return new EmbedBuilder()
-		.setTitle(user.tag)
+		.setTitle(user.username)
 		.setThumbnail(user.displayAvatarURL({ size: 512 }))
 		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 		.setDescription(`**Creación de la cuenta**: ${FormatDate(user.createdAt)}\n**Color personalizado**: ${user.accentColor} (${user.hexAccentColor})\n**¿Bot?**: ${user.bot ? "Si" : "No"}`)
@@ -38,7 +38,7 @@ function getMemberInfo(member: GuildMember) {
 	const joinedAt = FormatDate(member.joinedAt);
 
 	return new EmbedBuilder()
-		.setTitle(`Info de ${member.user.tag}`)
+		.setTitle(`Info de ${member.user.username}`)
 		.setDescription(`**Nombre en el servidor**: ${member.displayName}\n**Miembro desde**: ${joinedAt}\n**Roles**: ${member.roles.cache.size}\n**Rol más alto**: <@&${member.roles.highest.id}>\n**¿Bot?**: ${member.user.bot ? "Si" : "No"}`)
 		.setThumbnail(member.user.displayAvatarURL({ size: 512 }))
 		.setColor(member.displayColor ?? Colors.Blue)

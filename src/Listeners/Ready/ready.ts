@@ -42,7 +42,7 @@ export default class ReadyListener extends Listener {
 
 	exec(client: Fuyumi.Client) {
 		/*Code Here*/
-		console.log(`Online en Discord como: ${client.user!.tag}`)
+		console.log(`Online en Discord como: ${client.user!.username}`)
 		console.log(`Bot listo: ${Date()}`)
 
 		this.setActivity()

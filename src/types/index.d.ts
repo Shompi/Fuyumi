@@ -145,19 +145,6 @@ declare namespace Fuyumi {
 		execute: (i: CommandInteraction) => Promise<unknown>
 		autocomplete?: (i: AutocompleteInteraction) => Promise<unknown>
 	}
-
-	interface Client extends AkairoClient {
-		/** The test channel from Exiliados */
-		get testChannel(): GuildTextBasedChannel
-		/** Fuyumi's private development guild */
-		get development(): Guild
-		/** Exiliados Guild */
-		get exiliados(): Guild
-		commands: Collection<string, SlashCommandTemplate>
-		listenerHandler: ListenerHandler
-		commandHandler: CommandHandler
-	}
-
 }
 
 declare namespace MyAnimeList {
@@ -250,5 +237,19 @@ declare namespace MyAnimeList {
 			id: number
 			name: string
 		}>
+	}
+}
+
+declare module 'discord.js' {
+	interface BaseClient {
+		/** The test channel from Exiliados */
+		get testChannel(): GuildTextBasedChannel
+		/** Fuyumi's private development guild */
+		get development(): Guild
+		/** Exiliados Guild */
+		get exiliados(): Guild
+		commands: Collection<string, SlashCommandTemplate>
+		listenerHandler: ListenerHandler
+		commandHandler: CommandHandler
 	}
 }

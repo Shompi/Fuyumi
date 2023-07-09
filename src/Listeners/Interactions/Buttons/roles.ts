@@ -18,7 +18,7 @@ export async function ButtonAddRoles(interaction: ButtonInteraction) {
 
 		let operation;
 
-		console.log(`${interaction.member.user.tag} presionó ${interaction.component.label}`);
+		console.log(`${interaction.member.user.username} presionó ${interaction.component.label}`);
 
 		if (!RoleObject) return;
 

@@ -20,7 +20,7 @@ export default class GuildMemberRemoveListener extends Listener {
 		const userInformation = await client.users.fetch(id);
 
 		const embed = new EmbedBuilder()
-			.setDescription(`El usuario ${userInformation.tag} (${id})\nHa abandonado el servidor.`)
+			.setDescription(`El usuario ${userInformation.username} (${id})\nHa abandonado el servidor.`)
 			.setColor("Random")
 			.setThumbnail(userInformation.displayAvatarURL({ size: 256 }))
 			.setTimestamp()

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { ChatInputCommandInteraction, EmbedBuilder, Collection, Role, ChannelType, Snowflake, Emoji } from 'discord.js';
-import { Fuyumi } from '@myTypes/index';
+import { ChatInputCommandInteraction, EmbedBuilder, Collection, Role, ChannelType, Snowflake } from 'discord.js';
 import { FormatDate } from "../Helpers/formatDate";
 
 const TIERS = {
@@ -21,7 +20,7 @@ const VERIFICATIONLEVELS = {
 }
 
 export const ServerInfo = async (interaction: ChatInputCommandInteraction) => {
-	const client = interaction.client as Fuyumi.Client
+	const client = interaction.client
 
 	if (interaction.inCachedGuild()) {
 		const memberList = await interaction.guild.members.fetch().catch(console.error);
@@ -57,7 +56,7 @@ export const ServerInfo = async (interaction: ChatInputCommandInteraction) => {
 					chCount.CATEGORY++;
 					break;
 
-				case ChannelType.GuildNews:
+				case ChannelType.GuildAnnouncement:
 					chCount.NEWS++;
 					break;
 
