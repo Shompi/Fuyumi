@@ -1,6 +1,5 @@
 import { Listener } from "discord-akairo"
-import { EmbedBuilder, GuildMember } from "discord.js"
-import { Fuyumi } from "@myTypes/index";
+import { Client, EmbedBuilder, GuildMember } from "discord.js"
 
 export default class GuildMemberRemoveListener extends Listener {
 	constructor() {
@@ -11,7 +10,7 @@ export default class GuildMemberRemoveListener extends Listener {
 	}
 
 	async exec(member: GuildMember) {
-		const client = member.client as Fuyumi.Client
+		const client = member.client as Client
 
 		if (member.guild.id !== client.exiliados.id)
 			return;

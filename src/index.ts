@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -28,6 +30,7 @@ export class FuyumiClient extends AkairoClient {
 			partials: enabledPartials,
 
 		})
+
 
 		this.commandHandler = new CommandHandler(this, {
 			// Options for the command handler
@@ -75,7 +78,7 @@ export class FuyumiClient extends AkairoClient {
 }
 
 
-const client = new FuyumiClient();
+export const client = new FuyumiClient();
 
 /** Cargar los slash commands */
 void (async () => {

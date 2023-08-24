@@ -1,6 +1,5 @@
 import { Listener } from 'discord-akairo'
-import { EmbedBuilder, BaseInteraction } from 'discord.js'
-import { Fuyumi } from '@myTypes/index'
+import { EmbedBuilder, BaseInteraction, Client } from 'discord.js'
 import { ButtonAddRoles } from './Buttons/roles'
 
 export default class InteractionEvent extends Listener {
@@ -12,7 +11,7 @@ export default class InteractionEvent extends Listener {
 	}
 
 	async exec(interaction: BaseInteraction) {
-		const client = interaction.client as Fuyumi.Client
+		const client = interaction.client as Client
 		try {
 			// Chat input command
 			if (interaction.isChatInputCommand()) {

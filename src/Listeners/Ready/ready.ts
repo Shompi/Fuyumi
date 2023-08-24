@@ -2,8 +2,9 @@
 import keyv from 'keyv'
 import { Listener } from 'discord-akairo'
 const lastPresence = new keyv("sqlite://db/presence.sqlite", { namespace: 'presence' })
-import { type Activity, ActivityType } from 'discord.js'
-import { Fuyumi } from '@myTypes/index'
+import { type Activity, ActivityType, Client } from 'discord.js'
+
+import app from "../../api/index.js"
 
 const timers: unknown[] = []
 
@@ -40,7 +41,7 @@ export default class ReadyListener extends Listener {
 		}
 	}
 
-	exec(client: Fuyumi.Client) {
+	exec(client: Client) {
 		/*Code Here*/
 		console.log(`Online en Discord como: ${client.user!.username}`)
 		console.log(`Bot listo: ${Date()}`)
@@ -48,5 +49,12 @@ export default class ReadyListener extends Listener {
 		this.setActivity()
 		console.log("Startup complete!")
 		client.emit("deployServer", client)
+
+		// Initialize the server I guess?
+		console.log("Attaching the client to the express server...");
+		app.listen(1234, "localhost", () => {
+			console.log('Server listening on port 1234');
+
+		})
 	}
 }

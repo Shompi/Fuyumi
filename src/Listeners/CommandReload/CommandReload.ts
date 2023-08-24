@@ -1,5 +1,5 @@
 import { Listener } from 'discord-akairo';
-import { TextChannel } from 'discord.js';
+import { Client, TextChannel } from 'discord.js';
 import fs from "node:fs"
 import { Fuyumi } from '@myTypes/index';
 
@@ -11,7 +11,7 @@ export default class CommandUsed extends Listener {
 		});
 	}
 
-	async exec({ commandName, channelId, client }: { commandName: string, channelId: string, client: Fuyumi.Client }) {
+	async exec({ commandName, channelId, client }: { commandName: string, channelId: string, client: Client }) {
 		const slashCommandsFiles = fs.readdirSync('./InteractionCommands').filter(file => file.endsWith('.ts'));
 		const LogChannel = client.channels.cache.get(channelId) as TextChannel;
 

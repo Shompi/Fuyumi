@@ -1,5 +1,4 @@
-import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Colors, GuildTextBasedChannel } from 'discord.js';
-import { Fuyumi } from '@myTypes/index';
+import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Colors, GuildTextBasedChannel, Client } from 'discord.js';
 
 /**
  * 
@@ -21,7 +20,7 @@ function createButton({ roleId, style, label }: CreateButtonArguments) {
 		.setLabel(label);
 }
 
-export async function HandleRoleButtonClick(client: Fuyumi.Client) {
+export async function HandleRoleButtonClick(client: Client) {
 
 	const RolesChannel = client.channels.cache.get("865360481940930560") as GuildTextBasedChannel
 

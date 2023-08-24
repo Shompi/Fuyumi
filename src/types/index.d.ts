@@ -248,7 +248,7 @@ declare module 'discord.js' {
 		get development(): Guild
 		/** Exiliados Guild */
 		get exiliados(): Guild
-		commands: Collection<string, SlashCommandTemplate>
+		commands: Collection<string, Fuyumi.SlashCommandTemplate>
 		listenerHandler: ListenerHandler
 		commandHandler: CommandHandler
 	}
