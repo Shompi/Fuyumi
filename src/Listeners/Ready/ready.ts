@@ -52,9 +52,6 @@ export default class ReadyListener extends Listener {
 
 		// Initialize the server I guess?
 		console.log("Attaching the client to the express server...");
-		app.listen(1234, "localhost", () => {
-			console.log('Server listening on port 1234');
-
-		})
+		app.listen(1234)
 	}
 }
