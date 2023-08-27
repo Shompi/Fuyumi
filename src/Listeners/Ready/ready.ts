@@ -42,6 +42,10 @@ export default class ReadyListener extends Listener {
 				setInterval(() => {
 					fetch("http://localhost:3000/api/fuyumi", {
 						method: 'POST',
+						headers: {
+							"Content-Type": "application/json",
+							"secret-token": "1234"
+						},
 						body: JSON.stringify({
 							guilds: this.client.guilds.cache.map(guild => ({ name: guild.name, member_count: guild.memberCount, iconURL: guild.iconURL() ?? "No icon." })),
 							avatar: this.client.user?.displayAvatarURL(),
