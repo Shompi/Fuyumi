@@ -2,16 +2,14 @@
 import keyv from 'keyv'
 import { Listener } from 'discord-akairo'
 const lastPresence = new keyv("sqlite://db/presence.sqlite", { namespace: 'presence' })
-import { type Activity, ActivityType, Client } from 'discord.js'
-
-import app from "../../api/index.js"
-
+import { ActivityType, Client } from 'discord.js'
 const timers: unknown[] = []
 
 export default class ReadyListener extends Listener {
 	hasTimers: boolean
 	clearTimers: () => void
 	setActivity: () => unknown
+	sendApiData: () => void
 	constructor() {
 		super('ready', {
 			emitter: 'client',
@@ -38,7 +36,26 @@ export default class ReadyListener extends Listener {
 					this.client.user?.setActivity(activity)
 					return
 				}, 60_000))
-		}
+		},
+
+			this.sendApiData = () => {
+				setInterval(() => {
+					fetch("http://localhost/api/fuyumi", {
+						method: 'POST',
+						body: JSON.stringify({
+							guilds: this.client.guilds.cache.map(guild => ({ name: guild.name, member_count: guild.memberCount, iconURL: guild.iconURL() ?? "No icon." })),
+							avatar: this.client.user?.displayAvatarURL(),
+							uptime: this.client.uptime,
+							user_count: this.client.users.cache.size,
+							username: this.client.user?.username,
+							commands: this.client.application?.commands.cache.map(command => ({ name: command.name, description: command.description }))
+						})
+					}).then(response => response.json())
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+						.then(data => console.log(data.message))
+						.catch(() => null)
+				}, 10000)
+			}
 	}
 
 	exec(client: Client) {
@@ -47,13 +64,5 @@ export default class ReadyListener extends Listener {
 		console.log(`Bot listo: ${Date()}`)
 
 		this.setActivity()
-		console.log("Startup complete!")
-		client.emit("deployServer", client)
-
-		// Initialize the server I guess?
-		console.log("Attaching the client to the express server...");
-		app.listen(1234)
-		console.log("The server is listening on port 1234");
-
 	}
 }
