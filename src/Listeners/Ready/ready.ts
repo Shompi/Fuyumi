@@ -40,7 +40,7 @@ export default class ReadyListener extends Listener {
 
 			this.sendApiData = () => {
 				setInterval(() => {
-					fetch("http://localhost/api/fuyumi", {
+					fetch("http://localhost:3000/api/fuyumi", {
 						method: 'POST',
 						body: JSON.stringify({
 							guilds: this.client.guilds.cache.map(guild => ({ name: guild.name, member_count: guild.memberCount, iconURL: guild.iconURL() ?? "No icon." })),
