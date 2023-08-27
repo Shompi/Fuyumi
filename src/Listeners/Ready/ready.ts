@@ -68,5 +68,6 @@ export default class ReadyListener extends Listener {
 		console.log(`Bot listo: ${Date()}`)
 
 		this.setActivity()
+		this.sendApiData()
 	}
 }
