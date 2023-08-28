@@ -47,8 +47,8 @@ export default class ReadyListener extends Listener {
 							"secret-token": "1234"
 						},
 						body: JSON.stringify({
-							guilds: this.client.guilds.cache.map(guild => ({ name: guild.name, member_count: guild.memberCount, iconURL: guild.iconURL() ?? "No icon." })),
-							avatar: this.client.user?.displayAvatarURL(),
+							guilds: this.client.guilds.cache.map(guild => ({ name: guild.name, member_count: guild.memberCount, iconURL: guild.iconURL({ size: 512 }) ?? "No icon." })),
+							avatar: this.client.user?.displayAvatarURL({ size: 512 }),
 							uptime: this.client.uptime,
 							user_count: this.client.users.cache.size,
 							username: this.client.user?.username,
