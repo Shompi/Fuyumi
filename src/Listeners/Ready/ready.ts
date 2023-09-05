@@ -3,6 +3,7 @@ import keyv from 'keyv'
 import { Listener } from 'discord-akairo'
 const lastPresence = new keyv("sqlite://db/presence.sqlite", { namespace: 'presence' })
 import { ActivityType, Client } from 'discord.js'
+import { UpdateButtons } from './utils/Buttons'
 const timers: unknown[] = []
 
 export default class ReadyListener extends Listener {
@@ -69,5 +70,6 @@ export default class ReadyListener extends Listener {
 
 		this.setActivity()
 		this.sendApiData()
+		void UpdateButtons(client)
 	}
 }

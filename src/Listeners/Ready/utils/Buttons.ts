@@ -20,7 +20,7 @@ function createButton({ roleId, style, label }: CreateButtonArguments) {
 		.setLabel(label);
 }
 
-export async function HandleRoleButtonClick(client: Client) {
+export async function UpdateButtons(client: Client) {
 
 	const RolesChannel = client.channels.cache.get("865360481940930560") as GuildTextBasedChannel
 
@@ -36,9 +36,9 @@ export async function HandleRoleButtonClick(client: Client) {
 
 	const EscapeFromTarkovButton = createButton({ style: ButtonStyle.Success, roleId: "676967872807043072", label: "Escape from Tarkov" });
 
-	/* PRIMARY ROW */
+	const FIFAButton = createButton({ style: ButtonStyle.Success, roleId: "945050513236434945", label: "FIFA" });
 
-	const FIFAButton = createButton({ style: ButtonStyle.Primary, roleId: "945050513236434945", label: "FIFA" });
+	/* PRIMARY ROW */
 
 	const FortniteButton = createButton({ style: ButtonStyle.Primary, roleId: "627237678248886292", label: "Fortnite" });
 
@@ -48,9 +48,9 @@ export async function HandleRoleButtonClick(client: Client) {
 
 	const LeagueButton = createButton({ style: ButtonStyle.Primary, roleId: "865393189628149760", label: "League of Legends" });
 
-	/* SUCCESS ROW */
+	const MinecraftButton = createButton({ style: ButtonStyle.Primary, roleId: "865394122897227797", label: "Minecraft" });
 
-	const MinecraftButton = createButton({ style: ButtonStyle.Success, roleId: "865394122897227797", label: "Minecraft" });
+	/* SUCCESS ROW */
 
 	const Phasmophobia = createButton({ style: ButtonStyle.Success, roleId: "973109918817214524", label: "Phasmophobia" });
 
@@ -60,10 +60,10 @@ export async function HandleRoleButtonClick(client: Client) {
 
 	const Tetrio = createButton({ style: ButtonStyle.Success, roleId: "1148446907870490624", label: "TETR.IO" });
 
+	const SeaOfThievesButton = createButton({ style: ButtonStyle.Success, roleId: "854968345974669313", label: "Sea of Thieves" });
 
 	/* PRIMARY ROW */
 
-	const SeaOfThievesButton = createButton({ style: ButtonStyle.Primary, roleId: "854968345974669313", label: "Sea of Thieves" });
 
 	const ValorantButton = createButton({ style: ButtonStyle.Primary, roleId: "707341893544968324", label: "Valorant" });
 
