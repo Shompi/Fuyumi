@@ -27,7 +27,6 @@ export async function HandleRoleButtonClick(client: Client) {
 	// Roles de Juegos
 
 	/* SUCCESS ROW */
-	const AmongusButton = createButton({ style: ButtonStyle.Success, roleId: "750237826443903077", label: "Amongus" });
 
 	const ApexLegendsButton = createButton({ style: ButtonStyle.Success, roleId: "865729353215246357", label: "Apex Legends" });
 
@@ -51,18 +50,19 @@ export async function HandleRoleButtonClick(client: Client) {
 
 	/* SUCCESS ROW */
 
-	const LostArkButton = createButton({ style: ButtonStyle.Success, roleId: "945054638263128084", label: "Lost Ark" });
-
 	const MinecraftButton = createButton({ style: ButtonStyle.Success, roleId: "865394122897227797", label: "Minecraft" });
+
+	const Phasmophobia = createButton({ style: ButtonStyle.Success, roleId: "973109918817214524", label: "Phasmophobia" });
 
 	const RocketLeagueButton = createButton({ style: ButtonStyle.Success, roleId: "585905903912615949", label: "Rocket League" });
 
-	const RustButton = createButton({ style: ButtonStyle.Success, roleId: "639634253369442324", label: "Rust" });
+	const TetrisEffect = createButton({ style: ButtonStyle.Success, roleId: "1148446792464220281", label: "Tetris Effect: Connected" });
 
-	const ScumButton = createButton({ style: ButtonStyle.Success, roleId: "879217852337520640", label: "SCUM" });
+	const Tetrio = createButton({ style: ButtonStyle.Success, roleId: "1148446907870490624", label: "TETR.IO" });
 
 
 	/* PRIMARY ROW */
+
 	const SeaOfThievesButton = createButton({ style: ButtonStyle.Primary, roleId: "854968345974669313", label: "Sea of Thieves" });
 
 	const ValorantButton = createButton({ style: ButtonStyle.Primary, roleId: "707341893544968324", label: "Valorant" });
@@ -73,34 +73,33 @@ export async function HandleRoleButtonClick(client: Client) {
 
 	const row1 = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents([
-			AmongusButton,
 			ApexLegendsButton,
 			CSGOButton,
 			DayZButton,
 			EscapeFromTarkovButton,
+			FIFAButton,
 		]);
 
 	const row2 = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents([
-			FIFAButton,
 			FortniteButton,
 			GenshinImpactButton,
 			GTAVButton,
 			LeagueButton,
+			MinecraftButton,
 		]);
 
 	const row3 = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents([
-			LostArkButton,
-			MinecraftButton,
 			RocketLeagueButton,
-			RustButton,
-			ScumButton,
+			Phasmophobia,
+			Tetrio,
+			TetrisEffect,
+			SeaOfThievesButton,
 		]);
 
 	const row4 = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents([
-			SeaOfThievesButton,
 			ValorantButton,
 			WarzoneButton,
 			WarThunderButton,
@@ -157,6 +156,8 @@ export async function HandleRoleButtonClick(client: Client) {
 
 	const WeebButton = createButton({ style: ButtonStyle.Primary, roleId: "644251281204183070", label: "Weeb / Otaku" });
 
+	const Techquickie = createButton({ style: ButtonStyle.Primary, roleId: "625783665082892288", label: "Techquickie" });
+
 	const MiscEmbed = new EmbedBuilder()
 		.setTitle('Roles Misceláneos')
 		.setDescription('No todos los roles te darán acceso a un canal nuevo, algunos son solamente para el look.')
@@ -167,6 +168,7 @@ export async function HandleRoleButtonClick(client: Client) {
 			EstudianteButton,
 			JovenProgramadorButton,
 			SimpButton,
+			Techquickie,
 			WeebButton,
 		]);
 
