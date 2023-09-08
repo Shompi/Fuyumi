@@ -99,10 +99,8 @@ export = {
 						break;
 
 					case 'party-leave':
-						if (buttonInteraction.user.id === interaction.user.id)
-							await buttonInteraction.reply({ content: 'No puedes abandonar a tu propio grupo.', ephemeral: true });
 
-						else if (partyMembers.delete(buttonInteraction.user.id)) {
+						if (partyMembers.delete(buttonInteraction.user.id)) {
 							spotsLeft = spotsLeft + 1;
 							await buttonInteraction.reply({ ephemeral: true, content: "Has abandonado el grupo." });
 
