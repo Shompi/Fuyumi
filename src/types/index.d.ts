@@ -1,5 +1,5 @@
-import { AkairoClient, CommandHandler, Listener, ListenerHandler } from "discord-akairo"
-import { AutocompleteInteraction, ChatInputCommandInteraction, Collection, CommandInteraction, Events, Guild, GuildTextBasedChannel, SlashCommandBuilder } from "discord.js"
+import { CommandHandler, Listener, ListenerHandler } from "discord-akairo"
+import { AutocompleteInteraction, Collection, CommandInteraction, Events, Guild, GuildTextBasedChannel, SlashCommandBuilder } from "discord.js"
 
 declare namespace Mindicador {
 	interface Uf {
@@ -162,8 +162,8 @@ declare namespace MyAnimeList {
 
 	type GetAnimeListOptions = {
 		q: string
-		limit?: 4 | number,
-		offset?: 0 | number,
+		limit?: number,
+		offset?: number,
 		fields?: string
 	}
 	interface GetAnimeListResponse {

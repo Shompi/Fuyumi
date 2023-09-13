@@ -24,20 +24,23 @@ export = {
 				.setRequired(true)
 		),
 	isGlobal: true,
-	async execute(i) {
+	async execute(interaction) {
 
-		if (i.isChatInputCommand()) {
+
+		if (interaction.isChatInputCommand()) {
+
+			const pregunta = formatPregunta(interaction.options.getString('pregunta')!)
 			const IsThinkingEmbed = new EmbedBuilder()
 				.setAuthor({
-					name: `${i.user.username} le ha preguntado a la bola 8`,
-					iconURL: i.user.displayAvatarURL({ size: 64 })
+					name: `${interaction.user.username} le ha preguntado a la bola 8`,
+					iconURL: interaction.user.displayAvatarURL({ size: 64 })
 				})
-				.setTitle(`La bola 8 está pensando...`)
-				.setDescription(`**Pregunta**:\n¿${i.options.getString("pregunta", true)}?`)
+				.setTitle(pregunta)
+				.setDescription("La bola está pensando...")
 				.setColor(Colors.White)
 				.setFooter({ text: "🎱" })
 
-			await i.reply({ embeds: [IsThinkingEmbed] })
+			await interaction.reply({ embeds: [IsThinkingEmbed] })
 
 			// eslint-disable-next-line @typescript-eslint/no-misused-promises
 			setTimeout(async () => {
@@ -45,12 +48,23 @@ export = {
 
 				const AnswerEmbed = EmbedBuilder.from(IsThinkingEmbed)
 					.setColor("Blurple")
-					.setTitle(`R: ${PossibleAnswers[Math.floor(Math.random() * PossibleAnswers.length)]}`)
+					.setDescription(`${PossibleAnswers[Math.floor(Math.random() * PossibleAnswers.length)]}`)
 
-				await i.editReply({
+				await interaction.editReply({
 					embeds: [AnswerEmbed]
 				})
-			}, 5_000);
+			}, 3_000);
 		}
 	},
 } as Fuyumi.SlashCommandTemplate
+
+function formatPregunta(pregunta: string) {
+	let aux = pregunta
+	if (pregunta[0] !== '¿')
+		aux = '¿' + pregunta
+
+	if (pregunta[pregunta.length - 1] !== '?')
+		aux = aux + '?'
+
+	return aux
+}
