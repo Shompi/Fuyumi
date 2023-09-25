@@ -89,6 +89,8 @@ void (async () => {
 
 		const command = (await import(`./InteractionCommands/${filename}`)) as Fuyumi.SlashCommandTemplate
 
+		if (!('data' in command)) return console.log(`${filename} no tiene 'data', saltando...`);
+
 		client.commands.set(command.data.name, command);
 	}
 

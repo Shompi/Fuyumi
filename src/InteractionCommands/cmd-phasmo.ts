@@ -1,5 +1,4 @@
-import { readFile } from "node:fs/promises"
-import { AutocompleteInteraction, ChatInputCommandInteraction, Options, SlashCommandBuilder } from "discord.js"
+import { AutocompleteInteraction, ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js"
 import { SearchGhost } from "./SubCommands/phasmo-ghost"
 import { Phasmophobia } from "@myTypes/index"
 
@@ -44,7 +43,7 @@ export = {
 
 			const name = interaction.options.getFocused()
 
-			const GhostsList = JSON.parse(await readFile("Resources/phasmo_ghosts.json", { encoding: "utf8" })) as Phasmophobia.Ghost[]
+			const GhostsList = (await import("../../Resources/phasmo_ghosts.json")).default satisfies Phasmophobia.Ghost[]
 			return await interaction.respond(GhostsList.filter(ghost => ghost.name.toLowerCase().includes(name)).map(ghost => ({ name: ghost.name, value: ghost.id })))
 		}
 	}

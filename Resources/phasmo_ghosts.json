@@ -2,14 +2,22 @@
   {
     "id": "banshee",
     "name": "Banshee",
-    "evidences": ["Huellas Dactilares", "Orbes Espectrales", "Proyector D.O.T.S"],
+    "evidences": [
+      "Huellas Dactilares",
+      "Orbes Espectrales",
+      "Proyector D.O.T.S"
+    ],
     "url": "https://phasmophobia.fandom.com/wiki/Banshee",
     "about": "Se concentra en un jugador en especifico hasta que este es asesinado, ignorando a los demás. La cordura mínima para comenzar una [cacería](https://phasmophobia.fandom.com/wiki/Hunt) depende solo de la cordura del jugador objetivo. Un grito único de un Banshee puede ser escuchado usando el [Micrófono Parabólico](https://phasmophobia.fandom.com/wiki/Parabolic_Microphone)."
   },
   {
     "id": "demon",
     "name": "Demonio",
-    "evidences": ["Huellas Dactilares", "Escritura Fantasma", "Temperaturas Heladas"],
+    "evidences": [
+      "Huellas Dactilares",
+      "Escritura Fantasma",
+      "Temperaturas Heladas"
+    ],
     "hunt": 70,
     "url": "https://phasmophobia.fandom.com/wiki/Demon",
     "about": "Tiene una chance de iniciar una [cacería](https://phasmophobia.fandom.com/wiki/Hunt) en cualquier momento, independientemente de la cordura promedio del equipo. El tiempo mínimo entre cacerías es de **20 segundos**. Utilizar un [Incienso](https://phasmophobia.fandom.com/wiki/Smudge_Sticks) prevendrá que el demonio ataque por **60 segundos**. Los [crucifijos](https://phasmophobia.fandom.com/wiki/Crucifix) tienen un rango de efectividad mayor contra este fantasma."
@@ -20,19 +28,23 @@
     "evidences": ["Spirit Box", "Escritura Fantasma", "Proyector D.O.T.S"],
     "hunt": 40,
     "url": "https://phasmophobia.fandom.com/wiki/Deogen",
-    "about": "Siempre sabe donde están escondidos los jugadores, haciendo que esconderse sea inútil para escapar del fantasma durante un [ataque](https://phasmophobia.fandom.com/wiki/Hunt). **Se vuelve increíblemente lento cuando está cerca de un jugador.** El Deogen puede responder con un jadeo distintivo a través de la [Spirit Box](https://phasmophobia.fandom.com/wiki/Spirit_Box).\nEn dificultad **Pesadilla**, el Deogen siempre tendrá Spirit Box como una de sus evidencias."
+    "about": "Siempre sabe donde están escondidos los jugadores, haciendo que esconderse sea inútil para escapar del fantasma durante un [ataque](https://phasmophobia.fandom.com/wiki/Hunt). **Se vuelve increíblemente lento cuando está cerca de un jugador.** El Deogen tiene una respuesta distintiva en la [Spirit Box](https://phasmophobia.fandom.com/wiki/Spirit_Box).\nEn dificultad **Pesadilla**, el Deogen siempre tendrá Spirit Box como una de sus evidencias."
   },
   {
     "id": "goryo",
     "name": "Goryo",
     "evidences": ["EMF 5", "Huellas Dactilares", "Proyector D.O.T.S"],
     "url": "https://phasmophobia.fandom.com/wiki/Goryo",
-    "about": "Solo se aparecerá por el [D.O.T.S.](https://phasmophobia.fandom.com/wiki/D.O.T.S_Projector_(Evidence)) a través de una camara de video y cuando no haya nadie en su habitación. Si no está [atacando](https://phasmophobia.fandom.com/wiki/Hunt), la distancia que puede recorrer fuera de su habitación será reducida."
+    "about": "Solo se aparecerá por el [D.O.T.S.](https://phasmophobia.fandom.com/wiki/D.O.T.S_Projector_(Evidence)) a través de una camara de video y cuando no haya nadie en su habitación. Estos fantasmas no cambiarán su habitación con frecuencia"
   },
   {
     "id": "hantu",
     "name": "Hantu",
-    "evidences": ["Huellas Dactilares", "Orbes Espectrales", "Temperaturas Heladas"],
+    "evidences": [
+      "Huellas Dactilares",
+      "Orbes Espectrales",
+      "Temperaturas Heladas"
+    ],
     "url": "https://phasmophobia.fandom.com/wiki/Hantu",
     "about": "Aumenta su velocidad mientras más helada esté la habitación durante un [ataque](https://phasmophobia.fandom.com/wiki/Hunt). Tiene el doble de probabilidad de apagar la luz de la casa desde el [fusible](https://phasmophobia.fandom.com/wiki/Fuse_Box)."
   },
@@ -41,7 +53,7 @@
     "name": "Jinn",
     "evidences": ["EMF 5", "Temperaturas Heladas", "Huellas Dactilares"],
     "url": "https://phasmophobia.fandom.com/wiki/Jinn",
-    "about": "Durante un ataque, su velocidad de movimiento será más rápida de lo normal si el jugador al que está viendo está a una gran distancia. Su habilidad **bajará la cordura de los jugadores cercanos en 25%**. Cortar la luz de la casa prevendrá que el Jinn utilice su habilidad. **Los Jinn no cortarán la luz de la casa por esta misma razón.**"
+    "about": "Durante un ataque, su velocidad de movimiento será más rápida de lo normal si el jugador al que está persiguiendo está a una gran distancia. La habilidad del Jinn bajará en 25% la cordura de todos los jugadores que estén en la misma habitación del fusible central o a una distancia de 3 metros de éste. Su habilidad generará una lectura de EMF 2 o EMF 5 en el fusible. Dejar el fusible central apagado evitará que el Jinn pueda usar su habilidad. **Los Jinn no apagarán el fusible de la casa por esta misma razón.**"
   },
   {
     "id": "mare",
@@ -120,7 +132,11 @@
   {
     "id": "revenant",
     "name": "Revenant",
-    "evidences": ["Orbes Espectrales", "Escritura Fantasma", "Temperaturas Heladas"],
+    "evidences": [
+      "Orbes Espectrales",
+      "Escritura Fantasma",
+      "Temperaturas Heladas"
+    ],
     "url": "https://phasmophobia.fandom.com/wiki/Revenant",
     "about": "Durante un [Ataque](https://phasmophobia.fandom.com/wiki/Hunt), se mueve bastante lento **(1m/s)** hasta que tiene a un jugador a la vista lo cual incrementa su velocidad considerablemente **(3m/s)**.\nSe recomienda esconderse lo más rápido posible apenas comienza la cacería."
   },
@@ -142,7 +158,11 @@
   {
     "id": "thaye",
     "name": "Thaye",
-    "evidences": ["Orbes Espectrales", "Escritura Fantasma", "Proyector D.O.T.S"],
+    "evidences": [
+      "Orbes Espectrales",
+      "Escritura Fantasma",
+      "Proyector D.O.T.S"
+    ],
     "hunt": 75,
     "url": "https://phasmophobia.fandom.com/wiki/Thaye",
     "about": "Se vuelve muy activo y es muy rápido la primera vez que el jugador se le acerca **(2.75m/s)**. \nMientras más tiempo los jugadores se queden cerca de él, se volverá más lento, inactivo y silencioso, y la cordura mínima para iniciar un [Ataque](https://phasmophobia.fandom.com/wiki/Hunt) también será mas baja."
@@ -172,7 +192,11 @@
   {
     "id": "yurei",
     "name": "Yurei",
-    "evidences": ["Orbes Espectrales", "Temperaturas Heladas", "Proyector D.O.T.S"],
+    "evidences": [
+      "Orbes Espectrales",
+      "Temperaturas Heladas",
+      "Proyector D.O.T.S"
+    ],
     "url": "https://phasmophobia.fandom.com/wiki/Yurei",
     "about": "De manera aleatoria cerrará por completo una puerta y le quitará un poco de cordura a todos los jugadores cercanos.\nSe encerrará temporalmente en su habitación luego de quemar un [Incienso](https://phasmophobia.fandom.com/wiki/Smudge_Sticks).\n\nSi el fantasma cierra la puerta principal por completo sin una manifestación, es definitivamente un Yurei."
   }
