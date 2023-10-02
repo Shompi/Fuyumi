@@ -1,8 +1,9 @@
 {
   "name": "fuyumi",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "multifunctional bot for Discord",
-  "main": "main.js",
+  "type": "module",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Shompi/fuyumi.git",
@@ -10,10 +11,12 @@
   },
   "dependencies": {
     "@keyv/sqlite": "^3.6.4",
+    "@sapphire/framework": "^4.6.0",
+    "@sapphire/plugin-hmr": "^2.0.2",
+    "@sapphire/plugin-subcommands": "^4.2.1",
     "@types/google-spreadsheet": "^3.3.0",
     "animeflv-api": "^1.0.3",
     "date-format-parse": "^0.2.7",
-    "discord-akairo": "github:Shompi/discord-akairo",
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -23,8 +26,7 @@
     "undici": "^5.23.0"
   },
   "scripts": {
-    "start": "tsc && node ./js/index.js",
-    "deploy": "node ./Deployment/deploy-commands.js",
+    "start": "tsc && node dist/index.js",
     "build": "tsc",
     "lint": "npx eslint ./src"
   },
@@ -35,7 +37,8 @@
     "node",
     "weeb",
     "images",
-    "moderation"
+    "moderation",
+    "sapphire"
   ],
   "author": "ShompiFlen",
   "license": "MIT",

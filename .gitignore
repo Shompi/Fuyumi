@@ -4,8 +4,9 @@ Logs
 .vscode
 Deployment
 db
-js
+dist
 tests
+ignore
 
 #Environment variables
 *.env

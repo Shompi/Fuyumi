@@ -1,4 +1,3 @@
-import { CommandHandler, Listener, ListenerHandler } from "discord-akairo"
 import { AutocompleteInteraction, Collection, CommandInteraction, Events, Guild, GuildTextBasedChannel, SlashCommandBuilder } from "discord.js"
 
 declare namespace Mindicador {
@@ -249,7 +248,5 @@ declare module 'discord.js' {
 		/** Exiliados Guild */
 		get exiliados(): Guild
 		commands: Collection<string, Fuyumi.SlashCommandTemplate>
-		listenerHandler: ListenerHandler
-		commandHandler: CommandHandler
 	}
 }
