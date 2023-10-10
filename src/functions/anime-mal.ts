@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Colors, ComponentType, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder } from "discord.js";
-import type { MyAnimeList } from "../Types/index.d.ts";
+import type { MyAnimeList } from "../Types/index.js";
 
 const WebPageURL = "https://myanimelist.net/"
 const GetAnimeListEndpoint = "https://api.myanimelist.net/v2/"

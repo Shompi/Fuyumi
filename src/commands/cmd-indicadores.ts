@@ -1,6 +1,6 @@
 import { EmbedBuilder } from 'discord.js'
 import { Command } from '@sapphire/framework';
-import type { Mindicador } from '../Types/index.d.ts';
+import { Mindicador } from 'Types/index.js';
 
 const monedaCLP = "CLP"
 
