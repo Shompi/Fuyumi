@@ -58,7 +58,7 @@ export class UtilityCommands extends Subcommand {
 			style: interaction.options.getString('estilo', true) as TimestampStylesString,
 		}
 
-		const date = new Date(`${options.year}-${options.month}-${options.day}T${options.hour}:${options.minutes}:00.000-04:00`)
+		const date = new Date(`${options.year}-${options.month}-${options.day}T${options.hour}:${options.minutes}:00.000-05:00`)
 
 		const embed = new EmbedBuilder()
 			.setDescription(`Timestamp: ${time(date, options.style)}\nFormat: ${codeBlock(time(date, options.style))}`)
