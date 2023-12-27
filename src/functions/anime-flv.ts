@@ -1,6 +1,7 @@
 import { ActionRowBuilder, type ChatInputCommandInteraction, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ComponentType, EmbedBuilder, StringSelectMenuInteraction, InteractionType, ButtonBuilder, ButtonStyle, Collection } from "discord.js";
 import { AnimeData, getAnimeInfo, searchAnime } from "animeflv-api"
 import { PartialAnimeData } from "animeflv-api/dist/types/index.js";
+
 export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 
 	const InitialReply = await i.deferReply()
