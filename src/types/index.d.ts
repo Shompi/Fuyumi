@@ -1,4 +1,4 @@
-import { AutocompleteInteraction, Collection, CommandInteraction, Events, Guild, GuildTextBasedChannel, SlashCommandBuilder } from "discord.js"
+import { AutocompleteInteraction, Collection, CommandInteraction, Events, Guild, GuildTextBasedChannel, SlashCommandBuilder, Snowflake } from "discord.js"
 
 declare namespace Mindicador {
 	interface Uf {
@@ -241,12 +241,10 @@ declare namespace MyAnimeList {
 
 declare module 'discord.js' {
 	interface BaseClient {
-		/** The test channel from Exiliados */
-		get testChannel(): GuildTextBasedChannel
 		/** Fuyumi's private development guild */
-		get development(): Guild
+		development: Snowflake | null
 		/** Exiliados Guild */
-		get exiliados(): Guild
+		exiliados: Snowflake | null
 		commands: Collection<string, Fuyumi.SlashCommandTemplate>
 	}
 }

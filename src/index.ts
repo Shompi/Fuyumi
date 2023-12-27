@@ -16,6 +16,10 @@ const client = new SapphireClient(
 		]
 	}
 )
+
+client.exiliados = "537484725896478733"
+client.development = "941843371062861855"
+
 console.log('TOKEN', process.env.BOT_TOKEN?.slice(0, 10));
 
 

@@ -1,4 +1,4 @@
-import { EmbedBuilder, GuildMember } from "discord.js"
+import { EmbedBuilder, GuildMember, TextBasedChannel } from "discord.js"
 import { Listener } from "@sapphire/framework";
 
 export class GuildMemberRemoveListener extends Listener {
@@ -13,7 +13,7 @@ export class GuildMemberRemoveListener extends Listener {
 	public async run(member: GuildMember) {
 		const client = member.client
 
-		if (member.guild.id !== client.exiliados.id)
+		if (member.guild.id !== client.exiliados)
 			return;
 
 		const { id } = member;
@@ -25,7 +25,7 @@ export class GuildMemberRemoveListener extends Listener {
 			.setThumbnail(userInformation.displayAvatarURL({ size: 256 }))
 			.setTimestamp()
 
-		await client.testChannel.send({
+		await (client.channels.cache.get("806268687333457920") as TextBasedChannel).send({
 			embeds: [embed]
 		})
 	}
