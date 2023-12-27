@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Colors, ComponentType, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder } from "discord.js";
-import type { MyAnimeList } from "../Types/index.js";
+import type { MyAnimeList } from "../Types/index.d.ts";
 
 const WebPageURL = "https://myanimelist.net/"
 const GetAnimeListEndpoint = "https://api.myanimelist.net/v2/"
@@ -107,10 +107,10 @@ function CreateButtonsRow(Animes: MyAnimeList.GetAnimeListResponse) {
 
 	return new ActionRowBuilder<ButtonBuilder>()
 		.setComponents(
-			Animes.data.map(Anime => {
+			Animes.data.map(anime => {
 				return new ButtonBuilder()
-					.setCustomId(Anime.node.id.toString())
-					.setLabel(Anime.node.title)
+					.setCustomId(anime.node.id.toString())
+					.setLabel(anime.node.title)
 					.setStyle(ButtonStyle.Primary)
 			})
 		)
