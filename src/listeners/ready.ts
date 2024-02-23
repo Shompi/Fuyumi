@@ -42,29 +42,6 @@ export default class ReadyListener extends Listener {
 					return
 				}, 60_000))
 		}
-
-		this.sendApiData = () => {
-			setInterval(() => {
-				fetch("http://localhost:3000/api/fuyumi", {
-					method: 'POST',
-					headers: {
-						"Content-Type": "application/json",
-						"secret-token": "1234"
-					},
-					body: JSON.stringify({
-						guilds: this.container.client.guilds.cache.map(guild => ({ name: guild.name, member_count: guild.memberCount, iconURL: guild.iconURL({ size: 512 }) ?? "No icon." })),
-						avatar: this.container.client.user?.displayAvatarURL({ size: 512 }),
-						uptime: this.container.client.uptime,
-						user_count: this.container.client.users.cache.size,
-						username: this.container.client.user?.username,
-						commands: this.container.client.application?.commands.cache.map(command => ({ name: command.name, description: command.description }))
-					})
-				}).then(response => response.json())
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-					.then(data => console.log(data.message))
-					.catch(() => null)
-			}, 10000)
-		}
 	}
 
 	public run(client: Client) {
@@ -73,7 +50,6 @@ export default class ReadyListener extends Listener {
 		console.log(`Bot listo: ${Date()}`)
 
 		this.setActivity()
-		this.sendApiData()
 		void UpdateButtons(client)
 	}
 
