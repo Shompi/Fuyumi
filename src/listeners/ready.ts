@@ -11,8 +11,7 @@ export default class ReadyListener extends Listener {
 	hasTimers: boolean
 	clearTimers: () => void
 	setActivity: () => unknown
-	sendApiData: () => void
-
+	
 	public constructor(context: Listener.Context, options: Listener.Options) {
 		super(context, {
 			...options,
