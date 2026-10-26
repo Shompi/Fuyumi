@@ -26,9 +26,7 @@
     "undici": "^5.28.4"
   },
   "scripts": {
-    "start": "tsc && node dist/index.js",
-    "build": "tsc",
-    "lint": "npx eslint ./src"
+    "start": "bun ./src/index.ts",
   },
   "keywords": [
     "bot",
@@ -49,6 +47,8 @@
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
     "eslint": "^8.48.0",
-    "typescript": "^5.2.2"
-  }
+    "typescript": "^5.2.2",
+    "@types/bun": "latest"
+  },
+  "private": true
 }
