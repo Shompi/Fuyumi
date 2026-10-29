@@ -1,9 +1,7 @@
-import { ActivityType, Client } from 'discord.js'
+import { Client } from 'discord.js'
 
 import { Listener } from '@sapphire/framework';
-import Keyv from 'keyv';
-import { UpdateButtons } from '../functions/utils/updateButtons.js';
-const BotActivity = new Keyv({ uri: 'sqlite://db/activity.sqlite' })
+import { UpdateButtons } from '../functions/utils/updateButtons.ts';
 
 const timers: unknown[] = []
 
@@ -11,12 +9,12 @@ export default class ReadyListener extends Listener {
 	hasTimers: boolean
 	clearTimers: () => void
 	setActivity: () => unknown
-	
-	public constructor(context: Listener.Context, options: Listener.Options) {
+
+	public constructor(context: Listener.LoaderContext, options: Listener.Options) {
 		super(context, {
 			...options,
 			once: true,
-			event: 'ready'
+			event: 'clientReady'
 		});
 
 		this.hasTimers = true
@@ -35,9 +33,6 @@ export default class ReadyListener extends Listener {
 				// eslint-disable-next-line @typescript-eslint/no-misused-promises
 				async () => {
 
-					const activity = (await BotActivity.get('activity')) as { name: string, type: ActivityType } | null ?? { name: '💙 Reviviendo... de a poco...', type: ActivityType.Playing }
-
-					this.container.client.user?.setActivity(activity)
 					return
 				}, 60_000))
 		}

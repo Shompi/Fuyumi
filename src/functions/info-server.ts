@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { ChatInputCommandInteraction, EmbedBuilder, Collection, Role, ChannelType, Snowflake } from 'discord.js';
-import { FormatDate } from "../functions/Helpers/formatDate.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Collection, Role, ChannelType, type Snowflake } from 'discord.js';
+import { FormatDate } from "../functions/Helpers/formatDate.ts";
 
 const TIERS = {
 	0: "Sin nivel",

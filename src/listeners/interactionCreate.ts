@@ -1,17 +1,26 @@
-import { EmbedBuilder, BaseInteraction } from 'discord.js'
-import { Listener } from '@sapphire/framework';
-import { ButtonAddRoles } from '../functions/buttons/roles.js';
+import { EmbedBuilder, BaseInteraction, Events } from 'discord.js'
+import { Listener, type Awaitable } from '@sapphire/framework';
+import { ButtonAddRoles } from '../functions/buttons/roles.ts';
 
-export default class InteractionEvent extends Listener {
-	public constructor(context: Listener.Context, options: Listener.Options) {
+export class InteractionEvent extends Listener {
+	public constructor(context: Listener.LoaderContext, options: Listener.Options) {
 		super(context, {
 			...options,
+			once: false,
+			event: Events.InteractionCreate
 		});
 	}
 
+	public override onLoad(): Awaitable<unknown> {
+		return console.log("Interaction Create Handler loaded!")
+	}
+
 	public async run(interaction: BaseInteraction) {
+
+		console.log("Received an interaction...")
+
 		try {
-			if (interaction.isCommand()) {
+			if (interaction.isChatInputCommand()) {
 				interaction.client.emit('commandUsed', ({ user: { username: interaction.user.username }, commandName: interaction.commandName }))
 			}
 

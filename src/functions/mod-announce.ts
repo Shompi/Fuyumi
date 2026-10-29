@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, EmbedBuilder, GuildTextBasedChannel, ColorResolvable } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, type GuildTextBasedChannel, type ColorResolvable } from 'discord.js';
 
 export const Announce = async (interaction: ChatInputCommandInteraction) => {
 	// valid options for this command

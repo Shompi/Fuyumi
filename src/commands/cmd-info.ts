@@ -1,12 +1,12 @@
-import { ServerInfo } from '../functions/info-server.js';
-import { UserInfo } from '../functions/info-user.js';
-import { RoleInfo } from '../functions/info-role.js';
+import { ServerInfo } from '../functions/info-server.ts';
+import { UserInfo } from '../functions/info-user.ts';
+import { RoleInfo } from '../functions/info-role.ts';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 
 
 // Extend `Subcommand` instead of `Command`
 export class GeneralInfo extends Subcommand {
-	public constructor(context: Subcommand.Context, options: Subcommand.Options) {
+	public constructor(context: Subcommand.LoaderContext, options: Subcommand.Options) {
 		super(context, {
 			...options,
 			name: 'info',
@@ -23,11 +23,11 @@ export class GeneralInfo extends Subcommand {
 					name: 'role',
 					chatInputRun: 'chatInputRole'
 				}
-			]
+			],
 		});
 	}
 
-	registerApplicationCommands(registry: Subcommand.Registry) {
+	override registerApplicationCommands(registry: Subcommand.Registry) {
 		registry.registerChatInputCommand((builder) =>
 			builder.setName('info')
 				.setDescription('Comandos de información general')

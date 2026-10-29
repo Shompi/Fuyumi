@@ -1,7 +1,7 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
-import { ChatInputCommandInteraction, Colors, EmbedBuilder, TimestampStyles, TimestampStylesString, codeBlock, time } from "discord.js";
+import { Colors, EmbedBuilder, TimestampStyles, type TimestampStylesString, codeBlock, time } from "discord.js";
 export class UtilityCommands extends Subcommand {
-	public constructor(context: Subcommand.Context, options: Subcommand.Options) {
+	public constructor(context: Subcommand.LoaderContext, options: Subcommand.Options) {
 		super(context, {
 			...options,
 			name: 'utility',
@@ -14,7 +14,7 @@ export class UtilityCommands extends Subcommand {
 		})
 	}
 
-	registerApplicationCommands(registry: Subcommand.Registry) {
+	public override registerApplicationCommands(registry: Subcommand.Registry) {
 		registry.registerChatInputCommand(builder => {
 			builder.setName('utility')
 				.setDescription('Comandos de utilidad')

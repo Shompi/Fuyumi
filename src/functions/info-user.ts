@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, EmbedBuilder, GuildMember, Colors, User } from 'discord.js';
-import { FormatDate } from '../functions/Helpers/formatDate.js';
+import { FormatDate } from '../functions/Helpers/formatDate.ts';
 
 export const UserInfo = async (interaction: ChatInputCommandInteraction) => {
 

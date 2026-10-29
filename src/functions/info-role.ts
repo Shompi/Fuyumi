@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { FormatDate } from '../functions/Helpers/formatDate.js';
+import { FormatDate } from '../functions/Helpers/formatDate.ts';
 
 export const RoleInfo = async (interaction: ChatInputCommandInteraction) => {
 

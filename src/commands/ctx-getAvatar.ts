@@ -2,7 +2,7 @@ import { EmbedBuilder, ApplicationCommandType, Colors } from 'discord.js';
 import { Command } from '@sapphire/framework';
 
 export class UserCommand extends Command {
-	public constructor(context: Command.Context, options: Command.Options) {
+	public constructor(context: Command.LoaderContext, options: Command.Options) {
 		super(context, { ...options });
 	}
 
@@ -14,7 +14,7 @@ export class UserCommand extends Command {
 		);
 	}
 
-	public async contextMenuRun(interaction: Command.ContextMenuCommandInteraction) {
+	public override async contextMenuRun(interaction: Command.ContextMenuCommandInteraction) {
 		const target = interaction.targetId;
 
 		const targetUser = await interaction.client.users.fetch(target);

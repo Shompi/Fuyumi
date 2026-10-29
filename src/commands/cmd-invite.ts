@@ -2,7 +2,7 @@ import { EmbedBuilder, Colors, OAuth2Scopes } from 'discord.js';
 import { Command } from '@sapphire/framework';
 
 export class InviteCommand extends Command {
-	public constructor(context: Command.Context, options: Command.Options) {
+	public constructor(context: Command.LoaderContext, options: Command.Options) {
 		super(context, { ...options });
 	}
 
@@ -13,7 +13,7 @@ export class InviteCommand extends Command {
 		);
 	}
 
-	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		const invite = interaction.client.generateInvite({
 			scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
 			permissions: ["AddReactions", "EmbedLinks", "ModerateMembers", "KickMembers", "BanMembers",

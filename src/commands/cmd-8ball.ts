@@ -12,9 +12,12 @@ const PossibleAnswers = [
 	"No me preguntes a mi, solo soy una bola."
 ]
 
-export class EightBall extends Command {
-	public constructor(context: Command.Context, options: Command.Options) {
-		super(context, { ...options });
+export class Ball extends Command {
+	public constructor(context: Command.LoaderContext, options: Command.Options) {
+		super(context, { ...options, 
+			name: "8ball",
+			description: "Hazle una pregunta a la Bola 8!"
+		});
 	}
 
 	public override registerApplicationCommands(registry: Command.Registry) {
@@ -30,7 +33,7 @@ export class EightBall extends Command {
 		);
 	}
 
-	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		const pregunta = formatPregunta(interaction.options.getString('pregunta')!)
 		const IsThinkingEmbed = new EmbedBuilder()
 			.setAuthor({

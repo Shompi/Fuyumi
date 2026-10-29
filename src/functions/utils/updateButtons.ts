@@ -1,4 +1,4 @@
-import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Colors, GuildTextBasedChannel, Client } from 'discord.js';
+import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Colors, type GuildTextBasedChannel, Client } from 'discord.js';
 
 interface CreateButtonArguments {
 	roleId: string

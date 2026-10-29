@@ -26,7 +26,7 @@ export async function SearchMyAnimeList(i: ChatInputCommandInteraction) {
 		}
 
 		if (Animes.data.length === 1) {
-			return await SendAnimeDetails(i, Animes.data[0].node.id)
+			return await SendAnimeDetails(i, Animes.data[0]!.node.id)
 		}
 
 		let ActionRow: ActionRowBuilder<ButtonBuilder> | ActionRowBuilder<StringSelectMenuBuilder>
@@ -65,7 +65,7 @@ export async function SearchMyAnimeList(i: ChatInputCommandInteraction) {
 			components: []
 		})
 
-		const SelectedAnimeId = PressedButton.componentType === ComponentType.Button ? PressedButton.customId : PressedButton.values[0]
+		const SelectedAnimeId = PressedButton.componentType === ComponentType.Button ? PressedButton.customId : PressedButton.values[0]!
 
 		return await SendAnimeDetails(i, parseInt(SelectedAnimeId))
 
@@ -148,7 +148,7 @@ async function GetAnimeList(options: MyAnimeList.GetAnimeListOptions): Promise<M
 
 	return await fetch(URL, {
 		headers: {
-			"X-MAL-CLIENT-ID": process.env.MAL_CLIENT_ID ?? "MAL TOKEN not set."
+			"X-MAL-CLIENT-ID": Bun.env["MAL_CLIENT_ID"] ?? "MAL TOKEN not set."
 		}
 	}).then(response => response.json()) as MyAnimeList.GetAnimeListResponse
 }
@@ -214,7 +214,6 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction, AnimeId: number)
 		.setFooter({
 			text: alternative_titles.ja
 		})
-		.setThumbnail(pictures[0]?.large)
 		.setAuthor({
 			name: "Powered by MyAnimeList",
 			url: WebPageURL + `anime/${id}`
@@ -231,6 +230,10 @@ async function SendAnimeDetails(i: ChatInputCommandInteraction, AnimeId: number)
 				inline: true
 			}
 		)
+
+	if (pictures.length > 0) {
+		DetailsEmbed.setThumbnail(pictures[0]!.large)
+	}
 
 	return await i.editReply({
 		content: null,

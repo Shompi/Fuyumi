@@ -2,7 +2,7 @@ import { EmbedBuilder, Colors } from 'discord.js';
 import { Command } from '@sapphire/framework';
 
 export class RollCommand extends Command {
-	public constructor(context: Command.Context, options: Command.Options) {
+	public constructor(context: Command.LoaderContext, options: Command.Options) {
 		super(context, { ...options });
 	}
 
@@ -27,7 +27,7 @@ export class RollCommand extends Command {
 		);
 	}
 
-	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		const caras = interaction.options.getInteger('caras', false) ?? 6;
 		const dados = interaction.options.getInteger('dados', false) ?? 1;
 		const memberAvatar = interaction.user.displayAvatarURL({ size: 64 });

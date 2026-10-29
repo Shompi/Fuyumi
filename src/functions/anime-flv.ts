@@ -1,6 +1,5 @@
-import { ActionRowBuilder, type ChatInputCommandInteraction, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ComponentType, EmbedBuilder, StringSelectMenuInteraction, InteractionType, ButtonBuilder, ButtonStyle, Collection } from "discord.js";
-import { AnimeData, getAnimeInfo, searchAnime } from "animeflv-api"
-import { PartialAnimeData } from "animeflv-api/dist/types/index.js";
+import { getAnimeInfo, searchAnime, type AnimeData, type PartialAnimeData } from "animeflv-api";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, ComponentType, EmbedBuilder, InteractionType, StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder, type ChatInputCommandInteraction } from "discord.js";
 
 export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 
@@ -14,7 +13,7 @@ export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 	}
 
 	if (AnimeSearchResults.data.length === 1) {
-		const AnimeDetails = await getAnimeInfo(AnimeSearchResults.data[0].id)
+		const AnimeDetails = await getAnimeInfo(AnimeSearchResults.data[0]!.id)
 		if (!AnimeDetails) return await i.editReply('No encontré ningun animé con esa id.')
 
 		return await SendAnimeDetails(i, AnimeDetails)
@@ -37,7 +36,7 @@ export async function SearchAnimeFLV(i: ChatInputCommandInteraction) {
 		time: 60_000
 	})
 
-	const SelectedAnime = SelectMenuInteraction.values[0]
+	const SelectedAnime = SelectMenuInteraction.values[0]!
 
 	const AnimeDetails = await getAnimeInfo(SelectedAnime)
 

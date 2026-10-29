@@ -1,4 +1,4 @@
-import { ButtonBuilder, EmbedBuilder, ChatInputCommandInteraction, Collection, ActionRowBuilder, ButtonStyle, Colors, ComponentType, time, GuildTextBasedChannel } from 'discord.js';
+import { ButtonBuilder, EmbedBuilder, ChatInputCommandInteraction, Collection, ActionRowBuilder, ButtonStyle, Colors, ComponentType, time, type GuildTextBasedChannel } from 'discord.js';
 
 interface FormatOptions {
 	name: string
@@ -67,7 +67,7 @@ export const Poll = async (interaction: ChatInputCommandInteraction<'cached'>) =
 		else {
 			const userVoteNumber = parseInt(bInteraction.customId.charAt(bInteraction.customId.length - 1));
 			usersWhoVoted.set(bInteraction.user.id, { option: userVoteNumber });
-			args.options[userVoteNumber].voters++;
+			args.options[userVoteNumber]!.voters++;
 			await bInteraction.reply({ content: '¡Se ha registrado tu voto exitósamente!', ephemeral: true });
 		}
 	})

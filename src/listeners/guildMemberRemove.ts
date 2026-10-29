@@ -1,12 +1,13 @@
-import { EmbedBuilder, GuildMember, TextBasedChannel } from "discord.js"
+import { EmbedBuilder, Events, GuildMember, type TextBasedChannel } from "discord.js"
 import { Listener } from "@sapphire/framework";
 
 export class GuildMemberRemoveListener extends Listener {
 
-	public constructor(context: Listener.Context, options: Listener.Options) {
+	public constructor(context: Listener.LoaderContext, options: Listener.Options) {
 		super(context, {
 			...options,
 			once: false,
+			name: Events.GuildMemberRemove
 		});
 	}
 
@@ -25,8 +26,12 @@ export class GuildMemberRemoveListener extends Listener {
 			.setThumbnail(userInformation.displayAvatarURL({ size: 256 }))
 			.setTimestamp()
 
-		await (client.channels.cache.get("806268687333457920") as TextBasedChannel).send({
-			embeds: [embed]
-		})
+		const channel = client.channels.cache.get("806268687333457920") as TextBasedChannel
+
+		if (channel.isSendable()) {
+			channel.send({
+				embeds: [embed]
+			})
+		}
 	}
 }

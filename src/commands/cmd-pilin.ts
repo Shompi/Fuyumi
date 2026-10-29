@@ -5,7 +5,7 @@ const cooldowns: Map<string, { timestamp: number }> = new Map();
 const COOLDOWNTIMEMS = 10 * 1000 // 10 segundos
 
 export class PilinCommand extends Command {
-	public constructor(context: Command.Context, options: Command.Options) {
+	public constructor(context: Command.LoaderContext, options: Command.Options) {
 		super(context, { ...options });
 	}
 
@@ -16,7 +16,7 @@ export class PilinCommand extends Command {
 		);
 	}
 
-	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		if (interaction.inCachedGuild()) {
 			if (cooldowns.has(interaction.member.id)) {
 

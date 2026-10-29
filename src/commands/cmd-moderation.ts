@@ -1,15 +1,15 @@
 import { ChannelType, PermissionFlagsBits } from 'discord.js'
 
 /* Comandos */
-import { TimeoutMember } from '../functions/mod-timeout.js';
-import { Poll } from '../functions/mod-poll.js';
-import { Announce } from '../functions/mod-announce.js';
-import { ChangeVoiceRegion } from '../functions/mod-voiceRegion.js';
+import { TimeoutMember } from '../functions/mod-timeout.ts';
+import { Poll } from '../functions/mod-poll.ts';
+import { Announce } from '../functions/mod-announce.ts';
+import { ChangeVoiceRegion } from '../functions/mod-voiceRegion.ts';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 
 // Extend `Subcommand` instead of `Command`
 export class ModerationCommands extends Subcommand {
-	public constructor(context: Subcommand.Context, options: Subcommand.Options) {
+	public constructor(context: Subcommand.LoaderContext, options: Subcommand.Options) {
 		super(context, {
 			...options,
 			name: 'moderacion',
@@ -35,7 +35,7 @@ export class ModerationCommands extends Subcommand {
 		});
 	}
 
-	registerApplicationCommands(registry: Subcommand.Registry) {
+	override registerApplicationCommands(registry: Subcommand.Registry) {
 		registry.registerChatInputCommand((builder) =>
 			builder
 				.setName('moderacion')

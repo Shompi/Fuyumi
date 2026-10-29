@@ -1,18 +1,18 @@
 // @ts-check
-import { EmbedBuilder, User, Collection, ButtonBuilder, ActionRowBuilder, Colors, ButtonStyle, Snowflake, ComponentType } from "discord.js";
+import { EmbedBuilder, User, Collection, ButtonBuilder, ActionRowBuilder, Colors, ButtonStyle, type Snowflake, ComponentType } from "discord.js";
 import { Command } from "@sapphire/framework";
 
 const timeouts: Collection<string, { t_expires: number, user: User }> = new Collection()
 
 export class MakeParty extends Command {
-	public constructor(context: Command.Context, options: Command.Options) {
+	public constructor(context: Command.LoaderContext, options: Command.Options) {
 		super(context, { ...options });
 	}
 
 	public override registerApplicationCommands(registry: Command.Registry) {
 		registry.registerChatInputCommand((builder) =>
 			builder.setName('party')
-				.setDMPermission(false)
+				// .setDefaultMemberPermissions()
 				.setDescription('Inicia una busqueda de grupo para que los miembros puedan unirse')
 				.addIntegerOption(input => {
 					return input.setName('faltan')
@@ -43,7 +43,7 @@ export class MakeParty extends Command {
 		);
 	}
 
-	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 
 		if (timeouts.has(interaction.user.id)) {
 			return await interaction.reply({

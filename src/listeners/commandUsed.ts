@@ -8,9 +8,10 @@ interface Info {
 }
 
 export default class CommandUsed extends Listener {
-	public constructor(context: Listener.Context, options: Listener.Options) {
+	public constructor(context: Listener.LoaderContext, options: Listener.Options) {
 		super(context, {
 			...options,
+			name: "commandUsed"
 		});
 	}
 	public run(info: Info) {

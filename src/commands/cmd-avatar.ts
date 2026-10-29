@@ -2,7 +2,7 @@ import { EmbedBuilder, Colors } from 'discord.js';
 import { Command } from '@sapphire/framework';
 
 export class UserAvatar extends Command {
-	public constructor(context: Command.Context, options: Command.Options) {
+	public constructor(context: Command.LoaderContext, options: Command.Options) {
 		super(context, { ...options });
 	}
 
@@ -16,7 +16,7 @@ export class UserAvatar extends Command {
 		);
 	}
 
-	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		const user = interaction.options.getUser('user', false) ?? interaction.user
 
 		await user.fetch()

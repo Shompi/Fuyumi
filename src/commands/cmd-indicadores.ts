@@ -1,11 +1,11 @@
 import { EmbedBuilder } from 'discord.js'
 import { Command } from '@sapphire/framework';
-import type { Mindicador } from 'types/index.js';
+import type { Mindicador } from '../types/index';
 
 const monedaCLP = "CLP"
 
 export class Indicadores extends Command {
-	public constructor(context: Command.Context, options: Command.Options) {
+	public constructor(context: Command.LoaderContext, options: Command.Options) {
 		super(context, { ...options });
 	}
 
@@ -16,7 +16,7 @@ export class Indicadores extends Command {
 		)
 	}
 
-	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		const info = await fetch("https://mindicador.cl/api").then(response => response.json() as Promise<Mindicador.Indicadores>).catch(err => console.error(err));
 
 		if (!info) {

@@ -1,9 +1,9 @@
-import { SearchGhost } from "../functions/phasmo-ghost.js"
+import { SearchGhost } from "../functions/phasmo-ghost.ts"
 import { Subcommand } from "@sapphire/plugin-subcommands";
-import GhostsList from "../resources/phasmo_ghosts.json" assert {type: 'json'}
+import GhostsList from "../resources/phasmo_ghosts.json"
 
 export class PhasmophobiaCommand extends Subcommand {
-	public constructor(context: Subcommand.Context, options: Subcommand.Options) {
+	public constructor(context: Subcommand.LoaderContext, options: Subcommand.Options) {
 		super(context, {
 			...options,
 			name: 'phasmo',
@@ -21,7 +21,7 @@ export class PhasmophobiaCommand extends Subcommand {
 		registry.registerChatInputCommand((builder) =>
 			builder.setName("phasmo")
 				.setDescription("Comandos de Phasmophobia")
-				.setDMPermission(true)
+				// .setDMPermission(true)
 				.addSubcommand(ghost => {
 
 					return ghost.setName("ghost")
@@ -38,7 +38,7 @@ export class PhasmophobiaCommand extends Subcommand {
 		);
 	}
 
-	public async autocompleteRun(interaction: Subcommand.AutocompleteInteraction) {
+	public override async autocompleteRun(interaction: Subcommand.AutocompleteInteraction) {
 		const subcommand = interaction.options.getSubcommand(false)
 
 		if (subcommand === "ghost") {
